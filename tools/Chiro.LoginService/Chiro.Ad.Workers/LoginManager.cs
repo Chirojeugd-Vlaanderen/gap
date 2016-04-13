@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 ﻿using System;
+﻿using System.Collections;
 ﻿using System.Text;
 ﻿using Chiro.Ad.DirectoryInterface;
 ﻿using Chiro.Ad.Domain;
@@ -134,7 +135,7 @@ namespace Chiro.Ad.Workers
             // Er bestaat nog geen gebruiker. Nu moeten we nakijken of er al een andere gebruiker bestaat met dezelfde
             // naam, want daar kan Active Directory niet mee lachen. In dat laatste geval foefelen we wat, tot we toch
             // verder kunnen. (foefelen in de zin van cijfers aan de voornaam plakken)
-            // UPDATE: Vermoedelijk mag dat wel, eenzelfde voornaam en familienaam, maar moet de 'common name' 
+            // UPDATE: Vermoedelijk mag dat wel, eenzelfde voornaam en familienaam, maar moet de 'common name'
             // (waarvoor wij voornaam en familienaam nemen) uniek zijn.
 
             int teller = 0;
@@ -157,10 +158,25 @@ namespace Chiro.Ad.Workers
                         teller > 0 ? String.Format(".{0}", teller) : String.Empty),
                 Voornaam = voornaam,
                 Familienaam = familienaam,
-                AdNr = adNr
+                AdNr = adNr,
+              	Mailadres = mailadres
             };
             _directoryAccess.NieuweGebruikerBewaren(login);
             return login;
+        }
+
+        /// <summary>
+        /// Voegt de gegeven <paramref name="gebruiker" /> toe aan de gebruikersgroep
+        /// van de GAP-users.
+        /// </summary>
+        public void GapRechtenToekennen(Chirologin gebruiker)
+        {
+            string groep = Properties.Settings.Default.GapGebruikersGroep;
+            string groepOu = Properties.Settings.Default.GapGroepenOU;
+            if (!((IList) gebruiker.SecurityGroepen).Contains(groep))
+            {
+                _directoryAccess.GebruikerToevoegenAanGroep(gebruiker, groep, groepOu);
+            }
         }
     }
 }

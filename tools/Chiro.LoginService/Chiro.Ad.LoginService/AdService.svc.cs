@@ -90,6 +90,21 @@ namespace Chiro.Ad.LoginService
             try
             {
                 var gebruiker = _loginManager.ZoekenOfMaken(DomeinEnum.Wereld, adNr, voornaam, familienaam, mailadres);
+              	_loginManager.GapRechtenToekennen(gebruiker);
+                if (!gebruiker.BestondAl)
+                {
+                    // Als de gebruiker nieuw is, activeren we zijn account, en sturen we een mailtje.
+                    string wachtwoord = RandomPassword.Generate();
+                    _loginManager.ActiverenEnMailen(gebruiker);
+                }
+                else if (String.Compare(gebruiker.Mailadres, mailadres, true) != 0)
+                {
+                    // Als het mailadres van de gebruiker niet hetzelfde is als het mailadres van de bestaande
+                    // account, dan sturen we ook een mailtje.
+                    // TODO: Dit staat hier op een rare plaats.
+                    string boodschap = String.Format(Properties.Resources.VerschillendWachtwoordMail, voornaam);
+                    _mailer.Verzenden(mailadres, "Je Chirologin", boodschap);
+                }
                 return gebruiker.Login;
             }
             catch (FormatException ex)

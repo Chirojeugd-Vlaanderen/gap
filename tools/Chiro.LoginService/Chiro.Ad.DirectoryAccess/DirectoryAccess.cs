@@ -228,6 +228,23 @@ namespace Chiro.Ad.DirectoryAccess
                 // (Dit klinkt als een design fout...)
                 gebruiker.Properties["description"].Value = gebruiker.Path;
                 gebruiker.CommitChanges();
+                login.Path = gebruiker.Path;
+            }
+        }
+
+        /// <summary>
+        /// Voegt gegeven <paramref name="gebruiker" /> toe aan de security groep
+        /// <paramref name="groep" />.
+        /// </summary>
+        /// <param name="gebruiker">Gebruiker toe te voegen aan <paramref name="groep"/>.</param>
+        /// <param name="groep">Groep waaraan <paramref name="gebruiker"/> toegevoegd moet worden.</param>
+        /// <param name="groepOu">OU van de security group.</param>
+        public void GebruikerToevoegenAanGroep(Chirologin gebruiker, string groep, string groepOu)
+        {
+            using (var groepEntry = ZoekenUniek(gebruiker.Domein + groepOu, "Name=" + groep))
+            {
+            	groepEntry.Invoke("Add", gebruiker.Path);
+                groepEntry.CommitChanges();
             }
         }
     }

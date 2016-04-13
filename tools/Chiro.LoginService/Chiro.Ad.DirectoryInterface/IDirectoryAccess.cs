@@ -60,5 +60,14 @@ namespace Chiro.Ad.DirectoryInterface
         /// </summary>
         /// <param name="login"></param>
         void NieuweGebruikerBewaren(Chirologin login);
+
+        /// <summary>
+        /// Voegt gegeven <paramref name="gebruiker" /> toe aan de security groep
+        /// <paramref name="groep" />.
+        /// </summary>
+        /// <param name="gebruiker">Gebruiker toe te voegen aan <paramref name="groep"/>.</param>
+        /// <param name="groep">Groep waaraan <paramref name="gebruiker"/> toegevoegd moet worden.</param>
+        /// <param name="groepOu">OU van de security group.</param>
+        void GebruikerToevoegenAanGroep(Chirologin gebruiker, string groep, string groepOu);
     }
 }
