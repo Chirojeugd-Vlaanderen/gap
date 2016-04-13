@@ -50,9 +50,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="RandomPassword.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chiro.Ad.DirectoryInterface\Chiro.Ad.DirectoryInterface.csproj">
+      <Project>{542E08CF-5551-4406-BD15-707AC97F61DA}</Project>
+      <Name>Chiro.Ad.DirectoryInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Ad.Domain\Chiro.Ad.Domain.csproj">
       <Project>{3C42C96B-2F4C-46DC-B24D-0ECEB9BC4EDD}</Project>
       <Name>Chiro.Ad.Domain</Name>
@@ -68,6 +77,13 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -110,6 +110,10 @@
       <Project>{268708cb-f3e8-4afa-9e61-824cfa27be0e}</Project>
       <Name>Chiro.Cdf.UnityWcfExtensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Ad.DirectoryAccess\Chiro.Ad.DirectoryAccess.csproj">
+      <Project>{1d5593dc-4e17-4397-948d-596786c9a655}</Project>
+      <Name>Chiro.Ad.DirectoryAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Ad.Domain\Chiro.Ad.Domain.csproj">
       <Project>{3C42C96B-2F4C-46DC-B24D-0ECEB9BC4EDD}</Project>
       <Name>Chiro.Ad.Domain</Name>
