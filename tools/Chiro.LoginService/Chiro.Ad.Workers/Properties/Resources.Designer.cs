@@ -63,18 +63,18 @@ namespace Chiro.Ad.Workers.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Dag {0}
         ///
-        ///Er is een Chiro-account voor je aangemaakt.
+        ///Er wordt momenteel een Chiro-account voor je aangemaakt. Binnen een kwartiertje zal hij op al onze services beschikbaar zijn.
         ///
         ///  Gebruikersnaam: {1}
         ///  Wachtwoord: {2}
         ///  E-mailadres: {3}
         ///
-        ///De accountinstellingen kun je wijzigen op https://login.chiro.be. We raden aan om zeker je wachtwoord te veranderen.
-        ///
         ///Je kunt deze account gebruiken om aan te melden bij webtoepassingen van de Chiro, zoals het GAP (https://gap.chiro.be) en de Chirosite (https://www.chiro.be/user).
         ///
+        ///De accountinstellingen kun je wijzigen op https://login.chiro.be. We raden aan om zeker je wachtwoord te veranderen.
+        ///
         ///Groeten
-        ///De Chirohelpdesk (Helpdesk@chiro.be).
+        ///De Chirohelp [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string GapAccountInfoMail {
             get {
