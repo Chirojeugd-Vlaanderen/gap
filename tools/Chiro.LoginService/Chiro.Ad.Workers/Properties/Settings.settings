@@ -17,5 +17,8 @@
     <Setting Name="GapGebruikersGroep" Type="System.String" Scope="Application">
       <Value Profile="(Default)">GapGebruikers</Value>
     </Setting>
+    <Setting Name="GapGebruikersOU" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/OU=Gebruikers,OU=ChiroAdministratie,DC=Chiro,DC=Wereld</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

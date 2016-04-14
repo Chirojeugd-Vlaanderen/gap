@@ -161,7 +161,7 @@ namespace Chiro.Ad.Workers
                 AdNr = adNr,
               	Mailadres = mailadres
             };
-            _directoryAccess.NieuweGebruikerBewaren(login);
+            _directoryAccess.NieuweGebruikerBewaren(login, Properties.Settings.Default.GapGebruikersOU);
             return login;
         }
 

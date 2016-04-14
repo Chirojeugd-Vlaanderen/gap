@@ -67,5 +67,14 @@ namespace Chiro.Ad.Workers.Properties {
                 return ((string)(this["GapGebruikersGroep"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/OU=Gebruikers,OU=ChiroAdministratie,DC=Chiro,DC=Wereld")]
+        public string GapGebruikersOU {
+            get {
+                return ((string)(this["GapGebruikersOU"]));
+            }
+        }
     }
 }

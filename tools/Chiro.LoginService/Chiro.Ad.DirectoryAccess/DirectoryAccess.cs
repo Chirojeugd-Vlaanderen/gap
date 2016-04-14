@@ -205,10 +205,10 @@ namespace Chiro.Ad.DirectoryAccess
         /// Bewaart de login van een nieuwe gebruiker.
         /// </summary>
         /// <param name="login"></param>
-        public void NieuweGebruikerBewaren(Chirologin login)
+        /// <param name="gebruikerOu">OU waarin de gebruiker gemaakt moet worden.</param>
+        public void NieuweGebruikerBewaren(Chirologin login, string gebruikerOu)
         {
-            string gapOu = Properties.Settings.Default.GapOU;
-            var ou = new DirectoryEntry(login.Domein + gapOu);
+            var ou = new DirectoryEntry(login.Domein + gebruikerOu);
 
             // TODO: De CN moet uniek zijn, en niet voornaam en familienaam. Als we dit properder
             // doen, dan moeten we niet foefelen met de voornaam in LoginManager.
