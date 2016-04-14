@@ -17,6 +17,7 @@
  */
 ﻿using System;
 ﻿using System.Collections;
+﻿using System.Collections.Generic;
 ﻿using System.Text;
 ﻿using Chiro.Ad.DirectoryInterface;
 ﻿using Chiro.Ad.Domain;
@@ -141,9 +142,10 @@ namespace Chiro.Ad.Workers
 
             login = new Chirologin
             {
+                // lowercase login ziet er professioneler uit :-)
                 Login =
                     String.Format("{0}.{1}{2}", oorspronkelijkeVoornaam, familienaam,
-                        teller > 0 ? String.Format(".{0}", teller) : String.Empty),
+                        teller > 0 ? String.Format(".{0}", teller) : String.Empty).ToLower(),
                 Voornaam = voornaam,
                 Familienaam = familienaam,
                 AdNr = adNr,
