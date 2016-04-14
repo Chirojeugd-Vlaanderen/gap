@@ -102,7 +102,7 @@ namespace Chiro.Ad.LoginService
                     // Als het mailadres van de gebruiker niet hetzelfde is als het mailadres van de bestaande
                     // account, dan sturen we ook een mailtje.
                     // TODO: Dit staat hier op een rare plaats.
-                    string boodschap = String.Format(Properties.Resources.VerschillendAdresMail, voornaam, gebruiker.Mailadres, mailadres);
+                    string boodschap = String.Format(Properties.Resources.VerschillendAdresMail, voornaam, gebruiker.Mailadres, mailadres, gebruiker.Login);
                     _mailer.Verzenden(mailadres, "Je Chirologin", boodschap);
                 }
                 return gebruiker.Login;
