@@ -179,7 +179,7 @@ namespace Chiro.Ad.DirectoryAccess
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        private static string[] SecurityGroepen(DirectoryEntry entry)
+        private static List<string> SecurityGroepen(DirectoryEntry entry)
         {
             var result = new List<string>();
             var groepen = entry.Properties["memberOf"];
@@ -198,7 +198,7 @@ namespace Chiro.Ad.DirectoryAccess
                     result.Add(groep);
                 }
             }
-            return result.ToArray();
+            return result;
         }
 
         /// <summary>

@@ -147,9 +147,9 @@ namespace Chiro.Ad.Workers
                 Voornaam = voornaam,
                 Familienaam = familienaam,
                 AdNr = adNr,
-              	Mailadres = mailadres
               	Mailadres = mailadres,
                 Domein = ldapRoot,
+                SecurityGroepen = new List<string>()
             };
             _directoryAccess.NieuweGebruikerBewaren(login, Properties.Settings.Default.GapGebruikersOU);
             return login;
