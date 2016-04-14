@@ -161,7 +161,7 @@ namespace Chiro.Ad.DirectoryAccess
                     entry.Properties["pager"].Value == null
                         ? (int?) null
                         : int.Parse(entry.Properties["pager"].Value.ToString()),
-                Beschrijving = entry.Properties["description"].Value.ToString(),
+                Beschrijving = entry.Properties["description"].Value == null ? null : entry.Properties["description"].Value.ToString(),
                 BestondAl = true,
                 Domein = ldapRoot,
                 Familienaam = entry.Properties["sn"].Value.ToString(),
