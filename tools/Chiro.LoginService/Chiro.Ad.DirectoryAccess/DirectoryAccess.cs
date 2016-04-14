@@ -161,13 +161,16 @@ namespace Chiro.Ad.DirectoryAccess
                     entry.Properties["pager"].Value == null
                         ? (int?) null
                         : int.Parse(entry.Properties["pager"].Value.ToString()),
-                Beschrijving = entry.Properties["description"].Value == null ? null : entry.Properties["description"].Value.ToString(),
+                Beschrijving =
+                    entry.Properties["description"].Value == null
+                        ? null
+                        : entry.Properties["description"].Value.ToString(),
                 BestondAl = true,
                 Domein = ldapRoot,
                 Familienaam = entry.Properties["sn"].Value.ToString(),
                 IsActief = int.Parse(entry.Properties["userAccountControl"].Value.ToString()) == 66048,
                 Login = entry.Properties["sAMAccountName"].Value.ToString(),
-                Mailadres = entry.Properties["mail"].Value.ToString(),
+                Mailadres = entry.Properties["mail"].Value == null ? null : entry.Properties["mail"].Value.ToString(),
                 Path = entry.Path,
                 SecurityGroepen = SecurityGroepen(entry),
                 Voornaam = entry.Properties["givenName"].Value.ToString()
@@ -218,6 +221,7 @@ namespace Chiro.Ad.DirectoryAccess
                 // sAMAccountName is een verplicht veld, userPrincipalName is nodig voor ADAM
                 gebruiker.Properties["sAMAccountName"].Value = login.Login;
                 gebruiker.Properties["userPrincipalName"].Value = login.Login;
+                gebruiker.Properties["mail"].Value = login.Mailadres;
 
                 gebruiker.Properties["givenName"].Value = login.Voornaam;
                 gebruiker.Properties["sn"].Value = login.Familienaam;
