@@ -148,6 +148,8 @@ namespace Chiro.Ad.Workers
                 Familienaam = familienaam,
                 AdNr = adNr,
               	Mailadres = mailadres
+              	Mailadres = mailadres,
+                Domein = ldapRoot,
             };
             _directoryAccess.NieuweGebruikerBewaren(login, Properties.Settings.Default.GapGebruikersOU);
             return login;
