@@ -76,24 +76,12 @@ namespace Chiro.Ad.Workers
         {
             string boodschap;
 
-            // Alleen als de gebruiker niet-actief is, moet er nog een wachtwoord ingesteld worden
-            if (!login.IsActief)
-            {
-                string wachtWoord = WachtWoordMaken();
-                Activeren(login, wachtWoord);
+            // In principe wordt dit enkel aangeroepen als de gebruiker al bestond.
 
-                boodschap = string.Format(Properties.Resources.GapAccountInfoMail, login.Naam, login.Login, wachtWoord);
-            }
-            else // Bestaande account
-            {
-                // OPM: als de account al bestond en alleen GAP-rechten had, dan klopt dat mailtje niet
-                var b = new StringBuilder();
-                b.Append(string.Format(Properties.Resources.AccountUitbreidingMailAanhef, login.Naam));
-                b.Append(Properties.Resources.RechtenUitbreidingGap);
-                b.Append(Properties.Resources.AccountMailAfsluiting);
+            string wachtWoord = WachtWoordMaken();
+            Activeren(login, wachtWoord);
 
-                boodschap = b.ToString();
-            }
+            boodschap = string.Format(Properties.Resources.GapAccountInfoMail, login.Naam, login.Login, wachtWoord, login.Mailadres);
 
             _mailer.Verzenden(login.Mailadres, "Je GAP-login", boodschap);
         }
