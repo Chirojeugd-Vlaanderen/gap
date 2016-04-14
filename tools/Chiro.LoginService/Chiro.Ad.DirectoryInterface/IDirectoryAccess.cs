@@ -59,7 +59,8 @@ namespace Chiro.Ad.DirectoryInterface
         /// Bewaart de login van een nieuwe gebruiker.
         /// </summary>
         /// <param name="login"></param>
-        void NieuweGebruikerBewaren(Chirologin login);
+        /// <param name="gebruikerOu">OU waarin de gebruiker gemaakt moet worden.</param>
+        void NieuweGebruikerBewaren(Chirologin login, string gebruikerOu);
 
         /// <summary>
         /// Voegt gegeven <paramref name="gebruiker" /> toe aan de security groep

@@ -23,63 +23,57 @@ namespace Chiro.Ad.Workers.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("LDAP://chiro.wereld")]
         public string LdapWereldRoot {
             get {
                 return ((string)(this["LdapWereldRoot"]));
             }
-            set {
-                this["LdapWereldRoot"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("LDAP://chiro.lokaal")]
         public string LdapLokaalRoot {
             get {
                 return ((string)(this["LdapLokaalRoot"]));
             }
-            set {
-                this["LdapLokaalRoot"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("/OU=ChiroAdministratie,DC=Chiro,DC=Wereld")]
         public string GapRootOU {
             get {
                 return ((string)(this["GapRootOU"]));
             }
-            set {
-                this["GapRootOU"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("/OU=Groepen,OU=ChiroAdministratie,DC=Chiro,DC=Wereld")]
         public string GapGroepenOU {
             get {
                 return ((string)(this["GapGroepenOU"]));
             }
-            set {
-                this["GapGroepenOU"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("GapGebruikers")]
         public string GapGebruikersGroep {
             get {
                 return ((string)(this["GapGebruikersGroep"]));
             }
-            set {
-                this["GapGebruikersGroep"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/OU=Gebruikers,OU=ChiroAdministratie,DC=Chiro,DC=Wereld")]
+        public string GapGebruikersOU {
+            get {
+                return ((string)(this["GapGebruikersOU"]));
             }
         }
     }

@@ -63,12 +63,16 @@ namespace Chiro.Ad.LoginService.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Dag {0}
         ///
-        ///Iemand probeerde voor jou, {2}, een nieuwe Chirologin aan te maken, maar blijkbaar had je er al een. Het e-mailadres voor die bestaande login is {1}.
+        ///Iemand probeerde voor jou, een nieuwe Chirologin aan te maken, maar blijkbaar had je er al een, met deze gegevens:
         ///
-        ///Is het niet de bedoeling dat we het adres {1} nog gebruiken? Pas dat dan aan op https://login.chiro.be/.
+        ///gebruikersnaam: {3}
+        ///e-mailadres: {1}
         ///
-        ///Groeten
-        ///De Chirohelpdesk (Helpdesk@chiro.be).
+        ///Als bovenstaand e-mailadres niet meer klopt, dan kun je dat aanpassen op https://login.chiro.be. 
+        ///Als je je wachtwoord zou willen resetten, dan kan dat via dezelfde url. Er wordt dan een link gemaild naar {1}, via dewelke je een nieuw wachtwoord kunt instellen.
+        ///
+        ///Groeten,
+        ///De Chirohelpdesk (helpdesk@chiro.be).
         /// </summary>
         internal static string VerschillendAdresMail {
             get {

@@ -18,6 +18,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace Chiro.Ad.Domain
 {
@@ -74,7 +75,7 @@ namespace Chiro.Ad.Domain
         /// <summary>
         /// Securitygroepen waar de account member van is
         /// </summary>
-        public string[] SecurityGroepen { get; set; }
+        public List<string> SecurityGroepen { get; set; }
 
         /// <summary>
         /// Geeft aan of de account al bestond of dat hij nieuw aangemaakt is

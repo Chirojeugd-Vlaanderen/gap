@@ -161,13 +161,16 @@ namespace Chiro.Ad.DirectoryAccess
                     entry.Properties["pager"].Value == null
                         ? (int?) null
                         : int.Parse(entry.Properties["pager"].Value.ToString()),
-                Beschrijving = entry.Properties["description"].Value.ToString(),
+                Beschrijving =
+                    entry.Properties["description"].Value == null
+                        ? null
+                        : entry.Properties["description"].Value.ToString(),
                 BestondAl = true,
                 Domein = ldapRoot,
                 Familienaam = entry.Properties["sn"].Value.ToString(),
                 IsActief = int.Parse(entry.Properties["userAccountControl"].Value.ToString()) == 66048,
                 Login = entry.Properties["sAMAccountName"].Value.ToString(),
-                Mailadres = entry.Properties["mail"].Value.ToString(),
+                Mailadres = entry.Properties["mail"].Value == null ? null : entry.Properties["mail"].Value.ToString(),
                 Path = entry.Path,
                 SecurityGroepen = SecurityGroepen(entry),
                 Voornaam = entry.Properties["givenName"].Value.ToString()
@@ -179,7 +182,7 @@ namespace Chiro.Ad.DirectoryAccess
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        private static string[] SecurityGroepen(DirectoryEntry entry)
+        private static List<string> SecurityGroepen(DirectoryEntry entry)
         {
             var result = new List<string>();
             var groepen = entry.Properties["memberOf"];
@@ -198,17 +201,17 @@ namespace Chiro.Ad.DirectoryAccess
                     result.Add(groep);
                 }
             }
-            return result.ToArray();
+            return result;
         }
 
         /// <summary>
         /// Bewaart de login van een nieuwe gebruiker.
         /// </summary>
         /// <param name="login"></param>
-        public void NieuweGebruikerBewaren(Chirologin login)
+        /// <param name="gebruikerOu">OU waarin de gebruiker gemaakt moet worden.</param>
+        public void NieuweGebruikerBewaren(Chirologin login, string gebruikerOu)
         {
-            string gapOu = Properties.Settings.Default.GapOU;
-            var ou = new DirectoryEntry(login.Domein + gapOu);
+            var ou = new DirectoryEntry(login.Domein + gebruikerOu);
 
             // TODO: De CN moet uniek zijn, en niet voornaam en familienaam. Als we dit properder
             // doen, dan moeten we niet foefelen met de voornaam in LoginManager.
@@ -218,6 +221,7 @@ namespace Chiro.Ad.DirectoryAccess
                 // sAMAccountName is een verplicht veld, userPrincipalName is nodig voor ADAM
                 gebruiker.Properties["sAMAccountName"].Value = login.Login;
                 gebruiker.Properties["userPrincipalName"].Value = login.Login;
+                gebruiker.Properties["mail"].Value = login.Mailadres;
 
                 gebruiker.Properties["givenName"].Value = login.Voornaam;
                 gebruiker.Properties["sn"].Value = login.Familienaam;
