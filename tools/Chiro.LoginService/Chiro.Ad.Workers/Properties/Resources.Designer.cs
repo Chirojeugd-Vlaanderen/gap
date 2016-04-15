@@ -61,40 +61,20 @@ namespace Chiro.Ad.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Op https://login.chiro.be/ kun je je wachtwoord veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen.
-        ///
-        ///Groeten
-        ///De Chirohelpdesk (Helpdesk@chiro.be).
-        /// </summary>
-        internal static string AccountMailAfsluiting {
-            get {
-                return ResourceManager.GetString("AccountMailAfsluiting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Dag {0}
         ///
-        ///Je had al een login voor het extranet van de Chiro. Vanaf nu kun je er nog iets meer mee doen. Ben je je loginnaam en/of wachtwoord vergeten? Die gegevens kun je opvragen op https://login.chiro.be/..
-        /// </summary>
-        internal static string AccountUitbreidingMailAanhef {
-            get {
-                return ResourceManager.GetString("AccountUitbreidingMailAanhef", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dag {0}
+        ///Er wordt momenteel een Chiro-account voor je aangemaakt. Binnen een kwartiertje zal hij op al onze services beschikbaar zijn.
         ///
-        ///Je account voor de groepsadministratie (GAP) is aangemaakt. Je vindt dat op https://gap.chiro.be/ (vergeet de &apos;s&apos; niet in &apos;https&apos;!).
-        ///
-        ///Hieronder vind je een voorlopig wachtwoord. Op https://login.chiro.be/ kun je dat veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen.
-        ///
-        ///  Login: {1}
+        ///  Gebruikersnaam: {1}
         ///  Wachtwoord: {2}
+        ///  E-mailadres: {3}
+        ///
+        ///Je kunt deze account gebruiken om aan te melden bij webtoepassingen van de Chiro, zoals het GAP (https://gap.chiro.be) en de Chirosite (https://www.chiro.be/user).
+        ///
+        ///De accountinstellingen kun je wijzigen op https://login.chiro.be. We raden aan om zeker je wachtwoord te veranderen.
         ///
         ///Groeten
-        ///De Chirohelpdesk (Helpdesk@chiro.be).
+        ///De Chirohelp [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string GapAccountInfoMail {
             get {
@@ -103,20 +83,11 @@ namespace Chiro.Ad.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to De mail is niet verstuurd geraakt..
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string MailNietVerstuurd {
             get {
                 return ResourceManager.GetString("MailNietVerstuurd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Je hebt nu ook toegang tot de GAP-website, waarmee je de ledenadministratie van je groep, gewest of verbond in orde kunt brengen. Surf daarvoor naar https://gap.chiro.be (vergeet de s niet in https)..
-        /// </summary>
-        internal static string RechtenUitbreidingGap {
-            get {
-                return ResourceManager.GetString("RechtenUitbreidingGap", resourceCulture);
             }
         }
     }

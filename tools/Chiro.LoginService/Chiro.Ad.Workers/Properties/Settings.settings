@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Ad.Domain.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Ad.Workers.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="LdapWereldRoot" Type="System.String" Scope="Application">
@@ -11,14 +11,14 @@
     <Setting Name="GapRootOU" Type="System.String" Scope="Application">
       <Value Profile="(Default)">/OU=ChiroAdministratie,DC=Chiro,DC=Wereld</Value>
     </Setting>
-    <Setting Name="GapOU" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">/OU=Gebruikers,OU=ChiroAdministratie,DC=Chiro,DC=Wereld</Value>
-    </Setting>
     <Setting Name="GapGroepenOU" Type="System.String" Scope="Application">
       <Value Profile="(Default)">/OU=Groepen,OU=ChiroAdministratie,DC=Chiro,DC=Wereld</Value>
     </Setting>
     <Setting Name="GapGebruikersGroep" Type="System.String" Scope="Application">
       <Value Profile="(Default)">GapGebruikers</Value>
+    </Setting>
+    <Setting Name="GapGebruikersOU" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/OU=Gebruikers,OU=ChiroAdministratie,DC=Chiro,DC=Wereld</Value>
     </Setting>
   </Settings>
 </SettingsFile>

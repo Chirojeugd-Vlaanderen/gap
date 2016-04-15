@@ -117,35 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountMailAfsluiting" xml:space="preserve">
-    <value>Op https://login.chiro.be/ kun je je wachtwoord veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen.
-
-Groeten
-De Chirohelpdesk (Helpdesk@chiro.be)</value>
-  </data>
-  <data name="AccountUitbreidingMailAanhef" xml:space="preserve">
-    <value>Dag {0}
-
-Je had al een login voor het extranet van de Chiro. Vanaf nu kun je er nog iets meer mee doen. Ben je je loginnaam en/of wachtwoord vergeten? Die gegevens kun je opvragen op https://login.chiro.be/.</value>
-  </data>
   <data name="GapAccountInfoMail" xml:space="preserve">
     <value>Dag {0}
 
-Je account voor de groepsadministratie (GAP) is aangemaakt. Je vindt dat op https://gap.chiro.be/ (vergeet de 's' niet in 'https'!).
+Er wordt momenteel een Chiro-account voor je aangemaakt. Binnen een kwartiertje zal hij op al onze services beschikbaar zijn.
 
-Hieronder vind je een voorlopig wachtwoord. Op https://login.chiro.be/ kun je dat veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen.
-
-  Login: {1}
+  Gebruikersnaam: {1}
   Wachtwoord: {2}
+  E-mailadres: {3}
+
+Je kunt deze account gebruiken om aan te melden bij webtoepassingen van de Chiro, zoals het GAP (https://gap.chiro.be) en de Chirosite (https://www.chiro.be/user).
+
+De accountinstellingen kun je wijzigen op https://login.chiro.be. We raden aan om zeker je wachtwoord te veranderen.
 
 Groeten
 De Chirohelpdesk (Helpdesk@chiro.be)</value>
     <comment>Parameter 0 = voornaam, 1 = login, 2 = wachtwoord</comment>
   </data>
   <data name="MailNietVerstuurd" xml:space="preserve">
-    <value>De mail is niet verstuurd geraakt.</value>
-  </data>
-  <data name="RechtenUitbreidingGap" xml:space="preserve">
-    <value>Je hebt nu ook toegang tot de GAP-website, waarmee je de ledenadministratie van je groep, gewest of verbond in orde kunt brengen. Surf daarvoor naar https://gap.chiro.be (vergeet de s niet in https).</value>
+    <value />
   </data>
 </root>

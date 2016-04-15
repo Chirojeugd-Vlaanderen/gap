@@ -117,14 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="VerschillendWachtwoordMail" xml:space="preserve">
+  <data name="VerschillendAdresMail" xml:space="preserve">
     <value>Dag {0}
 
-Iemand van je groep of kaderploeg gaf je toegang tot de website van het Groepsadministratieprogramma (GAP): https://gap.chiro.be/. Je had blijkbaar al een login voor het extranet van de Chiro, je kunt hiervoor dezelfde gebruiken. In die login zat wel een ander mailadres dan wat er in de gegevens van je groep of kaderploeg zit.
+Iemand probeerde voor jou, een nieuwe Chirologin aan te maken, maar blijkbaar had je er al een, met deze gegevens:
 
-Is het niet de bedoeling dat we dat andere adres nog gebruiken? Pas dat dan aan op https://login.chiro.be/.
+gebruikersnaam: {3}
+e-mailadres: {1}
 
-Groeten
-De Chirohelpdesk (Helpdesk@chiro.be)</value>
+Als bovenstaand e-mailadres niet meer klopt, dan kun je dat aanpassen op https://login.chiro.be. 
+Als je je wachtwoord zou willen resetten, dan kan dat via dezelfde url. Er wordt dan een link gemaild naar {1}, via dewelke je een nieuw wachtwoord kunt instellen.
+
+Groeten,
+De Chirohelpdesk (helpdesk@chiro.be)</value>
   </data>
 </root>

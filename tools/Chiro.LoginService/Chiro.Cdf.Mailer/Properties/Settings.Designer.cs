@@ -23,27 +23,21 @@ namespace Chiro.Cdf.Mailer.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("kiplin-web01")]
         public string SmtpServer {
             get {
                 return ((string)(this["SmtpServer"]));
             }
-            set {
-                this["SmtpServer"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("helpdesk@chiro.be")]
         public string StandaardAfzender {
             get {
                 return ((string)(this["StandaardAfzender"]));
-            }
-            set {
-                this["StandaardAfzender"] = value;
             }
         }
     }
