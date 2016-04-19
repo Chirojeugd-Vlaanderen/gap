@@ -58,6 +58,8 @@ namespace Chiro.Gap.Sync
 
             if (uitstap.Plaats != null && uitstap.Plaats.Adres != null)
             {
+                // Als we het syncen van het adres ooit lostrekken van het syncen van het bivak (#1057), moeten we
+                // eraan denken dat de naam van het bivak in Civi moet veranderen als het bivakadres verandert (#5030).
                 ServiceHelper.CallService<ISyncPersoonService>(
                     svc =>
                     svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam,
