@@ -140,7 +140,7 @@ namespace Chiro.Gap.Sync
 
         private static string BivakNaam(Uitstap src)
         {
-            return String.Format("{0} - {1}, {2} {3}", src.GroepsWerkJaar.Groep.Code, src.GroepsWerkJaar.Groep.Naam,
+            return String.Format("Bivak {0} - {1}, {2} {3}", src.GroepsWerkJaar.Groep.Code, src.GroepsWerkJaar.Groep.Naam,
                 src.Plaats == null ? String.Empty : WoonPlaats(src.Plaats.Adres), src.DatumTot.Year);
         }
     }
