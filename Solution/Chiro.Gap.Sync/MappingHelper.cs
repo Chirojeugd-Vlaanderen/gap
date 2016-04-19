@@ -19,6 +19,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using AutoMapper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -111,7 +112,7 @@ namespace Chiro.Gap.Sync
                 .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.GroepsWerkJaar.Groep.Code.Trim()))
                 .ForMember(dst => dst.UitstapID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar))
-                .ForMember(dst => dst.Plaats, opt => opt.MapFrom(src => src.Plaats == null ? null : WoonPlaats(src.Plaats.Adres)));
+                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => BivakNaam(src)));
 
             Mapper.CreateMap<Groep, Kip.ServiceContracts.DataContracts.Groep>();
 
@@ -135,6 +136,12 @@ namespace Chiro.Gap.Sync
                 : src is BelgischAdres
                     ? (src as BelgischAdres).WoonPlaats.Naam
                     : src is BuitenLandsAdres ? (src as BuitenLandsAdres).WoonPlaats : String.Empty;
+        }
+
+        private static string BivakNaam(Uitstap src)
+        {
+            return String.Format("{0} - {1}, {2} {3}", src.GroepsWerkJaar.Groep.Code, src.GroepsWerkJaar.Groep.Naam,
+                src.Plaats == null ? String.Empty : WoonPlaats(src.Plaats.Adres), src.DatumTot.Year);
         }
     }
 }
