@@ -21,6 +21,7 @@ using Chiro.Cdf.Poco;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.FixAnomalies.Properties;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
@@ -34,15 +35,32 @@ namespace Chiro.Gap.FixAnomalies
         private static void LidRelatiesFixen(ServiceHelper serviceHelper, string apiKey, string siteKey)
         {
             Console.WriteLine(Resources.Program_Main_Opvragen_actieve_lidrelaties_CiviCRM_);
+            
+            // Vermijd dat de CiviCRM-API over zijn memory limit gaat, door de leden op te
+            // halen in blokken.
 
-            var civiResult =
-                serviceHelper.CallService<ICiviCrmApi, ApiResultStrings>(
-                    svc => svc.ChiroDiagnosticsActieveLidRelaties(apiKey, siteKey));
-            if (civiResult.IsError != 0)
+            var civiLeden = new List<string>();
+            int offset = 0;
+            bool finished = false;
+
+            while (!finished)
             {
-                throw new ApplicationException(civiResult.ErrorMessage);
+                var request = new BaseRequest
+                {
+                    ApiOptions = new ApiOptions {Limit = Properties.Settings.Default.LedenBlokGrootte, Offset = offset}
+                };
+                var civiResult =
+                    serviceHelper.CallService<ICiviCrmApi, ApiResultStrings>(
+                        svc => svc.ChiroDiagnosticsActieveLidRelaties(apiKey, siteKey, request));
+                if (civiResult.IsError != 0)
+                {
+                    throw new ApplicationException(civiResult.ErrorMessage);
+                }
+                civiLeden.AddRange(from v in civiResult.Values select v[0]);
+                offset += civiResult.Count;
+                finished = civiResult.Count < Properties.Settings.Default.LedenBlokGrootte;
             }
-            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, civiResult.Count);
+            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, civiLeden.Count);
 
             int werkjaar = HuidigWerkJaar();
 
@@ -50,7 +68,7 @@ namespace Chiro.Gap.FixAnomalies
             var gapLeden = AlleLeden(werkjaar);
             Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapLeden.Length);
 
-            var teBewarenLeden = OntbrekendInCiviZoeken(civiResult, gapLeden);
+            var teBewarenLeden = OntbrekendInCiviZoeken(civiLeden, gapLeden);
             Console.WriteLine(Resources.Program_Main__0__leden_uit_GAP_niet_teruggevonden_in_CiviCRM_, teBewarenLeden.Count);
 
             // TODO: command line switch om deze vraag te vermijden.
@@ -62,7 +80,7 @@ namespace Chiro.Gap.FixAnomalies
                 LedenNaarCivi(teBewarenLeden, serviceHelper);
             }
 
-            var uitTeSchrijvenLeden = TeVeelInCiviZoeken(civiResult, gapLeden);
+            var uitTeSchrijvenLeden = TeVeelInCiviZoeken(civiLeden, gapLeden);
             Console.WriteLine(Resources.Program_Main__0__leden_uit_CiviCRM_niet_teruggevonden_in_GAP_, uitTeSchrijvenLeden.Count);
 
             // TODO: command line switch om deze vraag te vermijden.
@@ -109,23 +127,24 @@ namespace Chiro.Gap.FixAnomalies
             }
         }
 
-        private static List<LidInfo> OntbrekendInCiviZoeken(ApiResultStrings civiResult, LidInfo[] gapLeden)
+        private static List<LidInfo> OntbrekendInCiviZoeken(IList<string> civiLeden, LidInfo[] gapLeden)
         {
             int civiCounter = 0;
             int gapCounter = 0;
             var teSyncen = new List<LidInfo>();
+            int aantalciviLeden = civiLeden.Count();
 
             // Normaal zijn de leden uit het GAP hetzelfde gesorteerd als die uit Civi.
             // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
 
-            Console.WriteLine("Opzoeken leden in GAP maar niet in CiviCRM.");
-            while (gapCounter < gapLeden.Length && civiCounter < civiResult.Count)
+            Console.WriteLine(Resources.Program_OntbrekendInCiviZoeken_Opzoeken_leden_in_GAP_maar_niet_in_CiviCRM_);
+            while (gapCounter < gapLeden.Length && civiCounter < aantalciviLeden)
             {
-                while (civiCounter < civiResult.Count && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiResult.Values[civiCounter].First(), true) > 0)
+                while (civiCounter < aantalciviLeden && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiLeden[civiCounter], StringComparison.OrdinalIgnoreCase) > 0)
                 {
                     ++civiCounter;
                 }
-                if (civiCounter < civiResult.Count && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiResult.Values[civiCounter].First(), true) != 0)
+                if (civiCounter < aantalciviLeden && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiLeden[civiCounter], StringComparison.OrdinalIgnoreCase) != 0)
                 {
                     teSyncen.Add(gapLeden[gapCounter]);
                     Console.WriteLine(gapLeden[gapCounter].StamNrAdNr);
@@ -135,7 +154,7 @@ namespace Chiro.Gap.FixAnomalies
             return teSyncen;
         }
 
-        private static List<UitschrijfInfo> TeVeelInCiviZoeken(ApiResultStrings civiResult, LidInfo[] gapLeden)
+        private static List<UitschrijfInfo> TeVeelInCiviZoeken(IList<string> civiLeden, LidInfo[] gapLeden)
         {
             int civiCounter = 0;
             int gapCounter = 0;
@@ -144,17 +163,17 @@ namespace Chiro.Gap.FixAnomalies
             // Normaal zijn de leden uit het GAP hetzelfde gesorteerd als die uit Civi.
             // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
 
-            Console.WriteLine("Opzoeken leden in CiviCRM maar niet in GAP.");
-            while (gapCounter < gapLeden.Length && civiCounter < civiResult.Count)
+            Console.WriteLine(Resources.Program_TeVeelInCiviZoeken_Opzoeken_leden_in_CiviCRM_maar_niet_in_GAP_);
+            while (gapCounter < gapLeden.Length && civiCounter < civiLeden.Count)
             {
-                while (gapCounter < gapLeden.Length && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiResult.Values[civiCounter].First(), true) < 0)
+                while (gapCounter < gapLeden.Length && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiLeden[civiCounter], StringComparison.OrdinalIgnoreCase) < 0)
                 {
                     ++gapCounter;
                 }
-                if (gapCounter < gapLeden.Length && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiResult.Values[civiCounter].First(), true) != 0)
+                if (gapCounter < gapLeden.Length && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiLeden[civiCounter], StringComparison.OrdinalIgnoreCase) != 0)
                 {
                     // Splits output van Civi in stamnummer en AD-nummer.
-                    string[] components = civiResult.Values[civiCounter].First().Split(';');
+                    string[] components = civiLeden[civiCounter].Split(';');
 
                     // Nationale ploegen zitten nog niet in GAP (#4055). We negeren hen op basis van de lengte van
                     // hun stamnummer. (Oh dear.)
@@ -172,7 +191,7 @@ namespace Chiro.Gap.FixAnomalies
                             UitschrijfDatum = DateTime.Now
                         };
                         teSyncen.Add(l);
-                        Console.WriteLine(civiResult.Values[civiCounter].First());
+                        Console.WriteLine(civiLeden[civiCounter]);
                     }
                 }
                 ++civiCounter;

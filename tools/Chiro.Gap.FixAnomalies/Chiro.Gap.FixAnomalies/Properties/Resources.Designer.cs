@@ -178,5 +178,23 @@ namespace Chiro.Gap.FixAnomalies.Properties {
                 return ResourceManager.GetString("Program_Main_Uitschrijven_uit_Civi__", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opzoeken leden in GAP maar niet in CiviCRM..
+        /// </summary>
+        internal static string Program_OntbrekendInCiviZoeken_Opzoeken_leden_in_GAP_maar_niet_in_CiviCRM_ {
+            get {
+                return ResourceManager.GetString("Program_OntbrekendInCiviZoeken_Opzoeken_leden_in_GAP_maar_niet_in_CiviCRM_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opzoeken leden in CiviCRM maar niet in GAP..
+        /// </summary>
+        internal static string Program_TeVeelInCiviZoeken_Opzoeken_leden_in_CiviCRM_maar_niet_in_GAP_ {
+            get {
+                return ResourceManager.GetString("Program_TeVeelInCiviZoeken_Opzoeken_leden_in_CiviCRM_maar_niet_in_GAP_", resourceCulture);
+            }
+        }
     }
 }
