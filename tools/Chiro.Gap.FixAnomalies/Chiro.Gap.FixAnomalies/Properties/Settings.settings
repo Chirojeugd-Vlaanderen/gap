@@ -8,5 +8,8 @@
     <Setting Name="SiteKey" Type="System.String" Scope="User">
       <Value Profile="(Default)">4fcff822c77a6707a50c83939aca3bab</Value>
     </Setting>
+    <Setting Name="LedenBlokGrootte" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">60000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

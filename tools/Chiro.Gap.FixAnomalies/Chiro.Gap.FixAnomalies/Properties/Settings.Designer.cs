@@ -46,5 +46,17 @@ namespace Chiro.Gap.FixAnomalies.Properties {
                 this["SiteKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60000")]
+        public int LedenBlokGrootte {
+            get {
+                return ((int)(this["LedenBlokGrootte"]));
+            }
+            set {
+                this["LedenBlokGrootte"] = value;
+            }
+        }
     }
 }

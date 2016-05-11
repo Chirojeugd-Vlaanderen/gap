@@ -137,4 +137,10 @@
   <data name="Program_LoonVerliesFixen__0__verzekeringen_te_kort_in_CiviCRM_" xml:space="preserve">
     <value>{0} verzekeringen te kort in CiviCRM.</value>
   </data>
+  <data name="Program_OntbrekendInCiviZoeken_Opzoeken_leden_in_GAP_maar_niet_in_CiviCRM_" xml:space="preserve">
+    <value>Opzoeken leden in GAP maar niet in CiviCRM.</value>
+  </data>
+  <data name="Program_TeVeelInCiviZoeken_Opzoeken_leden_in_CiviCRM_maar_niet_in_GAP_" xml:space="preserve">
+    <value>Opzoeken leden in CiviCRM maar niet in GAP.</value>
+  </data>
 </root>
