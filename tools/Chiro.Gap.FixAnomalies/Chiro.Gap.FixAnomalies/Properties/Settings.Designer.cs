@@ -58,5 +58,53 @@ namespace Chiro.Gap.FixAnomalies.Properties {
                 this["LedenBlokGrootte"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int BivakPeriodeStartMaand {
+            get {
+                return ((int)(this["BivakPeriodeStartMaand"]));
+            }
+            set {
+                this["BivakPeriodeStartMaand"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int BivakPeriodeStartDag {
+            get {
+                return ((int)(this["BivakPeriodeStartDag"]));
+            }
+            set {
+                this["BivakPeriodeStartDag"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public int BivakPeriodeEindeMaand {
+            get {
+                return ((int)(this["BivakPeriodeEindeMaand"]));
+            }
+            set {
+                this["BivakPeriodeEindeMaand"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("31")]
+        public int BivakPeriodeEindeDag {
+            get {
+                return ((int)(this["BivakPeriodeEindeDag"]));
+            }
+            set {
+                this["BivakPeriodeEindeDag"] = value;
+            }
+        }
     }
 }

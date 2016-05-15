@@ -143,4 +143,10 @@
   <data name="Program_TeVeelInCiviZoeken_Opzoeken_leden_in_CiviCRM_maar_niet_in_GAP_" xml:space="preserve">
     <value>Opzoeken leden in CiviCRM maar niet in GAP.</value>
   </data>
+  <data name="Program_BivakAangiftesFixen_Ophalen_volledige_bivakaangiftes_uit_CiviCRM_" xml:space="preserve">
+    <value>Ophalen volledige bivakaangiftes uit CiviCRM.</value>
+  </data>
+  <data name="Program_BivakAangiftesFixen_Volledige_bivakaangiftes_ophalen_uit_het_GAP_" xml:space="preserve">
+    <value>Volledige bivakaangiftes ophalen uit het GAP.</value>
+  </data>
 </root>

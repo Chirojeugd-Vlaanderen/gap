@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LidInfo.cs" />
+    <Compile Include="Program.BivakaangiftesFixen.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Program.LidRelatiesFixen.cs" />
     <Compile Include="Program.LoonVerliesFixen.cs" />

@@ -1,0 +1,72 @@
+﻿/*
+   Copyright 2016 Chirojeugd-Vlaanderen vzw
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Chiro.Cdf.ServiceHelper;
+using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Filters;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.Gap.FixAnomalies.Properties;
+
+namespace Chiro.Gap.FixAnomalies
+{
+    public partial class Program
+    {
+        private static void BivakAangiftesFixen(ServiceHelper serviceHelper, string apiKey, string siteKey)
+        {
+            Console.WriteLine(Resources.Program_BivakAangiftesFixen_Ophalen_volledige_bivakaangiftes_uit_CiviCRM_);
+
+            int jaar = DateTime.Now.Year;
+            var periodeStart = new DateTime(jaar, Properties.Settings.Default.BivakPeriodeStartMaand, Properties.Settings.Default.BivakPeriodeStartDag);
+            var periodeEinde = new DateTime(jaar, Properties.Settings.Default.BivakPeriodeEindeMaand, Properties.Settings.Default.BivakPeriodeEindeDag);
+
+            var request = new EventRequest
+            {
+                EndDate = new Filter<DateTime?>(WhereOperator.Gte, periodeStart),
+                StartDate = new Filter<DateTime?>(WhereOperator.Lte, periodeEinde),
+                // BIVAK
+                EventTypeId = 100,
+                OrganiserendePersoon1Id = new Filter<int?>(WhereOperator.IsNotNull),
+                LocBlockIdFilter = new Filter<int>(WhereOperator.IsNotNull),
+                // Organiserende ploeg 1
+                ReturnFields = "custom_48",
+                ApiOptions = new ApiOptions { Limit = 0 }
+            };
+
+            var civiResult =
+                serviceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
+                    svc => svc.EventGet(apiKey, siteKey, request));
+            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, civiResult.Count);
+
+            Console.WriteLine(Resources.Program_BivakAangiftesFixen_Volledige_bivakaangiftes_ophalen_uit_het_GAP_);
+            var gapBivakken = AlleBivakken(periodeStart, periodeEinde);
+            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapBivakken.Count());
+            Console.ReadLine();
+        }
+
+        private static BivakInfo[] AlleBivakken(DateTime periodeStart, DateTime periodeEinde)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

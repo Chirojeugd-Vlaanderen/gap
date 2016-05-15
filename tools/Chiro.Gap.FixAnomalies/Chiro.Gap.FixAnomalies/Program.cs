@@ -46,6 +46,7 @@ namespace Chiro.Gap.FixAnomalies
 
             // TODO: via command line opties verbositeit van dit script bepalen.
 
+            BivakAangiftesFixen(serviceHelper, apiKey, siteKey);
             LidRelatiesFixen(serviceHelper, apiKey, siteKey);
 
             // Onderstaande is nog niet af, maar kunnen we afwerken wanneer nodig.
