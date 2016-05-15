@@ -20,6 +20,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chiro.Cdf.Poco;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -27,6 +28,8 @@ using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Filters;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.FixAnomalies.Properties;
+using Chiro.Gap.Poco.Context;
+using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.FixAnomalies
 {
@@ -66,7 +69,21 @@ namespace Chiro.Gap.FixAnomalies
 
         private static BivakInfo[] AlleBivakken(DateTime periodeStart, DateTime periodeEinde)
         {
-            throw new NotImplementedException();
+            // Dependency injection is hier nog niet in orde.
+            using (var context = new ChiroGroepEntities())
+            {
+                var repositoryProvider = new RepositoryProvider(context);
+                var uitstappenRepo = repositoryProvider.RepositoryGet<Uitstap>();
+
+                var alles = from biv in uitstappenRepo.Select()
+                    where biv.DatumTot >= periodeStart &&
+                          biv.DatumVan <= periodeEinde &&
+                          biv.IsBivak &&
+                          biv.ContactDeelnemer != null &&
+                          biv.Plaats != null
+                    select new BivakInfo() {StamNr = biv.GroepsWerkJaar.Groep.Code.Trim(), GapUitstapId = biv.ID};
+                return alles.OrderBy(info => info.GapUitstapId).ToArray();
+            }
         }
     }
 }
