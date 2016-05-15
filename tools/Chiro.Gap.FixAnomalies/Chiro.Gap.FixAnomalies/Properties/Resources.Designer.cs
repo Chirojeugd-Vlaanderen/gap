@@ -70,6 +70,15 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} bivakken uit GAP niet gevonden in Civi..
+        /// </summary>
+        internal static string Program_BivakAangiftesFixen__0__bivakken_uit_GAP_niet_gevonden_in_Civi_ {
+            get {
+                return ResourceManager.GetString("Program_BivakAangiftesFixen__0__bivakken_uit_GAP_niet_gevonden_in_Civi_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ophalen volledige bivakaangiftes uit CiviCRM..
         /// </summary>
         internal static string Program_BivakAangiftesFixen_Ophalen_volledige_bivakaangiftes_uit_CiviCRM_ {

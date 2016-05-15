@@ -51,8 +51,8 @@ namespace Chiro.Gap.FixAnomalies
                 EventTypeId = 100,
                 OrganiserendePersoon1Id = new Filter<int?>(WhereOperator.IsNotNull),
                 LocBlockIdFilter = new Filter<int>(WhereOperator.IsNotNull),
-                // Organiserende ploeg 1
-                ReturnFields = "custom_48",
+                // Organiserende ploeg 1 en GAP-uitstapID
+                ReturnFields = "custom_48,custom_53",
                 ApiOptions = new ApiOptions { Limit = 0 }
             };
 
@@ -61,10 +61,42 @@ namespace Chiro.Gap.FixAnomalies
                     svc => svc.EventGet(apiKey, siteKey, request));
             Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, civiResult.Count);
 
+            var civiBivakken = civiResult.Values.OrderBy(ev => ev.GapUitstapId).ToList();
+
             Console.WriteLine(Resources.Program_BivakAangiftesFixen_Volledige_bivakaangiftes_ophalen_uit_het_GAP_);
             var gapBivakken = AlleBivakken(periodeStart, periodeEinde);
-            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapBivakken.Count());
+            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapBivakken.Length);
+
+            var overTeZettenBivakken = OntbrekendInCiviZoeken(civiBivakken, gapBivakken);
+            Console.WriteLine(Resources.Program_BivakAangiftesFixen__0__bivakken_uit_GAP_niet_gevonden_in_Civi_, overTeZettenBivakken.Count);
             Console.ReadLine();
+        }
+
+        private static List<BivakInfo> OntbrekendInCiviZoeken(List<Event> civiBivakken, BivakInfo[] gapBivakken)
+        {
+            int civiCounter = 0;
+            int gapCounter = 0;
+            var teSyncen = new List<BivakInfo>();
+            int aantalciviBivakken = civiBivakken.Count;
+
+            // Normaal zijn de bivakken uit het GAP hetzelfde gesorteerd als die uit Civi.
+            // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
+
+            Console.WriteLine(Resources.Program_OntbrekendInCiviZoeken_Opzoeken_leden_in_GAP_maar_niet_in_CiviCRM_);
+            while (gapCounter < gapBivakken.Length && civiCounter < aantalciviBivakken)
+            {
+                while (civiCounter < aantalciviBivakken && gapBivakken[gapCounter].GapUitstapId > civiBivakken[civiCounter].GapUitstapId)
+                {
+                    ++civiCounter;
+                }
+                if (civiCounter < aantalciviBivakken && gapBivakken[gapCounter].GapUitstapId != civiBivakken[civiCounter].GapUitstapId)
+                {
+                    teSyncen.Add(gapBivakken[gapCounter]);
+                    Console.WriteLine("[{0} {1}]", gapBivakken[gapCounter].StamNr, gapBivakken[gapCounter].GapUitstapId);
+                }
+                ++gapCounter;
+            }
+            return teSyncen;
         }
 
         private static BivakInfo[] AlleBivakken(DateTime periodeStart, DateTime periodeEinde)

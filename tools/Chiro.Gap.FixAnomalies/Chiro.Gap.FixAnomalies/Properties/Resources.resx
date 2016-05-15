@@ -149,4 +149,7 @@
   <data name="Program_BivakAangiftesFixen_Volledige_bivakaangiftes_ophalen_uit_het_GAP_" xml:space="preserve">
     <value>Volledige bivakaangiftes ophalen uit het GAP.</value>
   </data>
+  <data name="Program_BivakAangiftesFixen__0__bivakken_uit_GAP_niet_gevonden_in_Civi_" xml:space="preserve">
+    <value>{0} bivakken uit GAP niet gevonden in Civi.</value>
+  </data>
 </root>
