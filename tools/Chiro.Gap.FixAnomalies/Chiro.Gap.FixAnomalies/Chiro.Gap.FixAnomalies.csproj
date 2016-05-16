@@ -57,7 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BivakInfo.cs" />
     <Compile Include="LidInfo.cs" />
+    <Compile Include="Program.BivakaangiftesFixen.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Program.LidRelatiesFixen.cs" />
     <Compile Include="Program.LoonVerliesFixen.cs" />

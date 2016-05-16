@@ -70,6 +70,33 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} bivakken uit GAP niet (volledig) gevonden in Civi..
+        /// </summary>
+        internal static string Program_BivakAangiftesFixen__0__bivakken_uit_GAP_niet_gevonden_in_Civi_ {
+            get {
+                return ResourceManager.GetString("Program_BivakAangiftesFixen__0__bivakken_uit_GAP_niet_gevonden_in_Civi_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ophalen volledige bivakaangiftes uit CiviCRM..
+        /// </summary>
+        internal static string Program_BivakAangiftesFixen_Ophalen_volledige_bivakaangiftes_uit_CiviCRM_ {
+            get {
+                return ResourceManager.GetString("Program_BivakAangiftesFixen_Ophalen_volledige_bivakaangiftes_uit_CiviCRM_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volledige bivakaangiftes ophalen uit het GAP..
+        /// </summary>
+        internal static string Program_BivakAangiftesFixen_Volledige_bivakaangiftes_ophalen_uit_het_GAP_ {
+            get {
+                return ResourceManager.GetString("Program_BivakAangiftesFixen_Volledige_bivakaangiftes_ophalen_uit_het_GAP_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} verzekeringen te kort in CiviCRM..
         /// </summary>
         internal static string Program_LoonVerliesFixen__0__verzekeringen_te_kort_in_CiviCRM_ {
@@ -176,6 +203,16 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         internal static string Program_Main_Uitschrijven_uit_Civi__ {
             get {
                 return ResourceManager.GetString("Program_Main_Uitschrijven_uit_Civi__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opzoeken bivakken in GAP die niet volledig in Civi zitten..
+        /// </summary>
+        internal static string Program_OntbrekendInCiviZoeken_Opzoeken_bivakken_in_GAP_die_niet_volledig_in_Civi_zitten_ {
+            get {
+                return ResourceManager.GetString("Program_OntbrekendInCiviZoeken_Opzoeken_bivakken_in_GAP_die_niet_volledig_in_Civi" +
+                        "_zitten_", resourceCulture);
             }
         }
         
