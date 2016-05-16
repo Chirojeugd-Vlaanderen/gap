@@ -53,9 +53,8 @@
 		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
 		doorgestuurd. De deelnemerslijst is alleen voor je groep toegankelijk.</p>
     <p>
-        <strong>LET OP!</strong> Vergeet je kookploeg niet te verzekeren. Dat kan nog niet via het GAP; vul het 
-        <a href='https://chiro.be/formulier/administratie/verzekeringen/extra-verzekering/beperkte-periode/formulier'>formulier
-            'verzekering beperkte periode'</a> in op de Chirosite.
+        <strong>TER INFO!</strong> Je kookploeg moet je niet meer apart verzekeren. Die mensen vallen automatisch onder de algemene Chiroverzekering. Meer info daarover vind je 
+        <a href='https://chiro.be/administratie/verzekeringen/extra-verzekering/beperkte-periode'>op de Chirosite</a>.
     </p>
 	<%
 		if (Model.Deelnemers == null || Model.Deelnemers.FirstOrDefault() == null)

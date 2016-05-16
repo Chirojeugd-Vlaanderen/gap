@@ -40,12 +40,17 @@ namespace Chiro.Gap.FixAnomalies
             var abonnementenManager = new AbonnementenManager();
 
             var helper = new Chiro.Gap.ServiceContracts.Mappers.MappingHelper(ledenManager, groepsWerkJarenManager, abonnementenManager);
+
+            // Mappings naar civi
             helper.MappingsDefinieren();
+            // Mappings naar 'kipsync' (nu civisync)
+            Chiro.Gap.Sync.MappingHelper.MappingsDefinieren();
 
             var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
 
             // TODO: via command line opties verbositeit van dit script bepalen.
 
+            BivakAangiftesFixen(serviceHelper, apiKey, siteKey);
             LidRelatiesFixen(serviceHelper, apiKey, siteKey);
 
             // Onderstaande is nog niet af, maar kunnen we afwerken wanneer nodig.
