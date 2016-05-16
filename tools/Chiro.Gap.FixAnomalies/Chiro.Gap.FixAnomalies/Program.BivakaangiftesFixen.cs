@@ -30,6 +30,7 @@ using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.FixAnomalies.Properties;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Sync;
 
 namespace Chiro.Gap.FixAnomalies
 {
@@ -69,7 +70,31 @@ namespace Chiro.Gap.FixAnomalies
 
             var overTeZettenBivakken = OntbrekendInCiviZoeken(civiBivakken, gapBivakken);
             Console.WriteLine(Resources.Program_BivakAangiftesFixen__0__bivakken_uit_GAP_niet_gevonden_in_Civi_, overTeZettenBivakken.Count);
-            Console.ReadLine();
+
+            // TODO: command line switch om deze vraag te vermijden.
+            Console.Write(Resources.Program_Main_Meteen_syncen__);
+            string input = Console.ReadLine();
+
+            if (input.ToUpper() == "J" || input.ToUpper() == "Y")
+            {
+                BivakkenNaarCivi(overTeZettenBivakken, serviceHelper);
+            }
+        }
+
+        private static void BivakkenNaarCivi(List<BivakInfo> overTeZettenBivakken, ServiceHelper serviceHelper)
+        {
+            int counter = 0;
+            var sync = new BivakSync(serviceHelper);
+            using (var context = new ChiroGroepEntities())
+            {
+                var repositoryProvider = new RepositoryProvider(context);
+                var uitstappenRepo = repositoryProvider.RepositoryGet<Uitstap>();
+                foreach (var b in overTeZettenBivakken)
+                {
+                    sync.Bewaren(uitstappenRepo.ByID(b.GapUitstapId));
+                    Console.Write("{0} ", ++counter);
+                }
+            }
         }
 
         private static List<BivakInfo> OntbrekendInCiviZoeken(List<Event> civiBivakken, BivakInfo[] gapBivakken)
@@ -82,7 +107,7 @@ namespace Chiro.Gap.FixAnomalies
             // Normaal zijn de bivakken uit het GAP hetzelfde gesorteerd als die uit Civi.
             // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
 
-            Console.WriteLine(Resources.Program_OntbrekendInCiviZoeken_Opzoeken_leden_in_GAP_maar_niet_in_CiviCRM_);
+            Console.WriteLine(Resources.Program_OntbrekendInCiviZoeken_Opzoeken_bivakken_in_GAP_die_niet_volledig_in_Civi_zitten_);
             while (gapCounter < gapBivakken.Length && civiCounter < aantalciviBivakken)
             {
                 while (civiCounter < aantalciviBivakken && gapBivakken[gapCounter].GapUitstapId > civiBivakken[civiCounter].GapUitstapId)
