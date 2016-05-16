@@ -129,6 +129,7 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.IsConfirmEnabled, opt => opt.Ignore())
                 .ForMember(dst => dst.ContributionTypeId, opt => opt.Ignore())
                 .ForMember(dst => dst.LocBlockIdValueExpression, opt => opt.Ignore())
+                .ForMember(dst => dst.LocBlockIdFilter, opt => opt.Ignore())
                 .ForMember(dst => dst.KipId, opt => opt.Ignore())
                 .ForMember(dst => dst.AnalytischeCode, opt => opt.Ignore())
                 .ForMember(dst => dst.OrganiserendePersoon1Id, opt => opt.Ignore())

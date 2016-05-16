@@ -21,6 +21,7 @@ using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Filters;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
@@ -75,7 +76,7 @@ namespace Chiro.CiviSync.Services
                 var request = new EventRequest
                 {
                     Id = bivak.Id,
-                    OrganiserendePersoon1Id = contactIdPersoon
+                    OrganiserendePersoon1Id = new Filter<int?>(contactIdPersoon)
                 };
                 var saveResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
                     svc => svc.EventSave(_apiKey, _siteKey, request));

@@ -40,7 +40,11 @@ namespace Chiro.Gap.FixAnomalies
             var abonnementenManager = new AbonnementenManager();
 
             var helper = new Chiro.Gap.ServiceContracts.Mappers.MappingHelper(ledenManager, groepsWerkJarenManager, abonnementenManager);
+
+            // Mappings naar civi
             helper.MappingsDefinieren();
+            // Mappings naar 'kipsync' (nu civisync)
+            Chiro.Gap.Sync.MappingHelper.MappingsDefinieren();
 
             var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
 
