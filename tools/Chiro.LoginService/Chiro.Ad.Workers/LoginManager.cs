@@ -129,6 +129,7 @@ namespace Chiro.Ad.Workers
 
             int teller = 0;
             string oorspronkelijkeVoornaam = voornaam;
+            string oorspronkelijkeFamilienaam = familienaam;
 
             while (_directoryAccess.GebruikerZoeken(ldapRoot, voornaam, familienaam) != null)
             {
@@ -140,11 +141,23 @@ namespace Chiro.Ad.Workers
             // 't Is een beetje raar dat voor de naam van de user het volgnummer aan de voornaam wordt geplakt, en
             // voor de login aan de familienaam, maar dat is dan voorlopig nog maar zo. Wie wil, kan dit fixen.
 
+            // haal spaties, weglatingstekens en koppeltekens uit de naam
+            oorspronkelijkeVoornaam = oorspronkelijkeVoornaam.Trim().Replace("'", string.Empty).Replace(" ", string.Empty).Replace("-", string.Empty);
+            oorspronkelijkeFamilienaam = oorspronkelijkeFamilienaam.Trim().Replace("'", string.Empty).Replace(" ", string.Empty).Replace("-", string.Empty);
+
+            // vervang lettertekens met accenten of een trema door andere
+            oorspronkelijkeVoornaam = oorspronkelijkeVoornaam.Replace("é", "e").Replace("è", "e").Replace("ä", "a").Replace("à", "a").Replace("ù", "u").Replace("î", "i").Replace("ï", "i").Replace("ê", "e").Replace("ë", "e");
+            oorspronkelijkeFamilienaam = oorspronkelijkeFamilienaam.Replace("é", "e").Replace("è", "e").Replace("ä", "a").Replace("à", "a").Replace("ù", "u").Replace("î", "i").Replace("ï", "i").Replace("ê", "e").Replace("ë", "e");
+
+            // vervang andere tekens
+            oorspronkelijkeVoornaam = oorspronkelijkeVoornaam.Replace("ç", "c");
+            oorspronkelijkeFamilienaam = oorspronkelijkeFamilienaam.Replace("ç", "c");
+
             login = new Chirologin
             {
                 // lowercase login ziet er professioneler uit :-)
                 Login =
-                    String.Format("{0}.{1}{2}", oorspronkelijkeVoornaam, familienaam,
+                    String.Format("{0}.{1}{2}", oorspronkelijkeVoornaam, oorspronkelijkeFamilienaam,
                         teller > 0 ? String.Format(".{0}", teller) : String.Empty).ToLower(),
                 Voornaam = voornaam,
                 Familienaam = familienaam,

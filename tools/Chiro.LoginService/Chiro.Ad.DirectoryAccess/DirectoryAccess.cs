@@ -219,8 +219,9 @@ namespace Chiro.Ad.DirectoryAccess
             {
                 // Vul de nodige gegevens in
                 // sAMAccountName is een verplicht veld, userPrincipalName is nodig voor ADAM
-                gebruiker.Properties["sAMAccountName"].Value = login.Login;
+                gebruiker.Properties["sAMAccountName"].Value = login.Voornaam + login.AdNr; // login.Login is soms te lang, mag maar 20 tekens hebben
                 gebruiker.Properties["userPrincipalName"].Value = login.Login;
+
                 gebruiker.Properties["mail"].Value = login.Mailadres;
 
                 gebruiker.Properties["givenName"].Value = login.Voornaam;
