@@ -62,7 +62,11 @@ namespace Chiro.Gap.FixAnomalies
                     svc => svc.EventGet(apiKey, siteKey, request));
             Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, civiResult.Count);
 
-            var civiBivakken = civiResult.Values.OrderBy(ev => ev.GapUitstapId).ToList();
+            var civiBivakken = (from r in civiResult.Values
+                // Negeer uitstappen die Ingrid manueel heeft ingevoerd (zie #5151)
+                where r.GapUitstapId != null
+                orderby r.GapUitstapId
+                select r).ToList();
 
             Console.WriteLine(Resources.Program_BivakAangiftesFixen_Volledige_bivakaangiftes_ophalen_uit_het_GAP_);
             var gapBivakken = AlleBivakken(periodeStart, periodeEinde);
