@@ -45,8 +45,10 @@ namespace Chiro.CiviSync.Services.Test
         }
 
         /// <summary>
-        /// Als een lid wordt ingeschreven voor een volgend werkjaar, dan moet de begindatum
-        /// 1 september zijn.
+        /// De begindatum van een actieve lidrelatie is sinds #5282 altijd vandaag of in het verleden,
+        /// de einddatum is NULL.
+        /// 
+        /// We testen hier op begindatum vandaag, einddatum NULL.
         /// </summary>
         [TestMethod]
         public void DatumsLidVolgendWerkjaar()
@@ -76,9 +78,6 @@ namespace Chiro.CiviSync.Services.Test
                 }
             };
 
-            DateTime beginVolgendWerkjaar = new DateTime(VolgendWerkjaar, 9, 1);
-            DateTime eindeVolgendWerkJaar = new DateTime(VolgendWerkjaar + 1, 8, 31);
-
             civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
@@ -98,8 +97,8 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == beginVolgendWerkjaar && r.EndDate == eindeVolgendWerkJaar &&
-                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
+                                r.StartDate == _vandaagZogezegd && r.EndDate == null &&
+                                r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
                         Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
@@ -125,93 +124,14 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == beginVolgendWerkjaar && r.EndDate == eindeVolgendWerkJaar &&
-                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)),
+                                r.StartDate == _vandaagZogezegd && r.EndDate == null &&
+                                r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)),
                 Times.AtLeastOnce);
         }
 
         /// <summary>
-        /// Als een lid wordt ingeschreven voor dit werkjaar, dan verwachten we als begindatum
-        /// van de lidrelatie vandaag, en de einddatum op 31 augustus.
-        /// </summary>
-        [TestMethod]
-        public void DatumsLidHuidigWerkjaar()
-        {
-            // ARRANGE
-
-            Mock<ICiviCrmApi> civiApiMock;
-            Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            const int adNummer = 2;
-
-            // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
-            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
-            var persoon = new Contact
-            {
-                ExternalIdentifier = adNummer.ToString(),
-                FirstName = "Kees",
-                LastName = "Flodder",
-                GapId = 3,
-                Id = 4,
-                RelationshipResult = new ApiResultValues<Relationship>
-                {
-                    Count = 0,
-                    IsError = 0
-                }
-            };
-
-            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
-
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(ploeg));
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(persoon));
-
-            civiApiMock.Setup(
-                src =>
-                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<RelationshipRequest>(
-                            r =>
-                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar && r.IsActive == true &&
-                                r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
-                .Returns(
-                    (string key1, string key2, RelationshipRequest r) =>
-                        Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
-
-            var service = factory.Maak<SyncService>();
-
-            // ACT
-
-            service.LidBewaren(adNummer, new LidGedoe
-            {
-                LidType = LidTypeEnum.Kind,
-                OfficieleAfdelingen = new[] { AfdelingEnum.Rakwis },
-                StamNummer = ploeg.ExternalIdentifier
-            });
-
-            // ASSERT
-
-            civiApiMock.Verify(
-                src =>
-                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<RelationshipRequest>(
-                            r =>
-                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar && r.IsActive == true &&
-                                r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)),
-                Times.AtLeastOnce);
-        }
-
-        /// <summary>
-        /// Als iemand al (inactief) lid was, en die persoon wordt nu opnieuw lid,
-        /// dan verwachten we een actief lid met einddatum 31 augustus.
+        /// Als iemand een inactieve relatie heeft, die nog niet zo lang geleden begonnen was,
+        /// en die iemand krijgt nu opnieuw een relatie, dan verwachten we dat de oude gerecupereerd wordt.
         /// </summary>
         [TestMethod]
         public void UpdateOpnieuwLidHuidigWerkjaar()
@@ -246,8 +166,8 @@ namespace Chiro.CiviSync.Services.Test
                 Afdeling = Afdeling.Titos,
                 ContactIdA = persoon.Id,
                 ContactIdB = ploeg.Id,
-                StartDate = new DateTime(HuidigWerkJaar, 10, 14),
-                EndDate = new DateTime(HuidigWerkJaar, 11, 25),
+                StartDate =_vandaagZogezegd.AddDays(-2),
+                EndDate = _vandaagZogezegd.AddDays(-1),
                 IsActive = false
             };
             persoon.RelationshipResult.Values = new[] { relatie };
@@ -272,7 +192,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == relatie.StartDate && r.EndDate == eindeDitWerkJaar && r.Id == relatie.Id &&
+                                r.StartDate == relatie.StartDate && r.EndDate == null && r.Id == relatie.Id &&
                                 r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
@@ -298,89 +218,8 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == relatie.StartDate && r.EndDate == eindeDitWerkJaar && r.Id == relatie.Id &&
+                                r.StartDate == relatie.StartDate && r.EndDate == null && r.Id == relatie.Id &&
                                 r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)), Times.AtLeastOnce);
-        }
-
-        /// <summary>
-        /// Als een lid wordt ingeschreven voor een werkjaar dat al voorbij is,
-        /// dan zijn start- en eineddatum 31 augustus (om toch iets te doen).
-        /// </summary>
-        [TestMethod]
-        public void DatumsLidVorigWerkjaar()
-        {
-            // ARRANGE
-
-            Mock<ICiviCrmApi> civiApiMock;
-            Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            const int adNummer = 2;
-
-            // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
-            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
-            var persoon = new Contact
-            {
-                ExternalIdentifier = adNummer.ToString(),
-                FirstName = "Kees",
-                LastName = "Flodder",
-                GapId = 3,
-                Id = 4,
-                RelationshipResult = new ApiResultValues<Relationship>
-                {
-                    Count = 0,
-                    IsError = 0
-                }
-            };
-            DateTime eindeVorigWerkJaar = new DateTime(VorigWerkJaar + 1, 8, 31);
-
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(ploeg));
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(persoon));
-
-            civiApiMock.Setup(
-                // We zullen een lid maken voor een werkjaar dat al voorbij is.
-                // We verwachten dat start- en einddatum 31 autustus zullen zijn.
-                src =>
-                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<RelationshipRequest>(
-                            r =>
-                                r.StartDate == eindeVorigWerkJaar && r.EndDate == eindeVorigWerkJaar &&
-                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
-                .Returns(
-                    (string key1, string key2, RelationshipRequest r) =>
-                        Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
-
-            var service = factory.Maak<SyncService>();
-
-            // ACT
-
-            service.LidBewaren(adNummer, new LidGedoe
-            {
-                LidType = LidTypeEnum.Kind,
-                OfficieleAfdelingen = new[] { AfdelingEnum.Rakwis },
-                StamNummer = ploeg.ExternalIdentifier
-            });
-
-            // ASSERT:
-
-            civiApiMock.Verify(
-                // We zullen een lid maken voor een werkjaar dat al voorbij is.
-                // We verwachten dat start- en einddatum 31 autustus zullen zijn.
-                src =>
-                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<RelationshipRequest>(
-                            r =>
-                                r.StartDate == eindeVorigWerkJaar && r.EndDate == eindeVorigWerkJaar &&
-                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)), Times.AtLeastOnce);
         }
 
         /// <summary>
