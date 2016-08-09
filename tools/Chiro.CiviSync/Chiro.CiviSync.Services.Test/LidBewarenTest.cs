@@ -112,8 +112,7 @@ namespace Chiro.CiviSync.Services.Test
             {
                 LidType = LidTypeEnum.Kind,
                 OfficieleAfdelingen = new[] {AfdelingEnum.Rakwis},
-                StamNummer = ploeg.ExternalIdentifier,
-                WerkJaar = VolgendWerkjaar
+                StamNummer = ploeg.ExternalIdentifier
             });
 
             // ASSERT:
@@ -195,8 +194,7 @@ namespace Chiro.CiviSync.Services.Test
             {
                 LidType = LidTypeEnum.Kind,
                 OfficieleAfdelingen = new[] { AfdelingEnum.Rakwis },
-                StamNummer = ploeg.ExternalIdentifier,
-                WerkJaar = HuidigWerkJaar
+                StamNummer = ploeg.ExternalIdentifier
             });
 
             // ASSERT
@@ -288,8 +286,7 @@ namespace Chiro.CiviSync.Services.Test
             {
                 LidType = LidTypeEnum.Kind,
                 OfficieleAfdelingen = new[] { AfdelingEnum.Rakwis },
-                StamNummer = ploeg.ExternalIdentifier,
-                WerkJaar = HuidigWerkJaar
+                StamNummer = ploeg.ExternalIdentifier
             });
 
             // ASSERT:
@@ -370,8 +367,7 @@ namespace Chiro.CiviSync.Services.Test
             {
                 LidType = LidTypeEnum.Kind,
                 OfficieleAfdelingen = new[] { AfdelingEnum.Rakwis },
-                StamNummer = ploeg.ExternalIdentifier,
-                WerkJaar = VorigWerkJaar
+                StamNummer = ploeg.ExternalIdentifier
             });
 
             // ASSERT:
@@ -451,8 +447,7 @@ namespace Chiro.CiviSync.Services.Test
             {
                 LidType = LidTypeEnum.Kind,
                 OfficieleAfdelingen = new[] { gapAfdeling },
-                StamNummer = ploeg.ExternalIdentifier,
-                WerkJaar = HuidigWerkJaar
+                StamNummer = ploeg.ExternalIdentifier
             });
 
             // ASSERT
@@ -533,8 +528,7 @@ namespace Chiro.CiviSync.Services.Test
             {
                 LidType = LidTypeEnum.Leiding,
                 OfficieleAfdelingen = new[] { gapAfdeling },
-                StamNummer = ploeg.ExternalIdentifier,
-                WerkJaar = HuidigWerkJaar
+                StamNummer = ploeg.ExternalIdentifier
             });
 
             // ASSERT
@@ -628,7 +622,6 @@ namespace Chiro.CiviSync.Services.Test
                 LidType = LidTypeEnum.Kind,
                 OfficieleAfdelingen = new[] { AfdelingEnum.Rakwis },
                 StamNummer = ploeg.ExternalIdentifier,
-                WerkJaar = HuidigWerkJaar,
                 UitschrijfDatum = uitschrijfDatum
             });
 
@@ -686,8 +679,7 @@ namespace Chiro.CiviSync.Services.Test
             {
                 LidType = LidTypeEnum.Kind,
                 OfficieleAfdelingen = new[] {AfdelingEnum.Rakwis},
-                StamNummer = ploeg.ExternalIdentifier,
-                WerkJaar = HuidigWerkJaar
+                StamNummer = ploeg.ExternalIdentifier
             });
 
             // ASSERT
