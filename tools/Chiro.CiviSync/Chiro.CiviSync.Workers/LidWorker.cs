@@ -74,5 +74,34 @@ namespace Chiro.CiviSync.Workers
 
             return result.Count == 0 ? null : result.Values.First();
         }
+
+        /// <summary>
+        /// Haalt de actieve lidrelatie op tussen de persoon met ID <paramref name="contactIdPersoon"/>
+        /// en de groep (ploeg) met ID <paramref name="contactIdGroep"/>.
+        /// </summary>
+        /// <param name="contactIdPersoon">Civi-ID van persoon</param>
+        /// <param name="contactIdGroep">Civi-ID van groep</param>
+        /// <returns>Actieve lidrelatie op tussen de persoon met ID <paramref name="contactIdPersoon"/>
+        /// en de groep (ploeg) met ID <paramref name="contactIdGroep"/>.
+        /// <c>null</c> als er zo geen is gevonden.
+        /// </returns>
+        public Relationship ActiefLidOphalen(int? contactIdPersoon, int? contactIdGroep)
+        {
+            var request = new RelationshipRequest
+            {
+                ContactIdA = contactIdPersoon,
+                ContactIdB = contactIdGroep,
+                RelationshipTypeId = (int)(RelatieType.LidVan),
+                IsActive = true,
+            };
+            var result =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
+                    svc => svc.RelationshipGet(ApiKey, SiteKey, request));
+            result.AssertValid();
+            // Hoogstens 1 keer lid van dezelfde ploeg in hetzelfde werkjaar.
+            Debug.Assert(result.Count <= 1);
+
+            return result.Count == 0 ? null : result.Values.First();
+        }
     }
 }

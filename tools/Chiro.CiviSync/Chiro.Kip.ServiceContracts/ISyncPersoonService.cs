@@ -224,7 +224,7 @@ namespace Chiro.Kip.ServiceContracts
         void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
-        /// Updatet de functies van een lid.
+        /// Updatet de functies van een actief lid.
         /// </summary>
         /// <param name="persoon">
         /// Persoon van wie de lidfuncties geüpdatet moeten worden
@@ -232,14 +232,11 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van de groep waarin de persoon lid is
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarin de persoon lid is
-        /// </param>
         /// <param name="functies">
         /// Toe te kennen functies.  Eventuele andere reeds toegekende functies worden verwijderd.
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, FunctieEnum[] functies);
+        void FunctiesUpdaten(Persoon persoon, string stamNummer, FunctieEnum[] functies);
 
         /// <summary>
         /// Stelt het lidtype van het lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>
