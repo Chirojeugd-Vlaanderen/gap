@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -56,7 +56,6 @@ namespace Chiro.CiviSync.Services.Test
 
             const int adNummer = 2;
 
-            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
             DateTime uitschrijfDatum = new DateTime(HuidigWerkJaar, 11, 20);
 
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
@@ -76,7 +75,7 @@ namespace Chiro.CiviSync.Services.Test
                 ContactIdA = persoon.Id,
                 ContactIdB = ploeg.Id,
                 StartDate = new DateTime(HuidigWerkJaar, 10, 14),
-                EndDate = eindeDitWerkJaar,
+                EndDate = null,
                 IsActive = true
             };
 
@@ -130,7 +129,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.LidVerwijderen(adNummer, ploeg.ExternalIdentifier, HuidigWerkJaar, uitschrijfDatum);
+            service.LidVerwijderen(adNummer, ploeg.ExternalIdentifier, uitschrijfDatum);
 
             civiApiMock.Verify(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
@@ -183,7 +182,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.LidVerwijderen(adNummer, ploeg.ExternalIdentifier, HuidigWerkJaar, _vandaagZogezegd);
+            service.LidVerwijderen(adNummer, ploeg.ExternalIdentifier, _vandaagZogezegd);
 
             // ASSERT
 
@@ -205,7 +204,6 @@ namespace Chiro.CiviSync.Services.Test
 
             const int adNummer = 2;
 
-            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
             DateTime uitschrijfDatum = new DateTime(HuidigWerkJaar, 11, 20);
 
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
@@ -225,7 +223,7 @@ namespace Chiro.CiviSync.Services.Test
                 ContactIdA = persoon.Id,
                 ContactIdB = ploeg.Id,
                 StartDate = new DateTime(HuidigWerkJaar, 10, 14),
-                EndDate = eindeDitWerkJaar,
+                EndDate = null,
                 IsActive = true
             };
 
@@ -291,7 +289,7 @@ namespace Chiro.CiviSync.Services.Test
                 }
             };
 
-            service.NieuwLidVerwijderen(details, ploeg.ExternalIdentifier, HuidigWerkJaar, uitschrijfDatum);
+            service.NieuwLidVerwijderen(details, ploeg.ExternalIdentifier, uitschrijfDatum);
 
             civiApiMock.Verify(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.

@@ -171,7 +171,7 @@ namespace Chiro.Kip.ServiceContracts
         void NieuwLidBewaren(PersoonDetails details, LidGedoe lidGedoe);
 
         /// <summary>
-        /// Verwijdert een persoon met gekend AD-nummer als lid
+        /// Verwijdert een persoon met gekend AD-nummer als actief lid
         /// </summary>
         /// <param name="adNummer">
         /// AD-nummer te verwijderen lid
@@ -179,16 +179,13 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer te verwijderen lid
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar te verwijderen lid
-        /// </param>
         /// <param name="uitschrijfDatum"> uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
+        void LidVerwijderen(int adNummer, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Desactiveert een lidrelatie in CiviCRM.
@@ -213,7 +210,7 @@ namespace Chiro.Kip.ServiceContracts
         void LidUitschrijven(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
 
         /// <summary>
-        /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
+        /// Verwijdert een actief lid als het ad-nummer om een of andere reden niet bekend is.
         /// </summary>
         /// <param name="details">
         /// Gegevens die hopelijk toelaten het lid te identificeren
@@ -221,16 +218,13 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van het lid
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar van het lid
-        /// </param>
         /// <param name="uitschrijfDatum">uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
+        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Updatet de functies van een lid.
