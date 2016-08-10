@@ -254,16 +254,13 @@ namespace Chiro.Kip.ServiceContracts
         void LidTypeUpdaten(Persoon persoon, string stamNummer, LidTypeEnum lidType);
 
         /// <summary>
-        /// Updatet de afdelingen van een lid.
+        /// Updatet de afdelingen van een actief lid.
         /// </summary>
         /// <param name="persoon">
         /// Persoon waarvan de afdelingen geupdatet moeten worden
         /// </param>
         /// <param name="stamNummer">
         /// Stamnummer van de groep waarin de persoon lid is
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarin de persoon lid is
         /// </param>
         /// <param name="afdelingen">
         /// Toe te kennen afdelingen.  Eventuele andere reeds toegekende functies worden verwijderd.
@@ -272,7 +269,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Er is in Kipadmin maar plaats voor 2 afdelingen/lid
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, AfdelingEnum[] afdelingen);
+        void AfdelingenUpdaten(Persoon persoon, string stamNummer, AfdelingEnum[] afdelingen);
 
         #endregion
 
