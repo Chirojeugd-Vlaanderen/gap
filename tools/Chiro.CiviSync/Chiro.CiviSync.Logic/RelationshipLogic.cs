@@ -104,11 +104,11 @@ namespace Chiro.CiviSync.Logic
                 ContactIdA = contact1Id,
                 ContactIdB = contact2Id,
                 StartDate = vandaag,
-                EndDate = uitschrijfDatum,
+                EndDate = uitschrijfDatum ?? DateTime.MinValue,
                 RelationshipTypeId = (int)type,
             };
 
-            result.IsActive = result.EndDate == null || result.EndDate > vandaag;
+            result.IsActive = uitschrijfDatum == null || uitschrijfDatum.Value > vandaag;
             return result;
         }
 

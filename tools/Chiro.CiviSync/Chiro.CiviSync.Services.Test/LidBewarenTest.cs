@@ -97,7 +97,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == _vandaagZogezegd && r.EndDate == null &&
+                                r.StartDate == _vandaagZogezegd && r.EndDate == DateTime.MinValue &&
                                 r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
@@ -124,7 +124,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == _vandaagZogezegd && r.EndDate == null &&
+                                r.StartDate == _vandaagZogezegd && r.EndDate == DateTime.MinValue &&
                                 r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)),
                 Times.AtLeastOnce);
         }
@@ -192,7 +192,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == relatie.StartDate && r.EndDate == null && r.Id == relatie.Id &&
+                                r.StartDate == relatie.StartDate && r.EndDate == DateTime.MinValue && r.Id == relatie.Id &&
                                 r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
@@ -218,7 +218,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == relatie.StartDate && r.EndDate == null && r.Id == relatie.Id &&
+                                r.StartDate == relatie.StartDate && r.EndDate == DateTime.MinValue && r.Id == relatie.Id &&
                                 r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)), Times.AtLeastOnce);
         }
 
