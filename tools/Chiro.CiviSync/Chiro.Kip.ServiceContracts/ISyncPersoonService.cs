@@ -239,8 +239,7 @@ namespace Chiro.Kip.ServiceContracts
         void FunctiesUpdaten(Persoon persoon, string stamNummer, FunctieEnum[] functies);
 
         /// <summary>
-        /// Stelt het lidtype van het lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>
-        /// en <paramref name="werkJaar"/>.
+        /// Stelt het lidtype van het actieve lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>.
         /// </summary>
         /// <param name="persoon">
         /// Persoon van wie het lidtype aangepast moet worden
@@ -248,14 +247,11 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van groep waarin de persoon lid is
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarvoor het lidtype moet aangepast worden
-        /// </param>
         /// <param name="lidType">
         /// Nieuw lidtype
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void LidTypeUpdaten(Persoon persoon, string stamNummer, int werkJaar, LidTypeEnum lidType);
+        void LidTypeUpdaten(Persoon persoon, string stamNummer, LidTypeEnum lidType);
 
         /// <summary>
         /// Updatet de afdelingen van een lid.
