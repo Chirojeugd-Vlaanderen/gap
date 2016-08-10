@@ -188,16 +188,13 @@ namespace Chiro.Kip.ServiceContracts
         void LidVerwijderen(int adNummer, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
-        /// Desactiveert een lidrelatie in CiviCRM.
+        /// Desactiveert een actieve lidrelatie in CiviCRM.
         /// </summary>
         /// <param name="adNummer">
         /// AD-nummer te desactiveren lid.
         /// </param>
         /// <param name="stamNummer">
         /// Stamnummer te desactiveren lid.
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar te desactiveren lid.
         /// </param>
         /// <param name="uitschrijfDatum">te registreren uitschrijfdatum in CiviCRM.</param>
         /// <remarks>
@@ -207,7 +204,7 @@ namespace Chiro.Kip.ServiceContracts
         /// (Dat is alleen zo als er iets louche aan de hadn is, zie #4554.)
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void LidUitschrijven(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
+        void LidUitschrijven(int adNummer, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Verwijdert een actief lid als het ad-nummer om een of andere reden niet bekend is.
