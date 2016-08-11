@@ -114,6 +114,15 @@ namespace Chiro.Gap.Dummies
         {
         }
 
+        /// <summary>
+        /// Sluit het huidige werkjaar van de gegeven <param name="groep"> af in Civi. Dat komt erop neer dat
+        /// alle lidrelaties worden beeindigd.</param>
+        /// </summary>
+        /// <param name="groep">Groep waarvan het werkjaar afgesloten moet worden.</param>
+        public void WerkjaarAfsluiten(Groep groep)
+        {
+        }
+
         public void AbonnementBewaren(Abonnement teSyncenAbonnement)
         {
         }

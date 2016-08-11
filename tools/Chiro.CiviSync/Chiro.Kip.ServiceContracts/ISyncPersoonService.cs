@@ -376,6 +376,17 @@ namespace Chiro.Kip.ServiceContracts
         [OperationContract(IsOneWay = true)]
         void GroepUpdaten(Groep g);
 
+        /// <summary>
+        /// Sluit het huidige groepswerkjaar af van de groep met gegeven <paramref name="stamNummer"/>.
+        /// </summary>
+        /// <remarks>
+        /// Dat komt er eigenlijk op neer dat alle actieve lidrelaties worden stopgezet.
+        /// Dit is tamelijk gevaarlijk. Als dit faalt, dan loopt de ledensync voor het volgende
+        /// werkjaar in het honderd.
+        /// </remarks>
+        /// <param name="stamNummer"></param>
+        [OperationContract(IsOneWay = true)]
+        void GroepsWerkjaarAfsluiten(string stamNummer);
         #endregion
 
         #region dubbelpunt

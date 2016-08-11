@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -47,6 +47,16 @@ namespace Chiro.Gap.Sync
                 Mapper.Map<Groep, Kip.ServiceContracts.DataContracts.Groep>(g);
 
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepUpdaten(syncGroep));
+        }
+
+        /// <summary>
+        /// Sluit het huidige werkjaar van de gegeven <param name="groep"> af in Civi. Dat komt erop neer dat
+        /// alle lidrelaties worden beeindigd.</param>
+        /// </summary>
+        /// <param name="groep">Groep waarvan het werkjaar afgesloten moet worden.</param>
+        public void WerkjaarAfsluiten(Groep groep)
+        {
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepsWerkjaarAfsluiten(groep.Code));
         }
     }
 }
