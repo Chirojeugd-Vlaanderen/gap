@@ -46,36 +46,6 @@ namespace Chiro.CiviSync.Workers
         }
 
         /// <summary>
-        /// Haalt de lidrelatie op tussen de persoon met ID <paramref name="contactIdPersoon"/>
-        /// en de groep (ploeg) met ID <paramref name="contactIdGroep"/> in het werkjaar
-        /// <paramref name="werkJaar"/>.
-        /// </summary>
-        /// <param name="contactIdPersoon">Civi-ID van persoon</param>
-        /// <param name="contactIdGroep">Civi-ID van groep</param>
-        /// <param name="werkJaar">werkjaar van de te zoeken lidrelatie</param>
-        /// <returns>Lidrelatie op tussen de persoon met ID <paramref name="contactIdPersoon"/>
-        /// en de groep (ploeg) met ID <paramref name="contactIdGroep"/> in het werkjaar
-        /// <paramref name="werkJaar"/>.</returns>
-        public Relationship LidOphalen(int? contactIdPersoon, int? contactIdGroep, int werkJaar)
-        {
-            var request = new RelationshipRequest
-            {
-                ContactIdA = contactIdPersoon,
-                ContactIdB = contactIdGroep,
-                RelationshipTypeId = (int)(RelatieType.LidVan),
-                EndDate = _relationshipLogic.WerkJaarEinde(werkJaar),
-            };
-            var result =
-                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
-                    svc => svc.RelationshipGet(ApiKey, SiteKey, request));
-            result.AssertValid();
-            // Hoogstens 1 keer lid van dezelfde ploeg in hetzelfde werkjaar.
-            Debug.Assert(result.Count <= 1);
-
-            return result.Count == 0 ? null : result.Values.First();
-        }
-
-        /// <summary>
         /// Haalt de actieve lidrelatie op tussen de persoon met ID <paramref name="contactIdPersoon"/>
         /// en de groep (ploeg) met ID <paramref name="contactIdGroep"/>.
         /// </summary>
