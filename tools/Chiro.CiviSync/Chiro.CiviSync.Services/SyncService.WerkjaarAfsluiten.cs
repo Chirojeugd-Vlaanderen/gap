@@ -52,11 +52,14 @@ namespace Chiro.CiviSync.Services
             {
                 ContactIdB = civiGroepId,
                 IsActive = true,
-                RelationshipSaveRequest = new RelationshipRequest
+                RelationshipSaveRequest = new[]
                 {
-                    IdValueExpression = "$value.id",
-                    IsActive = false,
-                    EndDate = DateTime.Now
+                    new RelationshipRequest
+                    {
+                        IdValueExpression = "$value.id",
+                        IsActive = false,
+                        EndDate = DateTime.Now
+                    }
                 }
             };
 
