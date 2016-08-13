@@ -34,12 +34,10 @@ namespace Chiro.CiviSync.Services.Test
     public class LidBewarenTest
     {
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
-        private const int VorigWerkJaar = 2013;
         private const int HuidigWerkJaar = 2014;
-        private const int VolgendWerkjaar = 2015;
 
         [ClassInitialize]
-        public static void InitialilzeTestClass(TestContext c)
+        public static void InitialileTestClass(TestContext c)
         {
             TestHelper.MappingsCreeren();
         }
