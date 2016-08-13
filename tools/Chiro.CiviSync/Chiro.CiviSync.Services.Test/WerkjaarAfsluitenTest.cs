@@ -63,12 +63,13 @@ namespace Chiro.CiviSync.Services.Test
             // De relaties met de ploeg ook.
             // We leveren er geen op, want het inactief maken is irrelevant
             // voor deze test.
+            // Voorlopig werken we met limit = 0. Ik hoop dat dat ook werkt voor Chiro Schelle :-)
             civiApiMock.Setup(
                 src => src.RelationshipGet(It.IsAny<String>(), It.IsAny<string>(),
                     It.Is<RelationshipRequest>(
                         r =>
-                            r.ContactIdB == ploeg.Id && r.IsActive.Value == true &&
-                            r.RelationshipTypeId == (int) RelatieType.LidVan)))
+                            r.ContactIdB == ploeg.Id && r.IsActive.Value &&
+                            r.RelationshipTypeId == (int) RelatieType.LidVan && r.ApiOptions.Limit == 0)))
                 .Returns(new ApiResultValues<Relationship>());
 
             // ACT
@@ -80,8 +81,8 @@ namespace Chiro.CiviSync.Services.Test
             civiApiMock.Verify(src => src.RelationshipGet(It.IsAny<String>(), It.IsAny<string>(),
                 It.Is<RelationshipRequest>(
                     r =>
-                        r.ContactIdB == ploeg.Id && r.IsActive.Value == true &&
-                        r.RelationshipTypeId == (int) RelatieType.LidVan)), Times.AtLeastOnce);
+                        r.ContactIdB == ploeg.Id && r.IsActive.Value &&
+                        r.RelationshipTypeId == (int) RelatieType.LidVan && r.ApiOptions.Limit == 0)), Times.AtLeastOnce);
         }
     }
 }
