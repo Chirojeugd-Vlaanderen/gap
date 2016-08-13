@@ -52,6 +52,7 @@ namespace Chiro.CiviSync.Services
             {
                 ContactIdB = civiGroepId,
                 IsActive = true,
+                RelationshipTypeId = (int)RelatieType.LidVan,
                 RelationshipSaveRequest = new[]
                 {
                     new RelationshipRequest
