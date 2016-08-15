@@ -48,35 +48,50 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            var request = new RelationshipRequest
-            {
-                ContactIdB = civiGroepId,
-                IsActive = true,
-                RelationshipTypeId = (int)RelatieType.LidVan,
-                ApiOptions = new ApiOptions { Limit = 0 },
-                // We zijn eigenlijk niet geinteresseerd in de get-call, het is
-                // enkel een manier om het deactiveren te chainen. Lever dus zo
-                // weinig mogelijk informatie op.
-                ReturnFields = "id",
-                RelationshipSaveRequest = new[]
-                {
-                    new RelationshipRequest
-                    {
-                        IdValueExpression = "$value.id",
-                        IsActive = false,
-                        EndDate = DateTime.Now
-                    }
-                }
-            };
+            int beeindigdInRun = 0;
+            int totaalBeeindigd = 0;
 
-            var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
-                svc =>
-                    svc.RelationshipGet(_apiKey, _siteKey, request));
-            result.AssertValid();
+            do
+            {
+
+
+                var request = new RelationshipRequest
+                {
+                    ContactIdB = civiGroepId,
+                    IsActive = true,
+                    RelationshipTypeId = (int) RelatieType.LidVan,
+                    ApiOptions = new ApiOptions {Limit = 0},
+                    // We zijn eigenlijk niet geinteresseerd in de get-call, het is
+                    // enkel een manier om het deactiveren te chainen. Lever dus zo
+                    // weinig mogelijk informatie op.
+                    ReturnFields = "id",
+                    RelationshipSaveRequest = new[]
+                    {
+                        new RelationshipRequest
+                        {
+                            IdValueExpression = "$value.id",
+                            IsActive = false,
+                            EndDate = DateTime.Now
+                        }
+                    }
+                };
+
+                var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
+                    svc =>
+                        svc.RelationshipGet(_apiKey, _siteKey, request));
+                result.AssertValid();
+                beeindigdInRun = result.Count;
+                _log.Loggen(Niveau.Info,
+                    String.Format(
+                        "Werkjaar afsluiten voor groep {0}. {1} lidrelatie(s) beeindigd.",
+                        stamNummer, beeindigdInRun),
+                    stamNummer, null, null);
+                totaalBeeindigd += beeindigdInRun;
+            } while (beeindigdInRun > 0);
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "Werkjaar afgesloten voor groep {0}. {1} lidrelatie(s) beeindigd.",
-                    stamNummer, result.Count),
+                    "Werkjaar afgesloten voor groep {0}. Totaal aantal beeindigd: {1}.",
+                    stamNummer, beeindigdInRun),
                 stamNummer, null, null);
         }
     }
