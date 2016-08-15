@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ namespace Chiro.CiviSync.Services.Test
                 Id = 5,
                 Afdeling = Afdeling.Speelclub,
                 StartDate = new DateTime(werkJaar, 09, 01),
-                EndDate = new DateTime(werkJaar + 1, 08, 31)
+                EndDate = null
             };
             // We gaan de afdeling van die speelclubber veranderen
             // naar rakwi's.
@@ -123,7 +123,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.AfdelingenUpdaten(kipPersoon, ploeg.ExternalIdentifier, werkJaar,
+            service.AfdelingenUpdaten(kipPersoon, ploeg.ExternalIdentifier,
                 new[] {gapAfdeling});
 
             // ASSERT
@@ -149,7 +149,6 @@ namespace Chiro.CiviSync.Services.Test
 
 
             const int adNummer = 2;
-            const int werkJaar = 2014;
 
             // Mock ook log
             var logMock = new Mock<IMiniLog>();
@@ -207,7 +206,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.AfdelingenUpdaten(kipPersoon, ploeg.ExternalIdentifier, werkJaar,
+            service.AfdelingenUpdaten(kipPersoon, ploeg.ExternalIdentifier,
                 new[] { gapAfdeling });
 
             // ASSERT

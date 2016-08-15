@@ -82,6 +82,7 @@
     <Compile Include="GroepUpdatenTest.cs" />
     <Compile Include="AbonnementBewarenTest.cs" />
     <Compile Include="AbonnementStopzettenTest.cs" />
+    <Compile Include="WerkjaarAfsluitenTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

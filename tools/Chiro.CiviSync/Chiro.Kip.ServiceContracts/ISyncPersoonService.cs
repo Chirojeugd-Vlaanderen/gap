@@ -171,7 +171,7 @@ namespace Chiro.Kip.ServiceContracts
         void NieuwLidBewaren(PersoonDetails details, LidGedoe lidGedoe);
 
         /// <summary>
-        /// Verwijdert een persoon met gekend AD-nummer als lid
+        /// Verwijdert een persoon met gekend AD-nummer als actief lid
         /// </summary>
         /// <param name="adNummer">
         /// AD-nummer te verwijderen lid
@@ -179,28 +179,22 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer te verwijderen lid
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar te verwijderen lid
-        /// </param>
         /// <param name="uitschrijfDatum"> uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
+        void LidVerwijderen(int adNummer, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
-        /// Desactiveert een lidrelatie in CiviCRM.
+        /// Desactiveert een actieve lidrelatie in CiviCRM.
         /// </summary>
         /// <param name="adNummer">
         /// AD-nummer te desactiveren lid.
         /// </param>
         /// <param name="stamNummer">
         /// Stamnummer te desactiveren lid.
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar te desactiveren lid.
         /// </param>
         /// <param name="uitschrijfDatum">te registreren uitschrijfdatum in CiviCRM.</param>
         /// <remarks>
@@ -210,10 +204,10 @@ namespace Chiro.Kip.ServiceContracts
         /// (Dat is alleen zo als er iets louche aan de hadn is, zie #4554.)
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void LidUitschrijven(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
+        void LidUitschrijven(int adNummer, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
-        /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
+        /// Verwijdert een actief lid als het ad-nummer om een of andere reden niet bekend is.
         /// </summary>
         /// <param name="details">
         /// Gegevens die hopelijk toelaten het lid te identificeren
@@ -221,19 +215,16 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van het lid
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar van het lid
-        /// </param>
         /// <param name="uitschrijfDatum">uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
+        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
-        /// Updatet de functies van een lid.
+        /// Updatet de functies van een actief lid.
         /// </summary>
         /// <param name="persoon">
         /// Persoon van wie de lidfuncties geüpdatet moeten worden
@@ -241,18 +232,14 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van de groep waarin de persoon lid is
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarin de persoon lid is
-        /// </param>
         /// <param name="functies">
         /// Toe te kennen functies.  Eventuele andere reeds toegekende functies worden verwijderd.
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, FunctieEnum[] functies);
+        void FunctiesUpdaten(Persoon persoon, string stamNummer, FunctieEnum[] functies);
 
         /// <summary>
-        /// Stelt het lidtype van het lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>
-        /// en <paramref name="werkJaar"/>.
+        /// Stelt het lidtype van het actieve lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>.
         /// </summary>
         /// <param name="persoon">
         /// Persoon van wie het lidtype aangepast moet worden
@@ -260,26 +247,20 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van groep waarin de persoon lid is
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarvoor het lidtype moet aangepast worden
-        /// </param>
         /// <param name="lidType">
         /// Nieuw lidtype
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void LidTypeUpdaten(Persoon persoon, string stamNummer, int werkJaar, LidTypeEnum lidType);
+        void LidTypeUpdaten(Persoon persoon, string stamNummer, LidTypeEnum lidType);
 
         /// <summary>
-        /// Updatet de afdelingen van een lid.
+        /// Updatet de afdelingen van een actief lid.
         /// </summary>
         /// <param name="persoon">
         /// Persoon waarvan de afdelingen geupdatet moeten worden
         /// </param>
         /// <param name="stamNummer">
         /// Stamnummer van de groep waarin de persoon lid is
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarin de persoon lid is
         /// </param>
         /// <param name="afdelingen">
         /// Toe te kennen afdelingen.  Eventuele andere reeds toegekende functies worden verwijderd.
@@ -288,7 +269,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Er is in Kipadmin maar plaats voor 2 afdelingen/lid
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, AfdelingEnum[] afdelingen);
+        void AfdelingenUpdaten(Persoon persoon, string stamNummer, AfdelingEnum[] afdelingen);
 
         #endregion
 
@@ -395,6 +376,17 @@ namespace Chiro.Kip.ServiceContracts
         [OperationContract(IsOneWay = true)]
         void GroepUpdaten(Groep g);
 
+        /// <summary>
+        /// Sluit het huidige groepswerkjaar af van de groep met gegeven <paramref name="stamNummer"/>.
+        /// </summary>
+        /// <remarks>
+        /// Dat komt er eigenlijk op neer dat alle actieve lidrelaties worden stopgezet.
+        /// Dit is tamelijk gevaarlijk. Als dit faalt, dan loopt de ledensync voor het volgende
+        /// werkjaar in het honderd.
+        /// </remarks>
+        /// <param name="stamNummer"></param>
+        [OperationContract(IsOneWay = true)]
+        void GroepsWerkjaarAfsluiten(string stamNummer);
         #endregion
 
         #region dubbelpunt

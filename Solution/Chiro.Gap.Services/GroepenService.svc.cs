@@ -80,9 +80,8 @@ namespace Chiro.Gap.Services
 		// Sync
 
 		private readonly IGroepenSync _groepenSync;
-		private readonly IAbonnementenSync _abonnementenSync;
 
-		// Cache
+	    // Cache
 
 		private readonly IVeelGebruikt _veelGebruikt;
 
@@ -141,9 +140,8 @@ namespace Chiro.Gap.Services
 			_authenticatieMgr = authenticatieMgr;
 			_autorisatieMgr = autorisatieMgr;
 			_groepenSync = groepenSync;
-			_abonnementenSync = abonnementenSync;
 
-			_veelGebruikt = veelGebruikt;
+		    _veelGebruikt = veelGebruikt;
 
 			_gav = new GavChecker(_autorisatieMgr);
 		}
@@ -1366,6 +1364,7 @@ namespace Chiro.Gap.Services
 			{
 #endif
 				_groepenRepo.SaveChanges();
+		        _groepenSync.WerkjaarAfsluiten(groep);
 
 #if KIPDORP
 				tx.Complete();

@@ -139,8 +139,7 @@ namespace Chiro.CiviSync.Services.Test
                     EindeInstapPeriode = new DateTime(2015, 02, 27),
                     LidType = LidTypeEnum.Kind,
                     OfficieleAfdelingen = new[] {AfdelingEnum.Rakwis},
-                    StamNummer = ploeg.ExternalIdentifier,
-                    WerkJaar = 2014
+                    StamNummer = ploeg.ExternalIdentifier
                 });
 
             // ASSERT
@@ -267,8 +266,7 @@ namespace Chiro.CiviSync.Services.Test
                     EindeInstapPeriode = new DateTime(2015, 02, 27),
                     LidType = LidTypeEnum.Kind,
                     OfficieleAfdelingen = new[] { AfdelingEnum.Rakwis },
-                    StamNummer = ploeg.ExternalIdentifier,
-                    WerkJaar = 2014
+                    StamNummer = ploeg.ExternalIdentifier
                 });
 
             // ASSERT

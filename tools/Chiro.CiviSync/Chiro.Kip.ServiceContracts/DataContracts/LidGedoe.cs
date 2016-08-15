@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -32,12 +32,6 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public string StamNummer { get; set; }
-
-        /// <summary>
-        /// Werkjaar waarin de persoon lid moet worden
-        /// </summary>
-        [DataMember]
-        public int WerkJaar { get; set; }
 
         /// <summary>
         /// Type van het lid (kind, leiding)
@@ -75,7 +69,7 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// <returns>System.String that represents the current LidGedoe</returns>
         public override string ToString()
         {
-            return this.LidType.ToString() + this.WerkJaar + this.StamNummer;
+            return this.LidType.ToString() + this.StamNummer;
         }
     }
 }

@@ -1,0 +1,97 @@
+﻿/*
+   Copyright 2016 Chirojeugd-Vlaanderen vzw
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
+using System;
+using System.Linq;
+using System.ServiceModel;
+using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Logic;
+using Chiro.Gap.Log;
+
+namespace Chiro.CiviSync.Services
+{
+    public partial class SyncService
+    {
+        /// <summary>
+        /// Sluit het huidige groepswerkjaar af van de groep met gegeven <paramref name="stamNummer"/>.
+        /// </summary>
+        /// <remarks>
+        /// Dat komt er eigenlijk op neer dat alle actieve lidrelaties worden stopgezet.
+        /// Dit is tamelijk gevaarlijk. Als dit faalt, dan loopt de ledensync voor het volgende
+        /// werkjaar in het honderd.
+        /// </remarks>
+        /// <param name="stamNummer"></param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void GroepsWerkjaarAfsluiten(string stamNummer)
+        {
+            int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
+            if (civiGroepId == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - geen werkjaar afgesloten.", stamNummer),
+                    stamNummer, null, null);
+                return;
+            }
+
+            int beeindigdInRun = 0;
+            int totaalBeeindigd = 0;
+
+            do
+            {
+
+
+                var request = new RelationshipRequest
+                {
+                    ContactIdB = civiGroepId,
+                    IsActive = true,
+                    RelationshipTypeId = (int) RelatieType.LidVan,
+                    // We zijn eigenlijk niet geinteresseerd in de get-call, het is
+                    // enkel een manier om het deactiveren te chainen. Lever dus zo
+                    // weinig mogelijk informatie op.
+                    ReturnFields = "id",
+                    RelationshipSaveRequest = new[]
+                    {
+                        new RelationshipRequest
+                        {
+                            IdValueExpression = "$value.id",
+                            IsActive = false,
+                            EndDate = DateTime.Now
+                        }
+                    }
+                };
+
+                var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
+                    svc =>
+                        svc.RelationshipGet(_apiKey, _siteKey, request));
+                result.AssertValid();
+                beeindigdInRun = result.Count;
+                _log.Loggen(Niveau.Info,
+                    String.Format(
+                        "Werkjaar afsluiten voor groep {0}. {1} lidrelatie(s) beeindigd.",
+                        stamNummer, beeindigdInRun),
+                    stamNummer, null, null);
+                totaalBeeindigd += beeindigdInRun;
+            } while (beeindigdInRun > 0);
+            _log.Loggen(Niveau.Info,
+                String.Format(
+                    "Werkjaar afgesloten voor groep {0}. Totaal aantal beeindigd: {1}.",
+                    stamNummer, beeindigdInRun),
+                stamNummer, null, null);
+        }
+    }
+}
