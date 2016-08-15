@@ -60,7 +60,6 @@ namespace Chiro.CiviSync.Services
                     ContactIdB = civiGroepId,
                     IsActive = true,
                     RelationshipTypeId = (int) RelatieType.LidVan,
-                    ApiOptions = new ApiOptions {Limit = 0},
                     // We zijn eigenlijk niet geinteresseerd in de get-call, het is
                     // enkel een manier om het deactiveren te chainen. Lever dus zo
                     // weinig mogelijk informatie op.
