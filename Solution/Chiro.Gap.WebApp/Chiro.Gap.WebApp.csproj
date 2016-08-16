@@ -169,7 +169,6 @@
     <Compile Include="Models\GavModel.cs" />
     <Compile Include="Models\LidInfoModel.cs" />
     <Compile Include="Models\LidFunctiesModel.cs" />
-    <Compile Include="ActionFilters\MasterAttribute.cs" />
     <Compile Include="Models\MasterViewModel.cs" />
     <Compile Include="Models\PersonenLinksModel.cs" />
     <Compile Include="Models\PersoonInfoModel.cs" />
