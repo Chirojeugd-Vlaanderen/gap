@@ -1028,7 +1028,18 @@ namespace Chiro.Gap.Services
 			Gav.Check(functie);
 			return Mapper.Map<Functie, FunctieDetail>(functie);
 		}
-		#endregion
+
+	    /// <summary>
+	    /// Verwijdert (zo mogelijk) het groepswerkjaar met gegeven <paramref name="groepsWerkJaarId"/>, en
+	    /// herstelt de situatie zoals op het einde van vorig groepswerkjaar.
+	    /// </summary>
+	    /// <param name="groepsWerkJaarId">ID van groepswerkjaar.</param>
+	    public void JaarOvergangTerugDraaien(int groepsWerkJaarId)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    #endregion
 
 		#region beheer categorieen (wordt niet gesynct)
 

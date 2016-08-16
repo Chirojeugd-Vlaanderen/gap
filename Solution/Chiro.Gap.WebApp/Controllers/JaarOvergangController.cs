@@ -178,7 +178,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View("Stap2AfdelingsJarenVerdelen", model);
             }
 
-            VeelGebruikt.JaarOvergangReset(groepID);
+            VeelGebruikt.AllesResetten(groepID);
 
             if (!model.LedenMeteenInschrijven)
             {
@@ -311,6 +311,24 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Titel = "Jaarovergang ongedaan maken";
             BaseModelInit(model, groepID);
             return View(model);
+        }
+
+        /// <summary>
+        /// Draait jaarovergang terug.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="groepID"></param>
+        /// <returns></returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult TerugDraaien(MasterViewModel model, int groepID)
+        {
+            BaseModelInit(model, groepID);
+
+            ServiceHelper.CallService<IGroepenService>(
+                svc => svc.JaarOvergangTerugDraaien(VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID));
+            // Clear cache voor groep.
+            VeelGebruikt.AllesResetten(groepID);
+            return RedirectToAction("Index", "Leden", new { groepID });
         }
     }
 }
