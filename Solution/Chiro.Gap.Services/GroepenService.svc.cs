@@ -322,14 +322,11 @@ namespace Chiro.Gap.Services
 			}
 
 			var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
-			result.Status = _groepsWerkJarenMgr.OvergangMogelijk(DateTime.Now, result.WerkJaar)
-								? WerkJaarStatus.InOvergang
-								: WerkJaarStatus.Bezig;
-
+		    result.Status = _groepsWerkJarenMgr.StatusBepalen(groepsWerkJaar);
 			return result;
 		}
 
-	/// <summary>
+	    /// <summary>
 		/// Controleert de verplicht in te vullen lidgegevens.
 		/// </summary>
 		/// <param name="groepId">ID van de groep waarvan de leden te controleren zijn</param>

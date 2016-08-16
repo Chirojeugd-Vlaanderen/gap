@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -146,5 +146,12 @@ namespace Chiro.Gap.WorkerInterfaces
         /// foefelen in de unit tests.
         /// </remarks>
         DateTime Vandaag();
-    }
+
+        /// <summary>
+        /// Bepaalt de status van het gegeven <paramref name="groepsWerkJaar"/>.
+        /// </summary>
+        /// <param name="groepsWerkJaar"></param>
+        /// <returns>De status van het gegeven <paramref name="groepsWerkJaar"/>.</returns>
+        WerkJaarStatus StatusBepalen(GroepsWerkJaar groepsWerkJaar);
+	}
 }

@@ -239,6 +239,33 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Bepaalt de status van het gegeven <paramref name="groepsWerkJaar"/>.
+        /// </summary>
+        /// <param name="groepsWerkJaar"></param>
+        /// <returns>De status van het gegeven <paramref name="groepsWerkJaar"/>.</returns>
+        public WerkJaarStatus StatusBepalen(GroepsWerkJaar groepsWerkJaar)
+        {
+            DateTime vandaag = Vandaag();
+            int huidigWerkJaar = _veelGebruikt.WerkJaarOphalen(groepsWerkJaar.Groep);
+            if (groepsWerkJaar.WerkJaar < huidigWerkJaar)
+            {
+                return WerkJaarStatus.Voorbij;
+            }
+            var status = OvergangMogelijk(vandaag, groepsWerkJaar.WerkJaar)
+                ? WerkJaarStatus.InOvergang
+                : WerkJaarStatus.Bezig;
+
+            if (!groepsWerkJaar.Lid.Any(l => !l.NonActief && l.EindeInstapPeriode < vandaag))
+            {
+                // We gebruiken niet l.IsAangesloten, want die wordt pas gezet als er
+                // teruggecommuniceerd wordt van Civi naar GAP. Als er leden zijn met
+                // instapperiode voorbij, kan het werkjaar niet meer teruggedraaid worden.
+                status |= WerkJaarStatus.KanTerugDraaien;
+            }
+            return status;
+        }
+
+        /// <summary>
         /// Bepaalt of in het gegeven <paramref name='werkJaar' /> op
 	    /// het gegeven <paramref name='tijdstip' /> de jaarovergang al
 	    /// kan doorgaan.
