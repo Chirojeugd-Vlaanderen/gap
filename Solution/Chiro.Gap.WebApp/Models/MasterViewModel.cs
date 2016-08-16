@@ -16,7 +16,9 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.WebApp.Models
@@ -73,7 +75,16 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public int HuidigWerkJaar { get; set; }
 
-		/// <summary>
+	    /// <summary>
+	    /// 'Human readable' representatie van het huidige werkjaar, bijv. '2016-2017'.
+	    /// </summary>
+	    [DisplayName(@"Huidig werkjaar")]
+	    public string WerkJaarWeergave
+	    {
+	        get { return String.Format("{0}-{1}", HuidigWerkJaar, HuidigWerkJaar + 1); }
+	    }
+
+	    /// <summary>
 		/// Status van het huidige werkjaar van de groep.
 		/// </summary>
 		public WerkJaarStatus WerkJaarStatus { get; set; }

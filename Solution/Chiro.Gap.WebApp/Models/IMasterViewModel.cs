@@ -73,6 +73,11 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		int HuidigWerkJaar { get; }
 
+        /// <summary>
+        /// 'Human readable' representatie van het huidige werkjaar, bijv. '2016-2017'.
+        /// </summary>
+        string WerkJaarWeergave { get; }
+
 		/// <summary>
 		/// Status van het huidige werkjaar.
 		/// </summary>

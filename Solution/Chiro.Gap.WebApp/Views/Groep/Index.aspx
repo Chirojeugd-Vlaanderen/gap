@@ -74,6 +74,10 @@
                     <td></td>
 			    </tr>
                 <tr>
+                    <td><%:Html.LabelFor(mdl => mdl.WerkJaarWeergave)%></td>
+                    <td><%:Html.DisplayFor(mdl => mdl.WerkJaarWeergave)%></td>
+                </tr>
+                <tr>
                     <td>Adres lokalen</td>
                     <td>
                         <% if (Model.Detail.Adres != null)
