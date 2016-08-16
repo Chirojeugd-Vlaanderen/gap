@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -74,9 +74,9 @@ namespace Chiro.Gap.WebApp.Models
 		public int HuidigWerkJaar { get; set; }
 
 		/// <summary>
-		/// <c>True</c> indien de overgang naar het nieuwe werkJaar kan gebeuren
+		/// Status van het huidige werkjaar van de groep.
 		/// </summary>
-		public bool IsInOvergangsPeriode { get; set; }
+		public WerkJaarStatus WerkJaarStatus { get; set; }
 
 		/// <summary>
 		/// Kan de GAV meerdere groepen beheren?

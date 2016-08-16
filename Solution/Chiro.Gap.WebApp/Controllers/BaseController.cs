@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -128,7 +128,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.StamNummer = gwjDetail.GroepCode;
                 model.GroepID = gwjDetail.GroepID;
                 model.HuidigWerkJaar = gwjDetail.WerkJaar;
-                model.IsInOvergangsPeriode = gwjDetail.Status == WerkJaarStatus.InOvergang;
+                model.WerkJaarStatus = gwjDetail.Status;
 
                 #endregion
 

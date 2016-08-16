@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -17,6 +17,7 @@
  */
 
 using System.Collections.Generic;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -73,8 +74,8 @@ namespace Chiro.Gap.WebApp.Models
 		int HuidigWerkJaar { get; }
 
 		/// <summary>
-		/// <c>True</c> als de overgang naar het nieuwe werkJaar kan gebeuren
+		/// Status van het huidige werkjaar.
 		/// </summary>
-		bool IsInOvergangsPeriode { get; }
+		WerkJaarStatus WerkJaarStatus { get; }
 	}
 }
