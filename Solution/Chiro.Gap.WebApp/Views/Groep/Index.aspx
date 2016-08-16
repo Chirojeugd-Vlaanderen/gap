@@ -5,7 +5,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * Cleanup en refactoring met module pattern: Copyright 2015 Sam Segers
@@ -76,6 +76,22 @@
                 <tr>
                     <td><%:Html.LabelFor(mdl => mdl.WerkJaarWeergave)%></td>
                     <td><%:Html.DisplayFor(mdl => mdl.WerkJaarWeergave)%></td>
+                    <td>
+                        <%
+                            if (Model.WerkJaarStatus.HasFlag(WerkJaarStatus.InOvergang))
+                            {
+                                %>
+                        <%=Html.ActionLink(String.Format("Overgang naar {0}-{1}", Model.HuidigWerkJaar+1, Model.HuidigWerkJaar+2), "Index", "JaarOvergang")%>
+                                <%
+                            }
+                            if (Model.WerkJaarStatus.HasFlag(WerkJaarStatus.KanTerugDraaien))
+                            {
+                                %>
+                        <%=Html.ActionLink(String.Format("Terug naar naar {0}-{1}", Model.HuidigWerkJaar-1, Model.HuidigWerkJaar), "TerugDraaien", "JaarOvergang")%>
+                                <%
+                            }
+                         %>
+                    </td>
                 </tr>
                 <tr>
                     <td>Adres lokalen</td>

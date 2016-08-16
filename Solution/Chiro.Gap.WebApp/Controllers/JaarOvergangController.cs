@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -299,6 +299,18 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Titel = "Afdeling bewerken";
                 return View("Afdeling", model);
             }
+        }
+
+        /// <summary>
+        /// Jaarovergang terugdraaien.
+        /// </summary>
+        /// <returns>Een relevante view.</returns>
+        public ActionResult TerugDraaien(int groepID)
+        {
+            var model = new MasterViewModel();
+            model.Titel = "Jaarovergang ongedaan maken";
+            BaseModelInit(model, groepID);
+            return View(model);
         }
     }
 }

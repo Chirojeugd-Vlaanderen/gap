@@ -336,6 +336,7 @@
     <Content Include="Views\Handleiding\WaaromBivakaangifte.aspx" />
     <Content Include="Views\Handleiding\WaaromContactgegevens.aspx" />
     <Content Include="Views\JaarOvergang\Afdeling.aspx" />
+    <Content Include="Views\JaarOvergang\TerugDraaien.aspx" />
     <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\Bewerken.aspx" />
