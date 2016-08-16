@@ -165,7 +165,6 @@
     <Compile Include="Models\NieuwePersoonModel.cs" />
     <Compile Include="Models\PersoonEnLidModel.cs" />
     <Compile Include="Models\GroepsInstellingenModel.cs" />
-    <Compile Include="Models\IMasterViewModel.cs" />
     <Compile Include="Models\NieuweCommVormModel.cs" />
     <Compile Include="Models\GavModel.cs" />
     <Compile Include="Models\LidInfoModel.cs" />

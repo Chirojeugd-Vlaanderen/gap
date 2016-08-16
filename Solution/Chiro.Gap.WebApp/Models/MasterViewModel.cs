@@ -29,7 +29,7 @@ namespace Chiro.Gap.WebApp.Models
 	/// <remarks>
 	/// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
 	/// </remarks>
-	public class MasterViewModel : IMasterViewModel
+	public class MasterViewModel
 	{
 		/// <summary>
 		/// De standaardconstructor maakt gewoon een lege lijst met mededelingen

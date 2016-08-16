@@ -16,9 +16,7 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -27,11 +25,7 @@ namespace Chiro.Gap.WebApp.Models
     /// <summary>
     /// Model voor overzicht van algemene groepsinfo
     /// </summary>
-    /// <remarks>
-    /// Aangezien ik de info van een ChiroGroep nodig heb, en de members van IMasterViewModel
-    /// hiervan een subset zijn, map ik deze via een impliciete implementatie van IMasterViewModel.
-    /// </remarks>
-    public class GroepsInstellingenModel : IMasterViewModel
+    public class GroepsInstellingenModel : MasterViewModel
     {
         public GroepsInstellingenModel()
         {
@@ -43,7 +37,6 @@ namespace Chiro.Gap.WebApp.Models
             Mededelingen = new List<Mededeling>();
         }
 
-        public bool IsLive { get; set; }
         public GroepDetail Detail { get; set; }
         public GroepInfo Info { get { return Detail; } }
         public CategorieInfo NieuweCategorie { get; set; }
@@ -52,47 +45,5 @@ namespace Chiro.Gap.WebApp.Models
         public IEnumerable<LidType> Types { get; set; }
        
         public List<AfdelingInfo> NonActieveAfdelingen { get; set; }
-
-        #region IMasterViewModel Members
-
-        int IMasterViewModel.GroepID
-        {
-            get { return Info.ID; }
-        }
-
-        string IMasterViewModel.GroepsNaam
-        {
-            get { return Info.Naam; }
-        }
-
-        string IMasterViewModel.Plaats
-        {
-            get { return Info.Plaats; }
-        }
-
-        string IMasterViewModel.StamNummer
-        {
-            get { return Info.StamNummer; }
-        }
-
-        public string Titel { get; set; }
-
-        public bool? MeerdereGroepen { get; set; }
-
-        public IList<Mededeling> Mededelingen { get; set; }
-
-        public int HuidigWerkJaar { get; set; }
-
-        /// <summary>
-        /// 'Human readable' representatie van het huidige werkjaar, bijv. '2016-2017'.
-        /// </summary>
-        [DisplayName(@"Huidig werkjaar")]
-        public string WerkJaarWeergave {
-            get { return String.Format("{0}-{1}", HuidigWerkJaar, HuidigWerkJaar + 1); }
-        }
-
-        public WerkJaarStatus WerkJaarStatus { get; set; }
-
-        #endregion
     }
 }

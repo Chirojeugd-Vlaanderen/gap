@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -40,7 +40,7 @@ namespace Chiro.Gap.WebApp.ActionFilters
 			// als we iets moeten tonen, moeten we nog iets doorgeven van de MasterViewModel.
 			if (filterContext.Result as ViewResultBase != null)
 			{
-				var viewModel = (IMasterViewModel)((ViewResultBase)filterContext.Result).ViewData.Model;
+				var viewModel = (MasterViewModel)((ViewResultBase)filterContext.Result).ViewData.Model;
 				var controller = (BaseController)filterContext.Controller;
 				// controller.SetModel(viewModel);
 				// Dat de regel hiervoor in comments staat, doet vermoeden dat dit hele bestand niet meer nodig is.

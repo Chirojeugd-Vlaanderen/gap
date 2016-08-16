@@ -63,8 +63,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		                svc => svc.OngebruikteAfdelingenOphalen(werkjaarID)),
 		        IsLive = VeelGebruikt.IsLive()
 		    };
-
-		    // Ook hier nakijken of we live zijn.
+            BaseModelInit(model, groepID);
 
 		    return View(model);
 		}
@@ -118,8 +117,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID))
             };
            
-            // Ook hier nakijken of we live zijn.
-            model.IsLive = VeelGebruikt.IsLive();
+            BaseModelInit(model, groepID);
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }
