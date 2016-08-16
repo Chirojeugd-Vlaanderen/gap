@@ -266,6 +266,18 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Verwijdert een groepswerkjaar in zijn geheel.
+        /// </summary>
+        /// <param name="groepsWerkJaar">Te verwijderen groepswerkjaar</param>
+        /// <remarks>
+        /// Dit werkt enkel als er geen liden zijn waarvan de probeerperiode voorbij is.
+        /// </remarks>
+        public void Verwijderen(GroepsWerkJaar groepsWerkJaar)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Bepaalt of in het gegeven <paramref name='werkJaar' /> op
 	    /// het gegeven <paramref name='tijdstip' /> de jaarovergang al
 	    /// kan doorgaan.

@@ -15,7 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using Chiro.Gap.Poco.Model;
+
+using ﻿System;
+using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.SyncInterfaces
 {
@@ -34,5 +36,12 @@ namespace Chiro.Gap.SyncInterfaces
         /// </summary>
         /// <param name="groep">Groep waarvan het werkjaar afgesloten moet worden.</param>
         void WerkjaarAfsluiten(Groep groep);
+
+        /// <summary>
+        /// Draait de jaarovergang naar het gegeven <paramref name="groepsWerkJaar"/> terug in civi.
+        /// Lidrelaties worden hersteld naar de toestand op de dag van de jaarovergang.
+        /// </summary>
+        /// <param name="groepsWerkJaar">Terug te draaien groepswerkjaar</param>
+        void WerkjaarTerugDraaien(GroepsWerkJaar groepsWerkJaar);
     }
 }

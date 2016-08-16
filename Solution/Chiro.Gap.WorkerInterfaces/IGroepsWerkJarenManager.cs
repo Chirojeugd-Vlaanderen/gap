@@ -153,5 +153,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="groepsWerkJaar"></param>
         /// <returns>De status van het gegeven <paramref name="groepsWerkJaar"/>.</returns>
         WerkJaarStatus StatusBepalen(GroepsWerkJaar groepsWerkJaar);
+
+        /// <summary>
+        /// Verwijdert een groepswerkjaar in zijn geheel.
+        /// </summary>
+        /// <param name="groepsWerkJaar">Te verwijderen groepswerkjaar</param>
+        /// <remarks>
+        /// Dit werkt enkel als er geen liden zijn waarvan de probeerperiode voorbij is.
+        /// </remarks>
+        void Verwijderen(GroepsWerkJaar groepsWerkJaar);
 	}
 }

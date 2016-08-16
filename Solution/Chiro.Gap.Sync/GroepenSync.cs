@@ -58,5 +58,15 @@ namespace Chiro.Gap.Sync
         {
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepsWerkjaarAfsluiten(groep.Code));
         }
+
+        /// <summary>
+        /// Draait de jaarovergang naar het gegeven <paramref name="groepsWerkJaar"/> terug in civi.
+        /// Lidrelaties worden hersteld naar de toestand op de dag van de jaarovergang.
+        /// </summary>
+        /// <param name="groepsWerkJaar">Terug te draaien groepswerkjaar</param>
+        public void WerkjaarTerugDraaien(GroepsWerkJaar groepsWerkJaar)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
