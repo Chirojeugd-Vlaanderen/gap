@@ -387,6 +387,14 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer"></param>
         [OperationContract(IsOneWay = true)]
         void GroepsWerkjaarAfsluiten(string stamNummer);
+
+        /// <summary>
+        /// Herstelt lidrelaties naar de toestand voor de gegeven <paramref name="datum"/>.
+        /// </summary>
+        /// <param name="stamNummer">Stamnummer van ploeg waarvan lidrelaties hersteld moeten worden.</param>
+        /// <param name="datum"></param>
+        [OperationContract(IsOneWay = true)]
+        void GroepsWerkjaarTerugDraaien(string stamNummer, DateTime datum);
         #endregion
 
         #region dubbelpunt
@@ -443,5 +451,6 @@ namespace Chiro.Kip.ServiceContracts
         [OperationContract(IsOneWay = true)]
         void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, MembershipGedoe gedoe);
         #endregion
+
     }
 }

@@ -1412,14 +1412,18 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
             var groep = groepsWerkJaar.Groep;
+            // Vanaf dat we dit releasen, wordt er in een groepswerkjaar een datum bewaard. Maar opdat
+            // alles nog zou werken met bestaande jaarovergangen naar 2015-2016, kiezen we 1 september
+            // als die datum niet gegeven zou zijn.
+            DateTime datum = groepsWerkJaar.Datum ?? new DateTime(groepsWerkJaar.WerkJaar, 9, 1);
 
-            _groepsWerkJarenMgr.Verwijderen(groepsWerkJaar);
+            _groepsWerkJarenMgr.Verwijderen(groepsWerkJaar, _ledenRepo, _groepsWerkJarenRepo, _afdelingsJaarRepo);
 
 #if KIPDORP
 			using (var tx = new TransactionScope())
 			{
 #endif
-            _groepenSync.WerkjaarTerugDraaien(groepsWerkJaar);
+            _groepenSync.WerkjaarTerugDraaien(groep, datum);
             _groepsWerkJarenRepo.SaveChanges();
             _veelGebruikt.WerkJaarInvalideren(groep);
 #if KIPDORP

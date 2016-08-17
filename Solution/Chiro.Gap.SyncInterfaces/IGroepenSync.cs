@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-using ﻿System;
+using  System;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.SyncInterfaces
@@ -38,10 +38,11 @@ namespace Chiro.Gap.SyncInterfaces
         void WerkjaarAfsluiten(Groep groep);
 
         /// <summary>
-        /// Draait de jaarovergang naar het gegeven <paramref name="groepsWerkJaar"/> terug in civi.
-        /// Lidrelaties worden hersteld naar de toestand op de dag van de jaarovergang.
+        /// Herstelt de lidrelaties van de gegeven <paramref name="groep"/> naar de toestand op de gegeven
+        /// <paramref name="datum"/>. In praktijk wordt dit gebruikt om een werkjaar terug te draaien.
         /// </summary>
-        /// <param name="groepsWerkJaar">Terug te draaien groepswerkjaar</param>
-        void WerkjaarTerugDraaien(GroepsWerkJaar groepsWerkJaar);
+        /// <param name="groep"></param>
+        /// <param name="datum"></param>
+        void WerkjaarTerugDraaien(Groep groep, DateTime datum);
     }
 }

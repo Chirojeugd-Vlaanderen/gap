@@ -127,8 +127,9 @@ namespace Chiro.Gap.Dummies
         /// Draait de jaarovergang naar het gegeven <paramref name="groepsWerkJaar"/> terug in civi.
         /// Lidrelaties worden hersteld naar de toestand op de dag van de jaarovergang.
         /// </summary>
-        /// <param name="groepsWerkJaar">Terug te draaien groepswerkjaar</param>
-        public void WerkjaarTerugDraaien(GroepsWerkJaar groepsWerkJaar)
+        /// <param name="groep"></param>
+        /// <param name="datum"></param>
+        public void WerkjaarTerugDraaien(Groep groep, DateTime datum)
         {
         }
 

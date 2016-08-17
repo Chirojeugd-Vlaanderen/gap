@@ -17,6 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 
@@ -158,9 +159,13 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Verwijdert een groepswerkjaar in zijn geheel.
         /// </summary>
         /// <param name="groepsWerkJaar">Te verwijderen groepswerkjaar</param>
+        /// <param name="ledenRepo"></param>
+        /// <param name="gwjRepo"></param>
+        /// <param name="ajRepo"></param>
         /// <remarks>
         /// Dit werkt enkel als er geen liden zijn waarvan de probeerperiode voorbij is.
+        /// De repositories heb ik nodig om de leden te kunnen verwijderen.
         /// </remarks>
-        void Verwijderen(GroepsWerkJaar groepsWerkJaar);
+        void Verwijderen(GroepsWerkJaar groepsWerkJaar, IRepository<Lid> ledenRepo, IRepository<GroepsWerkJaar> gwjRepo, IRepository<AfdelingsJaar> ajRepo);
 	}
 }

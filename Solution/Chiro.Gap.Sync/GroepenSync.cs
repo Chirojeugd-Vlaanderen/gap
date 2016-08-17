@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
@@ -60,13 +61,15 @@ namespace Chiro.Gap.Sync
         }
 
         /// <summary>
-        /// Draait de jaarovergang naar het gegeven <paramref name="groepsWerkJaar"/> terug in civi.
-        /// Lidrelaties worden hersteld naar de toestand op de dag van de jaarovergang.
+        /// Herstelt de lidrelaties van de gegeven <paramref name="groep"/> naar de toestand op de gegeven
+        /// <paramref name="datum"/>. In praktijk wordt dit gebruikt om een werkjaar terug te draaien.
         /// </summary>
-        /// <param name="groepsWerkJaar">Terug te draaien groepswerkjaar</param>
-        public void WerkjaarTerugDraaien(GroepsWerkJaar groepsWerkJaar)
+        /// <param name="groep"></param>
+        /// <param name="datum"></param>
+        public void WerkjaarTerugDraaien(Groep groep, DateTime datum)
         {
-            throw new System.NotImplementedException();
+            ServiceHelper.CallService<ISyncPersoonService>(
+                svc => svc.GroepsWerkjaarTerugDraaien(groep.Code, datum));
         }
     }
 }
