@@ -74,7 +74,7 @@
       <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.CiviSync.Services.Test\Chiro.CiviSync.Services.Test.csproj">
-      <Project>{20CFA748-66F5-4DF3-AB3B-8F949D58A004}</Project>
+      <Project>{20cfa748-66f5-4df3-ab3b-8f949d58a004}</Project>
       <Name>Chiro.CiviSync.Services.Test</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.CiviSync.Workers\Chiro.CiviSync.Workers.csproj">

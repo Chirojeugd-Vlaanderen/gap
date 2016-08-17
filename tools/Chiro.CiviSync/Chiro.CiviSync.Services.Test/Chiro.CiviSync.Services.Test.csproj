@@ -101,6 +101,10 @@
       <Project>{C27C0FB3-740A-4705-98DF-3B237984C44F}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Services\Chiro.CiviSync.Services.csproj">
+      <Project>{30215f07-a682-4e89-8ff9-d33f705e9842}</Project>
+      <Name>Chiro.CiviSync.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
@@ -112,10 +116,6 @@
     <ProjectReference Include="..\Chiro.CiviSync.Mapping\Chiro.CiviSync.Mapping.csproj">
       <Project>{601725A8-680D-4E67-8C02-C987AF4EFF0B}</Project>
       <Name>Chiro.CiviSync.Mapping</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.CiviSync.Services\Chiro.CiviSync.Services.csproj">
-      <Project>{30215F07-A682-4E89-8FF9-D33F705E9842}</Project>
-      <Name>Chiro.CiviSync.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.CiviSync.Workers\Chiro.CiviSync.Workers.csproj">
       <Project>{9B8B6ADD-3963-440B-B00C-54F476ED353A}</Project>

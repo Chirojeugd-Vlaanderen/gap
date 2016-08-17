@@ -89,6 +89,7 @@
     <Compile Include="SyncService.CommunicatieVerwijderen.cs" />
     <Compile Include="SyncService.Dubbelpunt.cs" />
     <Compile Include="SyncService.FunctiesUpdaten.cs" />
+    <Compile Include="SyncService.GroepsWerkjaarTerugDraaien.cs" />
     <Compile Include="SyncService.GroepUpdaten.cs" />
     <Compile Include="SyncService.LidBewaren.cs" />
     <Compile Include="SyncService.LidTypeUpdaten.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="SyncService.svc.cs">
       <DependentUpon>SyncService.svc</DependentUpon>
     </Compile>
-    <Compile Include="SyncService.WerkjaarAfsluiten.cs" />
+    <Compile Include="SyncService.GroepsWerkjaarAfsluiten.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

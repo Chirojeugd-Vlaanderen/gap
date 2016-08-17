@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Linq;
 using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -53,8 +52,6 @@ namespace Chiro.CiviSync.Services
 
             do
             {
-
-
                 var request = new RelationshipRequest
                 {
                     ContactIdB = civiGroepId,
@@ -90,7 +87,7 @@ namespace Chiro.CiviSync.Services
             _log.Loggen(Niveau.Info,
                 String.Format(
                     "Werkjaar afgesloten voor groep {0}. Totaal aantal beeindigd: {1}.",
-                    stamNummer, beeindigdInRun),
+                    stamNummer, totaalBeeindigd),
                 stamNummer, null, null);
         }
     }
