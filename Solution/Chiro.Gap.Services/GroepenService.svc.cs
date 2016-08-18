@@ -1308,7 +1308,13 @@ namespace Chiro.Gap.Services
 				throw FaultExceptionHelper.FoutNummer(FoutNummer.OvergangTeVroeg, Resources.OvergangTeVroeg);
 			}
 
-			var nieuwGwj = new GroepsWerkJaar { WerkJaar = _groepsWerkJarenMgr.NieuweWerkJaar(groepID), Groep = groep };
+		    var nieuwGwj = new GroepsWerkJaar
+		    {
+		        WerkJaar = _groepsWerkJarenMgr.NieuweWerkJaar(groepID),
+		        Groep = groep,
+		        Datum = DateTime.Today
+		    };
+
 			groep.GroepsWerkJaar.Add(nieuwGwj);
 
 			foreach (var afdelingsJaarDetail in teActiveren)
