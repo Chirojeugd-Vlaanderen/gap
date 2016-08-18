@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -226,12 +226,26 @@ namespace Chiro.Gap.Domain
     {
         [EnumMember]
         Onbekend = 0x00,
+        /// <summary>
+        /// Het werkjaar is voorbij.
+        /// </summary>
         [EnumMember]
         Voorbij = 0x01,
+        /// <summary>
+        /// Het werkjaar is bezig.
+        /// </summary>
         [EnumMember]
         Bezig = 0x02,
+        /// <summary>
+        /// De mogelijkheid bestaat om de jaarovergang te doen.
+        /// </summary>
         [EnumMember]
-        InOvergang = 0x06	// bewust 0x06, omdat een werkJaar in overgang dan ook bezig is.
+        InOvergang = 0x06,	// bewust 0x06, omdat een werkJaar in overgang dan ook bezig is.
+        /// <summary>
+        /// Het werkjaar is bezig, maar er zijn nog geen leden waarvan de probeerperiode voorbij is.
+        /// </summary>
+        [EnumMember]
+        KanTerugDraaien = 0x12
     }
 
 	/// <summary>

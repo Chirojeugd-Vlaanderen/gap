@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
@@ -57,6 +58,18 @@ namespace Chiro.Gap.Sync
         public void WerkjaarAfsluiten(Groep groep)
         {
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepsWerkjaarAfsluiten(groep.Code));
+        }
+
+        /// <summary>
+        /// Herstelt de lidrelaties van de gegeven <paramref name="groep"/> naar de toestand op de gegeven
+        /// <paramref name="datum"/>. In praktijk wordt dit gebruikt om een werkjaar terug te draaien.
+        /// </summary>
+        /// <param name="groep"></param>
+        /// <param name="datum"></param>
+        public void WerkjaarTerugDraaien(Groep groep, DateTime datum)
+        {
+            ServiceHelper.CallService<ISyncPersoonService>(
+                svc => svc.GroepsWerkjaarTerugDraaien(groep.Code, datum));
         }
     }
 }

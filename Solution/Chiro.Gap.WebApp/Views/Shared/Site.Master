@@ -1,10 +1,10 @@
-<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<Chiro.Gap.WebApp.Models.IMasterViewModel>"
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<Chiro.Gap.WebApp.Models.MasterViewModel>"
     MasterPageFile="~/Views/Shared/Globaal.Master" %>
 
 <asp:Content ContentPlaceHolderID="HeaderTitleContent" runat="server">
 <%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -51,7 +51,7 @@
         <%=Html.Encode(ViewData.Model.GroepsNaam)%>
         <% if (ViewData.Model.HuidigWerkJaar > 0)
            {%>
-        <%=ViewData.Model.HuidigWerkJaar%>-<%=ViewData.Model.HuidigWerkJaar + 1%>
+        <%:Html.DisplayFor(mdl => mdl.WerkJaarWeergave)%>
         <%
            }
         %>

@@ -15,3 +15,5 @@
 -- limitations under the License.
 
 -- Voeg hier de wijzigingen toe die moeten gebeuren aan de database.
+
+ALTER TABLE grp.GroepsWerkjaar ADD Datum DATETIME DEFAULT getdate();

@@ -343,4 +343,7 @@ de helpdesk</value>
   <data name="LidProbleem" xml:space="preserve">
     <value>Algemeen probleem bij inschrijving.</value>
   </data>
+  <data name="KanWerkjaarNietTerugDraaien" xml:space="preserve">
+    <value>Het werkjaar kan niet worden teruggedraaid; er zijn al aangesloten leden.</value>
+  </data>
 </root>

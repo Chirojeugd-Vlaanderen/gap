@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -22,9 +22,7 @@ using System.Diagnostics;
 using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -33,12 +31,6 @@ namespace Chiro.Gap.WebApp.Controllers
     /// Deze controller bevat de method 'BaseModelInit', het BaseModel initialiseert.
     /// Verder ga ik hier proberen de IoC te arrangere voor de ServiceHelper
     /// </summary>
-    /// <remarks>
-    /// MasterAttribute helpt de overerving regelen
-    /// Met dank aan 
-    /// http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
-    /// </remarks>
-    [Master]
     [HandleError]
     public abstract class BaseController : Controller
     {
@@ -128,7 +120,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.StamNummer = gwjDetail.GroepCode;
                 model.GroepID = gwjDetail.GroepID;
                 model.HuidigWerkJaar = gwjDetail.WerkJaar;
-                model.IsInOvergangsPeriode = gwjDetail.Status == WerkJaarStatus.InOvergang;
+                model.WerkJaarStatus = gwjDetail.Status;
 
                 #endregion
 

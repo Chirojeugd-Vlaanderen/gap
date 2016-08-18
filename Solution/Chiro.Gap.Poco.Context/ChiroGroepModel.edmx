@@ -189,6 +189,7 @@
           <Property Name="GroepsWerkJaarID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GroepID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Datum" Type="datetime" />
         </EntityType>
         <EntityType Name="KaderGroep">
           <Key>
@@ -1651,6 +1652,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="AfdelingsJaar" />
           <NavigationProperty Name="Uitstap" Relationship="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar" FromRole="GroepsWerkJaar" ToRole="Uitstap" />
           <NavigationProperty Name="Abonnement" Relationship="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" FromRole="GroepsWerkJaar" ToRole="Abonnement" />
+          <Property Name="Datum" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Lid">
           <Key>
@@ -2232,6 +2234,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <EntitySetMapping Name="GroepsWerkJaar">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.GroepsWerkJaar)">
               <MappingFragment StoreEntitySet="GroepsWerkJaar">
+                <ScalarProperty Name="Datum" ColumnName="Datum" />
                 <ScalarProperty Name="ID" ColumnName="GroepsWerkJaarID" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />

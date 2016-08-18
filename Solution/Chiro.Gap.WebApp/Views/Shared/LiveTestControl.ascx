@@ -1,7 +1,7 @@
-<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.IMasterViewModel>" %>
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.MasterViewModel>" %>
 <%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -19,20 +19,20 @@
  */
 %>
 <%
+    string liveTestClass;
+    string liveTestInfo;
 	if (Model.IsLive)
 	{
-%>
-<div id="livetest" class="liveomgeving">
-	LIVE
-</div>
-<%
+	    liveTestClass = "liveomgeving";
+	    liveTestInfo = "LIVE";
 	}
 	else
 	{
-%>
-<div id="livetest" class="testomgeving">
-	TEST
-</div>
-<%
+	    liveTestClass = "testomgeving";
+	    liveTestInfo = "TEST";
 	}
 %>
+
+<div id="livetest" class="<%:liveTestClass %>">
+	<%:liveTestInfo %>
+</div>
