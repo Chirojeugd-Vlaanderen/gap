@@ -87,7 +87,7 @@ namespace Chiro.CiviSync.Services
                     RelationshipTypeId = (int)RelatieType.LidVan,
                     ReturnFields = "id",
                     EndDateFilter = new Filter<DateTime?>(WhereOperator.Gte, datum),
-                    IsActive = true,
+                    IsActive = false,
                     RelationshipSaveRequest = new[]
                     {
                         new RelationshipRequest
