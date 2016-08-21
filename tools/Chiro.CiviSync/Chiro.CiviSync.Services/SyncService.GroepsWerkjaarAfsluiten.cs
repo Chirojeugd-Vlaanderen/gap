@@ -28,16 +28,16 @@ namespace Chiro.CiviSync.Services
     public partial class SyncService
     {
         /// <summary>
-        /// Sluit het huidige groepswerkjaar af van de groep met gegeven <paramref name="stamNummer"/>.
+        /// Sluit het gegeven groepswerkjaar af van de groep met gegeven <paramref name="stamNummer"/>.
         /// </summary>
         /// <remarks>
-        /// Dat komt er eigenlijk op neer dat alle actieve lidrelaties worden stopgezet.
-        /// Dit is tamelijk gevaarlijk. Als dit faalt, dan loopt de ledensync voor het volgende
-        /// werkjaar in het honderd.
+        /// Dat komt er eigenlijk op neer dat alle actieve lidrelaties van het werkjaar worden stopgezet.
+        /// Als er nog actieve lidrelaties zijn van oudere werkjaren, dan worden die ook stopgezet.s
         /// </remarks>
         /// <param name="stamNummer"></param>
+        /// <param name="werkjaar">Af te sluiten werkjaar.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void GroepsWerkjaarAfsluiten(string stamNummer)
+        public void GroepsWerkjaarAfsluiten(string stamNummer, int werkjaar)
         {
             int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
             if (civiGroepId == null)
@@ -47,47 +47,21 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            int beeindigdInRun = 0;
-            int totaalBeeindigd = 0;
-
-            do
+            var request = new ChiroWerkjaarRequest
             {
-                var request = new RelationshipRequest
-                {
-                    ContactIdB = civiGroepId,
-                    IsActive = true,
-                    RelationshipTypeId = (int) RelatieType.LidVan,
-                    // We zijn eigenlijk niet geinteresseerd in de get-call, het is
-                    // enkel een manier om het deactiveren te chainen. Lever dus zo
-                    // weinig mogelijk informatie op.
-                    ReturnFields = "id",
-                    RelationshipSaveRequest = new[]
-                    {
-                        new RelationshipRequest
-                        {
-                            IdValueExpression = "$value.id",
-                            IsActive = false,
-                            EndDate = DateTime.Now
-                        }
-                    }
-                };
+                StamNummer = stamNummer,
+                Werkjaar = werkjaar
+            };
 
-                var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
-                    svc =>
-                        svc.RelationshipGet(_apiKey, _siteKey, request));
-                result.AssertValid();
-                beeindigdInRun = result.Count;
-                _log.Loggen(Niveau.Info,
-                    String.Format(
-                        "Werkjaar afsluiten voor groep {0}. {1} lidrelatie(s) beeindigd.",
-                        stamNummer, beeindigdInRun),
-                    stamNummer, null, null);
-                totaalBeeindigd += beeindigdInRun;
-            } while (beeindigdInRun > 0);
+            var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                svc =>
+                    svc.ChiroWerkjaarAfsluiten(_apiKey, _siteKey, request));
+            result.AssertValid();
+
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "Werkjaar afgesloten voor groep {0}. Totaal aantal beeindigd: {1}.",
-                    stamNummer, totaalBeeindigd),
+                    "Werkjaar afsluiten voor groep {0}. {1} lidrelatie(s) beeindigd.",
+                    stamNummer, result.Count),
                 stamNummer, null, null);
         }
     }

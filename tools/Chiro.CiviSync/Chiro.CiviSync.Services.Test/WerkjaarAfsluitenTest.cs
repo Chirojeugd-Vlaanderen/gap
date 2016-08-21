@@ -34,6 +34,7 @@ namespace Chiro.CiviSync.Services.Test
     public class WerkjaarAfsluitenTest
     {
         private readonly DateTime _vandaagZogezegd = new DateTime(2016, 8, 13);
+        private readonly int _huidigWerkjaar = 2015;
 
         [ClassInitialize]
         public static void InitializeTestClass(TestContext c)
@@ -60,28 +61,24 @@ namespace Chiro.CiviSync.Services.Test
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
                 .Returns(new ApiResultValues<Contact>(ploeg));
-            // De relaties met de ploeg ook.
-            // We leveren er geen op, want het inactief maken is irrelevant
-            // voor deze test.
+            // We hebben nu een API action in ChiroCivi om het werkjaar af te sluiten.
             civiApiMock.Setup(
-                src => src.RelationshipGet(It.IsAny<String>(), It.IsAny<string>(),
-                    It.Is<RelationshipRequest>(
+                src => src.ChiroWerkjaarAfsluiten(It.IsAny<String>(), It.IsAny<string>(),
+                    It.Is<ChiroWerkjaarRequest>(
                         r =>
-                            r.ContactIdB == ploeg.Id && r.IsActive.Value == true &&
-                            r.RelationshipTypeId == (int) RelatieType.LidVan)))
+                            r.StamNummer == ploeg.ExternalIdentifier && r.Werkjaar == _huidigWerkjaar)))
                 .Returns(new ApiResultValues<Relationship>());
 
             // ACT
             var service = factory.Maak<SyncService>();
-            service.GroepsWerkjaarAfsluiten(ploeg.ExternalIdentifier);
+            service.GroepsWerkjaarAfsluiten(ploeg.ExternalIdentifier, _huidigWerkjaar);
 
             // ASSERT
 
-            civiApiMock.Verify(src => src.RelationshipGet(It.IsAny<String>(), It.IsAny<string>(),
-                It.Is<RelationshipRequest>(
+            civiApiMock.Verify(src => src.ChiroWerkjaarAfsluiten(It.IsAny<String>(), It.IsAny<string>(),
+                It.Is<ChiroWerkjaarRequest>(
                     r =>
-                        r.ContactIdB == ploeg.Id && r.IsActive.Value == true &&
-                        r.RelationshipTypeId == (int) RelatieType.LidVan)), Times.AtLeastOnce);
+                        r.StamNummer == ploeg.ExternalIdentifier && r.Werkjaar == _huidigWerkjaar)), Times.AtLeastOnce);
         }
     }
 }
