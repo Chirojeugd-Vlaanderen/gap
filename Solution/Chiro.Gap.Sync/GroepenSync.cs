@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
@@ -51,13 +51,13 @@ namespace Chiro.Gap.Sync
         }
 
         /// <summary>
-        /// Sluit het huidige werkjaar van de gegeven <param name="groep"> af in Civi. Dat komt erop neer dat
-        /// alle lidrelaties worden beeindigd.</param>
+        /// Sluit het gegeven groepswerkjaar <paramref name="gwj"/> af in Civi. Dat komt erop neer dat
+        /// alle lidrelaties worden beeindigd.
         /// </summary>
-        /// <param name="groep">Groep waarvan het werkjaar afgesloten moet worden.</param>
-        public void WerkjaarAfsluiten(Groep groep)
+        /// <param name="gwj">Af te sluiten groepswerkjaar.</param>
+        public void WerkjaarAfsluiten(GroepsWerkJaar gwj)
         {
-            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepsWerkjaarAfsluiten(groep.Code));
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepsWerkjaarAfsluiten(gwj.Groep.Code, gwj.WerkJaar));
         }
 
         /// <summary>
