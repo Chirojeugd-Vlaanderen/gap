@@ -15,10 +15,7 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Web;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -40,7 +37,6 @@ namespace Chiro.CiviSync.Services
         public void GroepsWerkjaarTerugDraaien(string stamNummer, DateTime datum)
         {
             Debug.Assert(datum > DateTime.MinValue);
-            int aantal;
             int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
             if (civiGroepId == null)
             {
@@ -49,67 +45,23 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
+            var request = new ChiroWerkjaarRequest
+            {
+                StamNummer = stamNummer,
+                Date = datum
+            };
+
+            var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                svc =>
+                    svc.ChiroWerkjaarTerugdraaien(_apiKey, _siteKey, request));
+            result.AssertValid();
+
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "Jaarovergang ongedaan maken voor groep {0}. Terug naar situatie op {1:dd/MM/yyyy}.",
-                    stamNummer, datum),
+                    "Groep {0} terug naar situatie op {1:dd/MM/yyyy}. {2} actieve lidrelatie(s).",
+                    stamNummer, datum, result.Count),
                 stamNummer, null, null);
 
-            // Lidrelaties van het nieuwe werkjaar verwijderen
-            do
-            {
-                var request = new RelationshipRequest
-                {
-                    ContactIdB = civiGroepId,
-                    RelationshipTypeId = (int) RelatieType.LidVan,
-                    ReturnFields = "id",
-                    StartDateFilter = new Filter<DateTime?>(WhereOperator.Gte, datum),
-                    RelationshipDeleteRequest = new[] {new DeleteRequest {IdValueExpression = "$value.id"}}
-                };
-                var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
-                    svc =>
-                        svc.RelationshipGet(_apiKey, _siteKey, request));
-                result.AssertValid();
-                aantal = result.Count;
-                _log.Loggen(Niveau.Info,
-                    String.Format(
-                        "{1} lidrelatie(s) verwijderd voor groep {0}.",
-                        stamNummer, aantal),
-                    stamNummer, null, null);
-            } while (aantal > 0);
-
-            // Lidrelaties van het oude werkjaar opnieuw activeren
-            do
-            {
-                var request = new RelationshipRequest
-                {
-                    ContactIdB = civiGroepId,
-                    RelationshipTypeId = (int)RelatieType.LidVan,
-                    ReturnFields = "id",
-                    EndDateFilter = new Filter<DateTime?>(WhereOperator.Gte, datum),
-                    IsActive = false,
-                    RelationshipSaveRequest = new[]
-                    {
-                        new RelationshipRequest
-                        {
-                            IdValueExpression = "$value.id",
-                            IsActive = true,
-                            // Verwijder einddatum
-                            EndDate = DateTime.MinValue
-                        }
-                    }
-                };
-                var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
-                    svc =>
-                        svc.RelationshipGet(_apiKey, _siteKey, request));
-                result.AssertValid();
-                aantal = result.Count;
-                _log.Loggen(Niveau.Info,
-                    String.Format(
-                        "{1} lidrelatie(s) opnieuw geactiveerd voor groep {0}.",
-                        stamNummer, aantal),
-                    stamNummer, null, null);
-            } while (aantal > 0);
         }
     }
 }
