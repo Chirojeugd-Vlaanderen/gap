@@ -89,10 +89,11 @@ namespace Chiro.CiviSync.Logic
         /// <param name="type">Relatietype</param>
         /// <param name="contact1Id">Civi-ID van het eerste contact.</param>
         /// <param name="contact2Id">Civi-ID van het tweede contact.</param>
+        /// <param name="werkjaar"></param>
         /// <param name="uitschrijfDatum">Als het om een inactieve relatie gaat: de uitschrijfdatum.</param>
         /// <returns>Een relationshiprequest van het gegeven <paramref name="type"/> voor een relatie tussen
         /// de contacten met ID's <paramref name="contact1Id"/> en <paramref name="contact2Id"/>.</returns>
-        public RelationshipRequest RequestMaken(RelatieType type, int contact1Id, int contact2Id, DateTime? uitschrijfDatum)
+        public RelationshipRequest RequestMaken(RelatieType type, int contact1Id, int contact2Id, int werkjaar, DateTime? uitschrijfDatum)
         {
             // We bekijken de datums zonder uren, dus discrete dagen. De EndDate valt volledig binnen de
             // relationship.
@@ -106,6 +107,7 @@ namespace Chiro.CiviSync.Logic
                 StartDate = vandaag,
                 EndDate = uitschrijfDatum ?? DateTime.MinValue,
                 RelationshipTypeId = (int)type,
+                Werkjaar = werkjaar
             };
 
             result.IsActive = uitschrijfDatum == null || uitschrijfDatum.Value > vandaag;

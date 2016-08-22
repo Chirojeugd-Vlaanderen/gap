@@ -31,11 +31,11 @@ namespace Chiro.Gap.SyncInterfaces
         void Bewaren(Groep g);
 
         /// <summary>
-        /// Sluit het huidige werkjaar van de gegeven <param name="groep"> af in Civi. Dat komt erop neer dat
-        /// alle lidrelaties worden beeindigd.</param>
+        /// Sluit het gegeven groepswerkjaar <paramref name="gwj"/> af in Civi. Dat komt erop neer dat
+        /// alle lidrelaties worden beeindigd.
         /// </summary>
-        /// <param name="groep">Groep waarvan het werkjaar afgesloten moet worden.</param>
-        void WerkjaarAfsluiten(Groep groep);
+        /// <param name="gwj">Af te sluiten groepswerkjaar.</param>
+        void WerkjaarAfsluiten(GroepsWerkJaar gwj);
 
         /// <summary>
         /// Herstelt de lidrelaties van de gegeven <paramref name="groep"/> naar de toestand op de gegeven

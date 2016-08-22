@@ -1367,7 +1367,7 @@ namespace Chiro.Gap.Services
 			{
 #endif
 				_groepenRepo.SaveChanges();
-		        _groepenSync.WerkjaarAfsluiten(groep);
+		        _groepenSync.WerkjaarAfsluiten(vorigGwj);
 
 #if KIPDORP
 				tx.Complete();
