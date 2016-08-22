@@ -33,6 +33,7 @@ namespace Chiro.CiviSync.Logic.Test
     public class RelationshipLogicTest
     {
         private static readonly DateTime VandaagZogezegd = new DateTime(2015, 04, 20);
+        private static readonly int HuidigWerkjaar = 2015;
         private static readonly int DummyGroepId = 2;
         private static readonly int DummyPersoonId = 1;
 
@@ -54,7 +55,7 @@ namespace Chiro.CiviSync.Logic.Test
 
             var target = factory.Maak<RelationshipLogic>();
 
-            var result = target.RequestMaken(RelatieType.LidVan, DummyPersoonId, DummyGroepId, null);
+            var result = target.RequestMaken(RelatieType.LidVan, DummyPersoonId, DummyGroepId, HuidigWerkjaar, null);
             Assert.AreEqual(DateTime.MinValue, result.EndDate);
         }
     }

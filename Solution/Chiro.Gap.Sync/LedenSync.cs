@@ -134,6 +134,7 @@ namespace Chiro.Gap.Sync
             var lidGedoe = new LidGedoe
             {
                 StamNummer = l.GroepsWerkJaar.Groep.Code,
+                Werkjaar = l.GroepsWerkJaar.WerkJaar,
                 LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
                 NationaleFuncties = nationaleFuncties,
                 OfficieleAfdelingen = officieleAfdelingen,

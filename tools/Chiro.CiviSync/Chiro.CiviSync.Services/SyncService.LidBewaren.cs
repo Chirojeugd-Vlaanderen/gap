@@ -64,7 +64,7 @@ namespace Chiro.CiviSync.Services
             // Request voor te bewaren (nieuwe) lidrelatie: eerst een standaardrequest voor dit werkjaar.
             // Als het contact al zo'n relatie had (contact.RelationshipResult), dan nemen we van die bestaande
             // de relevante zaken over.
-            var relationshipRequest = _relationshipLogic.RequestMaken(RelatieType.LidVan, contact.Id, civiGroepId.Value,
+            var relationshipRequest = _relationshipLogic.RequestMaken(RelatieType.LidVan, contact.Id, civiGroepId.Value, gedoe.Werkjaar,
                 gedoe.UitschrijfDatum);
 
             if (contact.RelationshipResult.Count == 1)

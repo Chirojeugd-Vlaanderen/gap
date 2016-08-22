@@ -33,6 +33,9 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         [DataMember]
         public string StamNummer { get; set; }
 
+        [DataMember]
+        public int Werkjaar { get; set; }
+
         /// <summary>
         /// Type van het lid (kind, leiding)
         /// </summary>
@@ -69,7 +72,7 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// <returns>System.String that represents the current LidGedoe</returns>
         public override string ToString()
         {
-            return this.LidType.ToString() + this.StamNummer;
+            return LidType.ToString() + Werkjaar + StamNummer;
         }
     }
 }
