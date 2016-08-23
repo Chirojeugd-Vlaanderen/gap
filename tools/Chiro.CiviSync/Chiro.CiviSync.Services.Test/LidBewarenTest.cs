@@ -444,7 +444,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == relatie.StartDate && r.EndDate == uitschrijfDatum && r.Id == relatie.Id &&
+                                r.StartDate == relatie.StartDate && r.EndDate == uitschrijfDatum.Date.AddDays(-1) && r.Id == relatie.Id &&
                                 r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
@@ -469,7 +469,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
-                                r.StartDate == relatie.StartDate && r.EndDate == uitschrijfDatum && r.Id == relatie.Id &&
+                                r.StartDate == relatie.StartDate && r.EndDate == uitschrijfDatum.Date.AddDays(-1) && r.Id == relatie.Id &&
                                 r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)), Times.AtLeastOnce);
         }
 
