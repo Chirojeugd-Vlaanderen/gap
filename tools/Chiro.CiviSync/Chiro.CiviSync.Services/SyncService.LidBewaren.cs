@@ -50,6 +50,8 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
+            // We halen het recentste lid op, en niet het 'actieve' lid, zodat we zo nodig een inactief
+            // lid terug kunnen activeren.
             var contact = _contactWorker.PersoonMetRecentsteLid(adNummer, civiGroepId);
 
             if (contact == null || contact.ExternalIdentifier == null)
