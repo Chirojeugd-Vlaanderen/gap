@@ -86,7 +86,7 @@ namespace Chiro.CiviSync.Services
                 {
                     Id = contact.RelationshipResult.Id,
                     IsActive = false,
-                    EndDate = uitschrijfDatum
+                    EndDate = uitschrijfDatum.Date.AddDays(-1)
                 };
 
                 var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
