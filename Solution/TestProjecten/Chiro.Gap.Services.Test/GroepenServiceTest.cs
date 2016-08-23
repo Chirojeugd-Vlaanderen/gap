@@ -724,6 +724,53 @@ namespace Chiro.Gap.Services.Test
             Assert.IsTrue(gedetecteerd);
         }
 
+        /// <summary>
+        /// Controleer dat lidrelaties einddatum hebben in het vorige werkjaar (#5367)
+        /// </summary>
+        [TestMethod()]
+        public void JaarOvergangTerugDraaienTest()
+        {
+            // ARRANGE
+
+            DateTime nieuwWerkjaarStart = new DateTime(2016, 8, 22);
+            DateTime oudWerkjaarEinde = new DateTime(2016, 8, 21);
+            // model om op te testen
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = groep,
+                WerkJaar = 2016,
+                ID = 1,
+                Datum = nieuwWerkjaarStart,
+                Lid = new List<Lid>(),
+                AfdelingsJaar = new List<AfdelingsJaar>()
+            };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            // fake data access.
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar> {groepsWerkJaar}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                .Returns(new DummyRepo<Lid>(new List<Lid>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>()));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // fake groepensync
+            var groepenSyncMock = new Mock<IGroepenSync>();
+            groepenSyncMock.Setup(src => src.WerkjaarTerugDraaien(groep, oudWerkjaarEinde)).Verifiable();
+            Factory.InstantieRegistreren(groepenSyncMock.Object);
+
+            // ACT
+            var target = Factory.Maak<GroepenService>();
+            target.JaarOvergangTerugDraaien(groepsWerkJaar.ID);
+
+            // ASSERT
+            groepenSyncMock.Verify(src => src.WerkjaarTerugDraaien(groep, oudWerkjaarEinde), Times.AtLeastOnce);
+
+        }
+
         ///<summary>
         /// Controleert of AfdelingsJaarBewaren rekening houdt met de minimumleeftijd.
         ///</summary>

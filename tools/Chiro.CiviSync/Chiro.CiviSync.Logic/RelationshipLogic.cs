@@ -105,7 +105,8 @@ namespace Chiro.CiviSync.Logic
                 ContactIdA = contact1Id,
                 ContactIdB = contact2Id,
                 StartDate = vandaag,
-                EndDate = uitschrijfDatum ?? DateTime.MinValue,
+                // einddatum = uitschrijfdatum - 1, zie #5367.
+                EndDate = uitschrijfDatum == null ? DateTime.MinValue : uitschrijfDatum.Value.Date.AddDays(-1),
                 RelationshipTypeId = (int)type,
                 Werkjaar = werkjaar
             };
