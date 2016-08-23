@@ -17,5 +17,6 @@
 -- Voeg hier de wijzigingen toe die moeten gebeuren aan de database.
 
 ALTER TABLE grp.GroepsWerkjaar ADD Datum DATETIME DEFAULT getdate();
+GO
 
 UPDATE grp.GroepsWerkjaar SET Datum = '2016-08-22' WHERE Werkjaar = 2016;
