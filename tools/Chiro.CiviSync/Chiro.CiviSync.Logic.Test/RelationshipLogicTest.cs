@@ -58,5 +58,19 @@ namespace Chiro.CiviSync.Logic.Test
             var result = target.RequestMaken(RelatieType.LidVan, DummyPersoonId, DummyGroepId, HuidigWerkjaar, null);
             Assert.AreEqual(DateTime.MinValue, result.EndDate);
         }
+
+        /// <summary>
+        /// Uitschrijfdatum = Einddatum + 1 (zie #5367)
+        /// </summary>
+        [TestMethod]
+        public void EindDatumVsUitschrijfDatum()
+        {
+            var factory = new UnityDiContainer();
+            MockDatum(factory);
+            var target = factory.Maak<RelationshipLogic>();
+
+            var result = target.RequestMaken(RelatieType.LidVan, DummyPersoonId, DummyGroepId, HuidigWerkjaar, VandaagZogezegd);
+            Assert.AreEqual(VandaagZogezegd.Date.AddDays(-1), result.EndDate);
+        }
     }
 }
