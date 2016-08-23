@@ -18,8 +18,6 @@ using System;
 using System.Diagnostics;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
-using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.Filters;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
@@ -30,10 +28,10 @@ namespace Chiro.CiviSync.Services
     {
 
         /// <summary>
-        /// Herstelt lidrelaties naar de toestand voor de gegeven <paramref name="datum"/>.
+        /// Herstelt lidrelaties naar de toestand op de gegeven <paramref name="datum"/>.
         /// </summary>
         /// <param name="stamNummer">Stamnummer van ploeg waarvan lidrelaties hersteld moeten worden.</param>
-        /// <param name="datum"></param>
+        /// <param name="datum">De lidrelaties worden hersteld naar de toestand zoals ze waren op deze datum.</param>
         public void GroepsWerkjaarTerugDraaien(string stamNummer, DateTime datum)
         {
             Debug.Assert(datum > DateTime.MinValue);
