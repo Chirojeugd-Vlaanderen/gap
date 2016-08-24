@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
@@ -57,6 +58,7 @@ namespace Chiro.Gap.Sync
         /// <param name="gwj">Af te sluiten groepswerkjaar.</param>
         public void WerkjaarAfsluiten(GroepsWerkJaar gwj)
         {
+            Debug.Assert(gwj.WerkJaar != 0);
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepsWerkjaarAfsluiten(gwj.Groep.Code, gwj.WerkJaar));
         }
 
