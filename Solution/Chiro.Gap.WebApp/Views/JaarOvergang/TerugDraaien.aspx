@@ -24,6 +24,9 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     
+    <h1>EVEN WACHTEN!</h1>
+    
+    <h2>Je riskeert gegevens te verliezen!</h2>
     <p>
         <% string vorigWerkjaar = String.Format("{0}-{1}", Model.HuidigWerkJaar - 1, Model.HuidigWerkJaar); %>
         Het actieve werkjaar is <strong><%:Model.WerkJaarWeergave %></strong>. Als je
@@ -32,12 +35,15 @@
         (<%:vorigWerkjaar%>).
     </p>
     
+    <h2>Je leden voor <%:Model.WerkJaarWeergave %> worden uitgeschreven!</h2>
     <p>
-        <strong>Let op!</strong> Als je dat doet, dan gaat je afdelingsverdeling
-        voor <%:Model.WerkJaarWeergave %> verloren, en je leden voor
+        Als je hiermee verder gaat, dan gaat je afdelingsverdeling
+        voor <%:Model.WerkJaarWeergave %> verloren. Je leden voor
         <%:Model.WerkJaarWeergave %> worden uitgeschreven.
     </p>
     
+    <h2>Er is geen weg terug</h2>
+
     <p>
     Ben je er zeker van dat je de jaarovergang naar <%:Model.HuidigWerkJaar %> ongedaan wilt maken,
     en dat je terug wilt naar <%: vorigWerkjaar %>?        
