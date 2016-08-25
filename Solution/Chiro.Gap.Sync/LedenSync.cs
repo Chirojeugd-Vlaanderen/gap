@@ -107,6 +107,7 @@ namespace Chiro.Gap.Sync
             Debug.Assert(l.GelieerdePersoon.Persoon.InSync);
             Debug.Assert(l.GroepsWerkJaar != null);
             Debug.Assert(l.GroepsWerkJaar.Groep != null);
+
             var nationaleFuncties = (from f in l.Functie
                 where f.IsNationaal
                 select _functieVertaling[(NationaleFunctie) f.ID]).ToList();

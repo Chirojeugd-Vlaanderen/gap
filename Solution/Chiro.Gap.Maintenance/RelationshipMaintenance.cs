@@ -67,15 +67,20 @@ namespace Chiro.Gap.Maintenance
         /// </summary>
         public void LedenZonderAdOpnieuwSyncen()
         {
-            int huidigWerkJaar = _groepsWerkJarenManager.HuidigWerkJaarNationaal();
+            return;
 
-            var teSyncen = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon", "GroepsWerkJaar")
-                where l.GelieerdePersoon.Persoon.AdNummer == null && l.GroepsWerkJaar.WerkJaar == huidigWerkJaar
-                select l).ToArray();
+            // DIT MOGEN WE OP DIT MOMENT NIET MEER DOEN, WANT ER MOGEN ALLEEN ACTIEVE LEDEN
+            // NAAR CIVICRM!
 
-            Console.WriteLine("Aanvragen van {0} AD-nummers", teSyncen.Count());
+            //int huidigWerkJaar = _groepsWerkJarenManager.HuidigWerkJaarNationaal();
 
-            _ledenSync.Bewaren(teSyncen);
+            //var teSyncen = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon", "GroepsWerkJaar")
+            //    where l.GelieerdePersoon.Persoon.AdNummer == null && l.GroepsWerkJaar.WerkJaar == huidigWerkJaar
+            //    select l).ToArray();
+
+            //Console.WriteLine("Aanvragen van {0} AD-nummers", teSyncen.Count());
+
+            //_ledenSync.Bewaren(teSyncen);
         }
 
         #region Disposable thingy
