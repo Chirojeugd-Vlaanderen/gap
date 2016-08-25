@@ -80,9 +80,8 @@ namespace Chiro.Gap.Services
 		// Sync
 
 		private readonly IGroepenSync _groepenSync;
-		private readonly IAbonnementenSync _abonnementenSync;
 
-		// Cache
+	    // Cache
 
 		private readonly IVeelGebruikt _veelGebruikt;
 
@@ -141,9 +140,8 @@ namespace Chiro.Gap.Services
 			_authenticatieMgr = authenticatieMgr;
 			_autorisatieMgr = autorisatieMgr;
 			_groepenSync = groepenSync;
-			_abonnementenSync = abonnementenSync;
 
-			_veelGebruikt = veelGebruikt;
+		    _veelGebruikt = veelGebruikt;
 
 			_gav = new GavChecker(_autorisatieMgr);
 		}
@@ -324,14 +322,11 @@ namespace Chiro.Gap.Services
 			}
 
 			var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
-			result.Status = _groepsWerkJarenMgr.OvergangMogelijk(DateTime.Now, result.WerkJaar)
-								? WerkJaarStatus.InOvergang
-								: WerkJaarStatus.Bezig;
-
+		    result.Status = _groepsWerkJarenMgr.StatusBepalen(groepsWerkJaar);
 			return result;
 		}
 
-	/// <summary>
+	    /// <summary>
 		/// Controleert de verplicht in te vullen lidgegevens.
 		/// </summary>
 		/// <param name="groepId">ID van de groep waarvan de leden te controleren zijn</param>
@@ -1033,7 +1028,7 @@ namespace Chiro.Gap.Services
 			Gav.Check(functie);
 			return Mapper.Map<Functie, FunctieDetail>(functie);
 		}
-		#endregion
+	    #endregion
 
 		#region beheer categorieen (wordt niet gesynct)
 
@@ -1313,7 +1308,13 @@ namespace Chiro.Gap.Services
 				throw FaultExceptionHelper.FoutNummer(FoutNummer.OvergangTeVroeg, Resources.OvergangTeVroeg);
 			}
 
-			var nieuwGwj = new GroepsWerkJaar { WerkJaar = _groepsWerkJarenMgr.NieuweWerkJaar(groepID), Groep = groep };
+		    var nieuwGwj = new GroepsWerkJaar
+		    {
+		        WerkJaar = _groepsWerkJarenMgr.NieuweWerkJaar(groepID),
+		        Groep = groep,
+		        Datum = DateTime.Today
+		    };
+
 			groep.GroepsWerkJaar.Add(nieuwGwj);
 
 			foreach (var afdelingsJaarDetail in teActiveren)
@@ -1366,6 +1367,7 @@ namespace Chiro.Gap.Services
 			{
 #endif
 				_groepenRepo.SaveChanges();
+		        _groepenSync.WerkjaarAfsluiten(vorigGwj);
 
 #if KIPDORP
 				tx.Complete();
@@ -1403,8 +1405,42 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(afdelingsJaren);
 		}
 
-		#endregion
+        /// <summary>
+        /// Verwijdert (zo mogelijk) het groepswerkjaar met gegeven <paramref name="groepsWerkJaarId"/>, en
+        /// herstelt de situatie zoals op het einde van vorig groepswerkjaar.
+        /// </summary>
+        /// <param name="groepsWerkJaarId">ID van groepswerkjaar.</param>
+        public void JaarOvergangTerugDraaien(int groepsWerkJaarId)
+        {
+            var groepsWerkJaar = _groepsWerkJarenRepo.ByID(groepsWerkJaarId);
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+            var groep = groepsWerkJaar.Groep;
+            // Vanaf dat we dit releasen, wordt er in een groepswerkjaar een datum bewaard. Maar opdat
+            // alles nog zou werken met bestaande jaarovergangen naar 2015-2016, kiezen we 1 september
+            // als die datum niet gegeven zou zijn.
+            DateTime werkjaarStart = groepsWerkJaar.Datum ?? new DateTime(groepsWerkJaar.WerkJaar, 9, 1);
 
-	}
+            _groepsWerkJarenMgr.Verwijderen(groepsWerkJaar, _ledenRepo, _groepsWerkJarenRepo, _afdelingsJaarRepo);
+
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+            // Keer terug naar laaste dag vorig groepswerkjaar, zie #5367.
+            _groepenSync.WerkjaarTerugDraaien(groep, werkjaarStart.Date.AddDays(-1));
+            _groepsWerkJarenRepo.SaveChanges();
+            _veelGebruikt.WerkJaarInvalideren(groep);
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
+        }
+
+        #endregion
+
+    }
 }
 

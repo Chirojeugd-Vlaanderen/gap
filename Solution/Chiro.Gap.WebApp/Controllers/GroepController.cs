@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -52,7 +52,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
-            var werkjaarID = ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID));
+		    var gwj = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
+		    var werkjaarID = gwj.WerkJaarID;
 		    var model = new GroepsInstellingenModel
 		    {
 		        Titel = Properties.Resources.GroepsInstellingenTitel,
@@ -62,8 +63,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		                svc => svc.OngebruikteAfdelingenOphalen(werkjaarID)),
 		        IsLive = VeelGebruikt.IsLive()
 		    };
-
-		    // Ook hier nakijken of we live zijn.
+            BaseModelInit(model, groepID);
 
 		    return View(model);
 		}
@@ -117,8 +117,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID))
             };
            
-            // Ook hier nakijken of we live zijn.
-            model.IsLive = VeelGebruikt.IsLive();
+            BaseModelInit(model, groepID);
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }

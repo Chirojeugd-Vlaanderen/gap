@@ -29,16 +29,13 @@ namespace Chiro.CiviSync.Services
     public partial class SyncService
     {
         /// <summary>
-        /// Desactiveert een lidrelatie in CiviCRM.
+        /// Desactiveert een actieve lidrelatie in CiviCRM.
         /// </summary>
         /// <param name="adNummer">
         /// AD-nummer te desactiveren lid.
         /// </param>
         /// <param name="stamNummer">
         /// Stamnummer te desactiveren lid.
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar te desactiveren lid.
         /// </param>
         /// <param name="uitschrijfDatum">te registreren uitschrijfdatum in CiviCRM.</param>
         /// <remarks>
@@ -48,7 +45,7 @@ namespace Chiro.CiviSync.Services
         /// (Dat is alleen zo als er iets louche aan de hadn is, zie #4554.)
         /// </remarks>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void LidUitschrijven(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum)
+        public void LidUitschrijven(int adNummer, string stamNummer, DateTime uitschrijfDatum)
         {
             int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
             if (civiGroepId == null)
@@ -58,7 +55,7 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            var contact = _contactWorker.PersoonMetRecentsteLid(adNummer, civiGroepId);
+            var contact = _contactWorker.PersoonMetActiefLid(adNummer, civiGroepId);
 
             if (contact == null || contact.ExternalIdentifier == null)
             {
@@ -67,22 +64,29 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            if (contact.RelationshipResult.Count == 1 &&
-                _relationshipLogic.WerkjaarGet(contact.RelationshipResult.Values.First()) == werkJaar)
+            if (contact.RelationshipResult.Count >= 1)
             {
-                // Sterretje achter logbericht om verschil te zien met oudere foute boodschap
-                // bij verwijderen lid.
+                if (contact.RelationshipResult.Count > 1)
+                {
+                    _log.Loggen(Niveau.Warning,
+                        String.Format(
+                            "Meer dan 1 actieve lidrelatie voor {0} {1} (AD {2}) in groep {3}.",
+                            contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer),
+                        stamNummer, adNummer, contact.GapId);
+
+                }
+                var relatie = contact.RelationshipResult.Values.First();
                 _log.Loggen(Niveau.Info,
                     String.Format(
-                        "{0} {1} (AD {2}) uitschrijven voor groep {3} in werkjaar {4}.*",
-                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer, werkJaar),
+                        "{0} {1} (AD {2}) uitschrijven voor groep {3}. Startdatum was {4:dd/MM/yyyy}.*",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer, relatie.StartDate),
                     stamNummer, adNummer, contact.GapId);
 
                 var request = new RelationshipRequest
                 {
                     Id = contact.RelationshipResult.Id,
                     IsActive = false,
-                    EndDate = uitschrijfDatum
+                    EndDate = uitschrijfDatum.Date.AddDays(-1)
                 };
 
                 var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
@@ -94,8 +98,8 @@ namespace Chiro.CiviSync.Services
             {
                 _log.Loggen(Niveau.Warning,
                     String.Format(
-                        "{0} {1} (AD {2}) niet uitgeschreven voor groep {3} in werkjaar {4} - lidrelatie niet gevonden.*",
-                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer, werkJaar),
+                        "{0} {1} (AD {2}) niet uitgeschreven voor groep {3} - geen actieve lidrelatie gevonden.*",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer),
                     stamNummer, adNummer, contact.GapId);
             }
         }

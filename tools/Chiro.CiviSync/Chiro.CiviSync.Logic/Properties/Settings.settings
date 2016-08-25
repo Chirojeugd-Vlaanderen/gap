@@ -14,5 +14,8 @@
     <Setting Name="StandaardLandCode" Type="System.String" Scope="User">
       <Value Profile="(Default)">BE</Value>
     </Setting>
+    <Setting Name="RecupereerPeriode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -65,6 +65,8 @@ namespace Chiro.Gap.Poco.Model
         /// </remarks>
         public IList<int> AfdelingIds
         {
+            // Misschien is dit beter een extension method in de mappinghelper.
+            // Dit is alleszins te veel logica voor in een entity.
             get
             {
                 if (this is Kind)

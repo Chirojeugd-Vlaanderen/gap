@@ -430,6 +430,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Het werkjaar kan niet worden teruggedraaid; er zijn al aangesloten leden..
+        /// </summary>
+        internal static string KanWerkjaarNietTerugDraaien {
+            get {
+                return ResourceManager.GetString("KanWerkjaarNietTerugDraaien", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Poging tot inschrijven kindleden in een kaderploeg..
         /// </summary>
         internal static string KindLidInKader {

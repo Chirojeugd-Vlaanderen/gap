@@ -1,5 +1,5 @@
-/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+﻿/*
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+using System;
+using System.Diagnostics;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
@@ -47,6 +49,29 @@ namespace Chiro.Gap.Sync
                 Mapper.Map<Groep, Kip.ServiceContracts.DataContracts.Groep>(g);
 
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepUpdaten(syncGroep));
+        }
+
+        /// <summary>
+        /// Sluit het gegeven groepswerkjaar <paramref name="gwj"/> af in Civi. Dat komt erop neer dat
+        /// alle lidrelaties worden beeindigd.
+        /// </summary>
+        /// <param name="gwj">Af te sluiten groepswerkjaar.</param>
+        public void WerkjaarAfsluiten(GroepsWerkJaar gwj)
+        {
+            Debug.Assert(gwj.WerkJaar != 0);
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepsWerkjaarAfsluiten(gwj.Groep.Code, gwj.WerkJaar));
+        }
+
+        /// <summary>
+        /// Herstelt de lidrelaties van de gegeven <paramref name="groep"/> naar de toestand op de gegeven
+        /// <paramref name="datum"/>. In praktijk wordt dit gebruikt om een werkjaar terug te draaien.
+        /// </summary>
+        /// <param name="groep"></param>
+        /// <param name="datum"></param>
+        public void WerkjaarTerugDraaien(Groep groep, DateTime datum)
+        {
+            ServiceHelper.CallService<ISyncPersoonService>(
+                svc => svc.GroepsWerkjaarTerugDraaien(groep.Code, datum));
         }
     }
 }

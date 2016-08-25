@@ -44,7 +44,8 @@ namespace Chiro.Gap.Maintenance
             }
             else
             {
-                relationshipMaintenance.LedenZonderAdOpnieuwSyncen();
+                // AD-nummersync even uitgezet (#5381)
+                // relationshipMaintenance.LedenZonderAdOpnieuwSyncen();
                 membershipMaintenance.MembershipsMaken();
             }
         }

@@ -543,5 +543,13 @@ namespace Chiro.Gap.ServiceContracts
 	    /// <returns></returns>
 	    [OperationContract]
 	    FunctieDetail FunctieOphalen(int functieId);
+
+        /// <summary>
+        /// Verwijdert (zo mogelijk) het groepswerkjaar met gegeven <paramref name="groepsWerkJaarId"/>, en
+        /// herstelt de situatie zoals op het einde van vorig groepswerkjaar.
+        /// </summary>
+        /// <param name="groepsWerkJaarId">ID van groepswerkjaar.</param>
+        [OperationContract]
+	    void JaarOvergangTerugDraaien(int groepsWerkJaarId);
 	}
 }

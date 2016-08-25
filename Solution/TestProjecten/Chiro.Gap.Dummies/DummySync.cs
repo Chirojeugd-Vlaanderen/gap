@@ -114,6 +114,25 @@ namespace Chiro.Gap.Dummies
         {
         }
 
+        /// <summary>
+        /// Sluit het gegeven groepswerkjaar <paramref name="gwj"/> af in Civi. Dat komt erop neer dat
+        /// alle lidrelaties worden beeindigd.
+        /// </summary>
+        /// <param name="gwj">Af te sluiten groepswerkjaar.</param>
+        public void WerkjaarAfsluiten(GroepsWerkJaar gwj)
+        {
+        }
+
+        /// <summary>
+        /// Draait de jaarovergang naar het gegeven <paramref name="groepsWerkJaar"/> terug in civi.
+        /// Lidrelaties worden hersteld naar de toestand op de dag van de jaarovergang.
+        /// </summary>
+        /// <param name="groep"></param>
+        /// <param name="datum"></param>
+        public void WerkjaarTerugDraaien(Groep groep, DateTime datum)
+        {
+        }
+
         public void AbonnementBewaren(Abonnement teSyncenAbonnement)
         {
         }

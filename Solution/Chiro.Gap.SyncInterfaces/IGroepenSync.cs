@@ -1,5 +1,5 @@
-/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+﻿/*
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -15,7 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using Chiro.Gap.Poco.Model;
+
+using  System;
+using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.SyncInterfaces
 {
@@ -27,5 +29,20 @@ namespace Chiro.Gap.SyncInterfaces
         /// </summary>
         /// <param name="g">Te updaten groep in Kipadmin</param>
         void Bewaren(Groep g);
+
+        /// <summary>
+        /// Sluit het gegeven groepswerkjaar <paramref name="gwj"/> af in Civi. Dat komt erop neer dat
+        /// alle lidrelaties worden beeindigd.
+        /// </summary>
+        /// <param name="gwj">Af te sluiten groepswerkjaar.</param>
+        void WerkjaarAfsluiten(GroepsWerkJaar gwj);
+
+        /// <summary>
+        /// Herstelt de lidrelaties van de gegeven <paramref name="groep"/> naar de toestand op de gegeven
+        /// <paramref name="datum"/>. In praktijk wordt dit gebruikt om een werkjaar terug te draaien.
+        /// </summary>
+        /// <param name="groep"></param>
+        /// <param name="datum"></param>
+        void WerkjaarTerugDraaien(Groep groep, DateTime datum);
     }
 }

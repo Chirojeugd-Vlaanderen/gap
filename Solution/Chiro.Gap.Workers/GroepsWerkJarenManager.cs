@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -236,6 +237,87 @@ namespace Chiro.Gap.Workers
         public DateTime Vandaag()
         {
             return DateTime.Now.Date;
+        }
+
+        /// <summary>
+        /// Bepaalt de status van het gegeven <paramref name="groepsWerkJaar"/>.
+        /// </summary>
+        /// <param name="groepsWerkJaar"></param>
+        /// <returns>De status van het gegeven <paramref name="groepsWerkJaar"/>.</returns>
+        public WerkJaarStatus StatusBepalen(GroepsWerkJaar groepsWerkJaar)
+        {
+            DateTime vandaag = Vandaag();
+            int huidigWerkJaar = _veelGebruikt.WerkJaarOphalen(groepsWerkJaar.Groep);
+            if (groepsWerkJaar.WerkJaar < huidigWerkJaar)
+            {
+                return WerkJaarStatus.Voorbij;
+            }
+            var status = OvergangMogelijk(vandaag, groepsWerkJaar.WerkJaar)
+                ? WerkJaarStatus.InOvergang
+                : WerkJaarStatus.Bezig;
+
+            if (!groepsWerkJaar.Lid.Any(l => !l.NonActief && l.EindeInstapPeriode < vandaag))
+            {
+                // We gebruiken niet l.IsAangesloten, want die wordt pas gezet als er
+                // teruggecommuniceerd wordt van Civi naar GAP. Als er leden zijn met
+                // instapperiode voorbij, kan het werkjaar niet meer teruggedraaid worden.
+                status |= WerkJaarStatus.KanTerugDraaien;
+            }
+            return status;
+        }
+
+        /// <summary>
+        /// Verwijdert een groepswerkjaar in zijn geheel.
+        /// </summary>
+        /// <param name="groepsWerkJaar">Te verwijderen groepswerkjaar</param>
+        /// <param name="ledenRepo"></param>
+        /// <param name="gwjRepo"></param>
+        /// <param name="ajRepo"></param>
+        /// <remarks>
+        /// Dit werkt enkel als er geen liden zijn waarvan de probeerperiode voorbij is.
+        /// De repositories zijn nodig omdat ik anders geen entities kan verwijderen.
+        /// </remarks>
+        public void Verwijderen(GroepsWerkJaar groepsWerkJaar, IRepository<Lid> ledenRepo, IRepository<GroepsWerkJaar> gwjRepo, IRepository<AfdelingsJaar> ajRepo)
+        {
+            var leden = groepsWerkJaar.Lid;
+            // Verwijder afdelingen van leiding
+
+            if (leden.Any(ld => ld.EindeInstapPeriode < Vandaag() && !ld.NonActief))
+            {
+                throw new FoutNummerException(FoutNummer.LidWasAlIngeschreven, Resources.KanWerkjaarNietTerugDraaien);
+            }
+
+            var leiding = leden.OfType<Leiding>().ToList();
+
+            // Verwijder afdelingen van leiding
+            foreach (var l in leiding)
+            {
+                l.AfdelingsJaar.Clear();
+            }
+
+            // Verwijder functies van leden (kind of leiding)
+            foreach (var l in leden)
+            {
+                l.Functie.Clear();
+            }
+
+            // Verwijder leden
+            ledenRepo.Delete(groepsWerkJaar.Lid.ToList());
+
+            // Verwijder afdelingsjaren
+            ajRepo.Delete(groepsWerkJaar.AfdelingsJaar.ToList());
+
+            if (groepsWerkJaar.Uitstap.Any())
+            {
+                // Koppel eventuele uitstappen aan het vorige jaar.
+                // (De jaarovergang zou die koppeling moeten herstellen, zie #1292)
+                var vorigGwj = groepsWerkJaar.Groep.GroepsWerkJaar.OrderBy(gwj => gwj.WerkJaar).Skip(1).FirstOrDefault();
+                foreach (var u in groepsWerkJaar.Uitstap)
+                {
+                    u.GroepsWerkJaar = vorigGwj;
+                }
+            }
+            gwjRepo.Delete(groepsWerkJaar);
         }
 
         /// <summary>

@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -108,6 +107,7 @@ namespace Chiro.Gap.Sync
             Debug.Assert(l.GelieerdePersoon.Persoon.InSync);
             Debug.Assert(l.GroepsWerkJaar != null);
             Debug.Assert(l.GroepsWerkJaar.Groep != null);
+
             var nationaleFuncties = (from f in l.Functie
                 where f.IsNationaal
                 select _functieVertaling[(NationaleFunctie) f.ID]).ToList();
@@ -135,7 +135,7 @@ namespace Chiro.Gap.Sync
             var lidGedoe = new LidGedoe
             {
                 StamNummer = l.GroepsWerkJaar.Groep.Code,
-                WerkJaar = l.GroepsWerkJaar.WerkJaar,
+                Werkjaar = l.GroepsWerkJaar.WerkJaar,
                 LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
                 NationaleFuncties = nationaleFuncties,
                 OfficieleAfdelingen = officieleAfdelingen,
@@ -181,7 +181,6 @@ namespace Chiro.Gap.Sync
                 svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
                     lid.GelieerdePersoon.Persoon),
                                            lid.GroepsWerkJaar.Groep.Code,
-                                           lid.GroepsWerkJaar.WerkJaar,
                                            kipFunctieIDs));
         }
 
@@ -222,7 +221,7 @@ namespace Chiro.Gap.Sync
                 svc =>
                 svc.AfdelingenUpdaten(
                     Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
-                    chiroGroep.Code, lid.GroepsWerkJaar.WerkJaar, kipAfdelingen));
+                    chiroGroep.Code, kipAfdelingen));
         }
 
         /// <summary>
@@ -234,7 +233,6 @@ namespace Chiro.Gap.Sync
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidTypeUpdaten(
                 Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
                 lid.GroepsWerkJaar.Groep.Code,
-                lid.GroepsWerkJaar.WerkJaar,
                 _lidTypeVertaling[lid.Type]));
         }
 
@@ -259,14 +257,14 @@ namespace Chiro.Gap.Sync
             {
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidVerwijderen(
                     lid.GelieerdePersoon.Persoon.AdNummer.Value, 
-                    groep.Code, lid.GroepsWerkJaar.WerkJaar, lid.UitschrijfDatum.Value));
+                    groep.Code, lid.UitschrijfDatum.Value));
             }
             else
             {
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidVerwijderen(
                     Mapper.Map<GelieerdePersoon, PersoonDetails>(lid.GelieerdePersoon),
                     groep.Code,
-                    lid.GroepsWerkJaar.WerkJaar, lid.UitschrijfDatum.Value));
+                    lid.UitschrijfDatum.Value));
             }
         }
 
@@ -294,7 +292,7 @@ namespace Chiro.Gap.Sync
         {
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidUitschrijven(
                 info.AdNummer,
-                info.StamNummer, info.WerkJaar, info.UitschrijfDatum));
+                info.StamNummer, info.UitschrijfDatum));
         }
     }
 }

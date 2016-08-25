@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -50,6 +50,8 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
+            // We halen het recentste lid op, en niet het 'actieve' lid, zodat we zo nodig een inactief
+            // lid terug kunnen activeren.
             var contact = _contactWorker.PersoonMetRecentsteLid(adNummer, civiGroepId);
 
             if (contact == null || contact.ExternalIdentifier == null)
@@ -64,34 +66,38 @@ namespace Chiro.CiviSync.Services
             // Request voor te bewaren (nieuwe) lidrelatie: eerst een standaardrequest voor dit werkjaar.
             // Als het contact al zo'n relatie had (contact.RelationshipResult), dan nemen we van die bestaande
             // de relevante zaken over.
-            var relationshipRequest = _relationshipLogic.VanWerkjaar(RelatieType.LidVan, contact.Id, civiGroepId.Value,
-                gedoe.WerkJaar, gedoe.UitschrijfDatum);
+            var relationshipRequest = _relationshipLogic.RequestMaken(RelatieType.LidVan, contact.Id, civiGroepId.Value, gedoe.Werkjaar,
+                gedoe.UitschrijfDatum);
 
             if (contact.RelationshipResult.Count == 1)
             {
                 var bestaandeRelatie = contact.RelationshipResult.Values.First();
-                if (_relationshipLogic.WerkjaarGet(bestaandeRelatie) == gedoe.WerkJaar)
+
+                // Het zou cool zijn moesten we gewoon kunnen zeggen: er bestaat nog geen actieve relatie, we
+                // maken er een nieuwe. Maar op die manier zou de civi vol met superkorte relaties raken als
+                // iemand met een slecht karakter een van zijn leden constant in- en uitschrijft.
+                // Het kan dus zijn dat een gestopte relatie toch als huidig wordt beschouwd, namelijk als ze
+                // nog niet zo lang geleden is gestart.
+                if (_relationshipLogic.IsHuidig(bestaandeRelatie))
                 {
                     // Neem van bestaande relatie het ID en de begindatum over.
                     relationshipRequest.Id = bestaandeRelatie.Id;
                     relationshipRequest.StartDate = bestaandeRelatie.StartDate;
-                    if (_relationshipLogic.IsActief(bestaandeRelatie))
+                    if (bestaandeRelatie.IsActive)
                     {
                         _log.Loggen(Niveau.Warning,
                             String.Format(
-                                "{0} {1} (AD {3}) was al lid voor groep {2} in werkjaar {4}. Bestaand lidobject wordt geupdatet.",
-                                contact.FirstName, contact.LastName, gedoe.StamNummer, contact.ExternalIdentifier, gedoe.WerkJaar),
+                                "{0} {1} (AD {3}) was al lid voor groep {2}; startdatum {4}. Bestaand lidobject wordt geupdatet.",
+                                contact.FirstName, contact.LastName, gedoe.StamNummer, contact.ExternalIdentifier, bestaandeRelatie.StartDate),
                             gedoe.StamNummer, adNummer, contact.GapId);
                     }
                     else
                     {
                         _log.Loggen(Niveau.Info,
                             String.Format(
-                                "Inactieve lidrelatie van {0} {1} (AD {2}) voor groep {3} in werkjaar {4} wordt bijgewerkt.",
-                                contact.FirstName, contact.LastName, adNummer, gedoe.StamNummer, gedoe.WerkJaar),
+                                "Inactieve lidrelatie van {0} {1} (AD {2}) voor groep {3} met startdatum {4} wordt bijgewerkt.",
+                                contact.FirstName, contact.LastName, adNummer, gedoe.StamNummer, bestaandeRelatie.StartDate),
                             gedoe.StamNummer, adNummer, contact.GapId);
-                        // Het kan best zijn dat na het bijwerken de relatie nog steeds in actief is, i.h.b. als de groep nog
-                        // geen jaarovergang deed voor het huidige werkjaar.
                     }
                 }
             }
@@ -111,8 +117,8 @@ namespace Chiro.CiviSync.Services
 
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "{6} {7} {8}: AD {0} stamnr {1} werkjaar {2} - afd {3}, lafd {4}, func {5} relID {9}",
-                    adNummer, gedoe.StamNummer, gedoe.WerkJaar, relationshipRequest.Afdeling,
+                    "{6} {7} {8}: AD {0} stamnr {1} start {2:dd/MM/yyyy} - afd {3}, lafd {4}, func {5} relID {9}",
+                    adNummer, gedoe.StamNummer, relationshipRequest.StartDate, relationshipRequest.Afdeling,
                     relationshipRequest.LeidingVan == null
                         ? "n/a"
                         : String.Join(",", relationshipRequest.LeidingVan.Select(afd => afd.ToString())),
