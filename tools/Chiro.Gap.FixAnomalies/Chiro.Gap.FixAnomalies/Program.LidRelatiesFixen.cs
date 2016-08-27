@@ -64,9 +64,9 @@ namespace Chiro.Gap.FixAnomalies
 
             int werkjaar = HuidigWerkJaar();
 
-            Console.WriteLine(Resources.Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__, werkjaar);
-            var gapLeden = AlleLeden(werkjaar);
-            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapLeden.Length);
+            Console.WriteLine(Resources.Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__);
+            var gapLeden = AlleActieveLeden();
+            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapLeden.Count);
 
             var teBewarenLeden = OntbrekendInCiviZoeken(civiLeden, gapLeden);
             Console.WriteLine(Resources.Program_Main__0__leden_uit_GAP_niet_teruggevonden_in_CiviCRM_, teBewarenLeden.Count);
@@ -85,7 +85,9 @@ namespace Chiro.Gap.FixAnomalies
 
             // TODO: command line switch om deze vraag te vermijden.
             Console.Write(Resources.Program_Main_Uitschrijven_uit_Civi__);
+            Console.Write(Resources.Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_er_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_);
             string input2 = Console.ReadLine();
+            return;
 
             if (input2.ToUpper() == "J" || input2.ToUpper() == "Y")
             {
@@ -127,18 +129,18 @@ namespace Chiro.Gap.FixAnomalies
             }
         }
 
-        private static List<LidInfo> OntbrekendInCiviZoeken(IList<string> civiLeden, LidInfo[] gapLeden)
+        private static List<LidInfo> OntbrekendInCiviZoeken(IList<string> civiLeden, IList<LidInfo> gapLeden)
         {
             int civiCounter = 0;
             int gapCounter = 0;
             var teSyncen = new List<LidInfo>();
-            int aantalciviLeden = civiLeden.Count();
+            int aantalciviLeden = civiLeden.Count;
 
             // Normaal zijn de leden uit het GAP hetzelfde gesorteerd als die uit Civi.
             // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
 
             Console.WriteLine(Resources.Program_OntbrekendInCiviZoeken_Opzoeken_leden_in_GAP_maar_niet_in_CiviCRM_);
-            while (gapCounter < gapLeden.Length && civiCounter < aantalciviLeden)
+            while (gapCounter < gapLeden.Count && civiCounter < aantalciviLeden)
             {
                 while (civiCounter < aantalciviLeden && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiLeden[civiCounter], StringComparison.OrdinalIgnoreCase) > 0)
                 {
@@ -154,7 +156,7 @@ namespace Chiro.Gap.FixAnomalies
             return teSyncen;
         }
 
-        private static List<UitschrijfInfo> TeVeelInCiviZoeken(IList<string> civiLeden, LidInfo[] gapLeden)
+        private static List<UitschrijfInfo> TeVeelInCiviZoeken(IList<string> civiLeden, IList<LidInfo> gapLeden)
         {
             int civiCounter = 0;
             int gapCounter = 0;
@@ -164,13 +166,13 @@ namespace Chiro.Gap.FixAnomalies
             // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
 
             Console.WriteLine(Resources.Program_TeVeelInCiviZoeken_Opzoeken_leden_in_CiviCRM_maar_niet_in_GAP_);
-            while (gapCounter < gapLeden.Length && civiCounter < civiLeden.Count)
+            while (gapCounter < gapLeden.Count && civiCounter < civiLeden.Count)
             {
-                while (gapCounter < gapLeden.Length && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiLeden[civiCounter], StringComparison.OrdinalIgnoreCase) < 0)
+                while (gapCounter < gapLeden.Count && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiLeden[civiCounter], StringComparison.OrdinalIgnoreCase) < 0)
                 {
                     ++gapCounter;
                 }
-                if (gapCounter < gapLeden.Length && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiLeden[civiCounter], StringComparison.OrdinalIgnoreCase) != 0)
+                if (gapCounter < gapLeden.Count && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiLeden[civiCounter], StringComparison.OrdinalIgnoreCase) != 0)
                 {
                     // Splits output van Civi in stamnummer en AD-nummer.
                     string[] components = civiLeden[civiCounter].Split(';');
@@ -200,32 +202,42 @@ namespace Chiro.Gap.FixAnomalies
         }
 
         /// <summary>
-        /// Levert een lijst op van alle stamnummer-adnummer-combinaties van het huidige
-        /// werkjaar. Zal gebruikt worden voor monitoring. (#4326, #4268)
+        /// Levert een lijst op van alle actieve stamnummer-adnummer-combinaties van de
+        /// actieve leden. Zal gebruikt worden voor monitoring. (#4326, #4268)
         /// </summary>
-        /// <returns>Lijst van alle stamnummer-adnummer-combinaties van het huidige
-        /// werkjaar.</returns>
-        /// <remarks>
-        /// Deze functie hoort niet echt thuis in iets dat 'GapUpdater' heet. Misschien
-        /// is dit eerder een GapWorker. Of misschien moet deze klasse opgesplitst worden.
-        /// </remarks>
-        public static LidInfo[] AlleLeden(int werkjaar)
+        /// <returns>Lijst van alle stamnummer-adnummer-combinaties van de actieve
+        /// leden.</returns>
+        public static List<LidInfo> AlleActieveLeden()
         {
+            var result = new List<LidInfo>();
+
             // Dit zou beter gebeuren met dependency injection. Maar het is en blijft een hack.
             using (var context = new ChiroGroepEntities())
             {
                 var repositoryProvider = new RepositoryProvider(context);
-                var ledenRepo = repositoryProvider.RepositoryGet<Lid>();
+                var groepenRepo = repositoryProvider.RepositoryGet<Groep>();
 
-                var alles = from ld in ledenRepo.Select()
-                            where ld.GroepsWerkJaar.WerkJaar == werkjaar && !ld.NonActief
-                            // Enkel personen waarvan AD-nummers al gekend zijn. In het andere geval
-                            // zal gapmaintenance wel syncen.
-                            && ld.GelieerdePersoon.Persoon.AdNummer.HasValue
-                            // Enkel leden van actieve groepen
-                            && ld.GroepsWerkJaar.Groep.StopDatum == null
-                            select new LidInfo { StamNrAdNr = ld.GroepsWerkJaar.Groep.Code.Trim() + ";" + ld.GelieerdePersoon.Persoon.AdNummer, LidId = ld.ID };
-                return alles.OrderBy(info => info.StamNrAdNr).ToArray();
+                foreach (var groep in groepenRepo.Select().Where(g => g.StopDatum == null).OrderBy(g => g.Code))
+                {
+                    var huidigGwj = groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+                    if (huidigGwj != null)
+                    {
+                        var actief = from ld in huidigGwj.Lid
+                            where !ld.NonActief
+                                // Enkel personen waarvan AD-nummers al gekend zijn. In het andere geval
+                                // zal gapmaintenance wel syncen.
+                                  && ld.GelieerdePersoon.Persoon.AdNummer.HasValue
+                            select
+                                new LidInfo
+                                {
+                                    StamNrAdNr =
+                                        ld.GroepsWerkJaar.Groep.Code.Trim() + ";" + ld.GelieerdePersoon.Persoon.AdNummer,
+                                    LidId = ld.ID
+                                };
+                        result.AddRange(actief.OrderBy(info => info.StamNrAdNr));
+                    }
+                }
+                return result;
             }
         }
     }

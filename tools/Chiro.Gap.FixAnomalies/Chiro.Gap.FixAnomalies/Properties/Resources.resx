@@ -127,7 +127,7 @@
     <value>Dat zijn er {0}.</value>
   </data>
   <data name="Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__" xml:space="preserve">
-    <value>Opvragen leden met AD-nummer in Gap, werkjaar {0}.</value>
+    <value>Opvragen actieve leden met AD-nummer in Gap.</value>
   </data>
   <data name="Program_Main__0__leden_uit_GAP_niet_teruggevonden_in_CiviCRM_" xml:space="preserve">
     <value>{0} leden uit GAP niet teruggevonden in CiviCRM.</value>
@@ -173,5 +173,8 @@
   </data>
   <data name="Program_OntbrekendInCiviZoeken_Opzoeken_bivakken_in_GAP_die_niet_volledig_in_Civi_zitten_" xml:space="preserve">
     <value>Opzoeken bivakken in GAP die niet volledig in Civi zitten.</value>
+  </data>
+  <data name="Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_er_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_" xml:space="preserve">
+    <value>Uitschrijven doen we nog maar niet; het zou kunnen dat er mensen niet in gap waren gevonden omdat er nog geen AD-nummers terug kwamen.</value>
   </data>
 </root>
