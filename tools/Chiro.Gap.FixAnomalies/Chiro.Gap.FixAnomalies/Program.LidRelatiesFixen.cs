@@ -64,7 +64,7 @@ namespace Chiro.Gap.FixAnomalies
 
             int werkjaar = HuidigWerkJaar();
 
-            Console.WriteLine(Resources.Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__);
+            Console.WriteLine(Resources.Program_Main_Opvragen_actieve_leden_GAP__);
             var gapLeden = AlleActieveLeden();
             Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapLeden.Count);
 
@@ -207,36 +207,19 @@ namespace Chiro.Gap.FixAnomalies
         /// </summary>
         /// <returns>Lijst van alle stamnummer-adnummer-combinaties van de actieve
         /// leden.</returns>
-        public static List<LidInfo> AlleActieveLeden()
+        public static LidInfo[] AlleActieveLeden()
         {
-            var result = new List<LidInfo>();
-
             // Dit zou beter gebeuren met dependency injection. Maar het is en blijft een hack.
             using (var context = new ChiroGroepEntities())
             {
                 var repositoryProvider = new RepositoryProvider(context);
-                var groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+                var repo = repositoryProvider.RepositoryGet<ActiefLid>();
 
-                foreach (var groep in groepenRepo.Select().Where(g => g.StopDatum == null).OrderBy(g => g.Code))
-                {
-                    var huidigGwj = groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
-                    if (huidigGwj != null)
-                    {
-                        var actief = from ld in huidigGwj.Lid
-                            where !ld.NonActief
-                                // Enkel personen waarvan AD-nummers al gekend zijn. In het andere geval
-                                // zal gapmaintenance wel syncen.
-                                  && ld.GelieerdePersoon.Persoon.AdNummer.HasValue
-                            select
-                                new LidInfo
-                                {
-                                    StamNrAdNr =
-                                        ld.GroepsWerkJaar.Groep.Code.Trim() + ";" + ld.GelieerdePersoon.Persoon.AdNummer,
-                                    LidId = ld.ID
-                                };
-                        result.AddRange(actief.OrderBy(info => info.StamNrAdNr));
-                    }
-                }
+				var result = (from l in repo
+				              select new LidInfo {
+					StamNrAdNr = String.Format ("{0};{1}", l.Code, l.AdNummer),
+					LidId = l.LidId
+				}).ToArray ();
                 return result;
             }
         }
