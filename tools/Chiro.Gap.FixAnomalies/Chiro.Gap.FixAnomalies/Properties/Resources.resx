@@ -126,8 +126,8 @@
   <data name="Program_Main_Dat_zijn_er__0__" xml:space="preserve">
     <value>Dat zijn er {0}.</value>
   </data>
-  <data name="Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__" xml:space="preserve">
-    <value>Opvragen actieve leden met AD-nummer in Gap.</value>
+  <data name="Program_Main_Opvragen_actieve_leden_GAP__" xml:space="preserve">
+    <value>Opvragen actieve leden in Gap.</value>
   </data>
   <data name="Program_Main__0__leden_uit_GAP_niet_teruggevonden_in_CiviCRM_" xml:space="preserve">
     <value>{0} leden uit GAP niet teruggevonden in CiviCRM.</value>

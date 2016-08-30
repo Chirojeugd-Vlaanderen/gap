@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 using System;
+using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
@@ -25,7 +26,7 @@ namespace Chiro.Gap.Poco.Model
 	/// Dit is een view die voornamelijk wat ID's bevat van de leden die
 	/// momenteel actief zijn.
 	/// </summary>
-	public class ActiefLid
+	public class ActiefLid: BasisEntiteit
 	{
 		public ActiefLid ()
 		{
@@ -36,6 +37,16 @@ namespace Chiro.Gap.Poco.Model
 		public int AdNummer { get; set; }
 		public string Code { get; set; }
 		public int WerkJaar { get; set; }
+
+	    /// <summary>
+	    /// De bedoeling is dat Versie een timestamp (row version) is, voor concurrency control
+	    /// </summary>
+	    public override byte[] Versie { get; set; }
+
+	    /// <summary>
+	    /// ID is de primary key
+	    /// </summary>
+	    public override int ID { get; set; }
 	}
 }
 

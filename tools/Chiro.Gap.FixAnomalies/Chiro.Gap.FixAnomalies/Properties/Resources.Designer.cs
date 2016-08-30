@@ -190,20 +190,20 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opvragen actieve leden in Gap..
+        /// </summary>
+        internal static string Program_Main_Opvragen_actieve_leden_GAP__ {
+            get {
+                return ResourceManager.GetString("Program_Main_Opvragen_actieve_leden_GAP__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opvragen actieve lidrelaties CiviCRM..
         /// </summary>
         internal static string Program_Main_Opvragen_actieve_lidrelaties_CiviCRM_ {
             get {
                 return ResourceManager.GetString("Program_Main_Opvragen_actieve_lidrelaties_CiviCRM_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Opvragen actieve leden met AD-nummer in Gap..
-        /// </summary>
-        internal static string Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__ {
-            get {
-                return ResourceManager.GetString("Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__", resourceCulture);
             }
         }
         

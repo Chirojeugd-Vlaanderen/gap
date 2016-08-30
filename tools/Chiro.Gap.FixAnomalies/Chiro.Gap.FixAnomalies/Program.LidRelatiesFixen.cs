@@ -66,7 +66,7 @@ namespace Chiro.Gap.FixAnomalies
 
             Console.WriteLine(Resources.Program_Main_Opvragen_actieve_leden_GAP__);
             var gapLeden = AlleActieveLeden();
-            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapLeden.Count);
+            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapLeden.Count());
 
             var teBewarenLeden = OntbrekendInCiviZoeken(civiLeden, gapLeden);
             Console.WriteLine(Resources.Program_Main__0__leden_uit_GAP_niet_teruggevonden_in_CiviCRM_, teBewarenLeden.Count);
@@ -215,11 +215,12 @@ namespace Chiro.Gap.FixAnomalies
                 var repositoryProvider = new RepositoryProvider(context);
                 var repo = repositoryProvider.RepositoryGet<ActiefLid>();
 
-				var result = (from l in repo
-				              select new LidInfo {
-					StamNrAdNr = String.Format ("{0};{1}", l.Code, l.AdNummer),
-					LidId = l.LidId
-				}).ToArray ();
+                var result = (from l in repo.GetAll()
+                    select new LidInfo
+                    {
+                        StamNrAdNr = String.Format("{0};{1}", l.Code, l.AdNummer),
+                        LidId = l.LidID
+                    }).ToArray();
                 return result;
             }
         }
