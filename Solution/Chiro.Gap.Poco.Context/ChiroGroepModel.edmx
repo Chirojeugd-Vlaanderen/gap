@@ -403,6 +403,21 @@
           <Property Name="EnkelLeden" Type="bit" Nullable="false" />
           <Property Name="TotEindeWerkJaar" Type="bit" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vActiefLid">
+          <Key>
+            <PropertyRef Name="LidID" />
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="LidID" Type="int" Nullable="false" />
+          <Property Name="PersoonID" Type="int" Nullable="false" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
+          <Property Name="AdNummer" Type="int" />
+          <Property Name="Code" Type="char" MaxLength="10" />
+          <Property Name="WerkJaar" Type="int" />
+        </EntityType>
         <Association Name="FK_Abonnement_GelieerdePersoon">
           <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="1" />
           <End Role="Abonnement" Type="Self.Abonnement" Multiplicity="*" />
@@ -1092,6 +1107,16 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <EntitySet Name="PersoonsCategorie" EntityType="Self.PersoonsCategorie" Schema="pers" store:Type="Tables" />
           <EntitySet Name="PersoonsVerzekering" EntityType="Self.PersoonsVerzekering" Schema="verz" store:Type="Tables" />
           <EntitySet Name="VerzekeringsType" EntityType="Self.VerzekeringsType" Schema="verz" store:Type="Tables" />
+          <EntitySet Name="vActiefLid" EntityType="Self.vActiefLid" store:Type="Views" store:Schema="diag">
+            <DefiningQuery>SELECT 
+    [vActiefLid].[LidID] AS [LidID], 
+    [vActiefLid].[PersoonID] AS [PersoonID], 
+    [vActiefLid].[GroepID] AS [GroepID], 
+    [vActiefLid].[AdNummer] AS [AdNummer], 
+    [vActiefLid].[Code] AS [Code], 
+    [vActiefLid].[WerkJaar] AS [WerkJaar]
+    FROM [diag].[vActiefLid] AS [vActiefLid]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Abonnement_GelieerdePersoon" Association="Self.FK_Abonnement_GelieerdePersoon">
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
             <End Role="Abonnement" EntitySet="Abonnement" />
@@ -1517,6 +1542,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
             <End Role="Persoon" EntitySet="Persoon" />
             <End Role="Bericht" EntitySet="Bericht" />
           </AssociationSet>
+          <EntitySet Name="vActiefLid" EntityType="ChiroGroepModel.vActiefLid" />
         </EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
           <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" Unicode="false" />
@@ -2086,6 +2112,19 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="0..1" />
           <End Type="ChiroGroepModel.Bericht" Role="Bericht" Multiplicity="*" />
         </Association>
+        <EntityType Name="vActiefLid">
+          <Key>
+            <PropertyRef Name="LidID" />
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="LidID" Type="Int32" Nullable="false" />
+          <Property Name="PersoonID" Type="Int32" Nullable="false" />
+          <Property Name="GroepID" Type="Int32" Nullable="false" />
+          <Property Name="AdNummer" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="WerkJaar" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2800,6 +2839,18 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
             </EndProperty>
             <Condition ColumnName="PersoonID" IsNull="false" />
           </AssociationSetMapping>
+          <EntitySetMapping Name="vActiefLid">
+            <EntityTypeMapping TypeName="ChiroGroepModel.vActiefLid">
+              <MappingFragment StoreEntitySet="vActiefLid">
+                <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+                <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+                <ScalarProperty Name="LidID" ColumnName="LidID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -3338,6 +3389,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.Bericht" Width="1.5" PointX="11.25" PointY="8.75" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Gebruiker" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Persoon_Id" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.vActiefLid" Width="1.5" PointX="0.75" PointY="0.75" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
