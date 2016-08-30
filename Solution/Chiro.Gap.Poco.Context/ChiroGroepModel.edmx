@@ -550,9 +550,6 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK_Bericht_Groep" />-->
         <Association Name="FK_Bericht_Persoon_Id">
           <End Role="Persoon" Type="Self.Persoon" Multiplicity="0..1" />
           <End Role="Bericht" Type="Self.Bericht" Multiplicity="*" />

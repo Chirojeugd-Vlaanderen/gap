@@ -36,3 +36,9 @@ JOIN grp.Groep g ON huidigwj.GroepID = g.GroepID
 JOIN pers.GelieerdePersoon gp on l.GelieerdePersoonID = gp.GelieerdePersoonID
 JOIN pers.Persoon p on gp.PersoonID = p.PersoonID
 WHERE l.NonActief = 0 AND g.StopDatum IS NULL
+
+GO
+
+ALTER TABLE [logging].[Bericht] DROP CONSTRAINT [FK_Bericht_Groep]
+GO
+
