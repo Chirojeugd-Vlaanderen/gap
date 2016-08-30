@@ -1539,7 +1539,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
             <End Role="Persoon" EntitySet="Persoon" />
             <End Role="Bericht" EntitySet="Bericht" />
           </AssociationSet>
-          <EntitySet Name="vActiefLid" EntityType="ChiroGroepModel.vActiefLid" />
+          <EntitySet Name="vActiefLid" EntityType="ChiroGroepModel.ActiefLid" />
         </EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
           <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" Unicode="false" />
@@ -2109,7 +2109,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="0..1" />
           <End Type="ChiroGroepModel.Bericht" Role="Bericht" Multiplicity="*" />
         </Association>
-        <EntityType Name="vActiefLid">
+        <EntityType Name="ActiefLid">
           <Key>
             <PropertyRef Name="LidID" />
             <PropertyRef Name="PersoonID" />
@@ -2837,7 +2837,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
             <Condition ColumnName="PersoonID" IsNull="false" />
           </AssociationSetMapping>
           <EntitySetMapping Name="vActiefLid">
-            <EntityTypeMapping TypeName="ChiroGroepModel.vActiefLid">
+            <EntityTypeMapping TypeName="ChiroGroepModel.ActiefLid">
               <MappingFragment StoreEntitySet="vActiefLid">
                 <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -3386,7 +3386,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.Bericht" Width="1.5" PointX="11.25" PointY="8.75" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Gebruiker" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Persoon_Id" />
-        <edmx:EntityTypeShape EntityType="ChiroGroepModel.vActiefLid" Width="1.5" PointX="0.75" PointY="0.75" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.ActiefLid" Width="1.5" PointX="0.75" PointY="0.75" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
