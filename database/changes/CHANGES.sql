@@ -16,10 +16,29 @@
 
 -- Voeg hier de wijzigingen toe die moeten gebeuren aan de database.
 
-ALTER TABLE grp.GroepsWerkjaar ADD Datum DATETIME DEFAULT getdate();
+-- Een view voor actieve leden (zie #5386)
+
+CREATE VIEW diag.vActiefLid AS
+SELECT l.LidID, p.PersoonID, g.GroepID, p.AdNummer, g.Code, huidigwj.WerkJaar FROM lid.Lid l
+JOIN
+(
+-- We gaan er even vanuit dat recente groepswerkjaren een hoger ID
+-- hebben dan oude groepswerkjaren. We mogen dat eigenlijk niet doen.
+-- Maar we doen het toch.
+SELECT 
+MAX(gwj.GroepsWerkJaarID) AS GroepsWerkJaarID, 
+MAX(gwj.WerkJaar) AS WerkJaar,
+gwj.GroepID
+FROM grp.GroepsWerkJaar gwj
+GROUP BY gwj.GroepID
+) huidigwj ON l.GroepsWerkjaarID = huidigwj.GroepsWerkJaarID
+JOIN grp.Groep g ON huidigwj.GroepID = g.GroepID
+JOIN pers.GelieerdePersoon gp on l.GelieerdePersoonID = gp.GelieerdePersoonID
+JOIN pers.Persoon p on gp.PersoonID = p.PersoonID
+WHERE l.NonActief = 0 AND g.StopDatum IS NULL
+
 GO
 
-UPDATE grp.GroepsWerkjaar SET Datum = '2016-08-23' WHERE Werkjaar = 2016;
+ALTER TABLE [logging].[Bericht] DROP CONSTRAINT [FK_Bericht_Groep]
 GO
--- Rechten om groepswerkjaar te verwijderen (zie #5379)
-GRANT DELETE on grp.GroepsWerkJaar TO GapRole;
+

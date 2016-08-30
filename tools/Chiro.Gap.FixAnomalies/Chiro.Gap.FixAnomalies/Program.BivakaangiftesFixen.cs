@@ -69,6 +69,7 @@ namespace Chiro.Gap.FixAnomalies
                 select r).ToList();
 
             Console.WriteLine(Resources.Program_BivakAangiftesFixen_Volledige_bivakaangiftes_ophalen_uit_het_GAP_);
+
             var gapBivakken = AlleBivakken(periodeStart, periodeEinde);
             Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapBivakken.Length);
 

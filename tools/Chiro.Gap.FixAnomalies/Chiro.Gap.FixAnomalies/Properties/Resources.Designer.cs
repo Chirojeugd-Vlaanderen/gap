@@ -97,6 +97,16 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uitschrijven doen we nog maar niet; het zou kunnen dat er mensen niet in gap waren gevonden omdat er nog geen AD-nummers terug kwamen..
+        /// </summary>
+        internal static string Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_er_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_ {
+            get {
+                return ResourceManager.GetString("Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_e" +
+                        "r_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} verzekeringen te kort in CiviCRM..
         /// </summary>
         internal static string Program_LoonVerliesFixen__0__verzekeringen_te_kort_in_CiviCRM_ {
@@ -180,20 +190,20 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opvragen actieve leden in Gap..
+        /// </summary>
+        internal static string Program_Main_Opvragen_actieve_leden_GAP__ {
+            get {
+                return ResourceManager.GetString("Program_Main_Opvragen_actieve_leden_GAP__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opvragen actieve lidrelaties CiviCRM..
         /// </summary>
         internal static string Program_Main_Opvragen_actieve_lidrelaties_CiviCRM_ {
             get {
                 return ResourceManager.GetString("Program_Main_Opvragen_actieve_lidrelaties_CiviCRM_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Opvragen leden met AD-nummer in Gap, werkjaar {0}..
-        /// </summary>
-        internal static string Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__ {
-            get {
-                return ResourceManager.GetString("Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__", resourceCulture);
             }
         }
         
