@@ -34,7 +34,7 @@ namespace Chiro.Gap.Poco.Model
 		public int LidID { get; set; }
 		public int PersoonID { get; set; }
 		public int GroepID { get; set; }
-		public int AdNummer { get; set; }
+		public int? AdNummer { get; set; }
 		public string Code { get; set; }
 		public int WerkJaar { get; set; }
 

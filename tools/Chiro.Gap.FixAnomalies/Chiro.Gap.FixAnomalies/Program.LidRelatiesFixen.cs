@@ -85,9 +85,7 @@ namespace Chiro.Gap.FixAnomalies
 
             // TODO: command line switch om deze vraag te vermijden.
             Console.Write(Resources.Program_Main_Uitschrijven_uit_Civi__);
-            Console.Write(Resources.Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_er_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_);
             string input2 = Console.ReadLine();
-            return;
 
             if (input2.ToUpper() == "J" || input2.ToUpper() == "Y")
             {
@@ -218,10 +216,10 @@ namespace Chiro.Gap.FixAnomalies
                 var result = (from l in repo.GetAll()
                     select new LidInfo
                     {
-                        StamNrAdNr = String.Format("{0};{1}", l.Code, l.AdNummer),
+                        StamNrAdNr = String.Format("{0};{1}", l.Code.Trim(), l.AdNummer),
                         LidId = l.LidID
-                    }).ToArray();
-                return result;
+                    });
+                return result.OrderBy(r => r.StamNrAdNr).ToArray();
             }
         }
     }
