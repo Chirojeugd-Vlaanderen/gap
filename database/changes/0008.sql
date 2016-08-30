@@ -16,3 +16,10 @@
 
 -- Voeg hier de wijzigingen toe die moeten gebeuren aan de database.
 
+ALTER TABLE grp.GroepsWerkjaar ADD Datum DATETIME DEFAULT getdate();
+GO
+
+UPDATE grp.GroepsWerkjaar SET Datum = '2016-08-23' WHERE Werkjaar = 2016;
+GO
+-- Rechten om groepswerkjaar te verwijderen (zie #5379)
+GRANT DELETE on grp.GroepsWerkJaar TO GapRole;
