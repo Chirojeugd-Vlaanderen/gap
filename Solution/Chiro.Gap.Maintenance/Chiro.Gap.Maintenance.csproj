@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -35,16 +35,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MembershipMaintenance.cs" />
@@ -68,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\tools\Chiro.LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
-      <Project>{18ff2008-106f-48a6-befb-5f8b301354d0}</Project>
+      <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
       <Name>Chiro.Cdf.Mailer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
@@ -83,12 +82,8 @@
       <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
-      <Name>Chiro.Cdf.ServiceHelper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Poco.Context\Chiro.Gap.Poco.Context.csproj">
-      <Project>{c83b2df6-4352-4fad-a09e-9c59dc335b05}</Project>
+      <Project>{C83B2DF6-4352-4FAD-A09E-9C59DC335B05}</Project>
       <Name>Chiro.Gap.Poco.Context</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
@@ -100,7 +95,7 @@
       <Name>Chiro.Gap.SyncInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
-      <Project>{c934c8ce-39c8-45b7-ac38-f487cea9b2d5}</Project>
+      <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
       <Name>Chiro.Gap.Sync</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
@@ -108,8 +103,12 @@
       <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
-      <Project>{35e2aed7-7c0a-4b30-b7c8-24f9078ac32e}</Project>
+      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
       <Name>Chiro.Gap.Workers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -132,6 +131,6 @@
     <ItemGroup>
       <PublishFiles Include="$(_PackageTempDir)\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(PublishFiles)" DestinationFiles="@(PublishFiles->'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="True" />
+    <Copy SourceFiles="@(PublishFiles)" DestinationFiles="@(PublishFiles-&gt;'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="True" />
   </Target>
 </Project>

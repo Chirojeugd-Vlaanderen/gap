@@ -41,9 +41,6 @@ namespace Chiro.Gap.Maintenance
         private readonly IRepository<Lid> _ledenRepo;
 		private readonly IRepository<ActiefLid> _actieveLedenRepo;
 
-        // Businesslogica
-        private readonly IGroepsWerkJarenManager _groepsWerkJarenManager;
-
         // Synchronisatie
         private readonly ILedenSync _ledenSync;
 
@@ -53,13 +50,11 @@ namespace Chiro.Gap.Maintenance
         /// <param name="repositoryProvider">Toegang tot de database</param>
         /// <param name="groepsWerkJarenManager">Geruiken we vooral om het huidige werkjaar te bepalen.</param>
         /// <param name="ledenSync">Toegang tot CiviSync</param>
-        public RelationshipMaintenance(IRepositoryProvider repositoryProvider, IGroepsWerkJarenManager groepsWerkJarenManager,
-            ILedenSync ledenSync)
+        public RelationshipMaintenance(IRepositoryProvider repositoryProvider, ILedenSync ledenSync)
         {
             _repositoryProvider = repositoryProvider;
             _ledenRepo = _repositoryProvider.RepositoryGet<Lid>();
 			_actieveLedenRepo = _repositoryProvider.RepositoryGet<ActiefLid> ();
-            _groepsWerkJarenManager = groepsWerkJarenManager;
             _ledenSync = ledenSync;
         }
 
