@@ -17,6 +17,10 @@
 -- Voeg hier de wijzigingen toe die moeten gebeuren aan de database.
 
 -- Een view voor actieve leden (zie #5386)
+-- Drop view als hij al bestaat, dan kunnen we hem terug maken.
+IF OBJECT_ID('diag.vActiefLid', 'V') IS NOT NULL
+    DROP VIEW diag.vActiefLid;
+GO
 
 CREATE VIEW diag.vActiefLid AS
 SELECT l.LidID, p.PersoonID, g.GroepID, p.AdNummer, g.Code, huidigwj.WerkJaar FROM lid.Lid l
@@ -25,8 +29,8 @@ JOIN
 -- We gaan er even vanuit dat recente groepswerkjaren een hoger ID
 -- hebben dan oude groepswerkjaren. We mogen dat eigenlijk niet doen.
 -- Maar we doen het toch.
-SELECT 
-MAX(gwj.GroepsWerkJaarID) AS GroepsWerkJaarID, 
+SELECT
+MAX(gwj.GroepsWerkJaarID) AS GroepsWerkJaarID,
 MAX(gwj.WerkJaar) AS WerkJaar,
 gwj.GroepID
 FROM grp.GroepsWerkJaar gwj
@@ -35,10 +39,9 @@ GROUP BY gwj.GroepID
 JOIN grp.Groep g ON huidigwj.GroepID = g.GroepID
 JOIN pers.GelieerdePersoon gp on l.GelieerdePersoonID = gp.GelieerdePersoonID
 JOIN pers.Persoon p on gp.PersoonID = p.PersoonID
-WHERE l.NonActief = 0 AND g.StopDatum IS NULL
-
+WHERE l.NonActief = 0 AND g.StopDatum IS NULL;
 GO
 
-ALTER TABLE [logging].[Bericht] DROP CONSTRAINT [FK_Bericht_Groep]
-GO
-
+-- Geen koppeling van loggingtabel aan groeptabel via stamnr. (#5363)
+IF (OBJECT_ID('FK_Bericht_Groep', 'F') IS NOT NULL)
+  ALTER TABLE [logging].[Bericht] DROP CONSTRAINT [FK_Bericht_Groep];
