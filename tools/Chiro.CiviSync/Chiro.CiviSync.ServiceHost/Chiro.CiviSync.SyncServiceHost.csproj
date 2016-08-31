@@ -100,14 +100,6 @@
       <Project>{f39a9e29-95e9-4304-a42d-1266f81b5ecf}</Project>
       <Name>Chiro.CiviCrm.BehaviorExtension</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Behavior\Chiro.CiviCrm.BehaviorExtension.csproj">
-      <Project>{f39a9e29-95e9-4304-a42d-1266f81b5ecf}</Project>
-      <Name>Chiro.CiviCrm.BehaviorExtension</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Api\Chiro.CiviCrm.Api.csproj">
-      <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
-      <Name>Chiro.CiviCrm.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Api\Chiro.CiviCrm.Api.csproj">
       <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
@@ -140,19 +132,12 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="PublishToFileSystem"
-        DependsOnTargets="PipelinePreDeployCopyAllFilesToOneFolder">
-    <Error Condition="'$(PublishDestination)'==''"
-           Text="The PublishDestination property must be set to the intended publishing destination." />
-    <MakeDir Condition="!Exists($(PublishDestination))"
-             Directories="$(PublishDestination)" />
-
+  <Target Name="PublishToFileSystem" DependsOnTargets="PipelinePreDeployCopyAllFilesToOneFolder">
+    <Error Condition="'$(PublishDestination)'==''" Text="The PublishDestination property must be set to the intended publishing destination." />
+    <MakeDir Condition="!Exists($(PublishDestination))" Directories="$(PublishDestination)" />
     <ItemGroup>
-        <PublishFiles Include="$(_PackageTempDir)\**\*.*" />
+      <PublishFiles Include="$(_PackageTempDir)\**\*.*" />
     </ItemGroup>
-
-    <Copy SourceFiles="@(PublishFiles)"
-          DestinationFiles="@(PublishFiles->'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')"
-          SkipUnchangedFiles="True" />
+    <Copy SourceFiles="@(PublishFiles)" DestinationFiles="@(PublishFiles-&gt;'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="True" />
   </Target>
 </Project>
