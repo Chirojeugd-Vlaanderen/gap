@@ -1,12 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{12DF63A0-A651-43E9-B72C-293C79EBB068}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -50,7 +47,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -100,7 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
-      <Project>{66147f76-9d76-46a6-8fce-1bbe317a6093}</Project>
+      <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
       <Name>Chiro.Cdf.Ioc.Factory</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
@@ -108,11 +104,11 @@
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
-      <Project>{268708cb-f3e8-4afa-9e61-824cfa27be0e}</Project>
+      <Project>{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}</Project>
       <Name>Chiro.Cdf.UnityWcfExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Ad.DirectoryAccess\Chiro.Ad.DirectoryAccess.csproj">
-      <Project>{1d5593dc-4e17-4397-948d-596786c9a655}</Project>
+      <Project>{1D5593DC-4E17-4397-948D-596786C9A655}</Project>
       <Name>Chiro.Ad.DirectoryAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Ad.Domain\Chiro.Ad.Domain.csproj">
@@ -124,7 +120,7 @@
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Ad.Workers\Chiro.Ad.Workers.csproj">
-      <Project>{c28de7b1-76df-4c38-8f25-184a9248a81c}</Project>
+      <Project>{C28DE7B1-76DF-4C38-8F25-184A9248A81C}</Project>
       <Name>Chiro.Ad.Workers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
@@ -166,6 +162,11 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
