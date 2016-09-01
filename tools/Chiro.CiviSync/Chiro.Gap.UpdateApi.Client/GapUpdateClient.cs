@@ -42,7 +42,7 @@ namespace Chiro.Gap.UpdateApi.Client
         /// Rapporteer het gegeven <paramref name="adNummer"/> als ongeldig bij GAP.
         /// </summary>
         /// <param name="adNummer">Als ongeldig te rapporteren AD-nummer</param>
-        public async Task OngeldigAdNaarGap(int adNummer)
+        public void OngeldigAdNaarGap(int adNummer)
         {
             if (_username == null && _password == null && _server == null)
             {
@@ -60,8 +60,8 @@ namespace Chiro.Gap.UpdateApi.Client
                     client.DefaultRequestHeaders.Authorization = header;
                 }
                 client.BaseAddress = new Uri(_server);
-                await client.PostAsJsonAsync(String.Format("{0}foutad", _path),
-                    new FoutAdModel { AdNummer = adNummer });
+                var result = client.PostAsJsonAsync(String.Format("{0}foutad", _path),
+                    new FoutAdModel { AdNummer = adNummer }).Result;
             }
         }
     }
