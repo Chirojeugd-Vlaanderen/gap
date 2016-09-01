@@ -100,6 +100,10 @@
       <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.UpdateApi.Client\Chiro.Gap.UpdateApi.Client.csproj">
+      <Project>{f1e20acb-e9f6-4e25-8327-fa2ab35b86c8}</Project>
+      <Name>Chiro.Gap.UpdateApi.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
@@ -139,6 +143,6 @@
     <ItemGroup>
       <PublishFiles Include="$(_PackageTempDir)\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(PublishFiles)" DestinationFiles="@(PublishFiles-&gt;'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="True" />
+    <Copy SourceFiles="@(PublishFiles)" DestinationFiles="@(PublishFiles->'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="True" />
   </Target>
 </Project>
