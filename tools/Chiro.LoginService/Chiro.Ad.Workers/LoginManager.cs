@@ -174,7 +174,7 @@ namespace Chiro.Ad.Workers
         /// Voegt de gegeven <paramref name="gebruiker" /> toe aan de gebruikersgroep
         /// van de GAP-users.
         /// </summary>
-        public void GapRechtenToekennen(Chirologin gebruiker)
+        public void GapRechtenToekennenEnMailen(Chirologin gebruiker)
         {
             string groep = Properties.Settings.Default.GapGebruikersGroep;
             string groepOu = Properties.Settings.Default.GapGroepenOU;
@@ -182,6 +182,10 @@ namespace Chiro.Ad.Workers
             {
                 _directoryAccess.GebruikerToevoegenAanGroep(gebruiker, groep, groepOu);
             }
+
+            var boodschap = string.Format(Properties.Resources.GapRechtenInfoMail, gebruiker.Voornaam);
+
+            _mailer.Verzenden(gebruiker.Mailadres, "GAP-toegang", boodschap);
         }
     }
 }

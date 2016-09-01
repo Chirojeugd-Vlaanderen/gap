@@ -90,11 +90,10 @@ namespace Chiro.Ad.LoginService
             try
             {
                 var gebruiker = _loginManager.ZoekenOfMaken(DomeinEnum.Wereld, adNr, voornaam, familienaam, mailadres);
-              	_loginManager.GapRechtenToekennen(gebruiker);
+              	_loginManager.GapRechtenToekennenEnMailen(gebruiker);
                 if (!gebruiker.BestondAl)
                 {
                     // Als de gebruiker nieuw is, activeren we zijn account, en sturen we een mailtje.
-                    string wachtwoord = RandomPassword.Generate();
                     _loginManager.ActiverenEnMailen(gebruiker);
                 }
                 else if (String.Compare(gebruiker.Mailadres, mailadres, StringComparison.OrdinalIgnoreCase) != 0)
