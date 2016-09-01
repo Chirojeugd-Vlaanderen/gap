@@ -142,7 +142,7 @@ namespace Chiro.CiviSync.Services.Test
                 .Returns(Mapper.Map<Event, ApiResultValues<Event>>(bivak));
 
             // Verwacht dat het foute AD-nummer terug naar GAP gaat.
-            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer))).Returns(Task.Delay(0)).Verifiable();
+            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer))).Verifiable();
 
             // ACT
 

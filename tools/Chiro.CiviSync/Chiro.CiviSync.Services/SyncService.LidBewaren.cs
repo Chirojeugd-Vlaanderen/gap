@@ -40,7 +40,7 @@ namespace Chiro.CiviSync.Services
         /// De nodige info voor het lid.
         /// </param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void LidBewaren(int adNummer, LidGedoe gedoe)
+        public void LidBewaren(int adNummer, LidGedoe gedoe)
         {
             int? civiGroepId = _contactWorker.ContactIdGet(gedoe.StamNummer);
             if (civiGroepId == null)
@@ -59,7 +59,7 @@ namespace Chiro.CiviSync.Services
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren lid - als dusdanig terug naar GAP.", adNummer),
                     gedoe.StamNummer, adNummer, null);
 
-               await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 
