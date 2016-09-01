@@ -45,3 +45,8 @@ GO
 -- Geen koppeling van loggingtabel aan groeptabel via stamnr. (#5363)
 IF (OBJECT_ID('FK_Bericht_Groep', 'F') IS NOT NULL)
   ALTER TABLE [logging].[Bericht] DROP CONSTRAINT [FK_Bericht_Groep];
+GO
+
+-- Disable 2 gestopte groepen in GAP (zie ook #5386).
+
+UPDATE grp.Groep SET StopDatum='2015-08-31' WHERE Code in ('BG /0605','OG /1208');
