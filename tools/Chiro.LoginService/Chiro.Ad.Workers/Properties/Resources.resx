@@ -134,6 +134,17 @@ Groeten
 De Chirohelpdesk (Helpdesk@chiro.be)</value>
     <comment>Parameter 0 = voornaam, 1 = login, 2 = wachtwoord</comment>
   </data>
+  <data name="GapRechtenInfoMail" xml:space="preserve">
+    <value>Dag {0}
+
+Vanaf nu heb je met je Chirologin ook toegang tot de GAP-website, waar je de administratie van je groep vindt: https://gap.chiro.be.
+
+Als je je login of wachtwoord niet meer kent, surf dan naar https://login.chiro.be. Klik daar op 'Nieuw wachtwoord' en vul je mailadres in.
+
+Groeten
+De Chirohelpdesk (Helpdesk@chiro.be)</value>
+    <comment>Parameter 0 = voornaam</comment>
+  </data>
   <data name="MailNietVerstuurd" xml:space="preserve">
     <value />
   </data>

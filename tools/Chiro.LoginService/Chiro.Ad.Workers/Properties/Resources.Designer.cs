@@ -83,6 +83,22 @@ namespace Chiro.Ad.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dag {0}
+        ///
+        ///Vanaf nu heb je met je Chirologin ook toegang tot de GAP-website, waar je de administratie van je groep vindt: https://gap.chiro.be.
+        ///
+        ///Als je je login of wachtwoord niet meer kent, surf dan naar https://login.chiro.be. Klik daar op &apos;Nieuw wachtwoord&apos; en vul je mailadres in.
+        ///
+        ///Groeten
+        ///De Chirohelpdesk (Helpdesk@chiro.be).
+        /// </summary>
+        internal static string GapRechtenInfoMail {
+            get {
+                return ResourceManager.GetString("GapRechtenInfoMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string MailNietVerstuurd {
