@@ -43,7 +43,7 @@ namespace Chiro.CiviSync.Services
         /// in GAP.
         /// </remarks>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void LidVerwijderen(int adNummer, string stamNummer, DateTime uitschrijfDatum)
+        public void LidVerwijderen(int adNummer, string stamNummer, DateTime uitschrijfDatum)
         {
             int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
             if (civiGroepId == null)
@@ -59,7 +59,7 @@ namespace Chiro.CiviSync.Services
             {
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te verwijderen lid - als dusdanig terug naar GAP.", adNummer),
                     stamNummer, adNummer, null);
-                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 

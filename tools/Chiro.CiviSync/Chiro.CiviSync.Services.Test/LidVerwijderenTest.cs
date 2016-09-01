@@ -162,7 +162,6 @@ namespace Chiro.CiviSync.Services.Test
             // We mocken ook GapUpdateClient.
 
             updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer)))
-                .Returns(Task.Delay(0))
                 .Verifiable();
 
             civiApiMock.Setup(

@@ -37,7 +37,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="werkJaar">Werkjaar van het abonnement.</param>
         /// <param name="type">Digitaal of op papier.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void AbonnementBewaren(int adNummer, int werkJaar, AbonnementTypeEnum type)
+        public void AbonnementBewaren(int adNummer, int werkJaar, AbonnementTypeEnum type)
         {
             var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.DubbelpuntAbonnement);
 
@@ -46,7 +46,7 @@ namespace Chiro.CiviSync.Services
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren Dubbelpuntabonnement - als dusdanig terug naar GAP.", adNummer),
                     null, adNummer, null);
 
-                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 
@@ -112,7 +112,7 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon die geen abonnement meer wil.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void AbonnementStopzetten(int adNummer)
+        public void AbonnementStopzetten(int adNummer)
         {
             var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.DubbelpuntAbonnement);
 
@@ -121,7 +121,7 @@ namespace Chiro.CiviSync.Services
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren Dubbelpuntabonnement - als dusdanig terug naar GAP.", adNummer),
                     null, adNummer, null);
 
-                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 

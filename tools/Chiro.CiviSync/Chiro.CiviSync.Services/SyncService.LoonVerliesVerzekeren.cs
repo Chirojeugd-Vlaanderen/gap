@@ -41,7 +41,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="werkJaar">Werkjaar voor de verzekering</param>
         /// <param name="gratis"></param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar, bool gratis)
+        public void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar, bool gratis)
         {
             // Vind contact met zijn recentste membership.
 
@@ -51,7 +51,7 @@ namespace Chiro.CiviSync.Services
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren membership - als dusdanig terug naar GAP.", adNummer),
                     null, adNummer, null);
 
-                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 
