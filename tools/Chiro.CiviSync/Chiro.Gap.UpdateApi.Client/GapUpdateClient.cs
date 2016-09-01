@@ -60,6 +60,8 @@ namespace Chiro.Gap.UpdateApi.Client
                     client.DefaultRequestHeaders.Authorization = header;
                 }
                 client.BaseAddress = new Uri(_server);
+
+                // Let op: als je https gebruikt, moet het certificaat in orde zijn!
                 var result = client.PostAsJsonAsync(String.Format("{0}foutad", _path),
                     new FoutAdModel { AdNummer = adNummer }).Result;
             }
