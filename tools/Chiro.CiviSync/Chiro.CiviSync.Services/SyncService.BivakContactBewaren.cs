@@ -42,7 +42,7 @@ namespace Chiro.CiviSync.Services
         /// AD-nummer contactpersoon bivak
         /// </param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void BivakContactBewaren(int uitstapId, int adNummer)
+        public void BivakContactBewaren(int uitstapId, int adNummer)
         {
             Event bivak;
             string stamNr;
@@ -67,7 +67,7 @@ namespace Chiro.CiviSync.Services
                 // hieronder wel eens een null-dink-exception. Maar ik denk dat dat eerder
                 // een issue met Visual Studio is, aangezien de assert hierboven waarschijnlijk
                 // geen problemen gaf.
-                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 

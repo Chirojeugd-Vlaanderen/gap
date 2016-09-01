@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -39,9 +39,7 @@ namespace Chiro.Gap.Maintenance
         // Data access
         private readonly IRepositoryProvider _repositoryProvider;
         private readonly IRepository<Lid> _ledenRepo;
-
-        // Businesslogica
-        private readonly IGroepsWerkJarenManager _groepsWerkJarenManager;
+		private readonly IRepository<ActiefLid> _actieveLedenRepo;
 
         // Synchronisatie
         private readonly ILedenSync _ledenSync;
@@ -52,12 +50,11 @@ namespace Chiro.Gap.Maintenance
         /// <param name="repositoryProvider">Toegang tot de database</param>
         /// <param name="groepsWerkJarenManager">Geruiken we vooral om het huidige werkjaar te bepalen.</param>
         /// <param name="ledenSync">Toegang tot CiviSync</param>
-        public RelationshipMaintenance(IRepositoryProvider repositoryProvider, IGroepsWerkJarenManager groepsWerkJarenManager,
-            ILedenSync ledenSync)
+        public RelationshipMaintenance(IRepositoryProvider repositoryProvider, ILedenSync ledenSync)
         {
             _repositoryProvider = repositoryProvider;
             _ledenRepo = _repositoryProvider.RepositoryGet<Lid>();
-            _groepsWerkJarenManager = groepsWerkJarenManager;
+			_actieveLedenRepo = _repositoryProvider.RepositoryGet<ActiefLid> ();
             _ledenSync = ledenSync;
         }
 
@@ -67,20 +64,18 @@ namespace Chiro.Gap.Maintenance
         /// </summary>
         public void LedenZonderAdOpnieuwSyncen()
         {
+			var teSyncenLidIDs = from l in _actieveLedenRepo.Select ()
+			                     where l.AdNummer == null
+			                     select l.LidID;
+			Console.WriteLine("Aanvragen van {0} AD-nummers", teSyncenLidIDs.Count());
+
+			var teSyncen = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon", "GroepsWerkJaar")
+				where teSyncenLidIDs.Contains(l.ID)
+			    select l).ToArray();
+
+			_ledenSync.Bewaren (teSyncen);
+
             return;
-
-            // DIT MOGEN WE OP DIT MOMENT NIET MEER DOEN, WANT ER MOGEN ALLEEN ACTIEVE LEDEN
-            // NAAR CIVICRM!
-
-            //int huidigWerkJaar = _groepsWerkJarenManager.HuidigWerkJaarNationaal();
-
-            //var teSyncen = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon", "GroepsWerkJaar")
-            //    where l.GelieerdePersoon.Persoon.AdNummer == null && l.GroepsWerkJaar.WerkJaar == huidigWerkJaar
-            //    select l).ToArray();
-
-            //Console.WriteLine("Aanvragen van {0} AD-nummers", teSyncen.Count());
-
-            //_ledenSync.Bewaren(teSyncen);
         }
 
         #region Disposable thingy

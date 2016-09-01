@@ -1,4 +1,4 @@
--- Copyright 2012-2014 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+-- Copyright 2012-2014, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
 -- top-level directory of this distribution, and at
 -- https://gapwiki.chiro.be/copyright
 -- 
@@ -40,7 +40,7 @@ insert into @groepids values(892);
 insert into @groepids values(312);
 insert into @groepids values(302);
 
-truncate table logging.bericht
+truncate table logging.bericht;
 
 delete lf
 from lid.Lid l 

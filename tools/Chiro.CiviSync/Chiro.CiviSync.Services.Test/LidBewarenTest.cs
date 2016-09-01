@@ -493,7 +493,7 @@ namespace Chiro.CiviSync.Services.Test
             var ploeg = new Contact {ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization};
 
             // We mocken ook GapUpdateClient, die een dummy task oplevert.
-            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer))).Returns(Task.Delay(0)).Verifiable();
+            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer))).Verifiable();
 
             civiApiMock.Setup(
                 src =>

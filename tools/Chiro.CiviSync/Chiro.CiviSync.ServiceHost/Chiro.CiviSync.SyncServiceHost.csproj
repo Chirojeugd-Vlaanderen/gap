@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -100,17 +100,13 @@
       <Project>{f39a9e29-95e9-4304-a42d-1266f81b5ecf}</Project>
       <Name>Chiro.CiviCrm.BehaviorExtension</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Behavior\Chiro.CiviCrm.BehaviorExtension.csproj">
-      <Project>{f39a9e29-95e9-4304-a42d-1266f81b5ecf}</Project>
-      <Name>Chiro.CiviCrm.BehaviorExtension</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Api\Chiro.CiviCrm.Api.csproj">
       <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Api\Chiro.CiviCrm.Api.csproj">
-      <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
-      <Name>Chiro.CiviCrm.Api</Name>
+    <ProjectReference Include="..\Chiro.Gap.UpdateApi.Client\Chiro.Gap.UpdateApi.Client.csproj">
+      <Project>{f1e20acb-e9f6-4e25-8327-fa2ab35b86c8}</Project>
+      <Name>Chiro.Gap.UpdateApi.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
@@ -131,8 +127,13 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -140,19 +141,12 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="PublishToFileSystem"
-        DependsOnTargets="PipelinePreDeployCopyAllFilesToOneFolder">
-    <Error Condition="'$(PublishDestination)'==''"
-           Text="The PublishDestination property must be set to the intended publishing destination." />
-    <MakeDir Condition="!Exists($(PublishDestination))"
-             Directories="$(PublishDestination)" />
-
+  <Target Name="PublishToFileSystem" DependsOnTargets="PipelinePreDeployCopyAllFilesToOneFolder">
+    <Error Condition="'$(PublishDestination)'==''" Text="The PublishDestination property must be set to the intended publishing destination." />
+    <MakeDir Condition="!Exists($(PublishDestination))" Directories="$(PublishDestination)" />
     <ItemGroup>
-        <PublishFiles Include="$(_PackageTempDir)\**\*.*" />
+      <PublishFiles Include="$(_PackageTempDir)\**\*.*" />
     </ItemGroup>
-
-    <Copy SourceFiles="@(PublishFiles)"
-          DestinationFiles="@(PublishFiles->'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')"
-          SkipUnchangedFiles="True" />
+    <Copy SourceFiles="@(PublishFiles)" DestinationFiles="@(PublishFiles->'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="True" />
   </Target>
 </Project>

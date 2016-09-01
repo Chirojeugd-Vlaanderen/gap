@@ -32,6 +32,6 @@ namespace Chiro.Gap.UpdateApi.Client
         /// Rapporteer het gegeven <paramref name="adNummer"/> als ongeldig bij GAP.
         /// </summary>
         /// <param name="adNummer">Als ongeldig te rapporteren AD-nummer</param>
-        Task OngeldigAdNaarGap(int adNummer);
+        void OngeldigAdNaarGap(int adNummer);
     }
 }
