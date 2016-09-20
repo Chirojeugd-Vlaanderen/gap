@@ -187,4 +187,7 @@
   <data name="Program_DubbelpuntFixen_Actieve_Dubbelpuntabonnementen_ophalen_uit_CiviCRM_" xml:space="preserve">
     <value>Actieve Dubbelpuntabonnementen ophalen uit CiviCRM.</value>
   </data>
+  <data name="Program_Main_Druk_ENTER_" xml:space="preserve">
+    <value>Druk ENTER.</value>
+  </data>
 </root>
