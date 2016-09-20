@@ -177,4 +177,14 @@
   <data name="Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_er_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_" xml:space="preserve">
     <value>Uitschrijven doen we nog maar niet; het zou kunnen dat er mensen niet in gap waren gevonden omdat er nog geen AD-nummers terug kwamen.</value>
   </data>
+  <data name="Usage" xml:space="preserve">
+    <value>USAGE: {0} [-a|-b|-d|-l]
+    -a  kijkt alles na
+    -b  kijkt bivakken na
+    -d  kijkt dubbelpuntabonnementen na
+    -l  kijkt leden na</value>
+  </data>
+  <data name="Program_DubbelpuntFixen_Actieve_Dubbelpuntabonnementen_ophalen_uit_CiviCRM_" xml:space="preserve">
+    <value>Actieve Dubbelpuntabonnementen ophalen uit CiviCRM.</value>
+  </data>
 </root>

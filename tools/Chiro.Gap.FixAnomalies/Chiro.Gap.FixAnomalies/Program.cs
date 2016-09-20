@@ -15,10 +15,10 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.FixAnomalies.Properties;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.FixAnomalies
@@ -27,6 +27,15 @@ namespace Chiro.Gap.FixAnomalies
     {
         static void Main(string[] args)
         {
+            var tefixen = TeFixenGet(args);
+            if (tefixen == TeFixen.Geen)
+            {
+                Console.WriteLine(Resources.Usage);
+                Console.WriteLine(Resources.Program_Main_Druk_ENTER_);
+                Console.ReadLine();
+                return;
+            }
+
             // DIT IS LELIJK, EN KAN BEST WAT OPKUIS GEBRUIKEN.
 
             string apiKey = Properties.Settings.Default.ApiKey;
@@ -50,8 +59,9 @@ namespace Chiro.Gap.FixAnomalies
 
             // TODO: via command line opties verbositeit van dit script bepalen.
 
-            BivakAangiftesFixen(serviceHelper, apiKey, siteKey);
-            LidRelatiesFixen(serviceHelper, apiKey, siteKey);
+            if ((tefixen & TeFixen.Bivakken) != 0) BivakAangiftesFixen(serviceHelper, apiKey, siteKey);
+            if ((tefixen & TeFixen.Leden) != 0) LidRelatiesFixen(serviceHelper, apiKey, siteKey);
+            if ((tefixen & TeFixen.Dubbelpunt) != 0) DubbelpuntFixen(serviceHelper, apiKey, siteKey);
 
             // Onderstaande is nog niet af, maar kunnen we afwerken wanneer nodig.
             // Zie #4586.
@@ -88,6 +98,30 @@ namespace Chiro.Gap.FixAnomalies
                     Console.WriteLine(a[aCounter]);
                 }
                 ++aCounter;
+            }
+            return result;
+        }
+
+        public static TeFixen TeFixenGet(string[] args)
+        {
+            TeFixen result = TeFixen.Geen;
+            foreach (string s in args)
+            {
+                switch (s.ToUpper())
+                {
+                    case "-b":
+                        result |= TeFixen.Bivakken;
+                        break;
+                    case "-l":
+                        result |= TeFixen.Leden;
+                        break;
+                    case "-d":
+                        result |= TeFixen.Bivakken;
+                        break;
+                    case "-a":
+                        result |= TeFixen.Alles;
+                        break;
+                }
             }
             return result;
         }
