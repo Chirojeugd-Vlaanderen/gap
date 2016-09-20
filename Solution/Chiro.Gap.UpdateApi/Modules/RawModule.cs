@@ -47,6 +47,7 @@ namespace Chiro.Gap.UpdateApi.Modules
             _gapUpdater = gapUpdater;
 
             Get["/raw/leden/{werkjaar}"] = parameters => _gapUpdater.AlleLedenRaw(parameters.werkjaar);
+            Get["raw/dp/{werkjaar}"] = parameters => _gapUpdater.AlleDpRaw(parameters.werkjaar);
         }
 
         #region Disposable etc

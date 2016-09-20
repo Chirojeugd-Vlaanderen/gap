@@ -127,6 +127,34 @@ namespace Chiro.Gap.UpdateApi.Workers
         }
 
         /// <summary>
+        /// Levert een string op met daarin alle ad-nummers die in het gegeven
+        /// <paramref name="werkjaar"/> een Dubbelpuntabonnement hebben, en het
+        /// soort abonnement (digitaal, papier, digitaal & papier)
+        /// </summary>
+        /// <param name="werkjaar"></param>
+        /// <returns>String met per lijn een AD-nummer, een kommapunt en een abonnementstype</returns>
+        /// <remarks>
+        /// Deze functie hoort niet thuis in iets dat GapUpdater heet. Dit is eerder een
+        /// hack om makkelijk de DP-abonnementen uit GAP en Civi te kunnen vergelijken.
+        /// </remarks>
+        public string AlleDpRaw(int werkjaar)
+        {
+            var alles =
+                _abonnementenRepo.Select()
+                    .Where(ab => ab.GroepsWerkJaar.WerkJaar == werkjaar)
+                    .OrderBy(ab => ab.GelieerdePersoon.Persoon.AdNummer)
+                    .Select(ab => new {ab.GelieerdePersoon.Persoon.AdNummer, ab.TypeInt});
+            var builder = new StringBuilder();
+
+            foreach (var l in alles)
+            {
+                builder.AppendLine(String.Format("{0};{1}", l.AdNummer, l.TypeInt));
+            }
+
+            return builder.ToString();
+        }
+
+        /// <summary>
         /// Vervangt het AD-nummer van de persoon met AD-nummer <paramref name="oudAd"/>
         /// door <paramref name="nieuwAd"/>.  Als er al een persoon bestond met AD-nummer
         /// <paramref name="nieuwAd"/>, dan worden de personen gemerged.
