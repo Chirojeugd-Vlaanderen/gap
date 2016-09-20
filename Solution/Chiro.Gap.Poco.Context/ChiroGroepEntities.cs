@@ -20,7 +20,6 @@ using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Model;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Context
 {
@@ -29,6 +28,20 @@ namespace Chiro.Gap.Poco.Context
         public ChiroGroepEntities()
             : base("name=ChiroGroepEntities")
         {
+        }
+
+        /// <summary>
+        /// This method has no use at all, except for working around a deployment problem.
+        /// </summary>
+        public void FixEfProviderServicesProblem()
+        {
+            // See http://stackoverflow.com/a/19130718/1417449
+            // > The Entity Framework provider type 'System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer'
+            // > for the 'System.Data.SqlClient' ADO.NET provider could not be loaded. 
+            // > Make sure the provider assembly is available to the running application. 
+            // > See http://go.microsoft.com/fwlink/?LinkId=260882 for more information.
+
+            var instance = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
