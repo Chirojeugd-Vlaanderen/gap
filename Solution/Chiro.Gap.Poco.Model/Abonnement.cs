@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -29,7 +29,7 @@ namespace Chiro.Gap.Poco.Model
         public virtual GelieerdePersoon GelieerdePersoon { get; set; }
         public virtual GroepsWerkJaar GroepsWerkJaar { get; set; }
         public virtual Publicatie Publicatie { get; set; }
-        internal int TypeInt { get; set; }
+        public int TypeInt { get; set; }
 
         public AbonnementType Type
         {
