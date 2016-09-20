@@ -62,8 +62,6 @@ namespace Chiro.Gap.FixAnomalies
             }
             Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, civiLeden.Count);
 
-            int werkjaar = HuidigWerkJaar();
-
             Console.WriteLine(Resources.Program_Main_Opvragen_actieve_leden_GAP__);
             var gapLeden = AlleActieveLeden();
             Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapLeden.Count());

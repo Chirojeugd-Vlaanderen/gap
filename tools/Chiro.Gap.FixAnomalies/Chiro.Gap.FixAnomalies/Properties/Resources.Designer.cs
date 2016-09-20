@@ -106,6 +106,15 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dubbelpuntabonnementen ophalen werkjaar {0}....
+        /// </summary>
+        internal static string Program_DubbelpuntFixen_Dubbelpuntabonnementen_ophalen_werkjaar__0____ {
+            get {
+                return ResourceManager.GetString("Program_DubbelpuntFixen_Dubbelpuntabonnementen_ophalen_werkjaar__0____", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uitschrijven doen we nog maar niet; het zou kunnen dat er mensen niet in gap waren gevonden omdat er nog geen AD-nummers terug kwamen..
         /// </summary>
         internal static string Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_er_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_ {
@@ -231,6 +240,16 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         internal static string Program_Main_Uitschrijven_uit_Civi__ {
             get {
                 return ResourceManager.GetString("Program_Main_Uitschrijven_uit_Civi__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Op zoek naar abonnementen in GAP maar niet in CiviCRM....
+        /// </summary>
+        internal static string Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_CiviCRM___ {
+            get {
+                return ResourceManager.GetString("Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_Civi" +
+                        "CRM___", resourceCulture);
             }
         }
         

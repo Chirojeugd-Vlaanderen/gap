@@ -190,4 +190,10 @@
   <data name="Program_Main_Druk_ENTER_" xml:space="preserve">
     <value>Druk ENTER.</value>
   </data>
+  <data name="Program_DubbelpuntFixen_Dubbelpuntabonnementen_ophalen_werkjaar__0____" xml:space="preserve">
+    <value>Dubbelpuntabonnementen ophalen werkjaar {0}...</value>
+  </data>
+  <data name="Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_CiviCRM___" xml:space="preserve">
+    <value>Op zoek naar abonnementen in GAP maar niet in CiviCRM...</value>
+  </data>
 </root>

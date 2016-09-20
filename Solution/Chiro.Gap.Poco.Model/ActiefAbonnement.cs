@@ -20,33 +20,26 @@ using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-	/// <summary>
-	/// Actief lid.
-	/// 
-	/// Dit is een view die voornamelijk wat ID's bevat van de leden die
-	/// momenteel actief zijn.
-	/// </summary>
-	public class ActiefLid: BasisEntiteit
-	{
-		public ActiefLid ()
-		{
-		}
-		public int LidID { get; set; }
-		public int PersoonID { get; set; }
-		public int GroepID { get; set; }
-		public int? AdNummer { get; set; }
-		public string Code { get; set; }
-		public int WerkJaar { get; set; }
+    /// <summary>
+    /// ID's van personen en abonnementstypes van actieve abonnementen.
+    /// </summary>
+    /// <remarks>
+    /// Wordt enkel gebruikt voor opsporen en rechtzetten van syncproblemen.
+    /// </remarks>
+    public class ActiefAbonnement: BasisEntiteit
+    {
+        public int PersoonID { get; set; }
+        public int Type { get; set; }
+        public int AdNummer { get; set; }
 
-	    /// <summary>
-	    /// De bedoeling is dat Versie een timestamp (row version) is, voor concurrency control
-	    /// </summary>
-	    public override byte[] Versie { get; set; }
+        /// <summary>
+        /// De bedoeling is dat Versie een timestamp (row version) is, voor concurrency control
+        /// </summary>
+        public override byte[] Versie { get; set; }
 
-	    /// <summary>
-	    /// ID is de primary key
-	    /// </summary>
-	    public override int ID { get; set; }
-	}
+        /// <summary>
+        /// ID is de primary key
+        /// </summary>
+        public override int ID { get; set; }
+    }
 }
-

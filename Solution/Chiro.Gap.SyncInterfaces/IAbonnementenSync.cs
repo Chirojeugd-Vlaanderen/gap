@@ -27,7 +27,7 @@ namespace Chiro.Gap.SyncInterfaces
 	/// </summary>
 	public interface IAbonnementenSync
 	{
-	    void AbonnementBewaren(Abonnement teSyncenAbonnement);
+	    void Bewaren(Abonnement teSyncenAbonnement);
 	    void AlleAbonnementenVerwijderen(GelieerdePersoon gelieerdePersoon);
 	}
 }

@@ -16,3 +16,30 @@
 
 -- Voeg hier de wijzigingen toe die moeten gebeuren aan de database.
 
+-- Een view voor actieve abonnementen (zie #5463)
+-- Drop view als hij al bestaat, dan kunnen we hem terug maken.
+IF OBJECT_ID('diag.vActiefAbonnement', 'V') IS NOT NULL
+    DROP VIEW diag.vActiefAbonnement;
+GO
+
+CREATE VIEW diag.vActiefAbonnement AS
+-- Voor 't gemak zitten hier dubbels bij.
+SELECT DISTINCT ab.AbonnementID, gp.PersoonID, ab.Type, p.AdNummer 
+FROM abo.Abonnement ab
+JOIN
+(
+-- We gaan er even vanuit dat recente groepswerkjaren een hoger ID
+-- hebben dan oude groepswerkjaren. We mogen dat eigenlijk niet doen.
+-- Maar we doen het toch.
+SELECT
+MAX(gwj.GroepsWerkJaarID) AS GroepsWerkJaarID,
+MAX(gwj.WerkJaar) AS WerkJaar,
+gwj.GroepID
+FROM grp.GroepsWerkJaar gwj
+GROUP BY gwj.GroepID
+) huidigwj ON ab.GroepsWerkjaarID = huidigwj.GroepsWerkJaarID
+JOIN grp.Groep g ON huidigwj.GroepID = g.GroepID
+JOIN pers.GelieerdePersoon gp on ab.GelieerdePersoonID = gp.GelieerdePersoonID
+JOIN pers.Persoon p on gp.PersoonID = p.PersoonID
+WHERE g.StopDatum IS NULL;
+GO

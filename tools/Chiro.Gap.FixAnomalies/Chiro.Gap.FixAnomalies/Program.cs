@@ -107,7 +107,7 @@ namespace Chiro.Gap.FixAnomalies
             TeFixen result = TeFixen.Geen;
             foreach (string s in args)
             {
-                switch (s.ToUpper())
+                switch (s.ToLower())
                 {
                     case "-b":
                         result |= TeFixen.Bivakken;
@@ -116,7 +116,7 @@ namespace Chiro.Gap.FixAnomalies
                         result |= TeFixen.Leden;
                         break;
                     case "-d":
-                        result |= TeFixen.Bivakken;
+                        result |= TeFixen.Dubbelpunt;
                         break;
                     case "-a":
                         result |= TeFixen.Alles;
