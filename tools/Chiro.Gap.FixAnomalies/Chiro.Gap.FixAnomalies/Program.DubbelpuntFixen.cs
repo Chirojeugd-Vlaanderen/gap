@@ -128,7 +128,9 @@ namespace Chiro.Gap.FixAnomalies
                 var repositoryProvider = new RepositoryProvider(context);
                 var repo = repositoryProvider.RepositoryGet<ActiefAbonnement>();
 
-                return repo.GetAll().OrderBy(a => a.AdNummer).ToArray();
+				// Kopieer de gevonden abonnementen, dan zijn ze detached, en geeft het misschien geen probleem
+				// om ze te returnen.
+				return repo.GetAll().OrderBy(a => a.AdNummer).Select(a => new ActiefAbonnement{AdNummer = a.AdNummer, Type = a.Type, ID = a.ID, PersoonID = a.PersoonID}).ToArray();
             }
         }
     }
