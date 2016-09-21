@@ -35,7 +35,7 @@ namespace Chiro.Gap.Sync
         {
         }
 
-        public void AbonnementBewaren(Abonnement teSyncenAbonnement)
+        public void Bewaren(Abonnement teSyncenAbonnement)
         {
             var type = (AbonnementTypeEnum)(int)teSyncenAbonnement.Type;
             if (teSyncenAbonnement.GelieerdePersoon.Persoon.AdNummer.HasValue)

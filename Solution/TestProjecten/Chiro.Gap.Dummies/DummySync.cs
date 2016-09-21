@@ -133,7 +133,7 @@ namespace Chiro.Gap.Dummies
         {
         }
 
-        public void AbonnementBewaren(Abonnement teSyncenAbonnement)
+        public void Bewaren(Abonnement teSyncenAbonnement)
         {
         }
 

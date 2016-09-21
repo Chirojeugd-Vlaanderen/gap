@@ -16,10 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chiro.Cdf.Poco;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;

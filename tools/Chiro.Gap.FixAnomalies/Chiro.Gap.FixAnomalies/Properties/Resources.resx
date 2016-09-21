@@ -177,4 +177,26 @@
   <data name="Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_er_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_" xml:space="preserve">
     <value>Uitschrijven doen we nog maar niet; het zou kunnen dat er mensen niet in gap waren gevonden omdat er nog geen AD-nummers terug kwamen.</value>
   </data>
+  <data name="Usage" xml:space="preserve">
+    <value>USAGE: {0} [-a|-b|-d|-l]
+    -a  kijkt alles na
+    -b  kijkt bivakken na
+    -d  kijkt dubbelpuntabonnementen na
+    -l  kijkt leden na</value>
+  </data>
+  <data name="Program_DubbelpuntFixen_Actieve_Dubbelpuntabonnementen_ophalen_uit_CiviCRM_" xml:space="preserve">
+    <value>Actieve Dubbelpuntabonnementen ophalen uit CiviCRM.</value>
+  </data>
+  <data name="Program_Main_Druk_ENTER_" xml:space="preserve">
+    <value>Druk ENTER.</value>
+  </data>
+  <data name="Program_DubbelpuntFixen_Dubbelpuntabonnementen_ophalen_werkjaar__0____" xml:space="preserve">
+    <value>Dubbelpuntabonnementen ophalen werkjaar {0}...</value>
+  </data>
+  <data name="Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_CiviCRM___" xml:space="preserve">
+    <value>Op zoek naar abonnementen in GAP maar niet in CiviCRM...</value>
+  </data>
+  <data name="Program_DubbelpuntFixen__0__abonnementen_niet_gevonden_in_CiviCRM_" xml:space="preserve">
+    <value>{0} abonnementen niet gevonden in CiviCRM.</value>
+  </data>
 </root>
