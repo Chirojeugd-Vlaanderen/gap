@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.FixAnomalies.Properties;
@@ -30,7 +31,7 @@ namespace Chiro.Gap.FixAnomalies
             var tefixen = TeFixenGet(args);
             if (tefixen == TeFixen.Geen)
             {
-                Console.WriteLine(Resources.Usage);
+                Console.WriteLine(Resources.Usage, Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location));
                 Console.WriteLine(Resources.Program_Main_Druk_ENTER_);
                 Console.ReadLine();
                 return;
