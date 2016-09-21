@@ -1561,7 +1561,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
             <End Role="Bericht" EntitySet="Bericht" />
           </AssociationSet>
           <EntitySet Name="vActiefLid" EntityType="ChiroGroepModel.ActiefLid" />
-          <EntitySet Name="vActiefAbonnement" EntityType="ChiroGroepModel.vActiefAbonnement" />
+          <EntitySet Name="vActiefAbonnement" EntityType="ChiroGroepModel.ActiefAbonnement" />
         </EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
           <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" Unicode="false" />
@@ -2144,7 +2144,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="WerkJaar" Type="Int32" />
         </EntityType>
-        <EntityType Name="vActiefAbonnement">
+        <EntityType Name="ActiefAbonnement">
           <Key>
             <PropertyRef Name="PersoonID" />
             <PropertyRef Name="Type" />
@@ -2882,7 +2882,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="vActiefAbonnement">
-            <EntityTypeMapping TypeName="ChiroGroepModel.vActiefAbonnement">
+            <EntityTypeMapping TypeName="ChiroGroepModel.ActiefAbonnement">
               <MappingFragment StoreEntitySet="vActiefAbonnement">
                 <ScalarProperty Name="ID" ColumnName="AbonnementID" />
                 <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
@@ -3430,7 +3430,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Gebruiker" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Persoon_Id" />
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.ActiefLid" Width="1.5" PointX="0.75" PointY="0.75" />
-        <edmx:EntityTypeShape EntityType="ChiroGroepModel.vActiefAbonnement" Width="1.5" PointX="3.375" PointY="0.75" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.ActiefAbonnement" Width="1.5" PointX="3.375" PointY="0.75" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
