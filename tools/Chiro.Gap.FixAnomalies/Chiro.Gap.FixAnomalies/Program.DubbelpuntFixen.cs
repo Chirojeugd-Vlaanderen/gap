@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015,2016 Chirojeugd-Vlaanderen vzw
+   Copyright 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ using Chiro.Cdf.Poco;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
-using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Entities.Custom;
 using Chiro.CiviCrm.Api.DataContracts.Filters;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.FixAnomalies.Properties;
@@ -39,22 +39,22 @@ namespace Chiro.Gap.FixAnomalies
 
             var request = new MembershipRequest
             {
-                MembershipTypeId = 1,
-                ContactGetRequest = new ContactRequest(),
+                MembershipTypeId = 2,
                 StatusFilter =
                     new Filter<MembershipStatus>(WhereOperator.In,
                         new[] {MembershipStatus.New, MembershipStatus.Current}),
-                
+                ApiOptions = new ApiOptions { Limit = 0 },
+                ReturnFields = "external_identifier,custom_76"
             };
 
-            var civiResult = serviceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
-                    svc => svc.MembershipGet(apiKey, siteKey, request));
+            var civiResult = serviceHelper.CallService<ICiviCrmApi, ApiResultValues<MembershipMetAd>>(
+                    svc => svc.ChiroDiagnosticsMembersMetAd(apiKey, siteKey, request));
             Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, civiResult.Count);
 
             // Bij leden sorteerden we de AD-nummers als string. Om het moeilijk te maken,
             // sorteren we ze bij DP als integer.
             var civiDps =
-                (from r in civiResult.Values.OrderBy(r => int.Parse(r.ContactResult.Values.First().ExternalIdentifier))
+                (from r in civiResult.Values.OrderBy(v => int.Parse(v.ExternalIdentifier ?? "0"))
                     select r).ToList();
 
             int werkjaar = HuidigWerkJaar();
@@ -62,7 +62,7 @@ namespace Chiro.Gap.FixAnomalies
             var gapDps = AlleActieveAbonnementen();
 
             var overTeZetten = OntbrekendInCiviZoeken(civiDps, gapDps);
-            Console.WriteLine("{0} abonnementen niet gevonden in CiviCRM.", overTeZetten.Count);
+            Console.WriteLine(Resources.Program_DubbelpuntFixen__0__abonnementen_niet_gevonden_in_CiviCRM_, overTeZetten.Count);
 
             // TODO: command line switch om deze vraag te vermijden.
             Console.Write(Resources.Program_Main_Meteen_syncen__);
@@ -91,7 +91,7 @@ namespace Chiro.Gap.FixAnomalies
             }
         }
 
-        private static List<ActiefAbonnement> OntbrekendInCiviZoeken(List<Membership> civiDps, ActiefAbonnement[] gapDps)
+        private static List<ActiefAbonnement> OntbrekendInCiviZoeken(List<MembershipMetAd> civiDps, ActiefAbonnement[] gapDps)
         {
             // Het blijft erg hacky. Hier wordt eigenlijk geen rekening gehouden met het abonnementtype.
             int civiCounter = 0;
@@ -102,11 +102,11 @@ namespace Chiro.Gap.FixAnomalies
             Console.WriteLine(Resources.Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_CiviCRM___);
             while (gapCounter < gapDps.Length && civiCounter < aantalciviBivakken)
             {
-                while (civiCounter < aantalciviBivakken && gapDps[gapCounter].AdNummer > int.Parse(civiDps[civiCounter].ContactResult.Values.First().ExternalIdentifier))
+                while (civiCounter < aantalciviBivakken && gapDps[gapCounter].AdNummer > int.Parse(civiDps[civiCounter].ExternalIdentifier ?? "0"))
                 {
                     ++civiCounter;
                 }
-                if (civiCounter < aantalciviBivakken && gapDps[gapCounter].AdNummer != int.Parse(civiDps[civiCounter].ContactResult.Values.First().ExternalIdentifier))
+                if (civiCounter < aantalciviBivakken && gapDps[gapCounter].AdNummer != int.Parse(civiDps[civiCounter].ExternalIdentifier ?? "0"))
                 {
                     teSyncen.Add(gapDps[gapCounter]);
                     Console.WriteLine("[{0} {1}]", gapDps[gapCounter].AdNummer, gapDps[gapCounter].Type);

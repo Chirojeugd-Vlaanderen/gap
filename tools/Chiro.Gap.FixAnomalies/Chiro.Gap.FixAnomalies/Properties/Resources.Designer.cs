@@ -97,6 +97,15 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} abonnementen niet gevonden in CiviCRM..
+        /// </summary>
+        internal static string Program_DubbelpuntFixen__0__abonnementen_niet_gevonden_in_CiviCRM_ {
+            get {
+                return ResourceManager.GetString("Program_DubbelpuntFixen__0__abonnementen_niet_gevonden_in_CiviCRM_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actieve Dubbelpuntabonnementen ophalen uit CiviCRM..
         /// </summary>
         internal static string Program_DubbelpuntFixen_Actieve_Dubbelpuntabonnementen_ophalen_uit_CiviCRM_ {

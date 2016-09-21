@@ -196,4 +196,7 @@
   <data name="Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_CiviCRM___" xml:space="preserve">
     <value>Op zoek naar abonnementen in GAP maar niet in CiviCRM...</value>
   </data>
+  <data name="Program_DubbelpuntFixen__0__abonnementen_niet_gevonden_in_CiviCRM_" xml:space="preserve">
+    <value>{0} abonnementen niet gevonden in CiviCRM.</value>
+  </data>
 </root>
