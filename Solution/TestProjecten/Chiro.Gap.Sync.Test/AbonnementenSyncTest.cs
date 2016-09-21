@@ -106,7 +106,7 @@ namespace Chiro.Gap.Sync.Test
             // ACT
 
             var target = Factory.Maak<AbonnementenSync>();
-            target.AbonnementBewaren(abonnement);
+            target.Bewaren(abonnement);
 
             // ASSERT
 

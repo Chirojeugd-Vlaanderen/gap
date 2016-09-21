@@ -404,6 +404,20 @@
           <Property Name="TotEindeWerkJaar" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'gap_local.diag.vActiefAbonnement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vActiefAbonnement">
+          <Key>
+            <PropertyRef Name="AbonnementID" />
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="Type" />
+          </Key>
+          <Property Name="AbonnementID" Type="int" Nullable="false" />
+          <Property Name="PersoonID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="AdNummer" Type="int" />
+          <Property Name="WerkJaar" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vActiefLid">
           <Key>
@@ -1104,6 +1118,15 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <EntitySet Name="PersoonsCategorie" EntityType="Self.PersoonsCategorie" Schema="pers" store:Type="Tables" />
           <EntitySet Name="PersoonsVerzekering" EntityType="Self.PersoonsVerzekering" Schema="verz" store:Type="Tables" />
           <EntitySet Name="VerzekeringsType" EntityType="Self.VerzekeringsType" Schema="verz" store:Type="Tables" />
+          <EntitySet Name="vActiefAbonnement" EntityType="Self.vActiefAbonnement" store:Type="Views" store:Schema="diag">
+            <DefiningQuery>SELECT 
+    [vActiefAbonnement].[AbonnementID] AS [AbonnementID], 
+    [vActiefAbonnement].[PersoonID] AS [PersoonID], 
+    [vActiefAbonnement].[Type] AS [Type], 
+    [vActiefAbonnement].[AdNummer] AS [AdNummer], 
+    [vActiefAbonnement].[WerkJaar] AS [WerkJaar]
+    FROM [diag].[vActiefAbonnement] AS [vActiefAbonnement]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vActiefLid" EntityType="Self.vActiefLid" store:Type="Views" store:Schema="diag">
             <DefiningQuery>SELECT 
     [vActiefLid].[LidID] AS [LidID], 
@@ -1540,6 +1563,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
             <End Role="Bericht" EntitySet="Bericht" />
           </AssociationSet>
           <EntitySet Name="vActiefLid" EntityType="ChiroGroepModel.ActiefLid" />
+          <EntitySet Name="vActiefAbonnement" EntityType="ChiroGroepModel.ActiefAbonnement" />
         </EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
           <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" Unicode="false" />
@@ -2120,6 +2144,18 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <Property Name="GroepID" Type="Int32" Nullable="false" />
           <Property Name="AdNummer" Type="Int32" />
           <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="WerkJaar" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ActiefAbonnement">
+          <Key>
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="PersoonID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="AdNummer" Type="Int32" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="WerkJaar" Type="Int32" />
         </EntityType>
       </Schema>
@@ -2848,6 +2884,17 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="vActiefAbonnement">
+            <EntityTypeMapping TypeName="ChiroGroepModel.ActiefAbonnement">
+              <MappingFragment StoreEntitySet="vActiefAbonnement">
+                <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
+                <ScalarProperty Name="ID" ColumnName="AbonnementID" />
+                <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -3387,6 +3434,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Gebruiker" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Persoon_Id" />
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.ActiefLid" Width="1.5" PointX="0.75" PointY="0.75" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.ActiefAbonnement" Width="1.5" PointX="3.375" PointY="0.75" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

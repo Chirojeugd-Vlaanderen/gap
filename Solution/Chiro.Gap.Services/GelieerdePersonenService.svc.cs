@@ -1141,7 +1141,7 @@ namespace Chiro.Gap.Services
                 if (abonnementType != AbonnementType.Geen)
                 {
                     _abonnementenRepo.SaveChanges();
-                    _abonnementenSync.AbonnementBewaren(teSyncenAbonnement);
+                    _abonnementenSync.Bewaren(teSyncenAbonnement);
                 }
                 else
                 {

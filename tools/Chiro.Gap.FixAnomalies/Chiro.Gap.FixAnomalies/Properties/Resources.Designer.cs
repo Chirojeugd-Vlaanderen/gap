@@ -97,6 +97,33 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} abonnementen niet gevonden in CiviCRM..
+        /// </summary>
+        internal static string Program_DubbelpuntFixen__0__abonnementen_niet_gevonden_in_CiviCRM_ {
+            get {
+                return ResourceManager.GetString("Program_DubbelpuntFixen__0__abonnementen_niet_gevonden_in_CiviCRM_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actieve Dubbelpuntabonnementen ophalen uit CiviCRM..
+        /// </summary>
+        internal static string Program_DubbelpuntFixen_Actieve_Dubbelpuntabonnementen_ophalen_uit_CiviCRM_ {
+            get {
+                return ResourceManager.GetString("Program_DubbelpuntFixen_Actieve_Dubbelpuntabonnementen_ophalen_uit_CiviCRM_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dubbelpuntabonnementen ophalen werkjaar {0}....
+        /// </summary>
+        internal static string Program_DubbelpuntFixen_Dubbelpuntabonnementen_ophalen_werkjaar__0____ {
+            get {
+                return ResourceManager.GetString("Program_DubbelpuntFixen_Dubbelpuntabonnementen_ophalen_werkjaar__0____", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uitschrijven doen we nog maar niet; het zou kunnen dat er mensen niet in gap waren gevonden omdat er nog geen AD-nummers terug kwamen..
         /// </summary>
         internal static string Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_er_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_ {
@@ -181,6 +208,15 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Druk ENTER..
+        /// </summary>
+        internal static string Program_Main_Druk_ENTER_ {
+            get {
+                return ResourceManager.GetString("Program_Main_Druk_ENTER_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Meteen syncen? .
         /// </summary>
         internal static string Program_Main_Meteen_syncen__ {
@@ -217,6 +253,16 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Op zoek naar abonnementen in GAP maar niet in CiviCRM....
+        /// </summary>
+        internal static string Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_CiviCRM___ {
+            get {
+                return ResourceManager.GetString("Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_Civi" +
+                        "CRM___", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opzoeken bivakken in GAP die niet volledig in Civi zitten..
         /// </summary>
         internal static string Program_OntbrekendInCiviZoeken_Opzoeken_bivakken_in_GAP_die_niet_volledig_in_Civi_zitten_ {
@@ -241,6 +287,19 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         internal static string Program_TeVeelInCiviZoeken_Opzoeken_leden_in_CiviCRM_maar_niet_in_GAP_ {
             get {
                 return ResourceManager.GetString("Program_TeVeelInCiviZoeken_Opzoeken_leden_in_CiviCRM_maar_niet_in_GAP_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USAGE: {0} [-a|-b|-d|-l]
+        ///    -a  kijkt alles na
+        ///    -b  kijkt bivakken na
+        ///    -d  kijkt dubbelpuntabonnementen na
+        ///    -l  kijkt leden na.
+        /// </summary>
+        internal static string Usage {
+            get {
+                return ResourceManager.GetString("Usage", resourceCulture);
             }
         }
     }

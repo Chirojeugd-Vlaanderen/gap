@@ -94,7 +94,8 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.AddressResult, opt => opt.Ignore())
                 .ForMember(dst => dst.EventResult, opt => opt.Ignore());
             Mapper.CreateMap<MembershipRequest, Membership>()
-                .ForMember(dst => dst.MembershipPaymentResult, opt => opt.Ignore());
+                .ForMember(dst => dst.MembershipPaymentResult, opt => opt.Ignore())
+                .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
 
             // Onderstaande mapping wordt in de tests gebruikt om een resultaat op
             // te leveren als er een event gecreerd wordt. We gaan er dan van uit dat

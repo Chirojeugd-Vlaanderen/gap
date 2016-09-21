@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abonnement.cs" />
+    <Compile Include="ActiefAbonnement.cs" />
     <Compile Include="Adres.cs" />
     <Compile Include="Afdeling.cs" />
     <Compile Include="AfdelingsJaar.cs" />
