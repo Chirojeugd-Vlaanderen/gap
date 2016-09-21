@@ -56,7 +56,7 @@ namespace Chiro.Gap.FixAnomalies
             // Bij leden sorteerden we de AD-nummers als string. Om het moeilijk te maken,
             // sorteren we ze bij DP als integer.
             var civiDps =
-                (from r in civiResult.Values.OrderBy(v => int.Parse(v.ExternalIdentifier ?? "0"))
+				(from r in civiResult.Values.OrderBy(v => ExtIdNaarAdNr(v.ExternalIdentifier))
                     select r).ToList();
 
             Console.WriteLine(Resources.Program_DubbelpuntFixen_Dubbelpuntabonnementen_ophalen_werkjaar__0____, werkjaar);
@@ -75,6 +75,13 @@ namespace Chiro.Gap.FixAnomalies
             }
 
         }
+
+		private static int ExtIdNaarAdNr(string externalIdentifier)
+		{
+			int result = 0;
+			int.TryParse(externalIdentifier, out result);
+			return result;
+		}
 
         private static void NaarCivi(List<ActiefAbonnement> overTeZetten, ServiceHelper serviceHelper)
         {
@@ -103,11 +110,11 @@ namespace Chiro.Gap.FixAnomalies
             Console.WriteLine(Resources.Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_CiviCRM___);
             while (gapCounter < gapDps.Length && civiCounter < aantalciviBivakken)
             {
-                while (civiCounter < aantalciviBivakken && gapDps[gapCounter].AdNummer > int.Parse(civiDps[civiCounter].ExternalIdentifier ?? "0"))
+				while (civiCounter < aantalciviBivakken && gapDps[gapCounter].AdNummer > ExtIdNaarAdNr(civiDps[civiCounter].ExternalIdentifier))
                 {
                     ++civiCounter;
                 }
-                if (civiCounter < aantalciviBivakken && gapDps[gapCounter].AdNummer != int.Parse(civiDps[civiCounter].ExternalIdentifier ?? "0"))
+				if (civiCounter < aantalciviBivakken && gapDps[gapCounter].AdNummer != ExtIdNaarAdNr(civiDps[civiCounter].ExternalIdentifier))
                 {
                     teSyncen.Add(gapDps[gapCounter]);
                     Console.WriteLine("[{0} {1}]", gapDps[gapCounter].AdNummer, gapDps[gapCounter].Type);
