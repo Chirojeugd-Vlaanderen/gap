@@ -24,7 +24,7 @@ GO
 
 CREATE VIEW diag.vActiefAbonnement AS
 -- Voor 't gemak zitten hier dubbels bij.
-SELECT DISTINCT ab.AbonnementID, gp.PersoonID, ab.Type, p.AdNummer 
+SELECT DISTINCT ab.AbonnementID, gp.PersoonID, ab.Type, p.AdNummer, huidigwj.WerkJaar 
 FROM abo.Abonnement ab
 JOIN
 (

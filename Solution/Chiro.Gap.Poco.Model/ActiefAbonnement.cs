@@ -31,6 +31,7 @@ namespace Chiro.Gap.Poco.Model
         public int PersoonID { get; set; }
         public int Type { get; set; }
         public int? AdNummer { get; set; }
+        public int WerkJaar { get; set; }
 
         /// <summary>
         /// De bedoeling is dat Versie een timestamp (row version) is, voor concurrency control

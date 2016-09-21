@@ -37,6 +37,8 @@ namespace Chiro.Gap.FixAnomalies
         {
             Console.WriteLine(Resources.Program_DubbelpuntFixen_Actieve_Dubbelpuntabonnementen_ophalen_uit_CiviCRM_);
 
+            int werkjaar = HuidigWerkJaar();
+
             var request = new MembershipRequest
             {
                 MembershipTypeId = 2,
@@ -57,9 +59,8 @@ namespace Chiro.Gap.FixAnomalies
                 (from r in civiResult.Values.OrderBy(v => int.Parse(v.ExternalIdentifier ?? "0"))
                     select r).ToList();
 
-            int werkjaar = HuidigWerkJaar();
             Console.WriteLine(Resources.Program_DubbelpuntFixen_Dubbelpuntabonnementen_ophalen_werkjaar__0____, werkjaar);
-            var gapDps = AlleActieveAbonnementen();
+            var gapDps = AlleRelevanteAbonnementen(werkjaar);
 
             var overTeZetten = OntbrekendInCiviZoeken(civiDps, gapDps);
             Console.WriteLine(Resources.Program_DubbelpuntFixen__0__abonnementen_niet_gevonden_in_CiviCRM_, overTeZetten.Count);
@@ -119,8 +120,9 @@ namespace Chiro.Gap.FixAnomalies
         /// <summary>
         /// Levert een lijstje op van actieve DP-abonnementen, voor monitoring (#5463)
         /// </summary>
+        /// <param name="werkjaar">Huidige werkjaar mbt Dubbelpunt.</param>
         /// <returns>Lijst met actieve abonnementen.</returns>
-        public static ActiefAbonnement[] AlleActieveAbonnementen()
+        public static ActiefAbonnement[] AlleRelevanteAbonnementen(int werkjaar)
         {
             // Dit zou beter gebeuren met dependency injection. Maar het is en blijft een hack.
             using (var context = new ChiroGroepEntities())
@@ -128,7 +130,8 @@ namespace Chiro.Gap.FixAnomalies
                 var repositoryProvider = new RepositoryProvider(context);
                 var repo = repositoryProvider.RepositoryGet<ActiefAbonnement>();
 
-                return repo.GetAll().OrderBy(a => a.AdNummer).ToArray();
+                // Abonnementen in GAP met werkjaar dat nationaal gesproken al voorbij is, zijn niet meer geldig.
+                return repo.GetAll().Where(a => a.WerkJaar >= werkjaar).OrderBy(a => a.AdNummer).ToArray();
             }
         }
     }

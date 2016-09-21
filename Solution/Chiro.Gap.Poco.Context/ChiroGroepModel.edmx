@@ -415,6 +415,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefAbonnement' does not have a 
           <Property Name="PersoonID" Type="int" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="AdNummer" Type="int" />
+          <Property Name="WerkJaar" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1122,7 +1123,8 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
     [vActiefAbonnement].[AbonnementID] AS [AbonnementID], 
     [vActiefAbonnement].[PersoonID] AS [PersoonID], 
     [vActiefAbonnement].[Type] AS [Type], 
-    [vActiefAbonnement].[AdNummer] AS [AdNummer]
+    [vActiefAbonnement].[AdNummer] AS [AdNummer], 
+    [vActiefAbonnement].[WerkJaar] AS [WerkJaar]
     FROM [diag].[vActiefAbonnement] AS [vActiefAbonnement]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vActiefLid" EntityType="Self.vActiefLid" store:Type="Views" store:Schema="diag">
@@ -2154,6 +2156,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <Property Name="Type" Type="Int32" Nullable="false" />
           <Property Name="AdNummer" Type="Int32" />
           <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="WerkJaar" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2884,6 +2887,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <EntitySetMapping Name="vActiefAbonnement">
             <EntityTypeMapping TypeName="ChiroGroepModel.ActiefAbonnement">
               <MappingFragment StoreEntitySet="vActiefAbonnement">
+                <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
                 <ScalarProperty Name="ID" ColumnName="AbonnementID" />
                 <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
