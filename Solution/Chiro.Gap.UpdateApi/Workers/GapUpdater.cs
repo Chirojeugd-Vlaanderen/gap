@@ -335,8 +335,7 @@ namespace Chiro.Gap.UpdateApi.Workers
 
                 foreach (var dubbelAbonnement in dubbeleGp.Abonnement.ToList())
                 {
-                    // Dubbelpuntabonnementen lopen niet meer via het GAP. Maar omdat die er nog inzitten van
-                    // vroeger, moeten we ze wel verleggen.
+                    // Dubbelpuntabonnementen gaan sinds CiviCRM opnieuw via het GAP.
 
                     var origineelAbonnement = (from d in origineleGp.Abonnement
                                                where Equals(d.Publicatie, dubbelAbonnement.Publicatie)
@@ -344,7 +343,7 @@ namespace Chiro.Gap.UpdateApi.Workers
 
                     if (origineelAbonnement != null)
                     {
-                        _abonnementenRepo.Delete(origineelAbonnement);
+                        _abonnementenRepo.Delete(dubbelAbonnement);
                     }
                     else
                     {
