@@ -256,12 +256,12 @@ namespace Chiro.Gap.Workers
                 ? WerkJaarStatus.InOvergang
                 : WerkJaarStatus.Bezig;
 
-            if (!groepsWerkJaar.Lid.Any(l => !l.NonActief && l.EindeInstapPeriode < vandaag))
+            if (status == WerkJaarStatus.Bezig && !groepsWerkJaar.Lid.Any(l => !l.NonActief && l.EindeInstapPeriode < vandaag))
             {
                 // We gebruiken niet l.IsAangesloten, want die wordt pas gezet als er
                 // teruggecommuniceerd wordt van Civi naar GAP. Als er leden zijn met
                 // instapperiode voorbij, kan het werkjaar niet meer teruggedraaid worden.
-                status |= WerkJaarStatus.KanTerugDraaien;
+                status = WerkJaarStatus.KanTerugDraaien;
             }
             return status;
         }
