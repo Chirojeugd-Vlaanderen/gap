@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Mailer;
 using Chiro.Gap.Maintenance.Properties;
@@ -41,6 +42,7 @@ namespace Chiro.Gap.Maintenance
             {
                 mailer.Verzenden(Settings.Default.Afzender, Settings.Default.Ontvanger,
                     Settings.Default.Onderwerp, Settings.Default.Inhoud);
+                Console.WriteLine("Queue nog te vol. Verzend enkel waarschuwingsmail.");
             }
             else
             {
