@@ -4,8 +4,8 @@ Het GAP is het GroepsAdministratiePortaal van de Chiro.
 
 De officiële source code en issue tracker zijn gehost op onze
 [gitlabserver](https://gitlab.chiro.be/gap/gap). De
-[documentatie voor ontwikkelaars](doc/WikiStart.md) was vroeger een
-wiki, maar staat nu gewoon bij in de source code.
+[documentatie voor ontwikkelaars](doc/README.md) was vroeger een
+wiki, maar staat nu gewoon bij [in de source code](doc/README.md).
 
 Er staat een [kloon van de repository](https://github.com/Chirojeugd-Vlaanderen/gap)
 op GitHub, voor diegenen die geen Chiro-account hebben, en zich toch
