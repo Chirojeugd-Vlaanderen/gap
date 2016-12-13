@@ -1,24 +1,24 @@
-Welkom bij de GAP-dev-wiki
-==========================
+Welkom bij de GAP-dev-documentatie
+==================================
 
-Deze wiki bevat informatie voor de GAP-ontwikkelaars. Zoek je informatie
+Deze informatie is bedoeld voor de GAP-ontwikkelaars. Zoek je informatie
 over het gebruik van GAP, dan kijk je beter eens op de
 [gebruikerswiki](https://gapwiki.chiro.be).
 
 **Dienstmededeling ;-)** Als je echt iets wil bijdragen aan het GAP, dan
-meld je jezelf best aan op de redmine. Op die manier heb je rechten om
-bijvoorbeeld fouten te rapporteren. Om aan te melden, klik
-achtereenvolgens op de links [Sign in](https://websites.chiro.be/login),
-en vervolgens op 'Login with CAS'. Je kunt dan aanmelden met je
+meld je jezelf best aan op de [Chiro-Gitlab-server](https://gitlab.chiro.be).
+Op die manier heb je rechten om
+bijvoorbeeld fouten te rapporteren. Om aan te melden, klik je
+op de knop 'Sign in with cas'. Je kunt dan aanmelden met je
 GAP-account. Als je aangemeld bent, staat je gebruikersnaam in de
 rechterbovenhoek van deze pagina.
 
-GAPIP16
--------
-
-[GAPIP16](GAPIP16.md), de jaarlijkse hoogmis van de jeugdwerk-IT, komt er weer
-aan. Lees er alles over: [GAPIP16](GAPIP16.md).
-(Checklist voor de organisatie van gapip: [GapipCheckList](GapipCheckList.md).)
+GAPIP
+-----
+[GAPIP](GAPIP.md) is een jaarlijks evenement voor en door de IT'ers in het
+jeugdwerk, zowel voor vrijwilligers als voor beroepskrachten. De editie van
+2017 vindt plaats in het weekend van 17-19 maart. Dit jaar is het in
+De Hagaard te doen.
 
 Mee programmeren aan het GAP
 ----------------------------
@@ -26,20 +26,16 @@ Mee programmeren aan het GAP
 ### Source Code
 
 De source code is publiek toegankelijk; je kunt een clone maken van de
-git-repository http://websites.chiro.be/gap-git.git. (Als je op die link
-klikt, dan krijg je een 404. Dat is normaal. Maar je kunt de url wel
-gebruiken om te clonen.) Je mag de source code downloaden en gebruiken
+git-repository https://github.chiro.be/gap/gap.git. Je mag de source code downloaden en gebruiken
 onder de voorwaarden van de [Apache License, Version
 2](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-Als je code bijdraagt, dan behou je je auteursrechten. Zie
-\[\[GAPIP14\#Copyrights\]\] voor meer informatie.
+Als je code bijdraagt, dan behoud je je auteursrechten. Zie
+\[\[Copyright\]\] voor meer informatie.
 
-Wil je ook push-rechten, dan kan dat geregeld worden. Neem contact op
-met de [Chiro-helpdesk](https://chiro.be/eloket/feedback-gap). Push
-steeds naar eigen branches, en laat je branchnaam beginnen met
-'personal/username/' (waarbij je username uiteraard vervangt door je
-username.)
+Vemeld in je commit messages telkens het nummer van het issue waaraan je werkt.
+Als je tevreden bent over je werk, maak dan een merge request (gitlab) of
+pull request (github).
 
 #### Compilatie-errors
 
@@ -57,14 +53,6 @@ Dan kun je ofwel:
     (Zie
     ook https://stackoverflow.com/questions/12349189/the-type-system-idisposable-is-defined-in-an-assembly-that-is-not-referenced)
 
-Als de referentie naar System.ServiceModel en/of
-System.Runtime.Serialization stuk zijn, moet je ook nog .Net Framework
-3.5 installeren (dit kan langs Programs & Features &gt; Windows
-Components).
-
-Verder ligt de referentie naar Chiro.Cdf.ServiceHelper ook nog niet
-overal goed.
-
 ### Database
 
 GAP werkt met een database. In [Database](Database.md) staat uitgelegd hoe je
@@ -73,10 +61,10 @@ die opzet.
 ### Access denied?
 
 Als je bij het starten van de toepassing een access denied krijgt, en
-iets i.v.m. anonymous users en IUSR\_MACHINENAME, dan kun je 2 dingen
+iets i.v.m. anonymous users en `IUSR\_MACHINENAME`, dan kun je 2 dingen
 proberen:
 
--   voeg je user toe aan de lokale groep IIS\_IUSRS, en log uit en
+-   voeg je user toe aan de lokale groep `IIS\_IUSRS`, en log uit en
     weer aan.
 -   probeer het een keertje met Internet Explorer. (I know...) Die doet
     soms meer hocus-pocus met authenticatie, en daarna is alles plots
