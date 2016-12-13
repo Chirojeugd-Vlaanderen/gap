@@ -17,7 +17,7 @@ Voor installatiehulp, zie [GitExtensions](GitExtensions.md).
         Git Extensions, en dan zal het wel gaan.)
 -   Bij 'repository to clone' vul je het volgende in:
     ```
-    http://websites.chiro.be/gap-git.git
+    https://gitlab.chiro.be/gap/gap.git
     ```
 -   De rest van de instellingen zal wel in orde zijn. Je kunt ze nog
     tweaken als je dat nodig vindt.
@@ -29,7 +29,7 @@ Voor installatiehulp, zie [GitExtensions](GitExtensions.md).
 -   Klik 'Git bash here'.
 -   Tik het volgende:
     ```
-    git clone http://websites.chiro.be/gap-git.git
+    git clone https://gitlab.chiro.be/gap/gap.git
     ```
 -   Het is de eerste keer dat je op die server connecteert, je zult
     moeten bevestigen dat je de server vertrouwt.
