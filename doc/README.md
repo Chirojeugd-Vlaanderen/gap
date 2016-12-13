@@ -29,6 +29,8 @@ git-repository https://github.chiro.be/gap/gap.git. Je mag de source code downlo
 onder de voorwaarden van de [Apache License, Version
 2](http://www.apache.org/licenses/LICENSE-2.0.html).
 
+De solution file voor het gap is [Solution/Cg2Solution.sln](../Solution/Cg2Solution.sln).
+
 Als je code bijdraagt, dan behoud je je auteursrechten. Zie
 [Copyright](Copyright.md) voor meer informatie.
 
