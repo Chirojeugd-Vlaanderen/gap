@@ -10,8 +10,7 @@ meld je jezelf best aan op de [Chiro-Gitlab-server](https://gitlab.chiro.be).
 Op die manier heb je rechten om
 bijvoorbeeld fouten te rapporteren. Om aan te melden, klik je
 op de knop 'Sign in with cas'. Je kunt dan aanmelden met je
-GAP-account. Als je aangemeld bent, staat je gebruikersnaam in de
-rechterbovenhoek van deze pagina.
+GAP-account.
 
 GAPIP
 -----
@@ -31,7 +30,7 @@ onder de voorwaarden van de [Apache License, Version
 2](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 Als je code bijdraagt, dan behoud je je auteursrechten. Zie
-\[\[Copyright\]\] voor meer informatie.
+[Copyright](Copyright.md) voor meer informatie.
 
 Vemeld in je commit messages telkens het nummer van het issue waaraan je werkt.
 Als je tevreden bent over je werk, maak dan een merge request (gitlab) of
