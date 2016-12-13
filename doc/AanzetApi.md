@@ -1,6 +1,10 @@
 Aanzet API
 ==========
 
+Deze documentatie gaat nog over OData. Dat is ooit een denkpiste geweest,
+maar ik stel voor om naar een meer standaard REST-implementatie te gaan, of
+iets zoals [json api](http://jsonapi.org/). Zie ook [API](API.md).
+
 (zie [IntroductieWcfDataServices](IntroductieWcfDataServices.md) voor een korte uitleg over de
 gebruikte technologie)
 
@@ -65,4 +69,3 @@ Zie ook
 -------
 
 -   [API](API.md)
-
