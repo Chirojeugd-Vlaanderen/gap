@@ -51,7 +51,7 @@ Projecten
     maar het bevat de zaken die zowel in frontend als in backend
     gebruikt worden.
 -   Chiro.Gap.Poco.Context -- de data context voor GAP, die met Entity
-    Framework werkt. Koppelt de entiteiten uit\
+    Framework werkt. Koppelt de entiteiten uit
     Chiro.Gap.Poco.Model aan de tabellen in de database
 -   Chiro.Gap.Poco.Model -- definitie van de entiteiten die we in gap
     gebruiken

@@ -65,10 +65,10 @@ Op de vraag of je de configuratie wil vervolledigen, antwoord je 'Yes'.
 Achter 'Working Copy Path' zet je het pad van je lokale versie van de
 map \[source:trunk/Analyse\]. Achter 'Subversion Exe Path' zet je de
 volledige locatie van svn.exe (command-line subversion executable). Deze
-wordt meegeleverd met VisualSvn, en is meestal\
-&lt;pre&gt;\
-C:\\Program Files\\VisualSvn\\bin\\svn.exe\
-&lt;/pre&gt;
+wordt meegeleverd met VisualSvn, en is meestal
+```
+C:\\Program Files\\VisualSvn\\bin\\svn.exe
+```
 
 [Image(versioncontrolsettings.png)](Image(versioncontrolsettings.png).md)
 

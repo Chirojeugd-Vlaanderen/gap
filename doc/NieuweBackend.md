@@ -42,14 +42,14 @@ De service-implementatie
 
 Zo ziet `GroepenService.MijnGroepenOphalen` er uit:
 
-&lt;pre&gt;&lt;code&gt;string mijnLogin =
-\_authenticatieMgr.GebruikersNaamGet();\
-var groepen = from g in \_groepenRepo.Select()\
-where g.GebruikersRecht.Any(gr =&gt; gr.Gav.Login == mijnLogin)\
-select g;\
+```&lt;code&gt;string mijnLogin =
+\_authenticatieMgr.GebruikersNaamGet();
+var groepen = from g in \_groepenRepo.Select()
+where g.GebruikersRecht.Any(gr =&gt; gr.Gav.Login == mijnLogin)
+select g;
 return Mapper.Map&lt;IEnumerable&lt;Groep&gt;,
-IEnumerable&lt;GroepInfo&gt;&gt;(groepen);\
-&lt;/code&gt;&lt;/pre&gt;
+IEnumerable&lt;GroepInfo&gt;&gt;(groepen);
+&lt;/code&gt;```
 
 Je ziet dat we nog managers zullen gebruiken, namelijk voor
 niet-triviale businesslogica. Niet meer voor ophalen of bewaren van
@@ -76,9 +76,9 @@ het type `IContext`, en een aantal 'repositories' van het type
 
 Bijvoorbeeld, voor GroepenService (ATM)
 
-&lt;pre&gt;&lt;code&gt; private IContext \_context;\
-private IRepository&lt;Groep&gt; \_groepenRepo;\
-&lt;/code&gt;&lt;/pre&gt;
+```&lt;code&gt; private IContext \_context;
+private IRepository&lt;Groep&gt; \_groepenRepo;
+&lt;/code&gt;```
 
 `_context` is verantwoordelijk voor het tracken van wijzigingen van
 entiteiten. Als er wijzigingen bewaard moeten worden, dan kan dat door
@@ -113,9 +113,9 @@ De context en de repositories voor een serviceïmplementatie worden door
 de constructor geïnitialiseerd. De constructor voor de groepenservice
 vraagt hiervoor een `IRepositoryProvider`.
 
-&lt;pre&gt;&lt;code&gt;public GroepenService(IRepositoryProvider
-repositoryProvider /\*, enz\*/)\
-&lt;/code&gt;&lt;/pre&gt;
+```&lt;code&gt;public GroepenService(IRepositoryProvider
+repositoryProvider /\*, enz\*/)
+&lt;/code&gt;```
 
 In eerste instantie had ik geprobeerd om een `IContext` en verschillende
 `IRepository&lt;T&gt;`'s mee te geven aan de constructor, en alles te
@@ -124,13 +124,13 @@ Unity gebruiken (via configuratiefiles), kan niet geregeld worden dat de
 context door alle repository's gedeeld wordt (denk ik). Vandaar dus een
 IRepositoryProvider. Dit is de declaratie:
 
-&lt;pre&gt;&lt;code&gt; public interface IRepositoryProvider\
-{\
-IContext ContextGet();\
+```&lt;code&gt; public interface IRepositoryProvider
+{
+IContext ContextGet();
 IRepository&lt;TEntity&gt; RepositoryGet&lt;TEntity&gt;() where TEntity
-: class;\
-}\
-&lt;/code&gt;&lt;/pre&gt;
+: class;
+}
+&lt;/code&gt;```
 
 De repository provider heeft een method die een context aflevert, en een
 generieke method die een repository creëert voor entiteiten van type
@@ -206,20 +206,20 @@ old is veel gezegd, want ze gebruiken HashSets en ICollections. Het komt
 alleszins wel in de buurt. Ze zijn gedefinieerd in
 `Chiro.Gap.Poco.Model`; ter illustratie de definitie van `Land`:
 
-&lt;pre&gt;&lt;code&gt; public partial class Land\
-{\
-public Land()\
-{\
-this.BuitenLandsAdres = new HashSet&lt;BuitenLandsAdres&gt;();\
+```&lt;code&gt; public partial class Land
+{
+public Land()
+{
+this.BuitenLandsAdres = new HashSet&lt;BuitenLandsAdres&gt;();
 }
 
-public int ID { get; set; }\
+public int ID { get; set; }
 public string Naam { get; set; }
 
 public virtual ICollection&lt;BuitenLandsAdres&gt; BuitenLandsAdres {
-get; set; }\
-}\
-&lt;/code&gt;&lt;/pre&gt;
+get; set; }
+}
+&lt;/code&gt;```
 
 Deze klasses zijn veel cleaner dan wat we vroeger hadden (automatisch
 gegenereerd door Entity Framework 2). Ze worden wel niet meer
@@ -233,25 +233,25 @@ De context
 Waar komt entity framework (v.4) er nu aan te pas? Die magie zit 'em in
 Chiro.Gap.Poco.Context.ChiroGroepEntities:
 
-&lt;pre&gt;&lt;code&gt; public partial class ChiroGroepEntities :
-DbContext, IContext\
-{\
-public ChiroGroepEntities()\
-: base("name=ChiroGroepEntities")\
-{\
+```&lt;code&gt; public partial class ChiroGroepEntities :
+DbContext, IContext
+{
+public ChiroGroepEntities()
+: base("name=ChiroGroepEntities")
+{
 }
 
-protected override void OnModelCreating(DbModelBuilder modelBuilder)\
-{\
-throw new UnintentionalCodeFirstException();\
+protected override void OnModelCreating(DbModelBuilder modelBuilder)
+{
+throw new UnintentionalCodeFirstException();
 }
 
-public DbSet&lt;Groep&gt; Groep { get; set; }\
+public DbSet&lt;Groep&gt; Groep { get; set; }
 public DbSet&lt;Persoon&gt; Persoon { get; set; }
 
-// enz...\
-}\
-&lt;/code&gt;&lt;/pre&gt;
+// enz...
+}
+&lt;/code&gt;```
 
 Aan de hand van de connection string met de naam `ChiroGroepEntities`
 koppelt de DbContext alle entiteiten aan de correcte databasetabellen.
@@ -262,11 +262,11 @@ ik denk dat die niet meer gebruikt wordt.
 In de `Web.config` van `Chiro.Gap.Services` staat volgende relevante
 lijn in de IOC-configuratie:
 
-&lt;pre&gt;&lt;code&gt;&lt;type type="Chiro.Cdf.Poco.IContext,
-Chiro.Cdf.Poco"\
+```&lt;code&gt;&lt;type type="Chiro.Cdf.Poco.IContext,
+Chiro.Cdf.Poco"
 mapTo="Chiro.Gap.Poco.Context.ChiroGroepEntities,
-Chiro.Gap.Poco.Context" /&gt;\
-&lt;/code&gt;&lt;/pre&gt;
+Chiro.Gap.Poco.Context" /&gt;
+&lt;/code&gt;```
 
 Van zodra de service een `IContext` nodig heeft, zal de IOC-container
 een instantie van `ChiroGroepEntities` aanmaken, en doet entity
@@ -325,10 +325,10 @@ Waar is de code?
 ----------------
 
 Ik maakte een branch gap-nieuwe-repo in de publieke git-repository. Hoe
-pak je die branch nu uit:\
-&lt;pre&gt;&lt;code&gt;git fetch origin\
-git checkout -t origin/gap-nieuwe-backend\
-&lt;/code&gt;&lt;/pre&gt;\
+pak je die branch nu uit:
+```&lt;code&gt;git fetch origin
+git checkout -t origin/gap-nieuwe-backend
+&lt;/code&gt;```
 Ik ben trouwens nog altijd aan het werken aan een hopelijk duidelijke
 tekst 'hoe werkt git nu eigenlijk echt' :-) De '-t' switch staat voor
 'track', en mag je eigenlijk weglaten omdat dat standaard is. Meer info

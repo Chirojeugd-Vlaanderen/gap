@@ -48,9 +48,9 @@ account heeft aangemaakt. Je kunt ook als GAV app-accounts terug
 intrekken. App-accounts hebben bepaalde permissies.
 
 Een app-account zou read-only-access kunnen hebben tot (een subset van)
-gegevens van de groep.\
+gegevens van de groep.
 Dat kan dan varieren van de telefoonnummers/e-mailadressen van de
-leiding tot echt alles.\
+leiding tot echt alles.
 Of zelfs beperkte schrijfrechten. Maar de ontwikkelaar die de account
 aanvraagt moet hoe dan ook op zijn blote knieen beloven dat hij geen
 credentials zal exposen (bijvoorbeeld in javascript code op een

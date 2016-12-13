@@ -17,8 +17,8 @@ Hello World
     asp.net-project staat.
 -   Tik in:
 
-Install-Package Nancy\
-Install-Package Nancy.Hosting.Aspnet\
+Install-Package Nancy
+Install-Package Nancy.Hosting.Aspnet
 Install-Package Nancy.Bootstrappers.Unity
 
 -   Dat installeert Nancy, de ASP.NET-hosting voor Nancy, en de
@@ -27,79 +27,79 @@ Install-Package Nancy.Bootstrappers.Unity
 -   Deze Hello-World-toepassing geeft 'Hello world!' als je naar /
     surft:
 
-&lt;pre&gt;\
-public class TestModule:NancyModule\
-{\
-public TestModule()\
-{\
+```
+public class TestModule:NancyModule
+{
+public TestModule()
+{
 // Toont 'Hello world![](' op /.
-            Get["/"] = _ =&gt; "Hello world)";\
-}\
-}\
-&lt;/pre&gt;
+            Get["/"] = _ =&gt; "Hello world)";
+}
+}
+```
 
 -   Om dependency injection te gebruiken, maak je een bootstrapper aan:
 
-&lt;pre&gt;\
-/// &lt;summary&gt;\
+```
+/// &lt;summary&gt;
 /// Deze NancyBootstrapper zorgt ervoor dat de Dependency Injection
-container gebruikt wordt voor\
-/// het creëren van modules.\
-/// &lt;/summary&gt;\
-public class DependencyInjectionBootstrapper : UnityNancyBootstrapper\
-{\
+container gebruikt wordt voor
+/// het creëren van modules.
+/// &lt;/summary&gt;
+public class DependencyInjectionBootstrapper : UnityNancyBootstrapper
+{
 protected override void ApplicationStartup(IUnityContainer container,
-IPipelines pipelines)\
-{\
-// No registrations should be performed in here, however you may\
+IPipelines pipelines)
+{
+// No registrations should be performed in here, however you may
 // resolve things that are needed during application startup.
 
-// Zoals bijvoorbeeld automapper initialiseren?\
-MappingHelper.MappingsDefinieren();\
+// Zoals bijvoorbeeld automapper initialiseren?
+MappingHelper.MappingsDefinieren();
 }
 
 protected override void ConfigureApplicationContainer(IUnityContainer
-existingContainer)\
-{\
+existingContainer)
+{
 // Perform registation that should have an application lifetime
 
 var section =
 (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
 
 // Als er geen unity-configuratie in app.config of web.config zit, dan
-is dat\
+is dat
 // waarschijnlijk een fout.
 
 Debug.Assert(section != null);
 
 // Als je hier een IoException of zoiets krijgt, dan mis je
-waarschijnlijk referenties\
-// naar assemblies die in je untiy-configuratie voorkomen.\
-// Typisch voor services: Chiro.Cdf.DependencyInjectionBehavior.\
+waarschijnlijk referenties
+// naar assemblies die in je untiy-configuratie voorkomen.
+// Typisch voor services: Chiro.Cdf.DependencyInjectionBehavior.
 // Kijk ook eens na of alle assembly's in de types van de
-unity-configuratie\
-// bij de 'References' van je project staan.\
+unity-configuratie
+// bij de 'References' van je project staan.
 // Ook een mogelijke bron van problemen, is als interfaces van assembly
-zijn veranderd,\
+zijn veranderd,
 // maar als dat niet is aangepast in de configuratiefile :)
 
-section.Configure(existingContainer);\
+section.Configure(existingContainer);
 }
 
 protected override void ConfigureRequestContainer(IUnityContainer
-container, NancyContext context)\
-{\
-// Perform registrations that should have a request lifetime\
+container, NancyContext context)
+{
+// Perform registrations that should have a request lifetime
 }
 
 protected override void RequestStartup(IUnityContainer container,
-IPipelines pipelines, NancyContext context)\
-{\
-// No registrations should be performed in here, however you may\
-// resolve things that are needed during request startup.\
-}\
-}\
-&lt;/pre&gt;
+IPipelines pipelines, NancyContext context)
+{
+// No registrations should be performed in here, however you may
+// resolve things that are needed during request startup.
+}
+}
+```
 
 Testproject
 -----------
@@ -114,10 +114,10 @@ op te lossen.)
 Dit project zit in de branch 'personal/vervljo/nancy'; zie
 source:Solution/Chiro.Gap.Api2@d226ebda
 
-&lt;pre&gt;\
-git fetch origin\
-git checkout personal/vervljo/nancy\
-&lt;/pre&gt;
+```
+git fetch origin
+git checkout personal/vervljo/nancy
+```
 
 Aandachtspunten
 ---------------

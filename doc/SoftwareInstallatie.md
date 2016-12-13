@@ -23,7 +23,7 @@ restore'.
 
 Voor de LoginService-solution gaat dat over de volgende NuGet-packages:
 
-\* Unity: installeren in Chiro.Cdf.Ioc en Chiro.Cdf.UnityWcfExtensions\
+\* Unity: installeren in Chiro.Cdf.Ioc en Chiro.Cdf.UnityWcfExtensions
 \* Moq: installeren in Chiro.Ad.Workers.Test
 
 Als je als GAP-developer geïnteresseerd bent om Resharper te gebruiken,

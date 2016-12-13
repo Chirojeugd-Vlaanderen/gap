@@ -17,7 +17,7 @@ GAPIP16
 -------
 
 [GAPIP16](GAPIP16.md), de jaarlijkse hoogmis van de jeugdwerk-IT, komt er weer
-aan. Lees er alles over: [GAPIP16](GAPIP16.md).\
+aan. Lees er alles over: [GAPIP16](GAPIP16.md).
 (Checklist voor de organisatie van gapip: [GapipCheckList](GapipCheckList.md).)
 
 Mee programmeren aan het GAP

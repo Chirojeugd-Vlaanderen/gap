@@ -50,10 +50,10 @@ oplossing heeft, zie \#1778.
 **Tenminste** als je werkt aan de zomerrelease (version\#19) of aan de
 [EasyHacks](EasyHacks.md). Voor andere projecten maak je een eigen branch.
 
-&lt;pre&gt;\
-git fetch origin\
-git checkout gapip14\
-&lt;/pre&gt;
+```
+git fetch origin
+git checkout gapip14
+```
 
 ### Committen: beter een keer te veel dan te weinig
 
@@ -61,57 +61,57 @@ Na ieder blokje wijzigingen dat bij elkaar hoort, commit je. Dit stuurt
 niets naar de server, dit bewaart je wijzigingsgeschiedenis lokaal. Op
 die manier kun je makkelijk terug naar een eerdere toestand.
 
-&lt;pre&gt;\
-git add nieuwefiles\
-git commit -a\
-&lt;/pre&gt;
+```
+git add nieuwefiles
+git commit -a
+```
 
 ### Rebasen: jouw wijzigingen op recentste code in branch gapip14
 
-&lt;pre&gt;
+```
 
-1.  commit je wijzigingen:\
+1.  commit je wijzigingen:
     git commit
-2.  haal de recentste commits op van de server\
+2.  haal de recentste commits op van de server
     git fetch origin
-3.  pas jouw wijzigingen toe op de recentste code\
-    git rebase origin/gapip14\
-    &lt;/pre&gt;
+3.  pas jouw wijzigingen toe op de recentste code
+    git rebase origin/gapip14
+    ```
 
 #### Conflicten bij rebasen?
 
-&lt;pre&gt;\
-git mergetool\
-&lt;/pre&gt;
+```
+git mergetool
+```
 
 Als conflicten opgelost:
 
-&lt;pre&gt;\
-git rebase --continue\
-&lt;/pre&gt;
+```
+git rebase --continue
+```
 
 Conflictoplossing liep in het honderd:
 
-&lt;pre&gt;\
+```
 git rebase --abort
 
-1.  en hulp roepen (git-experts genoeg hier)\
-    &lt;/pre&gt;
+1.  en hulp roepen (git-experts genoeg hier)
+    ```
 
 ### Jouw wijzigingen pushen naar de gapip14-branch in de centrale repository
 
 Als je een issue hebt gefixt, dan push je je fix naar de centrale
 repository.
 
-&lt;pre&gt;\
+```
 git commit
 
-1.  eerst gaan we rebasen\
-    git fetch origin\
+1.  eerst gaan we rebasen
+    git fetch origin
     git rebase origin/gapip14
-2.  en dan pas pushen\
-    git push origin gapip14\
-    &lt;/pre&gt;
+2.  en dan pas pushen
+    git push origin gapip14
+    ```
 
 ### Foutje gemaakt?
 
@@ -119,15 +119,15 @@ git commit
 
 #### Alle wijzigingen ongedaan maken, en terug naar de toestand van de laatste commit:
 
-&lt;pre&gt;\
-git reset --hard\
-&lt;/pre&gt;
+```
+git reset --hard
+```
 
 #### Commit ongedaan maken
 
-&lt;pre&gt;\
-git reset HEAD\~1\
-&lt;/pre&gt;
+```
+git reset HEAD\~1
+```
 
 (Doe dit niet met een commit die je al hebt gepusht.)
 
@@ -140,49 +140,49 @@ Copyrights
 
 Op de code die je bijdraagt, behoud je je copyrights, maar je geeft je
 broncode vrij onder de [Apache License, Version
-2.0](http://www.apache.org/licenses/LICENSE-2.0).\
+2.0](http://www.apache.org/licenses/LICENSE-2.0).
 Als je nieuwe source files toevoegt aan het project, dan mag je daar
 deze header boven plakken:
 
-&lt;pre&gt;\
+```
 Copyright 2014 Jouw Naam
 
-Licensed under the Apache License, Version 2.0 (the "License");\
-you may not use this file except in compliance with the License.\
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software\
-distributed under the License is distributed on an "AS IS" BASIS,\
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-implied.\
-See the License for the specific language governing permissions and\
-limitations under the License.\
-&lt;/pre&gt;
+implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
 Je kunt ook een meer algemene header gebruiken:
 
-&lt;pre&gt;\
-/\*\
-\* Copyright 2014 the GAP developers. See the NOTICE file at the\
-\* top-level directory of this distribution, and at\
-\* https://develop.chiro.be/gap/wiki/copyright\
-\*\
-\* Licensed under the Apache License, Version 2.0 (the "License");\
-\* you may not use this file except in compliance with the License.\
-\* You may obtain a copy of the License at\
-\*\
-\* http://www.apache.org/licenses/LICENSE-2.0\
-\*\
-\* Unless required by applicable law or agreed to in writing, software\
-\* distributed under the License is distributed on an "AS IS" BASIS,\
+```
+/\*
+\* Copyright 2014 the GAP developers. See the NOTICE file at the
+\* top-level directory of this distribution, and at
+\* https://develop.chiro.be/gap/wiki/copyright
+\*
+\* Licensed under the Apache License, Version 2.0 (the "License");
+\* you may not use this file except in compliance with the License.
+\* You may obtain a copy of the License at
+\*
+\* http://www.apache.org/licenses/LICENSE-2.0
+\*
+\* Unless required by applicable law or agreed to in writing, software
+\* distributed under the License is distributed on an "AS IS" BASIS,
 \* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-implied.\
-\* See the License for the specific language governing permissions and\
-\* limitations under the License.\
-\*/\
-&lt;/pre&gt;
+implied.
+\* See the License for the specific language governing permissions and
+\* limitations under the License.
+\*/
+```
 
 Pas je een bestaande file aan, waar bijvoorbeeld staat
 `Copyright 2008-2013 the GAP developers`, dan kun je er

@@ -88,5 +88,5 @@ Als het nog niet werkt:
     publieke netwerken.
 
 Ik kreeg het voor GAP niet in orde zonder de firewall binnen het
-domeiein uit te zetten.\
+domeiein uit te zetten.
 TODO: verfijnen

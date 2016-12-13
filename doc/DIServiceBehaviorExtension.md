@@ -7,20 +7,20 @@ Chiro.Cdf.!DependencyInjectionBehavior
 
 **** Voeg in Web.Config het volgende toe voor in system.serviceModel:
 
-&lt;pre&gt;\
-&lt;extensions&gt;\
-&lt;behaviorExtensions&gt;\
+```
+&lt;extensions&gt;
+&lt;behaviorExtensions&gt;
 &lt;add name="DIServiceBehaviorExtension"
 type="Chiro.Cdf.DependencyInjection.DIServiceBehaviorSection,
 Chiro.Cdf.DependencyInjectionBehavior, Version=1.0.0.0, Culture=neutral,
-[PublicKeyToken](PublicKeyToken.md)=null"/&gt;\
-&lt;/behaviorExtensions&gt;\
-&lt;/extensions&gt;\
-&lt;/pre&gt;
+[PublicKeyToken](PublicKeyToken.md)=null"/&gt;
+&lt;/behaviorExtensions&gt;
+&lt;/extensions&gt;
+```
 
 **** In de definitie van de service behavior die je voor je service
 gebruikt, voeg je dit toe:
 
-&lt;pre&gt;\
-&lt;DIServiceBehaviorExtension /&gt;\
-&lt;/pre&gt;
+```
+&lt;DIServiceBehaviorExtension /&gt;
+```

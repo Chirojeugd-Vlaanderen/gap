@@ -37,22 +37,22 @@ Het probleem is hetzelfde als bij "Access to modified closure", alleen
 is het niet in een loop. Je krijgt ze bijvoorbeeld op
 gp.Persoon.!GeboorteDatum in het volgende statement.
 
-&lt;pre&gt;\
-var afdeling = (from a in gwj.AfdelingsJaar\
-where\
+```
+var afdeling = (from a in gwj.AfdelingsJaar
+where
 (gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd &lt;=
-a.GeboorteJaarTot\
-&& a.GeboorteJaarVan &lt;= gp.Persoon.GeboorteDatum.Value.Year)\
-select a).FirstOrDefault();\
-&lt;/pre&gt;
+a.GeboorteJaarTot
+&& a.GeboorteJaarVan &lt;= gp.Persoon.GeboorteDatum.Value.Year)
+select a).FirstOrDefault();
+```
 
 Oplossing:
 
-&lt;pre&gt;\
-var gebdat = gp.Persoon.GeboorteDatum;\
-var afdeling = (from a in gwj.AfdelingsJaar\
-where\
-(gebdat.Value.Year - gp.ChiroLeefTijd &lt;= a.GeboorteJaarTot\
-&& a.GeboorteJaarVan &lt;= gebdat.Value.Year)\
-select a).FirstOrDefault();\
-&lt;/pre&gt;
+```
+var gebdat = gp.Persoon.GeboorteDatum;
+var afdeling = (from a in gwj.AfdelingsJaar
+where
+(gebdat.Value.Year - gp.ChiroLeefTijd &lt;= a.GeboorteJaarTot
+&& a.GeboorteJaarVan &lt;= gebdat.Value.Year)
+select a).FirstOrDefault();
+```

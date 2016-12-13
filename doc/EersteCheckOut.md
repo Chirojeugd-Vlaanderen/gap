@@ -15,10 +15,10 @@ Voor installatiehulp, zie [GitExtensions](GitExtensions.md).
     -   (Als dat niets doet, start dan eerst 'Git Extensions'. Je krijgt
         een configuratiescherm. Meestal is alles in orde. Klik OK, sluit
         Git Extensions, en dan zal het wel gaan.)
--   Bij 'repository to clone' vul je het volgende in:\
-    &lt;pre&gt;\
-    http://websites.chiro.be/gap-git.git\
-    &lt;/pre&gt;
+-   Bij 'repository to clone' vul je het volgende in:
+    ```
+    http://websites.chiro.be/gap-git.git
+    ```
 -   De rest van de instellingen zal wel in orde zijn. Je kunt ze nog
     tweaken als je dat nodig vindt.
 
@@ -27,10 +27,10 @@ Voor installatiehulp, zie [GitExtensions](GitExtensions.md).
 -   In Windows Explorer klik je met de rechtermuisknop op een folder
     waarin je de code wilt uitpakken.
 -   Klik 'Git bash here'.
--   Tik het volgende:\
-    &lt;pre&gt;\
-    git clone http://websites.chiro.be/gap-git.git\
-    &lt;/pre&gt;
+-   Tik het volgende:
+    ```
+    git clone http://websites.chiro.be/gap-git.git
+    ```
 -   Het is de eerste keer dat je op die server connecteert, je zult
     moeten bevestigen dat je de server vertrouwt.
 
@@ -51,14 +51,14 @@ testgroep te werken, moet je dat ook aanpassen in
 In die app.config-bestanden zoek je naar de lijn die begint met
 `&lt;add name="ChiroGroepEntities"`, daar staat normaal:
 
-&lt;pre&gt;\
+```
 &lt;add name="ChiroGroepEntities"
 connectionString="metadata=res://\*/ChiroGroepModel.csdl|res://\*/ChiroGroepModel.ssdl|res://\*/ChiroGroepModel.msl;provider=System.Data.SqlClient;provider
 connection string=&quot;Data Source=.\\SQLEXPRESS;Initial
 Catalog=gap\_local;Integrated
 Security=SSPI;MultipleActiveResultSets=True;Application
-Name=gap&amp;quot;" providerName="System.Data.EntityClient" /&gt;\
-&lt;/pre&gt;
+Name=gap&amp;quot;" providerName="System.Data.EntityClient" /&gt;
+```
 
 Deze connection string werkt als je sql-server-instantie `SQLEXPRESS`
 heet, je database `gap_local`, en dat je met Windows-authenticatie

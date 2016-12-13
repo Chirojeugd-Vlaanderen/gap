@@ -9,24 +9,24 @@ Typesafe HTML-helpers
 Zie bijv:
 \[source:trunk/Solution/Chiro.Gap.WebApp/Views/Personen/AdresBewerken.aspx\#L116\].
 
-Door constructies te gebruiken zoals\
-&lt;pre&gt;\
+Door constructies te gebruiken zoals
+```
 &lt;<span style="text-align:center;">Html.EditorFor(mdl =&gt;
-mdl.Adres.Gemeente)</span>&gt;\
-&lt;/pre&gt;\
-en\
-&lt;pre&gt;\
+mdl.Adres.Gemeente)</span>&gt;
+```
+en
+```
 &lt;<span style="text-align:center;">Html.DropDownListFor(mdl =&gt;
 mdl.AdresType, new [SelectList](SelectList.md)(values, "value",
-"text"))</span>&gt;\
-&lt;/pre&gt;\
+"text"))</span>&gt;
+```
 worden tikfouten in namen van members van het model vermeden.
 
-Een interessante helper is de deze:\
-&lt;pre&gt;\
+Een interessante helper is de deze:
+```
 &lt;<span style="text-align:center;">Html.LabelFor(mdl =&gt;
-mdl.Adres.Gemeente)</span>&gt;\
-&lt;/pre&gt;\
+mdl.Adres.Gemeente)</span>&gt;
+```
 Deze constructie zet een labeltje voor het veld
 AdresModel.Adres.Gemeente op de webpagina. In dit geval is dat
 gemakkelijk en standaard, namelijk gewoon de naam van de property,
@@ -39,10 +39,10 @@ te 'decoreren' met het attribuut \[!DisplayNaam\], kunnen we ervoor
 zorgen dat er een alternatief label wordt gebruikt. Zie
 \[source:trunk/Solution/Chiro.Gap.WebApp/Models/AdresModel.cs\#L28\].
 
-&lt;pre&gt;\
-\[DisplayName("Adrestype")\]\
-public [AdresTypeEnum](AdresTypeEnum.md) AdresType { get; set; }\
-&lt;/pre&gt;
+```
+\[DisplayName("Adrestype")\]
+public [AdresTypeEnum](AdresTypeEnum.md) AdresType { get; set; }
+```
 
 Modelvalidatie in de UI
 -----------------------
@@ -52,33 +52,33 @@ MVC2 bevat een eenvoudig inputvalidatiemechanisme. Zie bijv.
 De controller actie die de gegevens van een bestaande persoon moet
 wijzigen, begint op deze manier:
 
-&lt;pre&gt;\
-if (!ModelState.IsValid)\
-{\
-// gebruiker opnieuw laten proberen indien het model\
+```
+if (!ModelState.IsValid)
+{
+// gebruiker opnieuw laten proberen indien het model
 // ongeldig is.
 
-return View("EditGegevens", model);\
+return View("EditGegevens", model);
 }
 
-// in het andere geval worden de gewijzigde gegevens bewaard.\
-&lt;/pre&gt;
+// in het andere geval worden de gewijzigde gegevens bewaard.
+```
 
 Als het model dat de gebruiker postte niet geldig is, wordt opnieuw de
 view '!EditGegevens' getoond, met als model de geposte gegevens. In
 \[source:trunk/Solution/Chiro.Gap.WebApp/Views/Personen/EditGegevens.aspx\#L11\]
-zijn nu bijvoorbeeld deze lijnen relevant:\
-&lt;pre&gt;\
+zijn nu bijvoorbeeld deze lijnen relevant:
+```
 &lt;<span style="text-align:center;">Html.ValidationSummary("Er zijn
-enkele opmerkingen:")</span>&gt;\
-&lt;/pre&gt;\
+enkele opmerkingen:")</span>&gt;
+```
 dewelke ervoor zorgt dat er - indien het model niet geldig is - een
 overzichtje van alle problemen in het model getoond wordt. Verder vind
-je ook dit soort constructie:\
-&lt;pre&gt;\
+je ook dit soort constructie:
+```
 &lt;<span
-style="text-align:center;">Html.ValidationMessageFor(s=&gt;s.HuidigePersoon.Persoon.VoorNaam)</span>&gt;\
-&lt;/pre&gt;\
+style="text-align:center;">Html.ValidationMessageFor(s=&gt;s.HuidigePersoon.Persoon.VoorNaam)</span>&gt;
+```
 Dit zorgt ervoor dat als er een probleem is met de ingegeven voornaam,
 het foutbericht m.b.t. de voornaam afgebeeld wordt.
 
@@ -105,41 +105,41 @@ alsnog attributen toepassen op reeds gedefinieerde property's. Een
 voorbeeld maakt wellicht veel duidelijk:
 \[source:trunk/Solution/Chiro.Gap.Orm/Persoon.cs\#L27\].
 
-&lt;pre&gt;\
-\[MetadataType(typeof(Persoon\_Validatie))\]\
-public partial class Persoon : IEfBasisEntiteit\
-{\
-/// &lt;summary&gt;\
+```
+\[MetadataType(typeof(Persoon\_Validatie))\]
+public partial class Persoon : IEfBasisEntiteit
+{
+/// &lt;summary&gt;
 /// Nested class die toelaat om validatie properties op te zetten, en
-die gereferenced wordt door het [MetadataType](MetadataType.md) attribute\
+die gereferenced wordt door het [MetadataType](MetadataType.md) attribute
 /// Dit kan niet op de echte class, want die wordt gegenereerd door de
-EF Designer\
-/// &lt;/summary&gt;\
-public class Persoon\_Validatie\
-{\
+EF Designer
+/// &lt;/summary&gt;
+public class Persoon\_Validatie
+{
 \[Verplicht(), [StringLengte](StringLengte.md)(160),
-[StringMinimumLengte](StringMinimumLengte.md)(2)\]\
-\[DisplayName("Familienaam")\]\
+[StringMinimumLengte](StringMinimumLengte.md)(2)\]
+\[DisplayName("Familienaam")\]
 public string Naam { get; set; }
 
-\[Verplicht()\]\
-\[DisplayName("Voornaam")\]\
-\[StringLengte(60), [StringMinimumLengte](StringMinimumLengte.md)(2)\]\
+\[Verplicht()\]
+\[DisplayName("Voornaam")\]
+\[StringLengte(60), [StringMinimumLengte](StringMinimumLengte.md)(2)\]
 public string [VoorNaam](VoorNaam.md) { get; set; }
 
-\[Verplicht()\]\
+\[Verplicht()\]
 public Chiro.Gap.Orm.GeslachtsType Geslacht { set; get; }
 
-\[DisplayName("AD-nummer")\]\
+\[DisplayName("AD-nummer")\]
 public Nullable&lt;int&gt; [AdNummer](AdNummer.md) { set; get; }
 
-\[DataType(DataType.Date)\]\
-\[DisplayName("Geboortedatum")\]\
-public [DateTime](DateTime.md)? [GeboorteDatum](GeboorteDatum.md) { get; set; }\
-}\
-// ...\
-}\
-&lt;/pre&gt;
+\[DataType(DataType.Date)\]
+\[DisplayName("Geboortedatum")\]
+public [DateTime](DateTime.md)? [GeboorteDatum](GeboorteDatum.md) { get; set; }
+}
+// ...
+}
+```
 
 Bedenkingen bij het attribuut \[!DisplayName\]
 ----------------------------------------------

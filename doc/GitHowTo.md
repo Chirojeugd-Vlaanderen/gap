@@ -24,13 +24,13 @@ denkt dat je commit een issue sluit, gebruik dan 'Closes'. Je kunt
 meerdere issues referencen door ze comma-seperated mee te geven.
 Bijvoorbeeld:
 
-&lt;pre&gt;\
+```
 Closes \#530, \#1544 - meer bruikbare feedback als leden maken mis loopt
 
 Je krijgt nu een lijstje van de leden die niet ingeschreven zijn, met
-een\
-specifieke foutboodschap, en links naar de leden in kwestie.\
-&lt;/pre&gt;
+een
+specifieke foutboodschap, en links naar de leden in kwestie.
+```
 
 Dit voorbeeld illustreert nog een git best practice: In de eerste lijn
 geef je een korte samenvatting van wat je commit wijzigt. Daarna volgt
@@ -50,10 +50,10 @@ branch**. Alvorens je branch voor het eerst te pushen, rebase je hem op
 origin/dev. Eens je branch bestaat op de remote server, rebase je hem
 liever niet meer.
 
-&lt;pre&gt;\
-git fetch origin\
-git rebase origin/dev\
-&lt;/pre&gt;
+```
+git fetch origin
+git rebase origin/dev
+```
 
 Als je op die manier conflicten tegenkomt:
 

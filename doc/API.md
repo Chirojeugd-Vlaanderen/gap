@@ -22,7 +22,7 @@ Misschien kan dat wel, en moeten we nog uitvissen hoe.
 
 Misschien kan het niet. In dat geval kan Chiro.Gap.Services opgesplitst
 worden in Chiro.Gap.Services1 en Chiro.Gap.Services2 (maar dan met
-betere namen).\
+betere namen).
 Chiro.Gap.Services1 zoekt dan voor elke call uit 'wie ben ik'?, en geeft
 die informatie als dusdanig door aan dezelfde call in
 Chiro.Gap.Services2, maar dan met 1 extra parameter (de user).

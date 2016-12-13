@@ -2,7 +2,7 @@ LightningTalks 2015
 ===================
 
 Voor [GAPIP15](GAPIP15.md) hebben we iets nieuws: Lightning talks :-) De
-bedoeling is om wat uitwisseling te doen over hoe we zaken\
+bedoeling is om wat uitwisseling te doen over hoe we zaken
 aanpakken bij de Chiro en bij de Scouts.
 
 We hebben dan beslist dat we dat op zaterdag voor het middageten zouden

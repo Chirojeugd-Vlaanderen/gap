@@ -17,12 +17,12 @@ source:Solution/Chiro.Gap.Services/GelieerdePersonenService.svc.cs@861bb8\#L319.
 Op het moment dat GAV-schap over een gelieerde persoon gecontroleerd
 moet worden, volstaat een check
 
-&lt;pre&gt;\
-if (!\_autorisatieManager.IsGavGelieerdePersoon(gelieerdePersoon))\
-{\
-// foutafhandeling\
-}\
-&lt;/pre&gt;
+```
+if (!\_autorisatieManager.IsGavGelieerdePersoon(gelieerdePersoon))
+{
+// foutafhandeling
+}
+```
 
 Voor de GelieerdePersonenService speelt het geen rol hoe
 \_autorisatieManager werkt, als het IAutorisatieManager maar
@@ -59,21 +59,21 @@ De klasse AutorisatieManager heeft een implementatie nodig van
 IAutorisatieDao en IAuthenticatieManager. Voor deze implementaties zijn
 private members voorzien in AutorisatieManager:
 
-&lt;pre&gt;\
-private IAutorisatieDao \_dao;\
-private IAuthenticatieManager \_am;\
-&lt;/pre&gt;
+```
+private IAutorisatieDao \_dao;
+private IAuthenticatieManager \_am;
+```
 
 AutorisatieManager heeft één constructor, en die ziet er als volgt uit:
 
-&lt;pre&gt;\
+```
 public [AutorisatieManager](AutorisatieManager.md)(IAutorisatieDao dao,
-IAuthenticatieManager am)\
-{\
-\_dao = dao;\
-\_am = am;\
-}\
-&lt;/pre&gt;
+IAuthenticatieManager am)
+{
+\_dao = dao;
+\_am = am;
+}
+```
 
 De constructor heeft een parameter voor iedere interface waarvoor een
 implementatie nodig is.
@@ -81,19 +81,19 @@ implementatie nodig is.
 De AutorisatieManager wordt op zijn beurt gebruikt in de
 GelieerdePersonenManager, die deze constructor heeft:
 
-&lt;pre&gt;\
-public [GelieerdePersonenManager](GelieerdePersonenManager.md)(\
-IGelieerdePersonenDao dao,\
-IGroepenDao groepenDao,\
-ICategorieenDao categorieenDao,\
-IAutorisatieManager autorisatieMgr)\
-{\
-\_dao = dao;\
-\_groepenDao = groepenDao;\
-\_categorieenDao = categorieenDao;\
-\_autorisatieMgr = autorisatieMgr;\
-}\
-&lt;/pre&gt;
+```
+public [GelieerdePersonenManager](GelieerdePersonenManager.md)(
+IGelieerdePersonenDao dao,
+IGroepenDao groepenDao,
+ICategorieenDao categorieenDao,
+IAutorisatieManager autorisatieMgr)
+{
+\_dao = dao;
+\_groepenDao = groepenDao;
+\_categorieenDao = categorieenDao;
+\_autorisatieMgr = autorisatieMgr;
+}
+```
 
 Om een GelieerdePersonenManager te maken, is dus onder andere een
 IAutorisatieManager nodig, en voor deze IAutorisatieManager zal dan weer
@@ -111,9 +111,9 @@ De eenvoudigste manier om een object te creëren waarbij automatisch alle
 Factory.Maak&lt;T&gt;. Op die manier gebeurt het bijv. in
 \[source:trunk/Solution/TestProjecten/Chiro.Gap.Workers.Test/CategorieTest.cs@653\#L83\]:
 
-&lt;pre&gt;\
-var gpMgr = Factory.Maak&lt;GelieerdePersonenManager&gt;();\
-&lt;/pre&gt;
+```
+var gpMgr = Factory.Maak&lt;GelieerdePersonenManager&gt;();
+```
 
 Alles wat nodig is voor de constructie van een GelieerdePersonenManager
 zal door deze aanroep automatisch gegenereerd worden.
@@ -124,25 +124,25 @@ eleganter aangepakt.
 Bekijk bijvoorbeeld de GelieerdePersonenService. Hier verwacht de
 constructor de managers als parameters:
 
-&lt;pre&gt;\
-public [GelieerdePersonenService](GelieerdePersonenService.md)(\
-GelieerdePersonenManager gpm,\
-PersonenManager pm,\
-AdressenManager adm,\
-GroepenManager gm,\
-CommVormManager cvm,\
-CategorieenManager cm,\
-IAutorisatieManager aum)\
-{\
-\_gpMgr = gpm;\
-\_pMgr = pm;\
-\_auMgr = aum;\
-\_adrMgr = adm;\
-\_grMgr = gm;\
-\_cvMgr = cvm;\
-\_catMgr = cm;\
-}\
-&lt;/pre&gt;
+```
+public [GelieerdePersonenService](GelieerdePersonenService.md)(
+GelieerdePersonenManager gpm,
+PersonenManager pm,
+AdressenManager adm,
+GroepenManager gm,
+CommVormManager cvm,
+CategorieenManager cm,
+IAutorisatieManager aum)
+{
+\_gpMgr = gpm;
+\_pMgr = pm;
+\_auMgr = aum;
+\_adrMgr = adm;
+\_grMgr = gm;
+\_cvMgr = cvm;
+\_catMgr = cm;
+}
+```
 
 Wanneer de GelieerdePersonenService nu als webservice wordt aangeroepen,
 komt magischerwijze de dependency injection in orde. 't Is te zeggen;
@@ -170,11 +170,11 @@ bijvoorbeeld
 \[source:trunk/Solution/Chiro.Gap.Services/Web.config@665\#L29\]. Een
 typische lijn ziet er zo uit:
 
-&lt;pre&gt;\
+```
 &lt;type type="Chiro.Gap.Orm.DataInterfaces.IAutorisatieDao,
-Chiro.Gap.Orm"\
-mapTo="Chiro.Gap.Data.Ef.AutorisatieDao, Chiro.Gap.Data" /&gt;\
-&lt;/pre&gt;
+Chiro.Gap.Orm"
+mapTo="Chiro.Gap.Data.Ef.AutorisatieDao, Chiro.Gap.Data" /&gt;
+```
 
 Wat wil zeggen: Als je een implementatie nodig hebt van de interface
 Chiro.Gap.Orm.!DataInterfaces.IAutorisatieDao (die gedefinieerd is in de
@@ -194,10 +194,10 @@ Je kan de configuratie van Unity ook at runtime wijzigen, zoals dat
 bijvoorbeeld gebeurt in
 \[source:trunk/Solution/TestProjecten/Chiro.Gap.Workers.Test/AutorisatieTest.cs@638\#L134\]:
 
-&lt;pre&gt;\
+```
 Factory.InstantieRegistreren&lt;IAutorisatieManager&gt;(new
-[AutMgrNooitGav](AutMgrNooitGav.md)());\
-&lt;/pre&gt;
+[AutMgrNooitGav](AutMgrNooitGav.md)());
+```
 
 Meer documentatie over Unity
 ----------------------------

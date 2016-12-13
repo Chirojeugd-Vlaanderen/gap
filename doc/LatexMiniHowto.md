@@ -39,13 +39,13 @@ Hello world
 
 Een 'hello-world-document' ziet er bijvoorbeeld als volgt uit:
 
-&lt;pre&gt;\
-\\documentclass\[a4paper, 11pt\]{article}\
-\\usepackage\[dutch\]{babel}\
-\\begin{document}\
-Hallo \\LaTeX!\
-\\end{document}\
-&lt;/pre&gt;
+```
+\\documentclass\[a4paper, 11pt\]{article}
+\\usepackage\[dutch\]{babel}
+\\begin{document}
+Hallo \\LaTeX!
+\\end{document}
+```
 
 In TeXworks kan je op de groene knop klikken om deze sourcecode om te
 zetten naar een pdf. De groene knop voert in principe drie operaties
@@ -55,7 +55,7 @@ uit:
 
 **** makeindex document
 
-**** bibtex document\
+**** bibtex document
 Enkel 'pdflatex' is relevant voor dit document; makeindex is nodig om
 een index te maken - die hebben we hier niet, en bibtex dient om een
 mooie bibliografie toe te voegen aan je document; ook niet nodig. Dus
@@ -88,9 +88,9 @@ Je mag in principe speciale tekens gebruiken in een tex-document. Voor
 alle speciale tekens, bestaat er wel een 'escape'. In sommige gevallen
 is die heel eenvoudig:
 
-&lt;pre&gt;\
-\\\$, \\%, \\\_, \\}, \\&, \\\#, \\{,\
-&lt;/pre&gt;
+```
+\\\$, \\%, \\\_, \\}, \\&, \\\#, \\{,
+```
 
 Soms is het echter vervelend om het juiste symbool te vinden, zeker
 omdat de lijst zo uitgebreid is. Zie
@@ -109,8 +109,8 @@ Ook zijn er een aantal speciallekes voor streepjes en puntjes:
 
 ### Titeltjes
 
-&lt;pre&gt;\
-\\section{\\LaTeX mini howto}\
+```
+\\section{\\LaTeX mini howto}
 \\subsection{Basisdingen}
 
 Een aantal basisdingen voor opmaak:
@@ -121,84 +121,84 @@ Een aantal basisdingen voor opmaak:
 
 \\subsubsection{Aanhalingstekens, puntjes, streepjes}
 
-`Enkele' en `@dubbele\_ quotes.\
-&lt;/pre&gt;
+`Enkele' en `@dubbele\_ quotes.
+```
 
 ### Vet en cursief
 
 Dit voorbeeld spreekt voor zich:
 
-&lt;pre&gt;\
-Je kan stukken tekst in \\textbf{vet} zetten, of \\emph{emphasis}\
+```
+Je kan stukken tekst in \\textbf{vet} zetten, of \\emph{emphasis}
 gebruiken. Meestal is dat cursief.
 
 \\emph{Je kan `emph' ook nesten.  In een blok cursieve tekst, zal 
-het stuk met \emph{emphasis} in `gewone rechte letters' getypeset\
-worden.}\
-&lt;/pre&gt;
+het stuk met \emph{emphasis} in `gewone rechte letters' getypeset
+worden.}
+```
 
 ### Opsommingen
 
 Opsommingen kunnen via opsommingstekens:
 
-&lt;pre&gt;\
-\\begin{itemize}\
-\\item Chiro\
-\\item Kakajo\
-\\item IJsje\
-\\begin{itemize}\
-% Geneste itemize\
-% (O ja, % is voor commentaar)\
-\\item Waterijsje\
-\\item Cornetto\
-\\item \\ldots\
-\\end{itemize}\
-\\end{itemize}\
-&lt;/pre&gt;
+```
+\\begin{itemize}
+\\item Chiro
+\\item Kakajo
+\\item IJsje
+\\begin{itemize}
+% Geneste itemize
+% (O ja, % is voor commentaar)
+\\item Waterijsje
+\\item Cornetto
+\\item \\ldots
+\\end{itemize}
+\\end{itemize}
+```
 
 maar ook met cijfers en letters
 
-&lt;pre&gt;\
-\\begin{enumerate}\
-\\item Chiro\
-\\item Kakajo\
-\\item IJsje\
-\\begin{enumerate}\
-\\item Waterijsje\
-\\item Cornetto\
-\\item \\ldots\
-\\end{enumerate}\
-\\end{enumerate}\
-&lt;/pre&gt;
+```
+\\begin{enumerate}
+\\item Chiro
+\\item Kakajo
+\\item IJsje
+\\begin{enumerate}
+\\item Waterijsje
+\\item Cornetto
+\\item \\ldots
+\\end{enumerate}
+\\end{enumerate}
+```
 
 of gemengd
 
-&lt;pre&gt;\
-\\begin{itemize}\
-\\item Chiro\
-\\item Kakajo\
-\\item IJsje\
-\\begin{enumerate}\
-\\item Waterijsje\
-\\item Cornetto\
-\\item \\ldots\
-\\end{enumerate}\
-\\end{itemize}\
-&lt;/pre&gt;
+```
+\\begin{itemize}
+\\item Chiro
+\\item Kakajo
+\\item IJsje
+\\begin{enumerate}
+\\item Waterijsje
+\\item Cornetto
+\\item \\ldots
+\\end{enumerate}
+\\end{itemize}
+```
 
 ### Referenties
 
-&lt;pre&gt;\
-\\subsection{Hier ga ik naar verwijzen}\
-\\label{mijnlabel}\
+```
+\\subsection{Hier ga ik naar verwijzen}
+\\label{mijnlabel}
 Dit is een zeer interessante tekst. Hier kom ik zeker op terug.
 
 \\ldots
 
 \\subsection{Vele secties later}
 
-Herinner dat we het in \\ref{mijnlabel} hadden over \\ldots\
-&lt;/pre&gt;
+Herinner dat we het in \\ref{mijnlabel} hadden over \\ldots
+```
 
 Om het systeem van referenties goed te doen werken, moet je je document
 twee maal compileren. De eerste keer maakt latex een hulpbestand aan,
@@ -245,23 +245,23 @@ C\#-code
 Om C\#-code op te nemen in het document, gebruik je deze constructie
 voor blokken code:
 
-&lt;pre&gt;\
-\\begin{lstlisting}\
-var gelieerdePersonen =\
-pm.PaginaOphalenMetLidInfo(\
-groepID,\
-pagina,\
-paginaGrootte,\
-out aantalTotaal);\
-\\end{lstlisting}\
-&lt;/pre&gt;
+```
+\\begin{lstlisting}
+var gelieerdePersonen =
+pm.PaginaOphalenMetLidInfo(
+groepID,
+pagina,
+paginaGrootte,
+out aantalTotaal);
+\\end{lstlisting}
+```
 
 en deze constructie voor 'inline' code:
 
-&lt;pre&gt;\
+```
 Documenteer alle \\lstinline ![](public) en \\lstinline ![](protected)
-property's en methods.\
-&lt;/pre&gt;
+property's en methods.
+```
 
 (Let op de uitroeptekens.) Op die manier krijg je overal consistente
 syntaxhighlighting.
@@ -269,12 +269,12 @@ syntaxhighlighting.
 De index
 --------
 
-&lt;pre&gt;\
-Underscores\\index{underscores} zijn enkel toegelaten als prefix van\
-een member\\index{membervariabelen!namen} variable.\
-% Het uitroepteken wordt gebruikt om meerdere inveaus in de index\
-% te gebruiken.\
-&lt;/pre&gt;
+```
+Underscores\\index{underscores} zijn enkel toegelaten als prefix van
+een member\\index{membervariabelen!namen} variable.
+% Het uitroepteken wordt gebruikt om meerdere inveaus in de index
+% te gebruiken.
+```
 
 Nummering van de guidelines
 ---------------------------
@@ -283,20 +283,20 @@ De guidelines van de coding standard zijn genummerd, en die nummering
 loopt door van de ene 'enumerate' naar de andere. Dat is dankzij deze
 truc:
 
-&lt;pre&gt;\
-\\begin{enumerate}\[resume\]\
-\\item Gebruik nooit de globale namespace.\
-\\item \\ldots\
-\\end{enumerate}\
-&lt;/pre&gt;
+```
+\\begin{enumerate}\[resume\]
+\\item Gebruik nooit de globale namespace.
+\\item \\ldots
+\\end{enumerate}
+```
 
 Als er een guideline verdwijnt, en je wil niet dat de nummering van de
 volgende guidelines verandert, kan je op deze manier met de teller
 prutsen:
 
-&lt;pre&gt;\
-\\addtocounter{enumi}{1}\
-&lt;/pre&gt;
+```
+\\addtocounter{enumi}{1}
+```
 
 Om een richtlijn ergens tussen te schuiven (100-a) zal ook wel een truc
 bestaan, maar daar heb ik nog niet achter gezocht.

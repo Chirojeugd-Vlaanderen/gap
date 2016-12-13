@@ -2,7 +2,7 @@ Security van de message queues
 ==============================
 
 De GAP-backend stuurt updates naar Kipadmin via een message queue, die
-uitgelezen wordt door KipSync.\
+uitgelezen wordt door KipSync.
 Kipadmin stuurt updates naar GAP via een message queue, die uitgelezen
 wordt door GapUpdate.
 

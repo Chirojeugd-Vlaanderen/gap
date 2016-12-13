@@ -19,55 +19,55 @@ Als je git gebruikt, dan is het de gewoonte dat je voor elke feature die
 je implementeert, een lokale feature branch maakt. Om te kijken welke
 branches je lokaal hebt, typ je in je bashvenster
 
-&lt;pre&gt;\
-git branch\
-&lt;/pre&gt;
+```
+git branch
+```
 
 De output ziet er dan ongeveer als volgt uit
 
-&lt;pre&gt;\
-eenbranch\
+```
+eenbranch
 nogeenbranch
 
--   dev\
-    &lt;/pre&gt;
+-   dev
+    ```
 
 Het sterretje voor 'dev' geeft aan dat de dev-branch op dit moment is
 uitgepakt.
 
 Een nieuwe feature branch maak je door het volgende in te tikken:
 
-&lt;pre&gt;\
-git branch mijnfeaturebranch\
-&lt;/pre&gt;
+```
+git branch mijnfeaturebranch
+```
 
 Dit commando maakt een branch ('mijnfeaturebranch') vertrekkende van de
 momenteel uitgepakte branch (in dit geval 'dev'). Om in die branch te
 beginnen werken, moet je hem nog 'uitchecken':
 
-&lt;pre&gt;\
-git checkout mijnfeaturebranch\
-&lt;/pre&gt;
+```
+git checkout mijnfeaturebranch
+```
 
 Alle bewerkingen die je nu [committen| commit](committen| commit.md), komen in de nieuwe
-branch terecht.\
+branch terecht.
 Interessant om weten: het maken van een nieuwe branch en het uitchecken
 kan ook gecombineerd worden in één opdracht. Hiervoor geef je het
 volgende in:
 
-&lt;pre&gt;\
-git checkout -b mijnfeaturebranch\
-&lt;/pre&gt;
+```
+git checkout -b mijnfeaturebranch
+```
 
 Stel dat je nu een tijd in mijnfeaturebranch gewerkt hebt, misschien al
 wel een paar commits gedaan, en er is plots een dringend probleem dat je
 eerst moet aanpakken. Dan kun je erg gemakkelijk terug naar de dev
 branch. Van daaruit maak je dan een nieuwe branch voor de dringende fix:
 
-&lt;pre&gt;\
-git checkout dev\
-git checkout -b dringendefixbranch\
-&lt;/pre&gt;
+```
+git checkout dev
+git checkout -b dringendefixbranch
+```
 
 (Eerst checken we de dev-branch opnieuw uit, zodat de nieuwe branch op
 de dev-branch gebaseerd wordt. De constructie `checkout -b` combineert
@@ -83,27 +83,27 @@ Stel dat je klaar bent met de wijzigingen in 'dringendefixbranch', dan
 kun je de changes uit die branch makkelijk terug mergen naar de dev
 branch:
 
-&lt;pre&gt;\
-git checkout dev\
-git merge dringendefixbranch\
-&lt;/pre&gt;
+```
+git checkout dev
+git merge dringendefixbranch
+```
 
 Als dat allemaal goed is gelukt, kun je de 'dringendefixbranch' met een
 gerust geweten opnieuw verwijderen:
 
-&lt;pre&gt;\
-git branch -d dringendefixbranch\
-&lt;/pre&gt;
+```
+git branch -d dringendefixbranch
+```
 
 (TODO: [ConflictResolution](ConflictResolution.md) documenteren.) Hierna kun je verder
 werken in 'mijnfeaturebranch'. Optioneel kun je die branch 'opschuiven'
 naar de kop van 'dev', zodat de fixes die je in dev gemerged hebt,
 meteen ook in je feature branch opgenomen zijn:
 
-&lt;pre&gt;\
-git checkout mijnfeaturebranch\
-git rebase dev\
-&lt;/pre&gt;
+```
+git checkout mijnfeaturebranch
+git rebase dev
+```
 
 Remote branches
 ---------------
@@ -114,9 +114,9 @@ in staat te synchroniseren met remote repositories. Gelukkig maar.
 
 Als je
 
-&lt;pre&gt;\
-git branch -r\
-&lt;/pre&gt;
+```
+git branch -r
+```
 
 intikt, dan krijg je alle remote branches te zien.
 
@@ -132,13 +132,13 @@ Als alles goed is, begint de naam van die branches met
 Stel dat je de recentste wijzigingen van origin/dev wil binnenhalen voor
 je eigen dev-branch, dan doe je dat als volgt:
 
-&lt;pre&gt;\
-git checkout dev\
-git pull origin dev\
-&lt;/pre&gt;
+```
+git checkout dev
+git pull origin dev
+```
 
 (Dit werkt enkel als je lokale wijzigingen [committen| gecommit](committen| gecommit.md)
-of [stashen| gestasht](stashen| gestasht.md) zijn.)\
+of [stashen| gestasht](stashen| gestasht.md) zijn.)
 Je kunt ook wijzigingen uploaden naar de remote repository. Op die
 manier kun je met meerdere personen aan dezelfde feature werken.
 Bovendien heb je dan minder problemen als je harde schijf crasht :-)
@@ -147,12 +147,12 @@ Je mag enkel pushen naar persoonlijke branches! Ik ga er even vanuit dat
 je je feature hebt gemaakt in een lokale branch
 'personal/username/mijnfeaturebranch':
 
-&lt;pre&gt;\
+```
 git checkout personal/username/mijnfeaturebranch \# pakt lokaal
-'mijnfeaturebranch' uit\
+'mijnfeaturebranch' uit
 git push origin personal/username/mijnfeaturebranch \# uploadt naar
-remote 'mijnfeaturebranch'\
-&lt;/pre&gt;
+remote 'mijnfeaturebranch'
+```
 
 (Die eerste lijn is niet nodig als 'mijnfeaturebranch' al 'uitgecheckt'
 is.)

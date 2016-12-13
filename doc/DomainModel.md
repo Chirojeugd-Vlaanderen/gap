@@ -1,7 +1,7 @@
 [DomainModel](DomainModel.md)
 ===================
 
-Een aantal basisconcepten wat betreft GAP:\
+Een aantal basisconcepten wat betreft GAP:
 (**TODO:** de afbeeldingen in onderstaande links terug goed inline
 zetten; dat is wat misgelopen met de conversie van trac naar redmine)
 

@@ -30,21 +30,21 @@ PersoonInfo. Leg dan een reference naar
 \[source:trunk/Solution/References/AutoMapper.dll\] in je project, en
 voorzie deze using:
 
-&lt;pre&gt;\
-using [AutoMapper](AutoMapper.md);\
-&lt;/pre&gt;
+```
+using [AutoMapper](AutoMapper.md);
+```
 
 Het mappen zelf, gebeurt dan als volgt:
 
-&lt;pre&gt;\
+```
 IEnumerable&lt;GelieerdePersoon&gt; gelieerdePersonen;
 
 // zorg ervoor dat gelieerdePersonen opgevuld geraakt
 
 IList&lt;PersoonInfo&gt; infoVanPersonen =
 Mapper.Map&lt;IEnumerable&lt;GelieerdePersoon&gt;,
-IList&lt;PersoonInfo&gt;&gt;(gelieerdePersonen);\
-&lt;/pre&gt;
+IList&lt;PersoonInfo&gt;&gt;(gelieerdePersonen);
+```
 
 De eerste generieke parameter van Mapper.Map is het 'Brontype', de
 tweede is het 'Doeltype', en Mapper.Map zet dus een object van het
@@ -64,9 +64,9 @@ Chiro.Gap.ServiceContracts.Mappers.MappingHelper.MappingsDefinieren.
 Als bron- en doeltype dezelfde veldnamen hebben, kan die configuratie zo
 eenvoudig zijn als
 
-&lt;pre&gt;\
-Mapper.CreateMap&lt;Bron,Doel&gt;();\
-&lt;/pre&gt;
+```
+Mapper.CreateMap&lt;Bron,Doel&gt;();
+```
 
 Maar omdat dat bij ons niet het geval is, is het allemaal wat
 ingewikkelder. Mogelijk kunnen sommige zaken ook eenvoudiger dan hoe ze

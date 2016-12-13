@@ -22,9 +22,9 @@ al bestaat:
 
 1.  AD-NR
 2.  GAP-ID
-3.  Zoek personen met zelfde naam, voornaam en geslacht\
-    \#\* Iemand met zelfde telefoonnr/e-mail -&gt; OK\
-    \#\* Iemand met zelfde postnr -&gt; OK\
+3.  Zoek personen met zelfde naam, voornaam en geslacht
+    \#\* Iemand met zelfde telefoonnr/e-mail -&gt; OK
+    \#\* Iemand met zelfde postnr -&gt; OK
     \#\* Iemand met zelfde geboortedatum -&gt; OK
 4.  Niemand gevonden? -&gt; Nieuwe persoon
 

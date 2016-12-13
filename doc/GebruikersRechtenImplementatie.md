@@ -78,21 +78,21 @@ de groep die overeenkomt met de entity.
 
 We gaan dit vervangen door iets in de stijl
 
-&lt;pre&gt;\
-if (\_autorisatieMgr.PermissiesOphalen(entity) != Permissies.Bewerken)\
-{\
-throw FaultExceptionHelper.GeenGav();\
-}\
-&lt;/pre&gt;
+```
+if (\_autorisatieMgr.PermissiesOphalen(entity) != Permissies.Bewerken)
+{
+throw FaultExceptionHelper.GeenGav();
+}
+```
 
 Of
 
-&lt;pre&gt;\
-if (!\_autorisatieMgr.MagLezen(ik, entity))\
-{\
-throw FaultExceptionHelper.GeenGav();\
-}\
-&lt;/pre&gt;
+```
+if (!\_autorisatieMgr.MagLezen(ik, entity))
+{
+throw FaultExceptionHelper.GeenGav();
+}
+```
 
 Dat weet ik niet meer heel precies.
 

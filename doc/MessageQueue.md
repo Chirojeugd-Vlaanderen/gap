@@ -10,22 +10,22 @@ kipsync te experimenteren), vind je hier hoe.
 Als message queueing niet geactiveerd is, krijg je deze foutboodschap
 bij het wijzigen van personen:
 
-&lt;pre&gt;\
-[TypeInitializatonException](TypeInitializatonException.md) occured.\
+```
+[TypeInitializatonException](TypeInitializatonException.md) occured.
 The type initializer for 'System.ServiceModel.Channels.Msmq' threw an
-exception.\
-&lt;/pre&gt;
+exception.
+```
 
 Heb je message queuing wel geactiveerd, maar bestaat de queue niet, dan
 is dit de foutmelding:
 
-&lt;pre&gt;\
-[EndpointNotFoundException](EndpointNotFoundException.md) occured.\
+```
+[EndpointNotFoundException](EndpointNotFoundException.md) occured.
 An error occurred while opening the queue:Unrecognized error -1072824317
 (0xc00e0003). The message cannot be sent or received from the queue.
 Ensure that MSMQ is installed and running. Also ensure that the queue is
-available to open with the required access mode and authorization.\
-&lt;/pre&gt;
+available to open with the required access mode and authorization.
+```
 
 Message Queuing enablen op Win XP
 ---------------------------------

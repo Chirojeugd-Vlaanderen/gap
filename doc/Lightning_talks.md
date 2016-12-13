@@ -2,7 +2,7 @@
 =================
 
 Lightning talks maken sinds 2015 deel uit van GAPIP. De bedoeling is om
-wat uitwisseling te doen over hoe we zaken\
+wat uitwisseling te doen over hoe we zaken
 aanpakken bij de Chiro en bij de Scouts.
 
 We doen dit zaterdag voor het middageten, omdat dat meestal een rustig

@@ -112,15 +112,15 @@ configuratie van de Dependency Injection:
 Zie
 source:Solution/TestProjecten/Chiro.Gap.Workers.Test/App.config\#L29:
 
-&lt;pre&gt;\
-&lt;!-- altijd GAV voor de tests --&gt;\
+```
+&lt;!-- altijd GAV voor de tests --&gt;
 &lt;type type="Chiro.Gap.Orm.DataInterfaces.IAutorisatieDao,
-Chiro.Gap.Orm"\
-mapTo="Chiro.Gap.Dummies.AutDaoAltijdGav, Chiro.Gap.Dummies" /&gt;\
+Chiro.Gap.Orm"
+mapTo="Chiro.Gap.Dummies.AutDaoAltijdGav, Chiro.Gap.Dummies" /&gt;
 &lt;type type="Chiro.Gap.Workers.IAutorisatieManager,
-Chiro.Gap.Workers"\
-mapTo="Chiro.Gap.Dummies.AutMgrAltijdGav, Chiro.Gap.Dummies" /&gt;\
-&lt;/pre&gt;
+Chiro.Gap.Workers"
+mapTo="Chiro.Gap.Dummies.AutMgrAltijdGav, Chiro.Gap.Dummies" /&gt;
+```
 
 SynchronisationLockExceptions bij het debuggen
 ----------------------------------------------

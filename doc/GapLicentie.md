@@ -49,7 +49,7 @@ Verklaring
 
 We laten elke vrijwilliger/stagiar een verklaring ondertekenen:
 
-&gt; Ik, ..., verklaar dat ik de broncode die ik schrijf voor GAP\
+&gt; Ik, ..., verklaar dat ik de broncode die ik schrijf voor GAP
 &gt; vrijgeef onder de voorwaarden van de Apache License, versie 2.
 
 (Meer moet dat niet zijn :))

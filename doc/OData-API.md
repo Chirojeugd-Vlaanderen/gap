@@ -41,17 +41,17 @@ Te onthouden:
 
 -   Om constructors met parameters te gebruiken in een Select moet je
     vertrekken vanuit een concreet object.
-    -   Dit werkt: &lt;pre&gt;\_groepsWerkJaar.AfdelingsJaar.Select(aj
-        =&gt; new AfdelingModel(aj)).AsQueryable();&lt;/pre&gt;
+    -   Dit werkt: ```_groepsWerkJaar.AfdelingsJaar.Select(aj
+        =&gt; new AfdelingModel(aj)).AsQueryable();```
     -   Dit kan ook (als er een parameterloze constructor is):
-        &lt;pre&gt;\_context.AfdelingsJaar.Where(aj =&gt;
+        ```_context.AfdelingsJaar.Where(aj =&gt;
         aj.GroepsWerkJaar.ID  \_groepsWerkJaar.ID)
                                 .Select(aj =&gt; new AfdelingModel {Id = aj.ID, Naam = aj.Afdeling.Naam})
-                                .AsQueryable();&lt;/pre&gt;
-        \*\* Maar dit niet: &lt;pre&gt;\_context.AfdelingsJaar.Where(aj =&gt; aj.GroepsWerkJaar.ID 
-        \_groepsWerkJaar.ID)\
+                                .AsQueryable();```
+        \*\* Maar dit niet: ```_context.AfdelingsJaar.Where(aj =&gt; aj.GroepsWerkJaar.ID 
+        \_groepsWerkJaar.ID)
         .Select(aj =&gt; new
-        AfdelingModel(aj)).AsQueryable();&lt;/pre&gt;\
+        AfdelingModel(aj)).AsQueryable();```
         h2. Opmerkingen
 
 <!-- -->
@@ -130,15 +130,15 @@ Enkele opmerkingen
 2013-06-09
 ==========
 
-Api heeft al een voorbeeld in de api-branch.\
+Api heeft al een voorbeeld in de api-branch.
 Gebruikt MVC4
 
-Nuttige urls om verder te bouwen:\
-http://www.asp.net/web-api\
-http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/working-with-entity-relations\
+Nuttige urls om verder te bouwen:
+http://www.asp.net/web-api
+http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/working-with-entity-relations
 http://blogs.msdn.com/b/astoriateam/archive/2011/01/20/oauth-2-0-and-odata-protecting-an-odata-service-using-oauth-2-0.aspx
 
-Oudere info\
+Oudere info
 h2. De publieke API
 ===================
 
