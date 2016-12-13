@@ -49,15 +49,15 @@ testgroep te werken, moet je dat ook aanpassen in
 `Chiro.Gap.Poco.Context`.
 
 In die app.config-bestanden zoek je naar de lijn die begint met
-`&lt;add name="ChiroGroepEntities"`, daar staat normaal:
+`<add name="ChiroGroepEntities"`, daar staat normaal:
 
 ```
-&lt;add name="ChiroGroepEntities"
+<add name="ChiroGroepEntities"
 connectionString="metadata=res://\*/ChiroGroepModel.csdl|res://\*/ChiroGroepModel.ssdl|res://\*/ChiroGroepModel.msl;provider=System.Data.SqlClient;provider
-connection string=&quot;Data Source=.\\SQLEXPRESS;Initial
+connection string='Data Source=.\\SQLEXPRESS;Initial
 Catalog=gap\_local;Integrated
 Security=SSPI;MultipleActiveResultSets=True;Application
-Name=gap&amp;quot;" providerName="System.Data.EntityClient" /&gt;
+Name=gap'" providerName="System.Data.EntityClient" />
 ```
 
 Deze connection string werkt als je sql-server-instantie `SQLEXPRESS`
@@ -91,13 +91,13 @@ Let op: lees het stukje over [branches](branches.md) voor je begint te hacken!
 Als je de solution opent voor de eerste keer opent, kan het zijn dat er
 projecten niet geladen worden en dat je de volgende foutmelding krijgt.
 
-`error  : The imported project "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" was not found. Confirm that the path in the &lt;Import&gt; declaration is correct, and that the file exists on disk.`
+`error  : The imported project "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" was not found. Confirm that the path in the <Import> declaration is correct, and that the file exists on disk.`
 
 In die foutmelding staat een verwijzing naar het projectbestand waar het
 probleem zich voordoet, bv. \[pad\]\\Chiro.Gap.WebApp.csproj. Open dat
 bestand dan in een editor en verwijder de volgende regel.
 
-`&lt;Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" /&gt;`
+`<Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" />`
 
 Daarna kun je het project normaal gezien reloaden in Visual Studio.
 
@@ -110,9 +110,10 @@ Als je wijzigingen wilt kunnen pushen, heb je een ssh keypair nodig:
 -   Klik 'Help', 'SSH key'.
 -   Vervolgens klik je op 'Generate key'. Je mag op die key een
     wachtwoord zetten, maar dat is niet verplicht.
--   Na het genereren van de key, krijg je je public key te zien.
+-   Na het genereren van de key, krijg je je public key te zien. Die koppel
+    je aan je gitlab- of github-account (https://gitlab.chiro.be/profile/keys of
+    https://github.com/settings/keys).
     Kopieer hem. Klik bovenaan deze pagina op 'my account', en plak hem
     in het venstertje 'public key'. Als identifier kun je je
     e-mailadres gebruiken.
 -   Nu kun je de Git-GUI afsluiten.
-

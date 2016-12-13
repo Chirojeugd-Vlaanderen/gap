@@ -121,13 +121,7 @@ git branch -r
 intikt, dan krijg je alle remote branches te zien.
 
 Origin/dev is de branch voor ontwikkeling, daar zit de meest recente
-gereviewde code. Origin/gap-1.4 is de branch voor de release van deze
-zomer. Hier zullen enkel fixes in terechtkomen van de overeenkomstige
-milestone (version\#17).
-
-Bugfixes die nog niet gemerged zijn in dev, zitten in feature branches.
-Als alles goed is, begint de naam van die branches met
-/personal/&lt;username&gt;/,
+gereviewde code.
 
 Stel dat je de recentste wijzigingen van origin/dev wil binnenhalen voor
 je eigen dev-branch, dan doe je dat als volgt:
@@ -139,25 +133,9 @@ git pull origin dev
 
 (Dit werkt enkel als je lokale wijzigingen [committen| gecommit](committen| gecommit.md)
 of [stashen| gestasht](stashen| gestasht.md) zijn.)
-Je kunt ook wijzigingen uploaden naar de remote repository. Op die
-manier kun je met meerdere personen aan dezelfde feature werken.
-Bovendien heb je dan minder problemen als je harde schijf crasht :-)
 
-Je mag enkel pushen naar persoonlijke branches! Ik ga er even vanuit dat
-je je feature hebt gemaakt in een lokale branch
-'personal/username/mijnfeaturebranch':
-
-```
-git checkout personal/username/mijnfeaturebranch \# pakt lokaal
-'mijnfeaturebranch' uit
-git push origin personal/username/mijnfeaturebranch \# uploadt naar
-remote 'mijnfeaturebranch'
-```
-
-(Die eerste lijn is niet nodig als 'mijnfeaturebranch' al 'uitgecheckt'
-is.)
-
-Als je tevreden bent over de wijzigingen in je branch, zorg dan dat alle
-wijzigingen gepusht zijn naar de remote repository, en vraag aan Johan
-om je feature te mergen naar de remote dev branch. Op dat moment zal je
-code ook gereviewd worden.
+Als je tevreden bent over de wijzigingen in een van je branches, dan kun je
+ze pushen. Maar meestal gaat dat niet rechtstreeks naar de originele
+GAP-repository. In dat geval maak je een fork van de GAP-repository op
+gitlab of github, en push je je branch naar daar. Vanuit de user interface
+van gitlab of github kun je dan een merge request/pull request maken.
