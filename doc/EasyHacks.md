@@ -7,4 +7,6 @@ aan de slag kunt.
 
 De tickets waarvan ik **denk** dat ze gemakkelijk te fixen zijn (niets
 is zeker in GAP-land), zijn gemarkeerd met 'easyhack'. Je vindt deze
-lijst hier: https://websites.chiro.be/projects/gap/issues?query\_id=24
+lijst hier:
+
+https://gitlab.chiro.be/gap/gap/issues?scope=all&state=opened&utf8=%E2%9C%93&label_name%5B%5D=easyhack
