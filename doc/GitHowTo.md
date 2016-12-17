@@ -25,11 +25,10 @@ meerdere issues referencen door ze comma-seperated mee te geven.
 Bijvoorbeeld:
 
 ```
-Closes \#530, \#1544 - meer bruikbare feedback als leden maken mis loopt
+Closes #530, #1544 - meer bruikbare feedback als leden maken mis loopt
 
 Je krijgt nu een lijstje van de leden die niet ingeschreven zijn, met
-een
-specifieke foutboodschap, en links naar de leden in kwestie.
+een specifieke foutboodschap, en links naar de leden in kwestie.
 ```
 
 Dit voorbeeld illustreert nog een git best practice: In de eerste lijn
