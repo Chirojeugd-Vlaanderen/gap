@@ -1,7 +1,7 @@
 /*
  * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * Bijgewerkt gebruikersbeheer Copyright 2014, 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -291,30 +291,30 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Levert de details van de gebruiker met gegeven <paramref name="login"/>.
+        /// Indien de ingelogde gebruiker lid is voor gegeven groep in het recentste werkjaar, dan wordt de id van dat lid terug gegeven
         /// </summary>
-        /// <param name="login">Login van een gebruiker.</param>
-        /// <returns>Details van de gebruiker met gegeven <paramref name="login"/>.</returns>
-        public GebruikersDetail GebruikerOphalenViaLogin(string login)
+        public int? AangelogdeGebruikerLidIdGet(int groepID)
         {
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-            if (adNummer == null)
+            var userName = _authenticatieMgr.GebruikersNaamGet();
+            var gav = (from g in _gavRepo.Select()
+                where
+                    string.Compare(g.Login, userName,
+                        StringComparison.InvariantCultureIgnoreCase) == 0
+                select g).First();
+            if (!gav.Persoon.Any())
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
-                    Resources.KoppelingLoginPersoonOntbreekt,
-                    login,
-                    adNummer));
+                return null; // geen persoon gevonden
             }
-            var persoon = (from p in _personenRepo.Select()
-                           where p.AdNummer == adNummer
-                           select p).FirstOrDefault();
-
-            if (persoon == null)
+            var lps = (from gp in gav.Persoon.First().GelieerdePersoon
+                          where gp.Groep.ID == groepID
+                          select gp).ToList();
+            var leden = lps.SelectMany(gp => gp.Lid).ToList();
+            if (!leden.Any())
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
-                    Resources.KoppelingLoginPersoonOntbreekt,
-                    login,
-                    adNummer));
+                return null;
+            }
+            var maxJaar = leden.Max(l => l.GroepsWerkJaar.WerkJaar);
+            return leden.First(l => l.GroepsWerkJaar.WerkJaar == maxJaar).ID;
                     // Als je hier een exception krijgt dat je gebruiker niet gevonden is, dan kun je die
                     // aanmaken, en meteen rechten geven op 1 of meerdere willekeurige groepen. Je hebt hiervoor het
                     // AD-nummer nodig uit de exception. (Als je aan het ontwikkelen bent, is dat een dummy-adnr.)

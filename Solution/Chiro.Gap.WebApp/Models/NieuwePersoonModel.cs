@@ -40,25 +40,14 @@ namespace Chiro.Gap.WebApp.Models
         /// </summary>
         public bool Forceer { get; set; }
         /// <summary>
-        /// Informatie over het communicatietype 'telefoonnummer'.
+        /// Informatie over het communicatietypes
         /// Wordt gebruikt voor de reguliere expressie (validatie) en het voorbeeld
         /// </summary>
-        public CommunicatieTypeInfo TelefoonNummerType { get; set; }
+        public Dictionary<int,CommunicatieTypeInfo> CommunicatieTypes { get; set; }
         /// <summary>
-        /// Informatie over het communicatietype 'e-mailadres'.
-        /// Wordt gebruikt voor de reguliere expressie (validatie) en het voorbeeld
+        /// Lijst van CommunicatieInfos
         /// </summary>
-        public CommunicatieTypeInfo EMailType { get; set; }
-        /// <summary>
-        /// Telefoonnummer
-        /// </summary>
-        [DisplayName("Telefoon")]
-        public CommunicatieInfo TelefoonNummer { get; set; }
-        /// <summary>
-        /// E-mailadres
-        /// </summary>
-        [DisplayName("E-mail")]
-        public CommunicatieInfo EMail { get; set; }
+        public List<CommunicatieInfo> CommunicatieInfos { get; set; }
         /// <summary>
         /// 'Geen' als de persoon niet ingeschreven moet worden,
         /// anders 'Kind' of 'Leiding'

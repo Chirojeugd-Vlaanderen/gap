@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,18 +52,20 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
-            var werkjaarID = ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID));
-            var model = new GroepsInstellingenModel
-            {
-                Titel = Properties.Resources.GroepsInstellingenTitel,
-                Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID)),
-                NonActieveAfdelingen = ServiceHelper.CallService<IGroepenService, List<AfdelingInfo>>(svc => svc.OngebruikteAfdelingenOphalen(werkjaarID))
-            };
+		    var gwj = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
+		    var werkjaarID = gwj.WerkJaarID;
+		    var model = new GroepsInstellingenModel
+		    {
+		        Titel = Properties.Resources.GroepsInstellingenTitel,
+		        Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID)),
+		        NonActieveAfdelingen =
+		            ServiceHelper.CallService<IGroepenService, List<AfdelingInfo>>(
+		                svc => svc.OngebruikteAfdelingenOphalen(werkjaarID)),
+		        IsLive = VeelGebruikt.IsLive()
+		    };
+            BaseModelInit(model, groepID);
 
-            // Ook hier nakijken of we live zijn.
-            model.IsLive = VeelGebruikt.IsLive();
-
-            return View(model);
+		    return View(model);
 		}
 
         // NOTE: onderstaande methodes komen voort uit opsplitsing groepenscherm, maar halen dus eigenlijk wat teveel info op.
@@ -115,8 +117,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID))
             };
            
-            // Ook hier nakijken of we live zijn.
-            model.IsLive = VeelGebruikt.IsLive();
+            BaseModelInit(model, groepID);
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }

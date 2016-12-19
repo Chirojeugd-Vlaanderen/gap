@@ -65,8 +65,7 @@
             <PropertyRef Name="BuitenlandsAdresID" />
           </Key>
           <Property Name="BuitenlandsAdresID" Type="int" Nullable="false" />
-          <Property Name="PostCode" Type="varchar" MaxLength="10" />
-          <Property Name="PostNummer" Type="int" />
+          <Property Name="PostCode" Type="varchar" MaxLength="16" />
           <Property Name="Straat" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="WoonPlaats" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="LandID" Type="int" Nullable="false" />
@@ -195,6 +194,7 @@
           <Property Name="GroepsWerkJaarID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GroepID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Datum" Type="datetime" />
         </EntityType>
         <EntityType Name="KaderGroep">
           <Key>
@@ -283,6 +283,7 @@
           <Property Name="EindeInstapPeriode" Type="smalldatetime" />
           <Property Name="UitschrijfDatum" Type="datetime" />
           <Property Name="NonActief" Type="bit" StoreGeneratedPattern="Computed" />
+          <Property Name="IsAangesloten" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="LidFunctie">
           <Key>
@@ -364,8 +365,7 @@
           <Property Name="AdInAanvraag" Type="bit" Nullable="false" />
           <Property Name="SeNaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
           <Property Name="SeVoornaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
-          <Property Name="LaatsteMembership" Type="int" />
-          <Property Name="Nieuwsbrief" Type="bit" />
+          <Property Name="NieuwsBrief" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
@@ -407,6 +407,35 @@
           <Property Name="Omschrijving" Type="text" />
           <Property Name="EnkelLeden" Type="bit" Nullable="false" />
           <Property Name="TotEindeWerkJaar" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'gap_local.diag.vActiefAbonnement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vActiefAbonnement">
+          <Key>
+            <PropertyRef Name="AbonnementID" />
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="Type" />
+          </Key>
+          <Property Name="AbonnementID" Type="int" Nullable="false" />
+          <Property Name="PersoonID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="AdNummer" Type="int" />
+          <Property Name="WerkJaar" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vActiefLid">
+          <Key>
+            <PropertyRef Name="LidID" />
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="LidID" Type="int" Nullable="false" />
+          <Property Name="PersoonID" Type="int" Nullable="false" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
+          <Property Name="AdNummer" Type="int" />
+          <Property Name="Code" Type="char" MaxLength="10" />
+          <Property Name="WerkJaar" Type="int" />
         </EntityType>
         <Association Name="FK_Abonnement_GelieerdePersoon">
           <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="1" />
@@ -540,9 +569,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK_Bericht_Groep" />-->
         <Association Name="FK_Bericht_Persoon_Id">
           <End Role="Persoon" Type="Self.Persoon" Multiplicity="0..1" />
           <End Role="Bericht" Type="Self.Bericht" Multiplicity="*" />
@@ -1074,6 +1100,25 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           
           <EntitySet Name="Bericht" EntityType="Self.Bericht" Schema="logging" store:Type="Tables" />
           
+          <EntitySet Name="vActiefAbonnement" EntityType="Self.vActiefAbonnement" store:Type="Views" store:Schema="diag">
+            <DefiningQuery>SELECT 
+    [vActiefAbonnement].[AbonnementID] AS [AbonnementID], 
+    [vActiefAbonnement].[PersoonID] AS [PersoonID], 
+    [vActiefAbonnement].[Type] AS [Type], 
+    [vActiefAbonnement].[AdNummer] AS [AdNummer], 
+    [vActiefAbonnement].[WerkJaar] AS [WerkJaar]
+    FROM [diag].[vActiefAbonnement] AS [vActiefAbonnement]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vActiefLid" EntityType="Self.vActiefLid" store:Type="Views" store:Schema="diag">
+            <DefiningQuery>SELECT 
+    [vActiefLid].[LidID] AS [LidID], 
+    [vActiefLid].[PersoonID] AS [PersoonID], 
+    [vActiefLid].[GroepID] AS [GroepID], 
+    [vActiefLid].[AdNummer] AS [AdNummer], 
+    [vActiefLid].[Code] AS [Code], 
+    [vActiefLid].[WerkJaar] AS [WerkJaar]
+    FROM [diag].[vActiefLid] AS [vActiefLid]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Abonnement_GelieerdePersoon" Association="Self.FK_Abonnement_GelieerdePersoon">
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
             <End Role="Abonnement" EntitySet="Abonnement" />
@@ -1486,6 +1531,8 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
             <End Role="Persoon" EntitySet="Persoon" />
             <End Role="Bericht" EntitySet="Bericht" />
           </AssociationSet>
+          <EntitySet Name="vActiefLid" EntityType="ChiroGroepModel.ActiefLid" />
+          <EntitySet Name="vActiefAbonnement" EntityType="ChiroGroepModel.ActiefAbonnement" />
         </EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
           <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" Unicode="false" />
@@ -1533,8 +1580,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="GebruikersRechtV2" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" FromRole="Persoon" ToRole="GebruikersRechtv2" />
           <NavigationProperty Name="BerichtGebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Persoon" ToRole="Bericht" />
           <NavigationProperty Name="BerichtPersoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Persoon" ToRole="Bericht" />
-          <Property Name="LaatsteMembership" Type="Int32" />
-          <Property Name="NieuwsBrief" Type="Boolean" />
+          <Property Name="NieuwsBrief" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -1622,6 +1668,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="AfdelingsJaar" />
           <NavigationProperty Name="Uitstap" Relationship="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar" FromRole="GroepsWerkJaar" ToRole="Uitstap" />
           <NavigationProperty Name="Abonnement" Relationship="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" FromRole="GroepsWerkJaar" ToRole="Abonnement" />
+          <Property Name="Datum" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Lid">
           <Key>
@@ -1638,6 +1685,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.LidFunctie" FromRole="Lid" ToRole="Functie" />
           <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" Precision="0" />
           <Property Type="DateTime" Name="UitschrijfDatum" Precision="3" />
+          <Property Name="IsAangesloten" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_GroepsWerkjaar_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
@@ -1863,11 +1911,10 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="WoonPlaats" Relationship="ChiroGroepModel.FK_BelgischAdres_WoonPlaats" FromRole="BelgischAdres" ToRole="WoonPlaats" />
         </EntityType>
         <EntityType Name="BuitenLandsAdres" BaseType="ChiroGroepModel.Adres">
-          <Property Type="String" Name="PostCode" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PostCode" MaxLength="16" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Straat" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="WoonPlaats" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Land" Relationship="ChiroGroepModel.FK_BuitenlandsAdres_Land" FromRole="BuitenLandsAdres" ToRole="Land" />
-          <Property Type="Int32" Name="PostNummer" />
         </EntityType>
         <EntityType Name="Land">
           <Key>
@@ -2045,6 +2092,31 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="0..1" />
           <End Type="ChiroGroepModel.Bericht" Role="Bericht" Multiplicity="*" />
         </Association>
+        <EntityType Name="ActiefLid">
+          <Key>
+            <PropertyRef Name="LidID" />
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="LidID" Type="Int32" Nullable="false" />
+          <Property Name="PersoonID" Type="Int32" Nullable="false" />
+          <Property Name="GroepID" Type="Int32" Nullable="false" />
+          <Property Name="AdNummer" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="WerkJaar" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ActiefAbonnement">
+          <Key>
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="PersoonID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="AdNummer" Type="Int32" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="WerkJaar" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2080,8 +2152,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <EntitySetMapping Name="Persoon">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Persoon)">
               <MappingFragment StoreEntitySet="Persoon">
-                <ScalarProperty Name="NieuwsBrief" ColumnName="Nieuwsbrief" />
-                <ScalarProperty Name="LaatsteMembership" ColumnName="LaatsteMembership" />
+                <ScalarProperty Name="NieuwsBrief" ColumnName="NieuwsBrief" />
                 <ScalarProperty Name="SeVoornaam" ColumnName="SeVoornaam" />
                 <ScalarProperty Name="SeNaam" ColumnName="SeNaam" />
                 <ScalarProperty Name="InSync" ColumnName="AdInAanvraag" />
@@ -2158,7 +2229,6 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.BuitenLandsAdres)">
               <MappingFragment StoreEntitySet="BuitenLandsAdres">
-                <ScalarProperty Name="PostNummer" ColumnName="PostNummer" />
                 <ScalarProperty Name="WoonPlaats" ColumnName="WoonPlaats" />
                 <ScalarProperty Name="PostCode" ColumnName="PostCode" />
                 <ScalarProperty Name="ID" ColumnName="BuitenlandsAdresID" />
@@ -2195,6 +2265,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <EntitySetMapping Name="GroepsWerkJaar">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.GroepsWerkJaar)">
               <MappingFragment StoreEntitySet="GroepsWerkJaar">
+                <ScalarProperty Name="Datum" ColumnName="Datum" />
                 <ScalarProperty Name="ID" ColumnName="GroepsWerkJaarID" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
@@ -2204,6 +2275,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <EntitySetMapping Name="Lid">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Lid)">
               <MappingFragment StoreEntitySet="Lid">
+                <ScalarProperty Name="IsAangesloten" ColumnName="IsAangesloten" />
                 <ScalarProperty Name="UitschrijfDatum" ColumnName="UitschrijfDatum" />
                 <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" />
                 <ScalarProperty Name="ID" ColumnName="LidID" />
@@ -2746,6 +2818,29 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
             </EndProperty>
             <Condition ColumnName="PersoonID" IsNull="false" />
           </AssociationSetMapping>          
+          <EntitySetMapping Name="vActiefLid">
+            <EntityTypeMapping TypeName="ChiroGroepModel.ActiefLid">
+              <MappingFragment StoreEntitySet="vActiefLid">
+                <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+                <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+                <ScalarProperty Name="LidID" ColumnName="LidID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vActiefAbonnement">
+            <EntityTypeMapping TypeName="ChiroGroepModel.ActiefAbonnement">
+              <MappingFragment StoreEntitySet="vActiefAbonnement">
+                <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
+                <ScalarProperty Name="ID" ColumnName="AbonnementID" />
+                <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -3252,6 +3347,8 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.Bericht" Width="1.5" PointX="11.25" PointY="8.75" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Gebruiker" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Persoon_Id" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.ActiefLid" Width="1.5" PointX="0.75" PointY="0.75" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.ActiefAbonnement" Width="1.5" PointX="3.375" PointY="0.75" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

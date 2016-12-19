@@ -2,12 +2,13 @@
 <%@ Import Namespace="System.Globalization" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
+<%@ Import Namespace="Chiro.Gap.Poco.Model" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server" EnableViewState="False">
 <%
 /*
  * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * Cleanup en refactoring met module pattern: Copyright 2015 Sam Segers
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,33 +31,39 @@
 	<script src="<%=ResolveUrl("~/Scripts/Modules/PersoonModule.js")%>" type="text/javascript"></script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        PersoonModule.InitVoorNieuw();
-        // validatie reguliere expressies e-mail en telefoonnummer
-        $.validator.addMethod(
-			    "regex",
-			    function (value, element, regexp) {
-			        var re = new RegExp(regexp, 'i');   // case insensitive
-			        return this.optional(element) || re.test(value);
-			    },
-			    "Ongeldig formaat."
-		    );
-        var emailElement = document.getElementById('EMail_Nummer');
-        var telElement = document.getElementById('TelefoonNummer_Nummer');
-        $(emailElement.form).validate({
-            rules: {
-                "NieuwePersoon.VoorNaam": "required",
-                "NieuwePersoon.Naam": "required"
+	$(document).ready(function () {
+		PersoonModule.InitVoorNieuw();
+		// validatie reguliere expressies e-mail en telefoonnummer
+		$.validator.addMethod(
+				"regex",
+				function (value, element, regexp) {
+					var re = new RegExp(regexp, 'i');   // case insensitive
+					return this.optional(element) || re.test(value);
+				},
+				"Ongeldig formaat."
+			);
+		<%
+			foreach (var comType in Model.CommunicatieTypes.Values)
+			{
+		%>
+				jQuery.validator.addClassRules('<%=typeof(CommunicatieTypeEnum).Name+"_"+comType.ID%>', 
+					{ regex: "<%=comType.Validatie %>" });
+		<%
+			}
+		 %>
+		var voornaamElement = document.getElementById('NieuwePersoon_VoorNaam');
+		$(voornaamElement.form).validate({
+			rules: {
+				"NieuwePersoon.VoorNaam": "required",
+				"NieuwePersoon.Naam": "required"
 
-            },
-            messages: {
-                "NieuwePersoon.VoorNaam": "Voornaam is verplicht",
-                "NieuwePersoon.Naam": "Familienaam is verplicht"
-            }
-        });
-        $(emailElement).rules("add", { regex: "<%=Model.EMailType.Validatie %>" });
-        $(telElement).rules("add", { regex: "<%=Model.TelefoonNummerType.Validatie %>" });
-    });
+			},
+			messages: {
+				"NieuwePersoon.VoorNaam": "Voornaam is verplicht",
+				"NieuwePersoon.Naam": "Familienaam is verplicht"
+			}
+		});
+	});
 </script>    
 	
 	<%	// OPGELET: de opening en closing tag voor 'script' niet vervangen door 1 enkele tag, want dan
@@ -76,22 +83,12 @@
 			{
 	%>
 	<p class="validation-summary-errors">
-		Pas op! Je nieuwe persoon lijkt erg veel op iemand die al gekend is in
+		Pas op! Je nieuwe persoon lijkt erg veel op <%=(Model.GelijkaardigePersonen.Count() == 1 ?"iemand":"personen") %> die al gekend is in
 		de Chiroadministratie. Als je zeker bent dat je niemand dubbel toevoegt, klik
 		dan opnieuw op &lsquo;Bewaren&rsquo;.
 	</p>
 	<%
-		}
-			else
-			{
-	%>
-	<p class="validation-summary-errors">
-		Pas op! Je nieuwe persoon lijkt erg veel op personen die al gekend zijn
-		in de Chiroadministratie. Als je zeker bent dat je niemand dubbel toevoegt,
-		klik dan opnieuw op &lsquo;Bewaren&rsquo;.
-	</p>
-	<%
-		}
+			}
 	%>
 	<ul>
 		<% 
@@ -174,7 +171,7 @@
 			<td>
 				<%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.Man) %> <%=Html.Geslacht(GeslachtsType.Man) %>
 				<%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.Vrouw) %> <%=Html.Geslacht(GeslachtsType.Vrouw) %>
-                <%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.X) %> <%=Html.Geslacht(GeslachtsType.X) %>
+				<%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.X) %> <%=Html.Geslacht(GeslachtsType.X) %>
 				<%=Html.ValidationMessageFor(s => s.NieuwePersoon.Geslacht)%>
 			</td>
 		</tr>
@@ -199,31 +196,43 @@
 	<fieldset>
 		<legend>Communicatie</legend>
 		<table>
-			<tr>
-				<td><%=Html.LabelFor(s => s.EMail) %></td>
+			<%
+				for (var i = 0; i < Model.CommunicatieInfos.Count; i++)
+				{
+	%>      <tr>
+				<td>&nbsp;</td>
+				<td class="communicatievormcount">
+					<%=Model.CommunicatieTypes[Model.CommunicatieInfos[i].CommunicatieTypeID].Omschrijving
+					+(Model.CommunicatieInfos[i].Voorkeur?": (Voorkeur)":":")%> <br />
+					<%=Html.TextBoxFor(mdl => mdl.CommunicatieInfos[i].Nummer, new { placeholder = Model.CommunicatieTypes[Model.CommunicatieInfos[i].CommunicatieTypeID].Voorbeeld, @class = typeof(CommunicatieTypeEnum).Name+"_"+Model.CommunicatieInfos[i].CommunicatieTypeID }) %> 
+					<%=Html.ValidationMessageFor(mdl => mdl.CommunicatieInfos[i].Nummer) %> <br />
+					<%=Html.CheckBoxFor(mdl => mdl.CommunicatieInfos[i].IsGezinsGebonden) %>
+					<%=Html.LabelFor(mdl => mdl.CommunicatieInfos[i].IsGezinsGebonden) %><br />
+					<%=Html.HiddenFor(mdl => mdl.CommunicatieInfos[i].Voorkeur) %>
+					<%=Html.HiddenFor(mdl => mdl.CommunicatieInfos[i].CommunicatieTypeID) %>
+				</td>
+			</tr>
+	<%	        }
+				 %>
+			<tr id="CommunicatieVormenKnoppen">
+				<td>Meer:</td>
 				<td>
-					E-mailadres:<br />
-					<%=Html.TextBoxFor(mdl => mdl.EMail.Nummer, new { placeholder = Model.EMailType.Voorbeeld }) %> 
-					<%=Html.ValidationMessageFor(mdl => mdl.EMail.Nummer) %> <br />
-					<%=Html.CheckBoxFor(mdl => mdl.NieuwePersoon.NieuwsBrief) %>
-					<%=Html.LabelFor(mdl => mdl.NieuwePersoon.NieuwsBrief) %>
-					<%=Html.InfoLink("snelBerichtInfo")%><br />
-					<%=Html.CheckBoxFor(mdl => mdl.EMail.IsGezinsGebonden) %>
-					<%=Html.LabelFor(mdl => mdl.EMail.IsGezinsGebonden) %><br />
-					<%=Html.HiddenFor(mdl => mdl.EMail.Voorkeur) %>
-					<%=Html.HiddenFor(mdl => mdl.EMail.CommunicatieTypeID) %>
+					<select id="communicatietype">
+						<%
+						foreach (var type in Model.CommunicatieTypes)
+						{ %>
+							<option value="<%=type.Key%>" data-placeholder="<%=type.Value.Voorbeeld %>"><%=type.Value.Omschrijving%></option>       
+					 <% } %>
+					</select>
+					<div style="cursor: pointer" title="Toevoegen" class="commTypeToevoegen ui-icon ui-icon-circle-plus" onclick="PersoonModule.nieuweCommunicatieVorm();"></div>
 				</td>
 			</tr>
 			<tr>
-				<td><%=Html.LabelFor(s => s.TelefoonNummer) %></td>
+				<td>&nbsp;</td>
 				<td>
-					Telefoonnummer:<br />
-					<%=Html.TextBoxFor(mdl => mdl.TelefoonNummer.Nummer, new { placeholder = Model.TelefoonNummerType.Voorbeeld}) %> 
-					<%=Html.ValidationMessageFor(mdl => mdl.TelefoonNummer.Nummer)%><br />
-					<%=Html.CheckBoxFor(mdl => mdl.TelefoonNummer.IsGezinsGebonden)%>
-					<%=Html.LabelFor(mdl => mdl.TelefoonNummer.IsGezinsGebonden)%><br />
-					<%=Html.HiddenFor(mdl => mdl.TelefoonNummer.Voorkeur) %>
-					<%=Html.HiddenFor(mdl => mdl.TelefoonNummer.CommunicatieTypeID) %>
+					<%=Html.CheckBoxFor(mdl => mdl.NieuwePersoon.NieuwsBrief) %>
+					<%=Html.LabelFor(mdl => mdl.NieuwePersoon.NieuwsBrief) %>
+					<%=Html.InfoLink("snelBerichtInfo")%>                    
 				</td>
 			</tr>
 		</table>

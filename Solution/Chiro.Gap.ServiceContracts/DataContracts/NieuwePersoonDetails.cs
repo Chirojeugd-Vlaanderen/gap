@@ -33,9 +33,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         [DataMember]
         public AdresTypeEnum AdresType { get; set; }
         [DataMember]
-        public CommunicatieInfo EMail { get; set; }
-        [DataMember]
-        public CommunicatieInfo TelefoonNummer { get; set; }
+        public List<CommunicatieInfo> CommunicatieInfos{ get; set; }
         /// <summary>
         /// Geen als niet inschrijven, anders Kind of Leiding.
         /// </summary>

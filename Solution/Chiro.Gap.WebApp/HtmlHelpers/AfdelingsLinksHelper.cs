@@ -1,7 +1,7 @@
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
             foreach (var afd in afdelingen)
             {
                 builder.Append(html.ActionLink(
-                    html.Encode(String.IsNullOrWhiteSpace(afd.Afkorting) ? "(nvt)" : afd.Afkorting),
+                   String.IsNullOrWhiteSpace(afd.Afkorting) ? "(nvt)" : afd.Afkorting,
                     "Afdeling",
                     new { Controller = "Leden", groepsWerkJaarID, groepID, afd.ID },
                     new { title = String.Format(Properties.Resources.AfdelingsLinkTitel, afd.Naam) }).ToString());

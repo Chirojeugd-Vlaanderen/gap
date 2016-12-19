@@ -1,7 +1,7 @@
 /*
- * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,7 @@ namespace Chiro.Gap.SyncInterfaces
 	/// </summary>
 	public interface IAbonnementenSync
 	{
-	    void AbonnementBewaren(Abonnement teSyncenAbonnement);
+	    void Bewaren(Abonnement teSyncenAbonnement);
 	    void AlleAbonnementenVerwijderen(GelieerdePersoon gelieerdePersoon);
-	    void AlleAbonnementenVerwijderen(string eMail);
-	    string DummyEmailAdresMaken(Persoon persoon);
 	}
 }

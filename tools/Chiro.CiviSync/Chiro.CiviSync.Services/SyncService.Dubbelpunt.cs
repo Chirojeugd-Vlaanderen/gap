@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,12 @@
  */
 
 using System;
+using System.Linq;
 using System.ServiceModel;
+using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -26,30 +31,124 @@ namespace Chiro.CiviSync.Services
     public partial class SyncService
     {
         /// <summary>
-        /// Werkt een dubbelpuntabonnement bij in Mailchimp. Spannend.
+        /// Dubbelpuntabonnement als membership naar Civi.
         /// </summary>
-        /// <param name="abonnementInfo">Alle informatie over het abonnement.</param>
+        /// <param name="adNummer">AD-nummer van de persoon die een abonnement wil.</param>
+        /// <param name="werkJaar">Werkjaar van het abonnement.</param>
+        /// <param name="type">Digitaal of op papier.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void AbonnementNaarMailchimp(AbonnementInfo abonnementInfo)
+        public void AbonnementBewaren(int adNummer, int werkJaar, AbonnementTypeEnum type)
         {
-            _chimpSyncHelper.AbonnementSyncen(abonnementInfo);
+            var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.DubbelpuntAbonnement);
+
+            if (contact == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren Dubbelpuntabonnement - als dusdanig terug naar GAP.", adNummer),
+                    null, adNummer, null);
+
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                return;
+            }
+
+            // Nieuw request dat we alleen zullen gebruiken als er geen oud is, of als
+            // het oud al te oud is.
+            var request = _membershipLogic.VanWerkjaar(MembershipType.DubbelpuntAbonnement, contact.Id, null,
+                werkJaar);
+            if (contact.MembershipResult.Count == 1)
+            {
+                var bestaandMembership = contact.MembershipResult.Values.First();
+                request.JoinDate = bestaandMembership.JoinDate < request.JoinDate
+                    ? bestaandMembership.JoinDate
+                    : request.JoinDate;
+
+                if (bestaandMembership.EndDate == null ||
+                    bestaandMembership.EndDate.Value.AddDays(Properties.Settings.Default.DagenOverlapDubbelpunt) >=
+                    request.StartDate)
+                {
+                    // Als er een actief membership is, of de overlap is 'redelijk', dan
+                    // hergebruiken we het recentste membership.
+
+                    // Misschien beter mappen? Geen idee.
+                    request.Id = bestaandMembership.Id;
+                    request.StartDate = bestaandMembership.StartDate < request.StartDate
+                        ? bestaandMembership.StartDate
+                        : request.StartDate;
+                    request.EndDate = bestaandMembership.EndDate > request.EndDate
+                        ? bestaandMembership.EndDate
+                        : request.EndDate;
+
+                    // Van een membershipstatus blijven we af, want we willen dat CiviCRM die voor
+                    // ons afhandelt (#4960)
+                }
+            }
+            request.AbonnementType = (AbonnementType)(int)type;
+
+            var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
+                svc => svc.MembershipSave(_apiKey, _siteKey, request));
+            result.AssertValid();
+
             _log.Loggen(Niveau.Debug,
                 String.Format("DubbelpuntAbonnement voor {0} {1} ({2}, {3}) bijgewerkt. Type {4}.",
-                    abonnementInfo.VoorNaam, abonnementInfo.Naam, abonnementInfo.EmailAdres, abonnementInfo.Adres,
-                    abonnementInfo.AbonnementType), abonnementInfo.StamNr, null, abonnementInfo.GapPersoonId);
+                    contact.FirstName, contact.LastName, contact.Email, contact.StreetAddress,
+                    type), null, adNummer, contact.GapId);
         }
 
         /// <summary>
-        /// Verwijdert Dubbelpuntabonnement voor persoon met gegeven <paramref name="eMail"/>.
+        /// Dubbelpuntabonnement als membership naar Civi.
         /// </summary>
-        /// <param name="eMail">E-mailadres (of dummy-e-mailadres) van te verwijderen abonnement.</param>
+        /// <param name="details">Details van de persoon die een abonnement wil.</param>
+        /// <param name="werkjaar">Werkjaar van het abonnement.</param>
+        /// <param name="type">Digitaal of op papier.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void AbonnementVerwijderen(string eMail)
+        public void AbonnementNieuwePersoonBewaren(PersoonDetails details, int werkjaar, AbonnementTypeEnum type)
         {
-            _chimpSyncHelper.AbonnementVerwijderen(eMail);
-            _log.Loggen(Niveau.Debug,
-                string.Format("DubbelpuntAbonnement verwijderd: {0}.",
-                    eMail), null, null, null);
+            // Update of maak de persoon, en vind zijn AD-nummer
+            int adNr = PersoonUpdatenOfMaken(details);
+            AbonnementBewaren(adNr, werkjaar, type);
+        }
+
+        /// <summary>
+        /// Verwijdert abonnement van persoon met gegeven <paramref name="adNummer"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van persoon die geen abonnement meer wil.</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void AbonnementStopzetten(int adNummer)
+        {
+            var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.DubbelpuntAbonnement);
+
+            if (contact == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren Dubbelpuntabonnement - als dusdanig terug naar GAP.", adNummer),
+                    null, adNummer, null);
+
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                return;
+            }
+
+            if (contact.MembershipResult.Count != 1)
+            {
+                _log.Loggen(Niveau.Error,
+                    String.Format(
+                        "Geen recentste Dubbelpuntabonnement gevonden voor {0} {1} (AD {2}, GapID {3}). Abonnement niet verwijderd.",
+                        contact.FirstName, contact.LastName, adNummer, contact.GapId),
+                    null, adNummer, contact.GapId);
+                return;
+            }
+            var bestaandMembership = contact.MembershipResult.Values.First();
+
+            _membershipWorker.AbonnementBeeindigen(bestaandMembership, contact);
+        }
+
+        /// <summary>
+        /// Verwijdert abonnement van persoon met gegeven <paramref name="details"/>.
+        /// </summary>
+        /// <param name="details">Details van persoon die geen abonnement meer wil.</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void AbonnementStopzettenNieuwePersoon(PersoonDetails details)
+        {
+            // Update of maak de persoon, en vind zijn AD-nummer
+            int adNr = PersoonUpdatenOfMaken(details);
+            AbonnementStopzetten(adNr);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿/*
  * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -543,5 +543,13 @@ namespace Chiro.Gap.ServiceContracts
 	    /// <returns></returns>
 	    [OperationContract]
 	    FunctieDetail FunctieOphalen(int functieId);
+
+        /// <summary>
+        /// Verwijdert (zo mogelijk) het groepswerkjaar met gegeven <paramref name="groepsWerkJaarId"/>, en
+        /// herstelt de situatie zoals op het einde van vorig groepswerkjaar.
+        /// </summary>
+        /// <param name="groepsWerkJaarId">ID van groepswerkjaar.</param>
+        [OperationContract]
+	    void JaarOvergangTerugDraaien(int groepsWerkJaarId);
 	}
 }

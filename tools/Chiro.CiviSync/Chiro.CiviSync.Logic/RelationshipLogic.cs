@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -84,24 +84,20 @@ namespace Chiro.CiviSync.Logic
 
         /// <summary>
         /// Creeert een relationshiprequest van het gegeven <paramref name="type"/> voor een relatie tussen
-        /// de contacten met ID's <paramref name="contact1Id"/> en <paramref name="contact2Id"/> voor het 
-        /// gegeven <paramref name="werkJaar"/>.
+        /// de contacten met ID's <paramref name="contact1Id"/> en <paramref name="contact2Id"/>.
         /// </summary>
         /// <param name="type">Relatietype</param>
         /// <param name="contact1Id">Civi-ID van het eerste contact.</param>
         /// <param name="contact2Id">Civi-ID van het tweede contact.</param>
-        /// <param name="werkJaar">Werkjaar voor de relatie.</param>
+        /// <param name="werkjaar"></param>
         /// <param name="uitschrijfDatum">Als het om een inactieve relatie gaat: de uitschrijfdatum.</param>
         /// <returns>Een relationshiprequest van het gegeven <paramref name="type"/> voor een relatie tussen
-        /// de contacten met ID's <paramref name="contact1Id"/> en <paramref name="contact2Id"/> voor het 
-        /// gegeven <paramref name="werkJaar"/>.</returns>
-        public RelationshipRequest VanWerkjaar(RelatieType type, int contact1Id, int contact2Id, int werkJaar, DateTime? uitschrijfDatum)
+        /// de contacten met ID's <paramref name="contact1Id"/> en <paramref name="contact2Id"/>.</returns>
+        public RelationshipRequest RequestMaken(RelatieType type, int contact1Id, int contact2Id, int werkjaar, DateTime? uitschrijfDatum)
         {
             // We bekijken de datums zonder uren, dus discrete dagen. De EndDate valt volledig binnen de
             // relationship.
 
-            DateTime beginWerkjaar = WerkJaarStart(werkJaar);
-            DateTime eindeWerkJaar = WerkJaarEinde(werkJaar);
             DateTime vandaag = _datumProvider.Vandaag();
 
             var result = new RelationshipRequest
@@ -109,55 +105,39 @@ namespace Chiro.CiviSync.Logic
                 ContactIdA = contact1Id,
                 ContactIdB = contact2Id,
                 StartDate = vandaag,
-                EndDate = eindeWerkJaar,
+                // einddatum = uitschrijfdatum - 1, zie #5367.
+                EndDate = uitschrijfDatum == null ? DateTime.MinValue : uitschrijfDatum.Value.Date.AddDays(-1),
                 RelationshipTypeId = (int)type,
+                Werkjaar = werkjaar
             };
-            // Als een inschrijving gebeurde voor het werkjaar begon, wordt de startdatum de eerste dag van het
-            // werkjaar
-            if (result.StartDate < beginWerkjaar)
-            {
-                result.StartDate = beginWerkjaar;
-            }
-            // Als een inschrijving gebeurde wanneer het werkjaar al voorbij was, wordt de startdatum de laatste
-            // dag van het werkjaar.
-            if (result.StartDate > eindeWerkJaar)
-            {
-                result.StartDate = eindeWerkJaar;
-            }
-            if (uitschrijfDatum != null && uitschrijfDatum < result.EndDate)
-            {
-                // Het gaat om een uitschrijving voor het einde van het werkjaar.
-                result.EndDate = uitschrijfDatum;
-            }
 
-            result.IsActive = IsActief(result);
+            result.IsActive = uitschrijfDatum == null || uitschrijfDatum.Value > vandaag;
             return result;
         }
 
         /// <summary>
-        /// Geeft <c>true</c> als (afgaande op start- en einddatum) de gegeven relatie
-        /// <paramref name="r"/> op dit moment actief is.
+        /// Geeft <c>true</c> als de <paramref name="relatie"/> 'recent genoeg' is om terug te
+        /// activeren.
         /// </summary>
-        /// <param name="r">relatie</param>
-        /// <returns><c>true</c> als (afgaande op start- en einddatum) de gegeven relatie
-        /// <paramref name="r"/> op dit moment actief is.</returns>
-        public bool IsActief(Relationship r)
+        /// <param name="relatie"></param>
+        /// <returns><c>true</c> als de relatie recent genoeg is om terug te activeren</returns>
+        public bool IsHuidig(Relationship relatie)
         {
             DateTime vandaag = _datumProvider.Vandaag();
-            return r.StartDate <= vandaag && r.EndDate >= vandaag;
-        }
-
-        /// <summary>
-        /// Geeft <c>true</c> als (afgaande op start- en einddatum) gegeven realtionship request
-        /// <paramref name="r"/> op dit moment actief is.
-        /// </summary>
-        /// <param name="r">relationship request</param>
-        /// <returns><c>true</c> als (afgaande op start- en einddatum) gegeven relationship request
-        /// <paramref name="r"/> op dit moment actief is.</returns>
-        public bool IsActief(RelationshipRequest r)
-        {
-            DateTime vandaag = _datumProvider.Vandaag();
-            return r.StartDate <= vandaag && r.EndDate >= vandaag;
+            if (relatie.IsActive)
+            {
+                // Actieve relaties zijn recente relaties
+                return true;
+            }
+            if (relatie.StartDate == null)
+            {
+                // Inactieve relaties waarvan we niet meer weten wanneer ze begonnen, zijn oude
+                // relaties.
+                return false;
+            }
+            // Als de relatie inactief is, maar de startdatum ligt nog niet zo ver in het verleden,
+            // dan is het een recente relatie. Ze kan dus terug geactiveerd worden.
+            return ((DateTime) relatie.StartDate).AddDays(Settings.Default.RecupereerPeriode) > vandaag;
         }
     }
 }

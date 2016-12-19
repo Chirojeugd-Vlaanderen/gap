@@ -71,5 +71,17 @@ namespace Chiro.CiviSync.Logic.Properties {
                 this["StandaardLandCode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int RecupereerPeriode {
+            get {
+                return ((int)(this["RecupereerPeriode"]));
+            }
+            set {
+                this["RecupereerPeriode"] = value;
+            }
+        }
     }
 }

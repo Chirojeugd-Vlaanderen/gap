@@ -304,7 +304,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er zijn {2} ingeschreven personen met de functie {0} ({1}), en er mag er zo maar één zijn..
+        ///   Looks up a localized string similar to Er zijn &lt;a href=&apos;{3}&apos;&gt;{2} ingeschreven personen&lt;/a&gt; met de functie {0} ({1}), en er mag er zo maar één zijn..
         /// </summary>
         public static string FunctieMeerdereKeren {
             get {
@@ -322,7 +322,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er is nog niemand met de functie {0} ({1})..
+        ///   Looks up a localized string similar to Er is nog &lt;a href=&apos;{2}&apos;&gt;niemand&lt;/a&gt; met de functie {0} ({1}). &lt;a href=&apos;{3}&apos;&gt;Gelieve deze functie toe te kennen&lt;/a&gt;..
         /// </summary>
         public static string FunctieOntbreekt {
             get {
@@ -349,7 +349,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er zijn te veel leden met de functie {0} ({1}).  Huidig aantal: {2}, verplicht maximum: {3}..
+        ///   Looks up a localized string similar to Er zijn &lt;a href=&apos;{4}&apos;&gt;te veel leden&lt;/a&gt; met de functie {0} ({1}).  Huidig aantal: {2}, verplicht maximum: {3}..
         /// </summary>
         public static string FunctieTeVeel {
             get {
@@ -358,7 +358,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er zijn te weinig ingeschreven personen met de functie {0} ({1}).  Huidig aantal: {2}, verplicht minimum: {3}..
+        ///   Looks up a localized string similar to Er zijn &lt;a href=&apos;{4}&apos;&gt;te weinig ingeschreven personen&lt;/a&gt; met de functie {0} ({1}).  Huidig aantal: {2}, verplicht minimum: {3}..
         /// </summary>
         public static string FunctieTeWeinig {
             get {
@@ -876,6 +876,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string VanTotUitstap {
             get {
                 return ResourceManager.GetString("VanTotUitstap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dit lid is al verzekerd voor dit werkjaar..
+        /// </summary>
+        public static string VerzekeringBestaatAl {
+            get {
+                return ResourceManager.GetString("VerzekeringBestaatAl", resourceCulture);
             }
         }
         

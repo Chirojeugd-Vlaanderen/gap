@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,10 +15,8 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.Web;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.Log;
@@ -32,8 +30,7 @@ namespace Chiro.CiviSync.Services
     public partial class SyncService
     {
         /// <summary>
-        /// Stelt het lidtype van het lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>
-        /// en <paramref name="werkJaar"/>.
+        /// Stelt het lidtype van het actieve lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>.
         /// </summary>
         /// <param name="persoon">
         /// Persoon van wie het lidtype aangepast moet worden
@@ -41,14 +38,11 @@ namespace Chiro.CiviSync.Services
         /// <param name="stamNummer">
         /// Stamnummer van groep waarin de persoon lid is
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarvoor het lidtype moet aangepast worden
-        /// </param>
         /// <param name="lidType">
         /// Nieuw lidtype
         /// </param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void LidTypeUpdaten(Persoon persoon, string stamNummer, int werkJaar, LidTypeEnum lidType)
+        public void LidTypeUpdaten(Persoon persoon, string stamNummer, LidTypeEnum lidType)
         {
             int? contactIdPersoon = CiviIdGet(persoon, "LidType updaten");
             if (contactIdPersoon == null) return;
@@ -62,12 +56,12 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            var lid = _lidWorker.LidOphalen(contactIdPersoon, contactIdGroep, werkJaar);
+            var lid = _lidWorker.ActiefLidOphalen(contactIdPersoon, contactIdGroep);
             if (lid == null)
             {
                 _log.Loggen(Niveau.Error,
-                    String.Format("Lid {1} niet gevonden in groep {0}, werkjaar {2}. Kon afdelingen niet updaten.",
-                        stamNummer, persoon, werkJaar),
+                    String.Format("Geen actieve lidrelatie gevonden voor {1} in ploeg {0}. Kon lidtype niet updaten.",
+                        stamNummer, persoon),
                     stamNummer, persoon.AdNummer, null);
                 return;
             }
@@ -111,8 +105,8 @@ namespace Chiro.CiviSync.Services
 
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "{0} stamnr {1} werkjaar {2} - nieuw lidtype {3}, lidid {4}.",
-                    persoon, stamNummer, werkJaar, lidType, result.Id),
+                    "{0} stamnr {1} werkjaar - nieuw lidtype {3} voor relatie met startdatum {2:dd/MM/yyyy}, lidid {4}.",
+                    persoon, stamNummer, lid.StartDate, lidType, result.Id),
                 stamNummer, persoon.AdNummer, persoon.ID);
         }
     }

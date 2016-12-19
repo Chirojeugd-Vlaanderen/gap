@@ -7,7 +7,7 @@
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -169,12 +169,8 @@
             verzekerd is?</a></h3>
     <p>
         Ingeschreven leden, leiders en leidsters zijn sowieso verzekerd. Bij hen staat
-        er op de deelnemerslijst 'lid' of 'leiding'. Staat er '???', dan moet je hen
-        nog inschrijven in je groep. Logistiek medewerk(st)ers zijn verzekerd als ze
-        aangesloten zijn, anders heb je een verzekering voor een beperkte periode nodig
+        er op de deelnemerslijst 'lid' of 'leiding'. Staat er '???', dan kan het zijn dat je die persoon nog moet inschrijven in je groep. Logistiek medewerk(st)ers zijn automatisch verzekerd, daar heb je geen aparte verzekering voor een beperkte periode meer voor nodig
         (zie <a href="http://www.chiro.be/verzekeringen">www.chiro.be/verzekeringen</a>).
-        Of dat in orde is, kan niet getoond worden op de GAP-website, daar moet je dus
-        zelf op letten.
     </p>
     <h3>
         <a class="anchor" id="Bivakdeelnemers">Is het erg als de deelnemerslijst van ons

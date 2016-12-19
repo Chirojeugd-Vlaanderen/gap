@@ -1,7 +1,7 @@
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * Bijgewerkte authenticatie Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -79,5 +79,13 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
         GebruikersDetail GebruikerOphalenViaLogin(string login);
+
+        /// <summary>
+        /// Indien de ingelogde gebruiker lid is voor gegeven groep in het recentste werkjaar, dan wordt de id van dat lid terug gegeven
+        /// </summary>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        int? AangelogdeGebruikerLidIdGet(int groepID);
     }
 }

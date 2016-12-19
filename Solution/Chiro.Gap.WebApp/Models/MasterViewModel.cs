@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,9 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -29,7 +31,7 @@ namespace Chiro.Gap.WebApp.Models
 	/// <remarks>
 	/// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
 	/// </remarks>
-	public class MasterViewModel : IMasterViewModel
+	public class MasterViewModel
 	{
 		/// <summary>
 		/// De standaardconstructor maakt gewoon een lege lijst met mededelingen
@@ -75,10 +77,19 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public int HuidigWerkJaar { get; set; }
 
-		/// <summary>
-		/// <c>True</c> indien de overgang naar het nieuwe werkJaar kan gebeuren
+	    /// <summary>
+	    /// 'Human readable' representatie van het huidige werkjaar, bijv. '2016-2017'.
+	    /// </summary>
+	    [DisplayName(@"Huidig werkjaar")]
+	    public string WerkJaarWeergave
+	    {
+	        get { return String.Format("{0}-{1}", HuidigWerkJaar, HuidigWerkJaar + 1); }
+	    }
+
+	    /// <summary>
+		/// Status van het huidige werkjaar van de groep.
 		/// </summary>
-		public bool IsInOvergangsPeriode { get; set; }
+		public WerkJaarStatus WerkJaarStatus { get; set; }
 
 		/// <summary>
 		/// Kan de GAV meerdere groepen beheren?

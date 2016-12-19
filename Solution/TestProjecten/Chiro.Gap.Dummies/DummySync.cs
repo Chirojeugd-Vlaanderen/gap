@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013,2015,2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,7 +114,26 @@ namespace Chiro.Gap.Dummies
         {
         }
 
-        public void AbonnementBewaren(Abonnement teSyncenAbonnement)
+        /// <summary>
+        /// Sluit het gegeven groepswerkjaar <paramref name="gwj"/> af in Civi. Dat komt erop neer dat
+        /// alle lidrelaties worden beeindigd.
+        /// </summary>
+        /// <param name="gwj">Af te sluiten groepswerkjaar.</param>
+        public void WerkjaarAfsluiten(GroepsWerkJaar gwj)
+        {
+        }
+
+        /// <summary>
+        /// Draait de jaarovergang naar het gegeven <paramref name="groepsWerkJaar"/> terug in civi.
+        /// Lidrelaties worden hersteld naar de toestand op de dag van de jaarovergang.
+        /// </summary>
+        /// <param name="groep"></param>
+        /// <param name="datum"></param>
+        public void WerkjaarTerugDraaien(Groep groep, DateTime datum)
+        {
+        }
+
+        public void Bewaren(Abonnement teSyncenAbonnement)
         {
         }
 
@@ -122,13 +141,8 @@ namespace Chiro.Gap.Dummies
         {
         }
 
-        public void AlleAbonnementenVerwijderen(string eMail)
+        public void Uitschrijven(UitschrijfInfo info)
         {
-        }
-
-        public string DummyEmailAdresMaken(Persoon persoon)
-        {
-            return string.Format("g{0}@chiro.be", persoon.ID);
         }
     }
 }

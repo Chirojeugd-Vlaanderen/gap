@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SiteKey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">71e3bb41086d35f5c5d78f425d76cc4b</Value>
+      <Value Profile="(Default)">4fcff822c77a6707a50c83939aca3bab</Value>
     </Setting>
     <Setting Name="ApiKey" Type="System.String" Scope="Application">
       <Value Profile="(Default)">blablablapi</Value>
@@ -19,6 +19,9 @@
     </Setting>
     <Setting Name="GapUpdateServer" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://localhost:50673/</Value>
+    </Setting>
+    <Setting Name="DagenOverlapDubbelpunt" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">100</Value>
     </Setting>
   </Settings>
 </SettingsFile>

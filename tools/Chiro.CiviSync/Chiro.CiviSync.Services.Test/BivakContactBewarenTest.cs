@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Chiro.Cdf.Ioc;
@@ -87,7 +88,7 @@ namespace Chiro.CiviSync.Services.Test
             civiApiMock.Setup(
                 src =>
                     src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<EventRequest>(r => r.OrganiserendePersoon1Id == persoonContactId)))
+                        It.Is<EventRequest>(r => r.CourseResponsableId.Values.First() == persoonContactId)))
                 .Returns(new ApiResultValues<Event>(bivak))
                 .Verifiable();
 
@@ -100,7 +101,7 @@ namespace Chiro.CiviSync.Services.Test
             // ASSERT
 
             civiApiMock.Verify(src => src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
-                It.Is<EventRequest>(r => r.OrganiserendePersoon1Id == persoonContactId)), Times.AtLeastOnce);
+                It.Is<EventRequest>(r => r.CourseResponsableId.Values.First() == persoonContactId)), Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -141,7 +142,7 @@ namespace Chiro.CiviSync.Services.Test
                 .Returns(Mapper.Map<Event, ApiResultValues<Event>>(bivak));
 
             // Verwacht dat het foute AD-nummer terug naar GAP gaat.
-            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer))).Returns(Task.Delay(0)).Verifiable();
+            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer))).Verifiable();
 
             // ACT
 

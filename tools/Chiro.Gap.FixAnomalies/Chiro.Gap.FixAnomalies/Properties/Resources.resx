@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Opvragen_actieve_lidrelaties_CiviCRM_" xml:space="preserve">
+    <value>Opvragen actieve lidrelaties CiviCRM.</value>
+  </data>
+  <data name="Program_Main_Opvragen_actieve_lidrelaties_CiviCRM_" xml:space="preserve">
+    <value>Opvragen actieve lidrelaties CiviCRM.</value>
+  </data>
+  <data name="Program_Main_Dat_zijn_er__0__" xml:space="preserve">
+    <value>Dat zijn er {0}.</value>
+  </data>
+  <data name="Program_Main_Opvragen_actieve_leden_GAP__" xml:space="preserve">
+    <value>Opvragen actieve leden in Gap.</value>
+  </data>
+  <data name="Program_Main__0__leden_uit_GAP_niet_teruggevonden_in_CiviCRM_" xml:space="preserve">
+    <value>{0} leden uit GAP niet teruggevonden in CiviCRM.</value>
+  </data>
+  <data name="Program_Main_Meteen_syncen__" xml:space="preserve">
+    <value>Meteen syncen? </value>
+  </data>
+  <data name="Program_Main__0__leden_uit_CiviCRM_niet_teruggevonden_in_GAP_" xml:space="preserve">
+    <value>{0} leden uit CiviCRM niet teruggevonden in GAP.</value>
+  </data>
+  <data name="Program_Main_Uitschrijven_uit_Civi__" xml:space="preserve">
+    <value>Uitschrijven uit Civi? </value>
+  </data>
+  <data name="Program_LoonVerliesFixen_Opvragen_actieve_memberships_met_loonverlies_uit_CiviCRM_" xml:space="preserve">
+    <value>Opvragen actieve memberships met loonverlies uit CiviCRM.</value>
+  </data>
+  <data name="Program_LoonVerliesFixen_Verzekeringen_loonverlies_opvragen_uit_GAP_" xml:space="preserve">
+    <value>Verzekeringen loonverlies opvragen uit GAP.</value>
+  </data>
+  <data name="Program_LoonVerliesFixen_Personen_waarvoor_Kipadmin_loonverlies_factureerde__maar_die_niet_aangesloten_zijn_" xml:space="preserve">
+    <value>Personen waarvoor Kipadmin loonverlies factureerde, maar die niet aangesloten zijn:</value>
+  </data>
+  <data name="Program_LoonVerliesFixen_Ofwel_zijn_er_zo_geen__ofwel_is_Zulma_op_de_hoogte_" xml:space="preserve">
+    <value>Ofwel zijn er zo geen, ofwel is Zulma op de hoogte.</value>
+  </data>
+  <data name="Program_LoonVerliesFixen__0__verzekeringen_te_kort_in_CiviCRM_" xml:space="preserve">
+    <value>{0} verzekeringen te kort in CiviCRM.</value>
+  </data>
+  <data name="Program_OntbrekendInCiviZoeken_Opzoeken_leden_in_GAP_maar_niet_in_CiviCRM_" xml:space="preserve">
+    <value>Opzoeken leden in GAP maar niet in CiviCRM.</value>
+  </data>
+  <data name="Program_TeVeelInCiviZoeken_Opzoeken_leden_in_CiviCRM_maar_niet_in_GAP_" xml:space="preserve">
+    <value>Opzoeken leden in CiviCRM maar niet in GAP.</value>
+  </data>
+  <data name="Program_BivakAangiftesFixen_Ophalen_volledige_bivakaangiftes_uit_CiviCRM_" xml:space="preserve">
+    <value>Ophalen volledige bivakaangiftes uit CiviCRM.</value>
+  </data>
+  <data name="Program_BivakAangiftesFixen_Volledige_bivakaangiftes_ophalen_uit_het_GAP_" xml:space="preserve">
+    <value>Volledige bivakaangiftes ophalen uit het GAP.</value>
+  </data>
+  <data name="Program_BivakAangiftesFixen__0__bivakken_uit_GAP_niet_gevonden_in_Civi_" xml:space="preserve">
+    <value>{0} bivakken uit GAP niet (volledig) gevonden in Civi.</value>
+  </data>
+  <data name="Program_OntbrekendInCiviZoeken_Opzoeken_bivakken_in_GAP_die_niet_volledig_in_Civi_zitten_" xml:space="preserve">
+    <value>Opzoeken bivakken in GAP die niet volledig in Civi zitten.</value>
+  </data>
+  <data name="Program_LidRelatiesFixen_Uitschrijven_doen_we_nog_maar_niet__het_zou_kunnen_dat_er_mensen_niet_in_gap_waren_gevonden_omdat_er_nog_geen_AD_nummers_terug_kwamen_" xml:space="preserve">
+    <value>Uitschrijven doen we nog maar niet; het zou kunnen dat er mensen niet in gap waren gevonden omdat er nog geen AD-nummers terug kwamen.</value>
+  </data>
+  <data name="Usage" xml:space="preserve">
+    <value>USAGE: {0} [-a|-b|-d|-l]
+    -a  kijkt alles na
+    -b  kijkt bivakken na
+    -d  kijkt dubbelpuntabonnementen na
+    -l  kijkt leden na</value>
+  </data>
+  <data name="Program_DubbelpuntFixen_Actieve_Dubbelpuntabonnementen_ophalen_uit_CiviCRM_" xml:space="preserve">
+    <value>Actieve Dubbelpuntabonnementen ophalen uit CiviCRM.</value>
+  </data>
+  <data name="Program_Main_Druk_ENTER_" xml:space="preserve">
+    <value>Druk ENTER.</value>
+  </data>
+  <data name="Program_DubbelpuntFixen_Dubbelpuntabonnementen_ophalen_werkjaar__0____" xml:space="preserve">
+    <value>Dubbelpuntabonnementen ophalen werkjaar {0}...</value>
+  </data>
+  <data name="Program_OntbrekendInCiviZoeken_Op_zoek_naar_abonnementen_in_GAP_maar_niet_in_CiviCRM___" xml:space="preserve">
+    <value>Op zoek naar abonnementen in GAP maar niet in CiviCRM...</value>
+  </data>
+  <data name="Program_DubbelpuntFixen__0__abonnementen_niet_gevonden_in_CiviCRM_" xml:space="preserve">
+    <value>{0} abonnementen niet gevonden in CiviCRM.</value>
+  </data>
+</root>

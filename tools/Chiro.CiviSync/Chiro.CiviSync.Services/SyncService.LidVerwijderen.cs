@@ -1,4 +1,20 @@
-﻿using System;
+﻿/*
+   Copyright 2015-2016 Chirojeugd-Vlaanderen vzw
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
+using System;
 using System.Linq;
 using System.ServiceModel;
 using Chiro.CiviCrm.Api;
@@ -13,7 +29,7 @@ namespace Chiro.CiviSync.Services
     public partial class SyncService
     {
         /// <summary>
-        /// Verwijdert een persoon met gekend AD-nummer als lid
+        /// Verwijdert een persoon met gekend AD-nummer als actief lid
         /// </summary>
         /// <param name="adNummer">
         /// AD-nummer te verwijderen lid
@@ -21,16 +37,13 @@ namespace Chiro.CiviSync.Services
         /// <param name="stamNummer">
         /// Stamnummer te verwijderen lid
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar te verwijderen lid
-        /// </param>
         /// <param name="uitschrijfDatum"> uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum)
+        public void LidVerwijderen(int adNummer, string stamNummer, DateTime uitschrijfDatum)
         {
             int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
             if (civiGroepId == null)
@@ -40,42 +53,52 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            var contact = _contactWorker.PersoonMetRecentsteLid(adNummer, civiGroepId);
+            var contact = _contactWorker.PersoonMetActiefLid(adNummer, civiGroepId);
 
             if (contact == null || contact.ExternalIdentifier == null)
             {
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te verwijderen lid - als dusdanig terug naar GAP.", adNummer),
                     stamNummer, adNummer, null);
-                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 
-            if (contact.RelationshipResult.Count == 1 &&
-                _relationshipLogic.WerkjaarGet(contact.RelationshipResult.Values.First()) == werkJaar)
+            if (contact.RelationshipResult.Count >= 1)
             {
+                if (contact.RelationshipResult.Count > 1)
+                {
+                    _log.Loggen(Niveau.Warning,
+                        String.Format(
+                            "Meer dan 1 actieve lidrelatie voor {0} {1} (AD {2}) in groep {3}.",
+                            contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer),
+                        stamNummer, adNummer, contact.GapId);
+
+                }
+                var relatie = contact.RelationshipResult.Values.First();
+
                 _log.Loggen(Niveau.Info,
                     String.Format(
-                        "{0} {1} (AD {2}) uitscrhijven voor groep {3} in werkjaar {4}.",
-                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer, werkJaar),
+                        "Lid {0} {1} (AD {2}) verwijderd voor groep {3}; startdatum was {4:dd/MM/yyyy}.",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer, relatie.StartDate),
                     stamNummer, adNummer, contact.GapId);
                 var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                     svc =>
                         svc.RelationshipDelete(_apiKey, _siteKey,
-                            new DeleteRequest(contact.RelationshipResult.Values.First().Id)));
+                            new DeleteRequest(relatie.Id)));
                 result.AssertValid();
             }
             else
             {
                 _log.Loggen(Niveau.Warning,
                     String.Format(
-                        "{0} {1} (AD {2}) niet uitgeschreven voor groep {3} in werkjaar {4} - lidrelatie niet gevonden.",
-                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer, werkJaar),
+                        "Lid {0} {1} (AD {2}) niet verwijderd voor groep {3} - geen actieve relatie gevonden.",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer),
                     stamNummer, adNummer, contact.GapId);
             }
         }
 
         /// <summary>
-        /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
+        /// Verwijdert een actief lid als het ad-nummer om een of andere reden niet bekend is.
         /// </summary>
         /// <param name="details">
         /// Gegevens die hopelijk toelaten het lid te identificeren
@@ -83,16 +106,13 @@ namespace Chiro.CiviSync.Services
         /// <param name="stamNummer">
         /// Stamnummer van het lid
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar van het lid
-        /// </param>
         /// <param name="uitschrijfDatum">uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkJaar, DateTime uitschrijfDatum)
+        public void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, DateTime uitschrijfDatum)
         {
             if (details.Persoon.AdNummer != null)
             {
@@ -115,7 +135,7 @@ namespace Chiro.CiviSync.Services
             }
             else
             {
-                LidVerwijderen(adNummer.Value, stamNummer, werkJaar, uitschrijfDatum);
+                LidVerwijderen(adNummer.Value, stamNummer, uitschrijfDatum);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -171,7 +171,7 @@ namespace Chiro.Kip.ServiceContracts
         void NieuwLidBewaren(PersoonDetails details, LidGedoe lidGedoe);
 
         /// <summary>
-        /// Verwijdert een persoon met gekend AD-nummer als lid
+        /// Verwijdert een persoon met gekend AD-nummer als actief lid
         /// </summary>
         /// <param name="adNummer">
         /// AD-nummer te verwijderen lid
@@ -179,19 +179,35 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer te verwijderen lid
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar te verwijderen lid
-        /// </param>
         /// <param name="uitschrijfDatum"> uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
+        void LidVerwijderen(int adNummer, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
-        /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
+        /// Desactiveert een actieve lidrelatie in CiviCRM.
+        /// </summary>
+        /// <param name="adNummer">
+        /// AD-nummer te desactiveren lid.
+        /// </param>
+        /// <param name="stamNummer">
+        /// Stamnummer te desactiveren lid.
+        /// </param>
+        /// <param name="uitschrijfDatum">te registreren uitschrijfdatum in CiviCRM.</param>
+        /// <remarks>
+        /// In principe kun je een lid ook uitschrijven m.b.v. LidBewaren, waarbij het te bewaren
+        /// lid inactief is. Maar dat wil zeggen dat je in GAP een lid moet hebben. Deze functie
+        /// kunnen we gebruiken als het te desactiveren lid niet bestaat in GAP.
+        /// (Dat is alleen zo als er iets louche aan de hadn is, zie #4554.)
+        /// </remarks>
+        [OperationContract(IsOneWay = true)]
+        void LidUitschrijven(int adNummer, string stamNummer, DateTime uitschrijfDatum);
+
+        /// <summary>
+        /// Verwijdert een actief lid als het ad-nummer om een of andere reden niet bekend is.
         /// </summary>
         /// <param name="details">
         /// Gegevens die hopelijk toelaten het lid te identificeren
@@ -199,19 +215,16 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van het lid
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar van het lid
-        /// </param>
         /// <param name="uitschrijfDatum">uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
+        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, DateTime uitschrijfDatum);
 
         /// <summary>
-        /// Updatet de functies van een lid.
+        /// Updatet de functies van een actief lid.
         /// </summary>
         /// <param name="persoon">
         /// Persoon van wie de lidfuncties geüpdatet moeten worden
@@ -219,18 +232,14 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van de groep waarin de persoon lid is
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarin de persoon lid is
-        /// </param>
         /// <param name="functies">
         /// Toe te kennen functies.  Eventuele andere reeds toegekende functies worden verwijderd.
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, FunctieEnum[] functies);
+        void FunctiesUpdaten(Persoon persoon, string stamNummer, FunctieEnum[] functies);
 
         /// <summary>
-        /// Stelt het lidtype van het lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>
-        /// en <paramref name="werkJaar"/>.
+        /// Stelt het lidtype van het actieve lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>.
         /// </summary>
         /// <param name="persoon">
         /// Persoon van wie het lidtype aangepast moet worden
@@ -238,26 +247,20 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van groep waarin de persoon lid is
         /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarvoor het lidtype moet aangepast worden
-        /// </param>
         /// <param name="lidType">
         /// Nieuw lidtype
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void LidTypeUpdaten(Persoon persoon, string stamNummer, int werkJaar, LidTypeEnum lidType);
+        void LidTypeUpdaten(Persoon persoon, string stamNummer, LidTypeEnum lidType);
 
         /// <summary>
-        /// Updatet de afdelingen van een lid.
+        /// Updatet de afdelingen van een actief lid.
         /// </summary>
         /// <param name="persoon">
         /// Persoon waarvan de afdelingen geupdatet moeten worden
         /// </param>
         /// <param name="stamNummer">
         /// Stamnummer van de groep waarin de persoon lid is
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarin de persoon lid is
         /// </param>
         /// <param name="afdelingen">
         /// Toe te kennen afdelingen.  Eventuele andere reeds toegekende functies worden verwijderd.
@@ -266,7 +269,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Er is in Kipadmin maar plaats voor 2 afdelingen/lid
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, AfdelingEnum[] afdelingen);
+        void AfdelingenUpdaten(Persoon persoon, string stamNummer, AfdelingEnum[] afdelingen);
 
         #endregion
 
@@ -373,24 +376,61 @@ namespace Chiro.Kip.ServiceContracts
         [OperationContract(IsOneWay = true)]
         void GroepUpdaten(Groep g);
 
+        /// <summary>
+        /// Sluit het gegeven groepswerkjaar af van de groep met gegeven <paramref name="stamNummer"/>.
+        /// </summary>
+        /// <remarks>
+        /// Dat komt er eigenlijk op neer dat alle actieve lidrelaties van het werkjaar worden stopgezet.
+        /// Als er nog actieve lidrelaties zijn van oudere werkjaren, dan worden die ook stopgezet.s
+        /// </remarks>
+        /// <param name="stamNummer"></param>
+        /// <param name="werkjaar">Af te sluiten werkjaar.</param>
+        [OperationContract(IsOneWay = true)]
+        void GroepsWerkjaarAfsluiten(string stamNummer, int werkjaar);
+
+        /// <summary>
+        /// Herstelt lidrelaties naar de toestand voor de gegeven <paramref name="datum"/>.
+        /// </summary>
+        /// <param name="stamNummer">Stamnummer van ploeg waarvan lidrelaties hersteld moeten worden.</param>
+        /// <param name="datum"></param>
+        [OperationContract(IsOneWay = true)]
+        void GroepsWerkjaarTerugDraaien(string stamNummer, DateTime datum);
         #endregion
 
         #region dubbelpunt
         /// <summary>
-        /// Werkt een dubbelpuntabonnement bij in Mailchimp. Spannend.
+        /// Dubbelpuntabonnement als membership naar Civi.
         /// </summary>
-        /// <param name="abonnementInfo">Alle informatie over het abonnement.</param>
+        /// <param name="adNummer">AD-nummer van de persoon die een abonnement wil.</param>
+        /// <param name="werkJaar">Werkjaar van het abonnement.</param>
+        /// <param name="type">Digitaal of op papier.</param>
         [OperationContract(IsOneWay = true)]
-        void AbonnementNaarMailchimp(AbonnementInfo abonnementInfo);
+        void AbonnementBewaren(int adNummer, int werkJaar, AbonnementTypeEnum type);
 
         /// <summary>
-        /// Verwijdert Dubbelpuntabonnement voor persoon met gegeven <paramref name="eMail"/>.
+        /// Dubbelpuntabonnement als membership naar Civi.
         /// </summary>
-        /// <param name="eMail">E-mailadres (of dummy-e-mailadres) van te verwijderen abonnement.</param>
+        /// <param name="details">Details van de persoon die een abonnement wil.</param>
+        /// <param name="werkjaar">Werkjaar van het abonnement.</param>
+        /// <param name="type">Digitaal of op papier.</param>
         [OperationContract(IsOneWay = true)]
-        void AbonnementVerwijderen(string eMail);
+        void AbonnementNieuwePersoonBewaren(PersoonDetails details, int werkjaar, AbonnementTypeEnum type);
+
+        /// <summary>
+        /// Verwijdert abonnement van persoon met gegeven <paramref name="adNummer"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van persoon die geen abonnement meer wil.</param>
+        [OperationContract(IsOneWay = true)]
+        void AbonnementStopzetten(int adNummer);
+
+        /// <summary>
+        /// Verwijdert abonnement van persoon met gegeven <paramref name="details"/>.
+        /// </summary>
+        /// <param name="details">Details van persoon die geen abonnement meer wil.</param>
+        [OperationContract(IsOneWay = true)]
+        void AbonnementStopzettenNieuwePersoon(PersoonDetails details);
         #endregion
-        
+
         #region memberships
 
         /// <summary>
@@ -411,5 +451,6 @@ namespace Chiro.Kip.ServiceContracts
         [OperationContract(IsOneWay = true)]
         void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, MembershipGedoe gedoe);
         #endregion
+
     }
 }

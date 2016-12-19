@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -45,6 +45,40 @@ namespace Chiro.CiviSync.Workers
         }
 
         /// <summary>
+        /// Haalt de persoon met gegeven <paramref name="adNummer"/> op, samen met een eventuele
+        /// actieve lidrelatie in de groep met <paramref name="civiGroepId"/>.
+        /// </summary>
+        /// <param name="adNummer"></param>
+        /// <param name="civiGroepId"></param>
+        /// <returns>De persoon met gegeven <paramref name="adNummer"/> op, samen met een eventuele
+        /// actieve lidrelatie in de groep met <paramref name="civiGroepId"/>. Als de persoon niet werd gevonden,
+        /// wordt <c>null</c> opgeleverd.</returns>
+        /// <remarks>Dit zou beter werken op contact-ID ipv op adNummer. Zie #3717.</remarks>
+        public Contact PersoonMetActiefLid(int adNummer, int? civiGroepId)
+        {
+            // Haal de persoon op met gegeven AD-nummer en zijn recentste lidrelatie in de gevraagde groep.
+            var contactRequest = new ContactRequest
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                ContactType = ContactType.Individual,
+                RelationshipGetRequest = new RelationshipRequest
+                {
+                    RelationshipTypeId = (int)RelatieType.LidVan,
+                    ContactIdAValueExpression = "$value.id",
+                    ContactIdB = civiGroepId,
+                    IsActive = true,
+                }
+            };
+
+            var result =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
+                    svc => svc.ContactGet(ApiKey, SiteKey, contactRequest));
+            result.AssertValid();
+
+            return result.Count == 0 ? null : result.Values.First();
+        }
+
+        /// <summary>
         /// Haalt de persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
         /// lidrelatie in de groep met <paramref name="civiGroepId"/>.
         /// </summary>
@@ -80,7 +114,8 @@ namespace Chiro.CiviSync.Workers
 
         /// <summary>
         /// Haalt de persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
-        /// membership van het gegeven <paramref name="type"/>.
+        /// membership van het gegeven <paramref name="type"/>, en daarvan op zijn beurt de
+        /// membershippayments.
         /// </summary>
         /// <param name="adNummer">AD-nummer van op te halen persoon</param>
         /// <param name="type">gevraagde membership type</param>
@@ -96,7 +131,8 @@ namespace Chiro.CiviSync.Workers
                 MembershipGetRequest = new MembershipRequest
                 {
                     MembershipTypeId = (int)type,
-                    ApiOptions = new ApiOptions { Sort = "start_date DESC", Limit = 1 }
+                    ApiOptions = new ApiOptions { Sort = "start_date DESC", Limit = 1 },
+                    MembershipPaymentGetRequest = new MembershipPaymentRequest()
                 }
             };
 

@@ -1,14 +1,14 @@
 GAP - Groepsadministratieprogramma
 
 Copyright (C) 2008-2014 Chirojeugd-Vlaanderen vzw
-Copyright (C) 2008-2014 Tom Haepers
+Copyright (C) 2009-2014 Tom Haepers
 Copyright (C) 2008-2014 Broes De Cat
-Copyright (C) 2008-2014 Arno Soontjens
-Copyright (C) 2008-2014 Koen Meersman
-Copyright (C) 2008-2014 Peter Bertels
-Copyright (C) 2008-2014 Mattias Keustermans
-Copyright (C) 2014 Ben Bridts
-Copyright (C) 2014 Sam Segers
+Copyright (C) 2013 Arno Soontjens
+Copyright (C) 2009-2010 Koen Meersman
+Copyright (C) 2009-2010 Peter Bertels
+Copyright (C) 2012 Mattias Keustermans
+Copyright (C) 2013-2015 Ben Bridts
+Copyright (C) 2014-2015 Sam Segers
 
 Contributions for Chirojeugd-Vlaanderen vzw by
   * Johan Vervloet
@@ -16,9 +16,32 @@ Contributions for Chirojeugd-Vlaanderen vzw by
   * Mattias Michaux
   * Tim Mallezie
 
-GAP uses Chiro.Cdf.ServiceHelper, by the GAP-developers,
-which is released under the Apache 2.0 license. See:
+GAP uses the following projects:
 
-  * https://websites.chiro.be/projects/servicehelper (login required)
-  * https://develop.chiro.be:3000/projects/servicehelper
-    (documents unavailable; download source code using git)
+Chiro.Cdf.ServiceHelper, by the GAP-developers,
+released under the Apache 2.0 license.
+http://websites.chiro.be/projects/servicehelper
+
+Chiro.CiviCrm.Wcf, by Chirojeugd-Vlaanderen vzw,
+released under the Apache 2.0 license.
+http://websites.chiro.be/projects/chiro-civicrm-wcf
+
+GAP uses the following NuGet Packages:
+
+* Nancy.Hosting.Aspnet
+* Unity
+* Nancy
+* Nancy.Bootstrappers.Unity
+* Microsoft.Web.Infrastructure
+* Moq
+* Microsoft.AspNet.WebPages
+* Microsoft.jQuery.Unobtrusive.Validation
+* Microsoft.AspNet.Mvc
+* jQuery
+* EntityFramework
+* Microsoft.AspNet.Razor
+* jQuery.Validation
+* EPPlus
+* AutoMapper
+
+Please see nuget.org for licensing information for these packages.

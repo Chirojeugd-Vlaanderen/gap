@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 
@@ -146,5 +147,25 @@ namespace Chiro.Gap.WorkerInterfaces
         /// foefelen in de unit tests.
         /// </remarks>
         DateTime Vandaag();
-    }
+
+        /// <summary>
+        /// Bepaalt de status van het gegeven <paramref name="groepsWerkJaar"/>.
+        /// </summary>
+        /// <param name="groepsWerkJaar"></param>
+        /// <returns>De status van het gegeven <paramref name="groepsWerkJaar"/>.</returns>
+        WerkJaarStatus StatusBepalen(GroepsWerkJaar groepsWerkJaar);
+
+        /// <summary>
+        /// Verwijdert een groepswerkjaar in zijn geheel.
+        /// </summary>
+        /// <param name="groepsWerkJaar">Te verwijderen groepswerkjaar</param>
+        /// <param name="ledenRepo"></param>
+        /// <param name="gwjRepo"></param>
+        /// <param name="ajRepo"></param>
+        /// <remarks>
+        /// Dit werkt enkel als er geen liden zijn waarvan de probeerperiode voorbij is.
+        /// De repositories heb ik nodig om de leden te kunnen verwijderen.
+        /// </remarks>
+        void Verwijderen(GroepsWerkJaar groepsWerkJaar, IRepository<Lid> ledenRepo, IRepository<GroepsWerkJaar> gwjRepo, IRepository<AfdelingsJaar> ajRepo);
+	}
 }

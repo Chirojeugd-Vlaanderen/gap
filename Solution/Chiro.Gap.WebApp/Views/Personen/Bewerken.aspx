@@ -8,7 +8,7 @@
 /*
  * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * Cleanup en refactoring met module pattern: Copyright 2015 Sam Segers
  * 
@@ -159,11 +159,11 @@
                        <input id="voorkeursadresID" value="<%=pa.PersoonsAdresID %>" hidden readonly/>
                     </td>
                     <td id="adres">
-                        <%= Html.Encode(String.Format("{0} {1} {2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus))%>,
-                         <%if (!pa.IsBelgisch) { %>
-                            <%= Html.Encode(String.Format("{0} {3} {1}, {4} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode, pa.LandNaam)) %>
+                        <%= Html.Encode(String.Format("{0} {1}{2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus.IsEmpty()? "" : " bus " + pa.Bus))%>,
+                         <%if (!pa.IsBelgisch) { // \note Duplicate code met Uitstappen/Bekijken.aspx%>
+                            <%= Html.Encode(String.Format("{0} {1}, {2} ({3}) ", pa.PostCode, pa.WoonPlaatsNaam, pa.LandNaam, pa.AdresType)) %>
                         <% } else { %> 
-                            <%= Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode)) %>
+                            <%= Html.Encode(String.Format("{0} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType)) %>
                         <% }%>
                         <% if (Model.PersoonLidGebruikersInfo.PersoonDetail.VoorkeursAdresID == pa.PersoonsAdresID)
                            { %>
@@ -419,7 +419,7 @@
                <b>Nee</b>
             </td>
             <td>
-                <a id="bewerkVerzekering" style="cursor: pointer">[Verzeker]</a>
+                <%=Html.ActionLink("[Verzeker]", "LoonVerliesVerzekeren", new { Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID, groepID = Model.GroepID }) %>
             <% if (Model.GroepsNiveau.HasFlag(Niveau.KaderGroep))
                { %>
               (dit is gratis voor kaderleden)

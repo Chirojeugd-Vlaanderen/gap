@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2014,2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2014,2015,2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -564,7 +564,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => false))
                 .ForMember(
                     dst => dst.AfdelingsJaarIDs,
-                    opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.Select(e => e.ID)) : new List<int> { ((Kind)src).AfdelingsJaar.ID }))
+					opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.Select(e => e.ID).ToList()) : new List<int> { ((Kind)src).AfdelingsJaar.ID }))
                 .ForMember(
                     dst => dst.LeidingMaken,
                     opt => opt.MapFrom(src => src is Leiding))
@@ -605,7 +605,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                   .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
                   .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
                   .ForMember(dst => dst.InSync, opt => opt.MapFrom(src => src.AdNummer.HasValue))
-                  .ForMember(dst => dst.LaatsteMembership, opt => opt.Ignore())
                   .ForMember(dst => dst.BerichtGebruiker, opt => opt.Ignore())
                   .ForMember(dst => dst.BerichtPersoon, opt => opt.Ignore())
                   .ForMember(dst => dst.SeNaam, opt => opt.Ignore())
@@ -853,7 +852,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 return null;
             }
             Debug.Assert(a is BuitenLandsAdres);
-            return ((BuitenLandsAdres)a).PostNummer;
+
+            // Geen postnummers in buitenlandse adressen (#1816).
+            return null;
         }
         #endregion
 

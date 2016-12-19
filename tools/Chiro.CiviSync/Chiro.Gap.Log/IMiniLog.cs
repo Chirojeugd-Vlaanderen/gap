@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,8 @@ namespace Chiro.Gap.Log
         /// <param name="stamNummer">Een stamnummer, indien van toepassing</param>
         /// <param name="adNummer">Een AD-nummer, indien van toepassing</param>
         /// <param name="persoonId">Een PersoonID, indien van toepassing</param>
-	    void Loggen(Niveau niveau, string boodschap, string stamNummer, int? adNummer, int? persoonId);
+        /// <returns>0 als het loggen lukte, anders het foutnummer van de SqlException</returns>
+	    int Loggen(Niveau niveau, string boodschap, string stamNummer, int? adNummer, int? persoonId);
 	}
 
     public enum Niveau

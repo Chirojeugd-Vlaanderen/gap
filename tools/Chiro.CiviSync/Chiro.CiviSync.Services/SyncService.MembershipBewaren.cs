@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
         /// <param name="gedoe">Membershipdetails</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void MembershipBewaren(int adNummer, int werkJaar, MembershipGedoe gedoe)
+        public void MembershipBewaren(int adNummer, int werkJaar, MembershipGedoe gedoe)
         {
             int? civiGroepId = _contactWorker.ContactIdGet(gedoe.StamNummer);
             if (civiGroepId == null)
@@ -52,7 +52,7 @@ namespace Chiro.CiviSync.Services
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren membership - als dusdanig terug naar GAP.", adNummer),
                     null, adNummer, null);
 
-                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 
@@ -81,7 +81,7 @@ namespace Chiro.CiviSync.Services
 
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "Membership (aansluiting) {5} {3} {4}: AD {0} werkjaar {2} - memID {1}",
+                    "Nieuw membership (aansluiting) {5} {3} {4}: AD {0} werkjaar {2} - memID {1}",
                     adNummer, result.Id, werkJaar, contact.FirstName, contact.LastName,
                     gedoe.MetLoonVerlies ? "met loonverlies" : String.Empty),
                 null, adNummer, contact.GapId);

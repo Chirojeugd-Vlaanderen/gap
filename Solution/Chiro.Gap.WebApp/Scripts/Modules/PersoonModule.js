@@ -21,52 +21,68 @@
  */
 
 var PersoonModule = function () {
-    // Verbergt of toont lidinfo alnaargelang welk lidtype geselecteerd is.
-    var toonVerbergLidInfo = function(selectedValue) {
-        if (selectedValue === "Geen") {
-            // niet inschrijven
-            $('#rij_afdeling').hide();
-            $('#rij_chiroleeftijd').hide();
-        } else if (selectedValue === "Kind") {
-            $('#rij_afdeling').show();
-            $('#rij_chiroleeftijd').show();
-            $('#AfdelingsJaarIDs').find('option[value="0"]').remove();
-        } else if (selectedValue === "Leiding") {
-            $('#rij_afdeling').show();
-            $('#rij_chiroleeftijd').show();
-            if (!$('#AfdelingsJaarIDs').find('option[value="0"]').length) {
-                // als de optie 'geen afdeling' nog niet bestaat, voegen we ze toe
+	// Verbergt of toont lidinfo alnaargelang welk lidtype geselecteerd is.
+	var toonVerbergLidInfo = function(selectedValue) {
+		if (selectedValue === "Geen") {
+			// niet inschrijven
+			$('#rij_afdeling').hide();
+			$('#rij_chiroleeftijd').hide();
+		} else if (selectedValue === "Kind") {
+			$('#rij_afdeling').show();
+			$('#rij_chiroleeftijd').show();
+			$('#AfdelingsJaarIDs').find('option[value="0"]').remove();
+		} else if (selectedValue === "Leiding") {
+			$('#rij_afdeling').show();
+			$('#rij_chiroleeftijd').show();
+			if (!$('#AfdelingsJaarIDs').find('option[value="0"]').length) {
+				// als de optie 'geen afdeling' nog niet bestaat, voegen we ze toe
 
-                $('#AfdelingsJaarIDs').append('<option value="0">geen</option>');
-            }
-            $('#AfdelingsJaarIDs').find('option[value="0"]').attr('selected', true);
-        }
-    }
-    return {
-        InitVoorNieuw: function() {
-            // Activeer adres-autocomplete
-            AdresModule.Init();
+				$('#AfdelingsJaarIDs').append('<option value="0">geen</option>');
+			}
+			$('#AfdelingsJaarIDs').find('option[value="0"]').attr('selected', true);
+		}
+	}
+	return {
+		InitVoorNieuw: function() {
+			// Activeer adres-autocomplete
+			AdresModule.Init();
 
-            // initieel zijn de rijen voor afdeling en Chiroleeftijd nog onzichtbaar
-            $('#rij_afdeling').hide();
-            $('#rij_chiroleeftijd').hide();
+			// initieel zijn de rijen voor afdeling en Chiroleeftijd nog onzichtbaar
+			$('#rij_afdeling').hide();
+			$('#rij_chiroleeftijd').hide();
 
-            $('#NieuwePersoon_GeboorteDatum').datepicker({
-                showAnim: "slide",
-                changeYear: true,
-                changeMonth: true,
-                maxDate: "-0y",
-                defaultDate: "-6y", // ik doe maar iets
-                yearRange: "-80:+0"
-            });
-            $.datepicker.setDefaults($.datepicker.regional['be']);
-            preventSubmitOnEnter();
-            // changeListener: Persoon inschrijven of niet?
-            toonVerbergLidInfo($(":radio[name='InschrijvenAls'][checked='checked']").val());      
-            $('#chiroGegevens :radio').change(function () {
-                toonVerbergLidInfo($(this).val());
-            });
+			$('#NieuwePersoon_GeboorteDatum').datepicker({
+				showAnim: "slide",
+				changeYear: true,
+				changeMonth: true,
+				maxDate: "-0y",
+				defaultDate: "-6y", // ik doe maar iets
+				yearRange: "-80:+0"
+			});
+			$.datepicker.setDefaults($.datepicker.regional['be']);
+			preventSubmitOnEnter();
+			// changeListener: Persoon inschrijven of niet?
+			toonVerbergLidInfo($(":radio[name='InschrijvenAls'][checked='checked']").val());      
+			$('#chiroGegevens :radio').change(function () {
+				toonVerbergLidInfo($(this).val());
+			});
 
-        }
-    }
+		},
+		nieuweCommunicatieVorm : function() {
+			var typeId = jQuery("#communicatietype").val();
+			var type = jQuery("#communicatietype :selected");
+			var rowCount = $('.communicatievormcount').length;
+			jQuery(document.getElementById("CommunicatieVormenKnoppen"))
+				.before(
+					"<tr><td></td><td class='communicatievormcount'>" +
+					type.text() + ":<br/>" +
+					'<input id="CommunicatieInfos_' + rowCount + '__Nummer" class="CommunicatieTypeEnum_' + typeId + '" type="text" value="" placeholder="'+type.data('placeholder')+'" name="CommunicatieInfos[' + rowCount + '].Nummer"><br/>' +
+					'<input id="CommunicatieInfos_' + rowCount + '__IsGezinsGebonden" type="checkbox" value="true" name="CommunicatieInfos[' + rowCount + '].IsGezinsGebonden">' +
+					'<label for="CommunicatieInfos_'+rowCount+'__IsGezinsGebonden">Voor heel het gezin</label><br/>' + 
+					'<input id="CommunicatieInfos_'+rowCount+'__Voorkeur" type="hidden" value="false" name="CommunicatieInfos['+rowCount+'].Voorkeur">' + 
+					'<input id="CommunicatieInfos_'+rowCount+'__CommunicatieTypeID" type="hidden" value="'+typeId+'" name="CommunicatieInfos['+rowCount+'].CommunicatieTypeID">' +
+					"</td></tr>"
+			);
+		}
+	}
 }();

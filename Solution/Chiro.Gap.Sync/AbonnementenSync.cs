@@ -1,7 +1,7 @@
 /*
- * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,30 +35,37 @@ namespace Chiro.Gap.Sync
         {
         }
 
-        public void AbonnementBewaren(Abonnement teSyncenAbonnement)
+        public void Bewaren(Abonnement teSyncenAbonnement)
         {
-            var info = Mapper.Map<Abonnement, AbonnementInfo>(teSyncenAbonnement);
-            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementNaarMailchimp(info));
+            var type = (AbonnementTypeEnum)(int)teSyncenAbonnement.Type;
+            if (teSyncenAbonnement.GelieerdePersoon.Persoon.AdNummer.HasValue)
+            {
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc =>
+                        svc.AbonnementBewaren(teSyncenAbonnement.GelieerdePersoon.Persoon.AdNummer.Value, teSyncenAbonnement.GroepsWerkJaar.WerkJaar, type));
+            }
+            else
+            {
+                var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(teSyncenAbonnement.GelieerdePersoon);
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc => svc.AbonnementNieuwePersoonBewaren(details, teSyncenAbonnement.GroepsWerkJaar.WerkJaar, type));
+            }            
         }
 
         public void AlleAbonnementenVerwijderen(GelieerdePersoon gelieerdePersoon)
         {
-            var info = Mapper.Map<GelieerdePersoon, AbonnementInfo>(gelieerdePersoon);
-            info.AbonnementType = 0;
-            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementVerwijderen(info.MailChimpAdres));
-        }
-
-        public void AlleAbonnementenVerwijderen(string eMail)
-        {
-            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementVerwijderen(eMail));
-        }
-
-        public string DummyEmailAdresMaken(Persoon persoon)
-        {
-            // Ik geef toe dat dit hacky is. Maar het was een makkelijke manier om de
-            // functionaliteit 'dummy e-mailadres' te delen tussen GAP en KipSync.
-            var temp = new AbonnementInfo {GapPersoonId = persoon.ID};
-            return temp.MailChimpAdres;
+            if (gelieerdePersoon.Persoon.AdNummer.HasValue)
+            {
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc =>
+                        svc.AbonnementStopzetten(gelieerdePersoon.Persoon.AdNummer.Value));
+            }
+            else
+            {
+                var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon);
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc => svc.AbonnementStopzettenNieuwePersoon(details));
+            }
         }
     }
 }

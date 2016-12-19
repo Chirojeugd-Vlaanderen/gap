@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -178,7 +178,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View("Stap2AfdelingsJarenVerdelen", model);
             }
 
-            VeelGebruikt.JaarOvergangReset(groepID);
+            VeelGebruikt.AllesResetten(groepID);
 
             if (!model.LedenMeteenInschrijven)
             {
@@ -299,6 +299,36 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Titel = "Afdeling bewerken";
                 return View("Afdeling", model);
             }
+        }
+
+        /// <summary>
+        /// Jaarovergang terugdraaien.
+        /// </summary>
+        /// <returns>Een relevante view.</returns>
+        public ActionResult TerugDraaien(int groepID)
+        {
+            var model = new MasterViewModel();
+            model.Titel = "Jaarovergang ongedaan maken";
+            BaseModelInit(model, groepID);
+            return View(model);
+        }
+
+        /// <summary>
+        /// Draait jaarovergang terug.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="groepID"></param>
+        /// <returns></returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult TerugDraaien(MasterViewModel model, int groepID)
+        {
+            BaseModelInit(model, groepID);
+
+            ServiceHelper.CallService<IGroepenService>(
+                svc => svc.JaarOvergangTerugDraaien(VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID));
+            // Clear cache voor groep.
+            VeelGebruikt.AllesResetten(groepID);
+            return RedirectToAction("Index", "Leden", new { groepID });
         }
     }
 }

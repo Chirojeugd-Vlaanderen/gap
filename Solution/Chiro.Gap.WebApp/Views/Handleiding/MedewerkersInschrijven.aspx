@@ -3,11 +3,11 @@
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="title" runat="server">
-<%
+    <%
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,35 +21,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-%>
+    %>
     Handleiding: Uitstappen/bivak
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
-    <h2>
-        Medewerk(st)ers inschrijven voor je uitstap/bivak</h2>
+<asp:Content ID="Content2" contentplaceholderid="HelpContent" runat="server">
+    <h2>Medewerk(st)ers inschrijven voor je uitstap/bivak</h2>
     <p>
         Eerst moet je zorgen dat je uitstap
        &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Uitstap", new { helpBestand = "Trefwoorden" }, new { title = "Wat wordt hier beschouwd als een uitstap?" } ) %>
         of bivak
        &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivak", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een bivak?" } ) %>
         geregistreerd is. Lees eventueel eerst
-        <%=Html.ActionLink("hoe je dat doet", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%>.</p>
+        <%=Html.ActionLink("hoe je dat doet", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%>.
+    </p>
     <p>
         Medewerkers zijn mensen die niet als lid of als leiding meegaan. Zij nemen dus niet
         deel aan het groepsleven, maar voeren andere taken uit die noodzakelijk zijn voor
-        het verloop van je kamp. De kookploeg is daar het duidelijkste voorbeeld van.</p>
+        het verloop van je kamp. De kookploeg is daar het duidelijkste voorbeeld van.
+    </p>
     <p>
-        <b>Opgelet</b>: logistiek medewerkers op bivak zijn typisch mensen die niet aangesloten
-        zijn bij je groep. <b>Zij zijn dus nog niet verzekerd!</b> Voor hen kun je wel een
-        verzekering voor een beperkte periode afsluiten. Kijk voor alle info daarover op
-        <a href="http://www.chiro.be/bivak">www.chiro.be/bivak</a> of <a href="http://www.chiro.be/verzekeringen">
-            www.chiro.be/verzekeringen</a>.</p>
+        Vroeger moest je logistiek medewerkers dikwijls nog apart verzekeren, voor een beperkte
+        periode. Dat is niet meer nodig. Ook al zijn ze niet aangesloten bij je groep, die
+        mensen vallen automatisch mee onder de Chiroverzekering. Meer info daarover vind
+        je <a href="https://chiro.be/administratie/verzekeringen/extra-verzekering/beperkte-periode">
+            op de Chirosite</a>.
+    </p>
     <p>
-        De kookploeg op een afdelingsweekend bestaat geregeld uit leiding van andere afdelingen.
-        Je kunt hen dan wel inschrijven als logistiek medewerk(st)ers, maar voor hen is
-        de verzekering uiteraard wél al in orde.</p>
-    <p>
-        Stappen in het proces:</p>
+        Stappen in het proces:
+    </p>
     <ul>
         <li>Ga naar het tabblad 'Iedereen'.</li>
         <li>Vink aan wie je wilt inschrijven, en kies in het selectielijstje onder 'Acties'
@@ -58,7 +57,8 @@
     <img src="<%=ResolveUrl("~/Content/Screenshots/Deelnemers_inschrijven.png") %>" alt="Deelnemers selecteren en inschrijven" />
     <ul>
         <li>Je krijgt nu een nieuwe pagina te zien. Daarop staan al de mensen die je aanvinkte,
-            en een selectielijstje met je uitstappen en bivakken.</li></ul>
+            en een selectielijstje met je uitstappen en bivakken.</li>
+    </ul>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Inschrijving_uitstap_bevestigen.png") %>"
         alt="De inschrijving bevestigen" />
     <ul>

@@ -1,7 +1,7 @@
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,6 +58,8 @@ namespace Chiro.Gap.Sync
 
             if (uitstap.Plaats != null && uitstap.Plaats.Adres != null)
             {
+                // Als we het syncen van het adres ooit lostrekken van het syncen van het bivak (#1057), moeten we
+                // eraan denken dat de naam van het bivak in Civi moet veranderen als het bivakadres verandert (#5030).
                 ServiceHelper.CallService<ISyncPersoonService>(
                     svc =>
                     svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam,

@@ -6,7 +6,7 @@
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,27 +33,18 @@
 			[<%=Html.ActionLink("Bewerken", "Bewerken", new { id = Model.Uitstap.ID })%> - <%=Html.ActionLink("Verwijderen", "Verwijderen", new { uitstapID = Model.Uitstap.ID })%>]
 		</p>
 		<p>
-			<%
-				if (string.IsNullOrEmpty(Model.Uitstap.PlaatsNaam))
-				{
-			%>
-			[<%=Html.ActionLink("Bivakplaats ingeven", "PlaatsBewerken", new {id = Model.Uitstap.ID})%>]
-			<%
-				}
-				else
-				{
-			%>
-			<%=Model.Uitstap.PlaatsNaam%>,
-			<%=Model.Uitstap.Adres.StraatNaamNaam%>
-			<%=Model.Uitstap.Adres.HuisNr%>
-			<%=Model.Uitstap.Adres.Bus%>,
-			<%=Model.Uitstap.Adres.PostNr%>
-			<%=Model.Uitstap.Adres.PostCode%>
-			<%=Model.Uitstap.Adres.WoonPlaatsNaam%>
-			(<%=Model.Uitstap.Adres.LandNaam%>) [<%=Html.ActionLink("Bivakplaats wijzigen", "PlaatsBewerken", new {id = Model.Uitstap.ID})%>]
-			<%
-				}
-			%>
+			<% if (string.IsNullOrEmpty(Model.Uitstap.PlaatsNaam)) { %>
+			    [<%=Html.ActionLink("Bivakplaats ingeven", "PlaatsBewerken", new {id = Model.Uitstap.ID})%>]
+			<% } else {%>
+                <% var pa = Model.Uitstap.Adres; %>
+                <%= Html.Encode(String.Format("{0} {1}{2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus.IsEmpty()? "" : " bus " + pa.Bus))%>,
+                <%if (!pa.IsBelgisch) { // \note Duplicate code met Personen/Bewerken.aspx%>
+                    <%= Html.Encode(String.Format("{0} {1} ({2})", pa.PostCode, pa.WoonPlaatsNaam, pa.LandNaam)) %>
+                <% } else { %> 
+                    <%= Html.Encode(String.Format("{0} {1}", pa.PostNr, pa.WoonPlaatsNaam)) %>
+                <% }%>
+			    [<%=Html.ActionLink("Bivakplaats wijzigen", "PlaatsBewerken", new {id = Model.Uitstap.ID})%>]
+			<%}%>
 		</p>
 	</div>
 	<p>
@@ -62,9 +53,8 @@
 		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
 		doorgestuurd. De deelnemerslijst is alleen voor je groep toegankelijk.</p>
     <p>
-        <strong>LET OP!</strong> Vergeet je kookploeg niet te verzekeren. Dat kan nog niet via het GAP; vul het 
-        <a href='https://chiro.be/formulier/administratie/verzekeringen/extra-verzekering/beperkte-periode/formulier'>formulier
-            'verzekering beperkte periode'</a> in op de Chirosite.
+        <strong>TER INFO!</strong> Je kookploeg moet je niet meer apart verzekeren. Die mensen vallen automatisch onder de algemene Chiroverzekering. Meer info daarover vind je 
+        <a href='https://chiro.be/administratie/verzekeringen/extra-verzekering/beperkte-periode'>op de Chirosite</a>.
     </p>
 	<%
 		if (Model.Deelnemers == null || Model.Deelnemers.FirstOrDefault() == null)

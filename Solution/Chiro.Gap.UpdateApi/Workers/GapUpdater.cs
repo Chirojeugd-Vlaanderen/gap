@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2014-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2014-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,6 +125,34 @@ namespace Chiro.Gap.UpdateApi.Workers
             AdNummerToekennen(persoon, adNummer); // PERSISTEERT
 
             Console.WriteLine("Ad-nummer {0} toegekend aan {1}. (ID {2})", adNummer, persoon.VolledigeNaam, persoon.ID);
+        }
+
+        /// <summary>
+        /// Levert een string op met daarin alle ad-nummers die in het gegeven
+        /// <paramref name="werkjaar"/> een Dubbelpuntabonnement hebben, en het
+        /// soort abonnement (digitaal, papier, digitaal & papier)
+        /// </summary>
+        /// <param name="werkjaar"></param>
+        /// <returns>String met per lijn een AD-nummer, een kommapunt en een abonnementstype</returns>
+        /// <remarks>
+        /// Deze functie hoort niet thuis in iets dat GapUpdater heet. Dit is eerder een
+        /// hack om makkelijk de DP-abonnementen uit GAP en Civi te kunnen vergelijken.
+        /// </remarks>
+        public string AlleDpRaw(int werkjaar)
+        {
+            var alles =
+                _abonnementenRepo.Select()
+                    .Where(ab => ab.GroepsWerkJaar.WerkJaar == werkjaar)
+                    .OrderBy(ab => ab.GelieerdePersoon.Persoon.AdNummer)
+                    .Select(ab => new {ab.GelieerdePersoon.Persoon.AdNummer, ab.TypeInt});
+            var builder = new StringBuilder();
+
+            foreach (var l in alles)
+            {
+                builder.AppendLine(String.Format("{0};{1}", l.AdNummer, l.TypeInt));
+            }
+
+            return builder.ToString();
         }
 
         /// <summary>
@@ -308,8 +336,7 @@ namespace Chiro.Gap.UpdateApi.Workers
 
                 foreach (var dubbelAbonnement in dubbeleGp.Abonnement.ToList())
                 {
-                    // Dubbelpuntabonnementen lopen niet meer via het GAP. Maar omdat die er nog inzitten van
-                    // vroeger, moeten we ze wel verleggen.
+                    // Dubbelpuntabonnementen gaan sinds CiviCRM opnieuw via het GAP.
 
                     var origineelAbonnement = (from d in origineleGp.Abonnement
                                                where Equals(d.Publicatie, dubbelAbonnement.Publicatie)
@@ -317,7 +344,7 @@ namespace Chiro.Gap.UpdateApi.Workers
 
                     if (origineelAbonnement != null)
                     {
-                        _abonnementenRepo.Delete(origineelAbonnement);
+                        _abonnementenRepo.Delete(dubbelAbonnement);
                     }
                     else
                     {
@@ -532,20 +559,39 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// <param name="model">Gegevens over bij te werken werkjaar.</param>
         public void Bijwerken(AansluitingModel model)
         {
-            var persoon = _personenRepo.Select().FirstOrDefault(p => p.AdNummer == model.AdNummer);
+            var lid = (from l in _ledenRepo.Select()
+                       where l.GelieerdePersoon.Persoon.AdNummer == model.AdNummer &&
+                       l.GroepsWerkJaar.Groep.Code == model.StamNummer &&
+                       l.GroepsWerkJaar.WerkJaar == model.RecentsteWerkJaar
+                       select l).FirstOrDefault();
 
-            if (persoon == null)
+            if (lid == null)
             {
-                throw new FoutNummerException(
-                    FoutNummer.PersoonNietGevonden,
-                    string.Format("Onbekend persoon (AD {0}) genegeerd.", model.AdNummer));
+                Console.WriteLine(
+                    "Lid niet gevonden. {1} AD{0} {2}. Aansluiting genegeerd. Zie #4526", 
+                    model.AdNummer, 
+                    model.StamNummer, 
+                    model.RecentsteWerkJaar);
+                return;
             }
 
-            if (persoon.LaatsteMembership == model.RecentsteWerkJaar) return;
+            if (lid.IsAangesloten)
+            {
+                Console.WriteLine(
+                    "{1} (ID {2}) was al aangesloten bij {3} in {0}. ", 
+                    model.RecentsteWerkJaar, 
+                    lid.GelieerdePersoon.Persoon.VolledigeNaam, 
+                    lid.GelieerdePersoon.Persoon.ID,
+                    model.StamNummer);
+            }
 
-            persoon.LaatsteMembership = model.RecentsteWerkJaar;
-            _personenRepo.SaveChanges();
-            Console.WriteLine("LaatsteMembership {0} toegekend aan {1}. (ID {2})", model.RecentsteWerkJaar, persoon.VolledigeNaam, persoon.ID);
+            lid.IsAangesloten = true;
+            _ledenRepo.SaveChanges();
+            Console.WriteLine("Aansluiting in {0} geregistreerd voor {1} (ID {2}) bij {3}.", 
+                model.RecentsteWerkJaar, 
+                lid.GelieerdePersoon.Persoon.VolledigeNaam, 
+                lid.GelieerdePersoon.Persoon.ID,
+                model.StamNummer);
         }
 
         /// <summary>

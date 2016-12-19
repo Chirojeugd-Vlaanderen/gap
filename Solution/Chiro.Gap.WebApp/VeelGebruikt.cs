@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,13 +112,13 @@ namespace Chiro.Gap.WebApp
 
         #endregion
 
-        #region Problemen
+        #region Problemen en cache
 
         /// <summary>
-        /// Reset alle problemen omdat de jaarovergang wordt uitgevoerd
+        /// Reset alle gecachete informatie van de groep met gegeven <paramref name="groepID"/>.
         /// </summary>
-        /// <param name="groepID">ID van groep met te verwijderen problemen</param>
-        public void JaarOvergangReset(int groepID)
+        /// <param name="groepID">ID van groep</param>
+        public void AllesResetten(int groepID)
         {
             FunctieProblemenResetten(groepID);
             BivakStatusResetten(groepID);

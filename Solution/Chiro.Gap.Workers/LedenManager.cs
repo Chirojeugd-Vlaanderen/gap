@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
- * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * Copyright 2008-2013, 2015, 2016 the GAP developers. 
+ * See the NOTICE file at the top-level directory of this distribution, 
+ * and at https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -861,6 +861,46 @@ namespace Chiro.Gap.Workers
                                                  a => (geslacht & a.Geslacht)).ToArray();
 
             return mogelijkeAfdelingsJaren.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als er in de Civi een betalende aansluiting bestaat voor het gegeven lid
+        /// <paramref name="l"/> (eventueel via dezelfde persoon in een andere groep).
+        /// </summary>
+        /// <param name="l">Een lid</param>
+        /// <returns><c>true</c> als er in de Civi een betalende aansluiting bestaat voor het gegeven lid
+        /// <paramref name="l"/> (eventueel via dezelfde persoon in een andere groep).</returns>
+        /// <remarks>Dit wordt bepaald o.m. op basis van het IsAangesloten-veld van de leden.</remarks>
+        public bool IsBetalendAangesloten(Lid l)
+        {
+            //where l.GelieerdePersoon.Persoon.GelieerdePersoon
+            //.Where(gp => gp.Lid.Any(l2 => l2.GroepsWerkJaar.WerkJaar == huidigWerkJaar && l2.IsAangesloten)).FirstOrDefault() == null
+
+            var betalendAangeslotenGelieerdePersonen = (from gp in l.GelieerdePersoon.Persoon.GelieerdePersoon
+                                                        where gp.Lid.Any(l2 => l2.GroepsWerkJaar.WerkJaar == l.GroepsWerkJaar.WerkJaar && l2.IsAangesloten && !GratisAansluiting(l2))
+                                                        select gp);
+
+            return betalendAangeslotenGelieerdePersonen.FirstOrDefault() != null;
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als er in de Civi al een aansluiting bestaat voor het gegeven <paramref name="lid"/>
+        /// (typisch via dezelfde persoon in een andere groep).
+        /// </summary>
+        /// <param name="lid">Een lid</param>
+        /// <returns>
+        /// <c>true</c> als er in de Civi al een aansluiting bestaat voor het gegeven <paramref name="lid"/>.
+        /// </returns>
+        /// <remarks>We gaan hiervoor niet in Civi kijken, maar wel naar het IsAangesloten-veld van de leden.</remarks>
+        public bool IsAangesloten(Lid lid)
+        {
+            // TODO: Dit lijkt te hard op de functie hierboven.
+
+            var aangeslotenGelieerdePersonen = (from gp in lid.GelieerdePersoon.Persoon.GelieerdePersoon
+                where gp.Lid.Any(l2 => l2.GroepsWerkJaar.WerkJaar == lid.GroepsWerkJaar.WerkJaar && l2.IsAangesloten)
+                select gp);
+
+            return aangeslotenGelieerdePersonen.FirstOrDefault() != null;
         }
     }
 }

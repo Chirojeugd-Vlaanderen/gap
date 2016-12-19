@@ -1,7 +1,7 @@
 ﻿/*
  * Copyright 2014-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,19 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// is dit eerder een GapWorker. Of misschien moet deze klasse opgesplitst worden.
         /// </remarks>
         string AlleLedenRaw(int werkjaar);
+
+        /// <summary>
+        /// Levert een string op met daarin alle ad-nummers die in het gegeven
+        /// <paramref name="werkjaar"/> een Dubbelpuntabonnement hebben, en het
+        /// soort abonnement (digitaal, papier, digitaal & papier)
+        /// </summary>
+        /// <param name="werkjaar"></param>
+        /// <returns>String met per lijn een AD-nummer, een kommapunt en een abonnementstype</returns>
+        /// <remarks>
+        /// Deze functie hoort niet thuis in iets dat GapUpdater heet. Dit is eerder een
+        /// hack om makkelijk de DP-abonnementen uit GAP en Civi te kunnen vergelijken.
+        /// </remarks>
+        string AlleDpRaw(int werkjaar);
 
         /// <summary>
         /// Vervangt het AD-nummer van de persoon met AD-nummer <paramref name="oudAd"/>

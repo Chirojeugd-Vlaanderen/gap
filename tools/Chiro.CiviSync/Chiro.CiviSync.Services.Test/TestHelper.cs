@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ using Chiro.CiviSync.Logic;
 using Chiro.CiviSync.Workers;
 using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
-using Chiro.Mailchimp.Sync;
 using Moq;
 
 namespace Chiro.CiviSync.Services.Test
@@ -94,7 +93,9 @@ namespace Chiro.CiviSync.Services.Test
             Mapper.CreateMap<LocBlockRequest, LocBlock>()
                 .ForMember(dst => dst.AddressResult, opt => opt.Ignore())
                 .ForMember(dst => dst.EventResult, opt => opt.Ignore());
-            Mapper.CreateMap<MembershipRequest, Membership>();
+            Mapper.CreateMap<MembershipRequest, Membership>()
+                .ForMember(dst => dst.MembershipPaymentResult, opt => opt.Ignore())
+                .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
 
             // Onderstaande mapping wordt in de tests gebruikt om een resultaat op
             // te leveren als er een event gecreerd wordt. We gaan er dan van uit dat
@@ -191,10 +192,6 @@ namespace Chiro.CiviSync.Services.Test
             // Voor UpdateApi ook.
             updateHelperMock = new Mock<IGapUpdateClient>();
             container.InstantieRegistreren(updateHelperMock.Object);
-
-            // Don't bother about mailchimp.
-            var mailchimpMock = new Mock<IChimpSyncHelper>();
-            container.InstantieRegistreren(mailchimpMock.Object);
 
             // Doe alsof het vandaag de zogezegde datum is.
             var datumProviderMock = new Mock<IDatumProvider>();

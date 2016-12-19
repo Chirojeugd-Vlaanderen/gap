@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2014 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2014, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Dummies;
@@ -27,11 +26,12 @@ using Chiro.Gap.UpdateApi.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.UpdateApi.Models;
 
 namespace Chiro.Gap.UpdateSvc.Test
 {
-    
-    
+
+
     /// <summary>
     ///This is a test class for UpdateServiceTest and is intended
     ///to contain all UpdateServiceTest Unit Tests
@@ -81,7 +81,7 @@ namespace Chiro.Gap.UpdateSvc.Test
         {
             Factory.ContainerInit();
         }
-        
+
         //Use TestCleanup to run code after each test has run
         //[TestCleanup()]
         //public void MyTestCleanup()
@@ -90,6 +90,46 @@ namespace Chiro.Gap.UpdateSvc.Test
         //
         #endregion
 
+        /// <summary>
+        /// AansluitingBijwerken mag niet crashen als het lid niet wordt gevonden. #4526.
+        /// </summary>
+        [TestMethod()]
+        public void AansluitingBijwerkenOnbekendLid()
+        {
+            // In principe kun je discussiëren over het geval dat de groep en de persoon wel
+            // bestaan, maar het lid van het membership niet. Maar deze situatie doet zich
+            // normaal gezien niet voor.
+            //
+            // De aansluitingsinformatie is voor het GAP enkel relevant om te weten of het
+            // een membership moet aanmaken voor een lid. Voor onbestaande leden is het dus
+            // niet erg dat die informatie verloren gaat. Te meer omdat CiviSync vermijdt dat
+            // iemand dubbel aangesloten wordt, als het toch ergens mis gaat.
+
+            // ARRANGE
+
+            var model = new AansluitingModel
+            {
+                AdNummer = 1,
+                StamNummer = "BLA/0000",
+                RecentsteWerkJaar = 2015
+            };
+
+            // Dummy ledenrepository maken, die zeker geen leden vindt.
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid>()));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GapUpdater>();
+            target.Bijwerken(model);
+
+            // ASSERT
+
+            // We zijn blij dat we hier raken zonder exceptions.
+            Assert.IsTrue(true);
+        }
 
         /// <summary>
         ///A test for GroepDesactiveren

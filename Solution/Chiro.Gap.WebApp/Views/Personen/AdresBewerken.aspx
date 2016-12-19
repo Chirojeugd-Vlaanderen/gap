@@ -4,9 +4,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,9 +65,8 @@
 						hoe we daar een mouw aan kunnen passen.
 				</p>
 				<p id="uitlegBuitenland" hidden>
-					Voor een buitenlands adres kun je behalve een postnummer ook een postcode invullen:
-					dat is bijvoorbeeld de lettercode die in Nederlandse adressen na het postnummer
-					komt (bv. 1216 RA Hilversum).
+					Een buitenlands adres heeft een postcode, die niet enkel uit cijfers moet bestaan: 
+                    1216 RA is bijvoorbeeld een postcode van het Nederlandse Hilversum.
 				</p>
 				<table id="adrestabel">
 				<%

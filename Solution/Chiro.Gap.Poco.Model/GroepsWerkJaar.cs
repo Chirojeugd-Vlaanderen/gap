@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+using System;
 using System.Collections.Generic;
 using Chiro.Cdf.Poco;
 
@@ -31,6 +33,7 @@ namespace Chiro.Gap.Poco.Model
         }
     
         public int WerkJaar { get; set; }
+        public DateTime? Datum { get; set; }
         public override int ID { get; set; }
         public override byte[] Versie { get; set; }
     

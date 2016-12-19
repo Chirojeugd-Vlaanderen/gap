@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
- * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * Copyright 2008-2013, 2015, 2016 the GAP developers. See the NOTICE
+ * file at the top-level directory of this distribution, and at
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using AutoMapper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -74,28 +75,21 @@ namespace Chiro.Gap.Sync
             Mapper.CreateMap<Adres, Kip.ServiceContracts.DataContracts.Adres>()
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.LandGet()))
                 .ForMember(dst => dst.LandIsoCode, opt => opt.MapFrom(src => src.LandCodeGet()))
-                .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()))
                 .ForMember(dst => dst.PostNr,
-                           opt =>
-                           opt.MapFrom(
+                    opt =>
+                        opt.MapFrom(
                             src =>
-                            src is BelgischAdres
-                                ? (src as BelgischAdres).StraatNaam.PostNummer
-                                : src is BuitenLandsAdres ? (src as BuitenLandsAdres).PostNummer : 0))
+                                src is BelgischAdres
+                                    ? (src as BelgischAdres).StraatNaam.PostNummer.ToString()
+                                    : src.PostCodeGet()))
                 .ForMember(dst => dst.Straat,
-                           opt =>
-                           opt.MapFrom(
+                    opt =>
+                        opt.MapFrom(
                             src =>
-                            src is BelgischAdres
-                                ? (src as BelgischAdres).StraatNaam.Naam
-                                : src is BuitenLandsAdres ? (src as BuitenLandsAdres).Straat : String.Empty))
-                .ForMember(dst => dst.WoonPlaats,
-                           opt =>
-                           opt.MapFrom(
-                            src =>
-                            src is BelgischAdres
-                                ? (src as BelgischAdres).WoonPlaats.Naam
-                                : src is BuitenLandsAdres ? (src as BuitenLandsAdres).WoonPlaats : String.Empty));
+                                src is BelgischAdres
+                                    ? (src as BelgischAdres).StraatNaam.Naam
+                                    : src is BuitenLandsAdres ? (src as BuitenLandsAdres).Straat : String.Empty))
+                .ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => WoonPlaats(src)));
 
             Mapper.CreateMap<CommunicatieVorm, CommunicatieMiddel>()
                 .ForMember(dst => dst.IsBulk, opt => opt.MapFrom(src => src.Voorkeur))
@@ -117,27 +111,10 @@ namespace Chiro.Gap.Sync
             Mapper.CreateMap<Uitstap, Bivak>()
                 .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.GroepsWerkJaar.Groep.Code.Trim()))
                 .ForMember(dst => dst.UitstapID, opt => opt.MapFrom(src => src.ID))
-                .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar));
+                .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar))
+                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => BivakNaam(src)));
 
             Mapper.CreateMap<Groep, Kip.ServiceContracts.DataContracts.Groep>();
-
-            Mapper.CreateMap<GelieerdePersoon, AbonnementInfo>()
-                .ForMember(dst => dst.EmailAdres, opt => opt.MapFrom(src => VoorkeursMail(src)))
-                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
-                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
-                .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.PersoonsAdres.Adres))
-                .ForMember(dst => dst.AbonnementType, opt => opt.Ignore())
-                .ForMember(dst => dst.StamNr, opt => opt.MapFrom(src => src.Groep.Code))
-                .ForMember(dst => dst.GapPersoonId, opt => opt.MapFrom(src => src.Persoon.ID));
-
-            Mapper.CreateMap<Abonnement, AbonnementInfo>()
-                .ForMember(dst => dst.EmailAdres, opt => opt.MapFrom(src => VoorkeursMail(src.GelieerdePersoon)))
-                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
-                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
-                .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.GelieerdePersoon.PersoonsAdres.Adres))
-                .ForMember(dst => dst.AbonnementType, opt => opt.MapFrom(src => (int) src.Type))
-                .ForMember(dst => dst.StamNr, opt => opt.MapFrom(src => src.GelieerdePersoon.Groep.Code))
-                .ForMember(dst => dst.GapPersoonId, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.ID));
 
             Mapper.AssertConfigurationIsValid();
         }
@@ -150,6 +127,21 @@ namespace Chiro.Gap.Sync
                 select a.Nummer).FirstOrDefault();
 
             return result;
+        }
+
+        private static string WoonPlaats(Adres src)
+        {
+            return src == null
+                ? String.Empty
+                : src is BelgischAdres
+                    ? (src as BelgischAdres).WoonPlaats.Naam
+                    : src is BuitenLandsAdres ? (src as BuitenLandsAdres).WoonPlaats : String.Empty;
+        }
+
+        private static string BivakNaam(Uitstap src)
+        {
+            return String.Format("Bivak {0} - {1}, {2} {3}", src.GroepsWerkJaar.Groep.Code, src.GroepsWerkJaar.Groep.Naam,
+                src.Plaats == null ? String.Empty : WoonPlaats(src.Plaats.Adres), src.DatumTot.Year);
         }
     }
 }

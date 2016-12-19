@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -107,6 +107,7 @@
     <Compile Include="FaultContracts\OngeldigObjectFault.cs" />
     <Compile Include="FaultContracts\BlokkerendeObjectenFault.cs" />
     <Compile Include="FaultContracts\GapFault.cs" />
+    <Compile Include="IDbHacksService.cs" />
     <Compile Include="IGebruikersService.cs" />
     <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />
@@ -121,7 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
-      <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
+      <Project>{b55edf1f-de3f-4e00-a359-0d56be67e197}</Project>
       <Name>Chiro.Cdf.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
@@ -146,13 +147,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

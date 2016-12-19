@@ -1,9 +1,10 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.IMasterViewModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.MasterViewModel>" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 <%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +35,7 @@
 		<li>
 			<%= Html.ActionLink("Ingeschreven", "Index", "Leden")%></li>
 <% 
-   if (Model.IsInOvergangsPeriode)
+   if ((Model.WerkJaarStatus & WerkJaarStatus.InOvergang) == WerkJaarStatus.InOvergang)
    {
 %>
 		<li><%=Html.ActionLink("Jaarovergang", "Index", "JaarOvergang")%></li>

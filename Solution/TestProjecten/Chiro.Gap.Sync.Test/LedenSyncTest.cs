@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2010-2015, Chirojeugd-Vlaanderen vzw.
+ * Copyright 2010-2016, Chirojeugd-Vlaanderen vzw.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ namespace Chiro.Gap.Sync.Test
             // ARRANGE
 
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<AfdelingEnum[]>())).Verifiable();
+            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Persoon>(), It.IsAny<string>(), It.IsAny<AfdelingEnum[]>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var lid = new Kind
@@ -125,7 +125,7 @@ namespace Chiro.Gap.Sync.Test
 
             DateTime uitschrijfDatum = DateTime.Now;
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.LidVerwijderen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime>())).Verifiable();
+            kipSyncMock.Setup(src => src.LidVerwijderen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>())).Verifiable();
             // Die assert staat hieronder op een gekke plaats.
             kipSyncMock.Setup(
                 src => src.LidBewaren(It.IsAny<int>(), It.Is<LidGedoe>(lg => lg.UitschrijfDatum == uitschrijfDatum)))
@@ -150,7 +150,7 @@ namespace Chiro.Gap.Sync.Test
             // ASSERT
 
             kipSyncMock.Verify(
-                src => src.LidVerwijderen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime>()),
+                src => src.LidVerwijderen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>()),
                 Times.Never());
             kipSyncMock.Verify(
                 src => src.LidBewaren(It.IsAny<int>(), It.Is<LidGedoe>(lg => lg.UitschrijfDatum == uitschrijfDatum)),

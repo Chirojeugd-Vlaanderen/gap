@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -639,15 +639,6 @@ namespace Chiro.Gap.Services
                 {
                     _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
                 }
-                if (communicatieVorm.Voorkeur)
-                {
-                    var abonnement = _abonnementenMgr.HuidigAbonnementGet(communicatieVorm.GelieerdePersoon, 1);
-                    if (abonnement != null)
-                    {
-                        _abonnementenSync.AlleAbonnementenVerwijderen(origineelNummer);
-                        _abonnementenSync.AbonnementBewaren(abonnement);
-                    }
-                }
 #if KIPDORP
                 tx.Complete();
             }
@@ -674,7 +665,6 @@ namespace Chiro.Gap.Services
 
             Lid lid = null;
             GelieerdePersoon gelieerdePersoon;
-            Adres adres = null;
 
             var problemen = new Dictionary<string, FoutBericht>();
 
@@ -716,38 +706,36 @@ namespace Chiro.Gap.Services
                     Mapper.Map<IList<GelieerdePersoon>, List<PersoonDetail>>(ex.Objecten), ex.Message);
             }
 
-            // Telefoonnummer en e-mailadres koppelen
-
-            if (details.EMail != null)
+            // CommunicatieVormen (Telefoonnummer en e-mailadres,..) koppelen
+            var n = 0;
+            foreach (var communicatieInfo in details.CommunicatieInfos)
             {
-                var eMail = new CommunicatieVorm()
-                            {
-                                ID = 0, // nieuw e-mailadres
-                                CommunicatieType = _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.Email),
-                                IsGezinsgebonden = details.EMail.IsGezinsGebonden,
-                                Nota = details.EMail.Nota,
-                                Nummer = details.EMail.Nummer,
-                                Voorkeur = details.EMail.Voorkeur
-                            };
-
+                var communicatieVorm = new CommunicatieVorm
+                {
+                    ID = 0, // nieuw
+                    CommunicatieType = _communicatieTypesRepo.ByID(communicatieInfo.CommunicatieTypeID),
+                    IsGezinsgebonden = communicatieInfo.IsGezinsGebonden,
+                    Nota = communicatieInfo.Nota,
+                    Nummer = communicatieInfo.Nummer,
+                    Voorkeur = communicatieInfo.Voorkeur,
+                };
                 // Communicatie koppelen is een beetje een gedoe, omdat je die voorkeuren hebt, en het concept
                 // 'gezinsgebonden' dat eigenlijk niet helemaal klopt. Al die brol handelen we af in de manager.
-
                 try
                 {
-                    _communicatieVormenMgr.Koppelen(gelieerdePersoon, eMail);
+                    _communicatieVormenMgr.Koppelen(gelieerdePersoon, communicatieVorm);
                 }
                 catch (FoutNummerException ex)
                 {
                     if (ex.FoutNummer == FoutNummer.ValidatieFout)
                     {
-                        problemen.Add("EMail.Nummer", new FoutBericht
+                        problemen.Add("CommunicatieInfos["+n+"].Nummer", new FoutBericht
                                                       {
                                                           FoutNummer = FoutNummer.ValidatieFout,
                                                           Bericht =
                                                               string.Format(Resources.OngeldigeCommunicatie,
-                                                                  details.EMail.Nummer,
-                                                                  eMail.CommunicatieType.Omschrijving)
+                                                                  communicatieInfo.Nummer,
+                                                                  communicatieVorm.CommunicatieType.Omschrijving)
                                                       });
                     }
                     else
@@ -755,50 +743,13 @@ namespace Chiro.Gap.Services
                         throw;
                     }
                 }
+                n++;
             }
-
-            if (details.TelefoonNummer != null)
-            {
-                var telefoonNummer = new CommunicatieVorm()
-                                     {
-                                         ID = 0, // nieuw e-mailadres
-                                         CommunicatieType =
-                                             _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.TelefoonNummer),
-                                         IsGezinsgebonden = details.TelefoonNummer.IsGezinsGebonden,
-                                         Nota = details.TelefoonNummer.Nota,
-                                         Nummer = details.TelefoonNummer.Nummer,
-                                         Voorkeur = details.TelefoonNummer.Voorkeur
-                                     };
-
-
-                try
-                {
-                    _communicatieVormenMgr.Koppelen(gelieerdePersoon, telefoonNummer);
-                }
-                catch (FoutNummerException ex)
-                {
-                    if (ex.FoutNummer == FoutNummer.ValidatieFout)
-                    {
-                        problemen.Add("TelefoonNummer.Nummer", new FoutBericht
-                                                               {
-                                                                   FoutNummer = FoutNummer.ValidatieFout,
-                                                                   Bericht =
-                                                                       string.Format(Resources.OngeldigeCommunicatie,
-                                                                           details.TelefoonNummer.Nummer,
-                                                                           telefoonNummer.CommunicatieType.Omschrijving)
-                                                               });
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
-
             // adres koppelen
 
             if (details.Adres != null)
             {
+                Adres adres;
                 try
                 {
                     adres = _adressenMgr.ZoekenOfMaken(details.Adres, _adressenRepo.Select(), _straatNamenRepo.Select(),
@@ -807,7 +758,7 @@ namespace Chiro.Gap.Services
                 catch (OngeldigObjectException ex)
                 {
                     adres = null;
-                    foreach (KeyValuePair<string, FoutBericht> kvp in ex.Berichten)
+                    foreach (var kvp in ex.Berichten)
                     {
                         problemen.Add(kvp.Key, kvp.Value);
                     }
@@ -1151,10 +1102,11 @@ namespace Chiro.Gap.Services
                     }
                     var publicatie = _publicatieRepo.ByID(publicatieID);
 
-                    // TODO: DateTime.Now is niet goed, want dat gaat problemen geven met de unit tests.
                     teSyncenAbonnement = new Abonnement
                     {
-                        AanvraagDatum = DateTime.Now,
+                        // Door vandaag te bepalen via de groepswerkjarenmanager,
+                        // is het ding meer testable.
+                        AanvraagDatum = _groepsWerkJarenMgr.Vandaag(),
                         GroepsWerkJaar = groepsWerkJaar,
                         GelieerdePersoon = gelieerdePersoon,
                         Publicatie = publicatie,
@@ -1171,7 +1123,7 @@ namespace Chiro.Gap.Services
                 if (abonnementType != AbonnementType.Geen)
                 {
                     _abonnementenRepo.SaveChanges();
-                    _abonnementenSync.AbonnementBewaren(teSyncenAbonnement);
+                    _abonnementenSync.Bewaren(teSyncenAbonnement);
                 }
                 else
                 {
@@ -1438,23 +1390,8 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-            _adressenSync.StandaardAdressenBewaren(teSyncen);
-
-            foreach (var pa in persoonsAdressen.Where(pa => pa.GelieerdePersoon.Any()))
-            {
-                // Persoonsadres gekoppeld aan gelieerde persoon (ipv persoon), wil zeggen dat dat persoonsadres het
-                // VOORKEURSADRES is van die gelieerde persoon. Nu is het nog uit te vinden of die persoon een abonnement.
-                // heeft.
-                // Het volstaat dat 1 van de gelieerde personen een abonnement heeft.
-                var abonnement = (from gp in pa.GelieerdePersoon
-                    where _abonnementenMgr.HuidigAbonnementGet(gp, 1) != null
-                    select _abonnementenMgr.HuidigAbonnementGet(gp, 1)).FirstOrDefault();
-                if (abonnement != null)
-                {
-                    _abonnementenSync.AbonnementBewaren(abonnement);
-                }
-            }
-            _adressenRepo.SaveChanges();
+                _adressenSync.StandaardAdressenBewaren(teSyncen);
+                _adressenRepo.SaveChanges();
 
 #if KIPDORP
             tx.Complete();
@@ -1516,21 +1453,6 @@ namespace Chiro.Gap.Services
                 {
                     _adressenSync.StandaardAdressenBewaren(teSyncen);
                 }
-
-                foreach (var pa in nieuwePersoonsAdressen.Where(pa => pa.GelieerdePersoon.Any()))
-                {
-                    // Persoonsadres gekoppeld aan gelieerde persoon (ipv persoon), wil zeggen dat dat persoonsadres het
-                    // VOORKEURSADRES is van die gelieerde persoon. Nu is het nog uit te vinden of die persoon een abonnement.
-                    // heeft.
-                    // Het volstaat dat 1 van de gelieerde personen een abonnement heeft.
-                    var abonnement = (from gp in pa.GelieerdePersoon
-                                      where _abonnementenMgr.HuidigAbonnementGet(gp, 1) != null
-                                      select _abonnementenMgr.HuidigAbonnementGet(gp, 1)).FirstOrDefault();
-                    if (abonnement != null)
-                    {
-                        _abonnementenSync.AbonnementBewaren(abonnement);
-                    }
-                }
                 _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
@@ -1549,9 +1471,6 @@ namespace Chiro.Gap.Services
 
             // adressen die naar kipadmin/chirocivi moeten:
             var teSyncenKip = new List<PersoonsAdres>();
-
-            // abonnementen die opnieuw naar mailchimp moeten
-            var teSyncenChimp = new List<Abonnement>();
 
             var teVerwijderen = (from pa in adres.PersoonsAdres
                                  where personenIDs.Contains(pa.Persoon.ID)
@@ -1576,12 +1495,6 @@ namespace Chiro.Gap.Services
 
                 gp.PersoonsAdres = nieuwVoorkeurAdres;
 
-                var abonnement = _abonnementenMgr.HuidigAbonnementGet(gp, 1);
-                if (abonnement != null)
-                {
-                    teSyncenChimp.Add(abonnement);
-                }
-
                 if (gp.Persoon.InSync)
                 {
                     if (nieuwVoorkeurAdres != null)
@@ -1602,10 +1515,6 @@ namespace Chiro.Gap.Services
                 if (teSyncenKip.Any())
                 {
                     _adressenSync.StandaardAdressenBewaren(teSyncenKip);
-                }
-                foreach (var abonnement in teSyncenChimp)
-                {
-                    _abonnementenSync.AbonnementBewaren(abonnement);
                 }
                 _persoonsAdressenRepo.Delete(teVerwijderen);
                 _persoonsAdressenRepo.SaveChanges();
@@ -1652,11 +1561,6 @@ namespace Chiro.Gap.Services
                 {
                     _adressenSync.StandaardAdressenBewaren(new List<PersoonsAdres>{persoonsAdres});
                 }
-                var abonnement = _abonnementenMgr.HuidigAbonnementGet(gelieerdePersoon, 1);
-                if (abonnement != null)
-                {
-                    _abonnementenSync.AbonnementBewaren(abonnement);
-                }
                 _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
@@ -1676,48 +1580,6 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.GeenGav();
             }
-
-            #region Mailchimptoestanden
-            // administratie mailchimp:
-            IEnumerable<GelieerdePersoon> relevantePersonen;
-            var uitTeSchrijvenAdressen = new List<string>();
-            var teSyncenAbonnementen = new List<Abonnement>();
-
-            if (commInfo.CommunicatieTypeID == 3)
-            {
-                relevantePersonen = !commInfo.IsGezinsGebonden
-                    ? new[] {gelieerdePersoon}
-                    : _gelieerdePersonenMgr.AdresGenotenUitZelfdeGroep(gelieerdePersoon);
-            }
-            else
-            {
-                relevantePersonen = new GelieerdePersoon[0];
-            }
-
-            // relevantePersonen bevat nu alle personen waarvan bekeken moet worden of ze een abonnement
-            // hebben. Houd enkel diegenen bij met een abonnement.
-            relevantePersonen = (from gp in relevantePersonen
-                where _abonnementenMgr.HuidigAbonnementGet(gp, 1) != null
-                select gp).ToList();
-            foreach (var gp in relevantePersonen)
-            {
-                var voorkeursEmail = _gelieerdePersonenMgr.ContactEmail(gp);
-                if (voorkeursEmail == null || commInfo.Voorkeur)
-                {
-                    string adres;
-                    if (voorkeursEmail != null)
-                    {
-                        adres = voorkeursEmail;
-                    }
-                    else
-                    {
-                        adres = _abonnementenSync.DummyEmailAdresMaken(gp.Persoon);
-                    }
-                    uitTeSchrijvenAdressen.Add(adres);
-                    teSyncenAbonnementen.Add(_abonnementenMgr.HuidigAbonnementGet(gp, 1));
-                }
-            }
-            #endregion
 
             var communicatieVorm = new CommunicatieVorm();
 
@@ -1762,14 +1624,6 @@ namespace Chiro.Gap.Services
                     {
                         _communicatieSync.Toevoegen(cv);
                     }
-                    foreach (string adr in uitTeSchrijvenAdressen)
-                    {
-                        _abonnementenSync.AlleAbonnementenVerwijderen(adr);
-                    }
-                    foreach (var ab in teSyncenAbonnementen)
-                    {
-                        _abonnementenSync.AbonnementBewaren(ab);
-                    }
 #if KIPDORP   
                     tx.Complete();
             }
@@ -1787,7 +1641,6 @@ namespace Chiro.Gap.Services
             var communicatieVorm = _communicatieVormRepo.ByID(commvormID);
             var gelieerdePersoon = communicatieVorm.GelieerdePersoon;
             string teVerwijderenNummer = communicatieVorm.Nummer;
-            bool abonnementCheckNodig = false;
 
             if (!_autorisatieMgr.IsGav(communicatieVorm))
             {
@@ -1806,7 +1659,6 @@ namespace Chiro.Gap.Services
                 {
                     nieuweVoorkeur.Voorkeur = true;
                 }
-                abonnementCheckNodig = (communicatieVorm.CommunicatieType.ID == 3);
                 // Vermijd dat het verkeerde adres naar Mailchimp gestuurd zou worden:
                 communicatieVorm.Voorkeur = false;
             }
@@ -1820,18 +1672,6 @@ namespace Chiro.Gap.Services
                     _communicatieSync.Verwijderen(communicatieVorm);
                 }
                 _communicatieVormRepo.Delete(communicatieVorm);
-
-                if (abonnementCheckNodig)
-                {
-                    var abonnement = _abonnementenMgr.HuidigAbonnementGet(gelieerdePersoon, 1);
-
-                    if (abonnement != null)
-                    {
-                        // haal oud adres weg, en bewaar opnieuw met nieuwe voorkeur (evt. dummy)
-                        _abonnementenSync.AlleAbonnementenVerwijderen(teVerwijderenNummer);
-                        _abonnementenSync.AbonnementBewaren(abonnement);
-                    }
-                }
                 _communicatieVormRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
@@ -1878,15 +1718,6 @@ namespace Chiro.Gap.Services
                 if (communicatieVorm.GelieerdePersoon.Persoon.InSync)
                 {
                     _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
-                }
-                if (communicatieVorm.Voorkeur)
-                {
-                    var abonnement = _abonnementenMgr.HuidigAbonnementGet(communicatieVorm.GelieerdePersoon, 1);
-                    if (abonnement != null)
-                    {
-                        _abonnementenSync.AlleAbonnementenVerwijderen(origineelNummer);
-                        _abonnementenSync.AbonnementBewaren(abonnement);
-                    }
                 }
 #if KIPDORP
             tx.Complete();

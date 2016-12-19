@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,9 @@ namespace Chiro.Gap.Workers
         /// <returns>
         /// Het nieuw gemaakte adres
         /// </returns>
+        /// <remarks>
+        /// TODO: Dit ziet er een veel te ingewikkelde method uit. Best eens refactoren.
+        /// </remarks>
         private Adres Maken(AdresInfo adresInfo, IQueryable<StraatNaam> straatNamen,
                             IQueryable<WoonPlaats> woonPlaatsen, IQueryable<Land> landen)
         {
@@ -172,7 +175,6 @@ namespace Chiro.Gap.Workers
                 ((BuitenLandsAdres)adr).Straat = adresInfo.StraatNaamNaam;
                 ((BuitenLandsAdres)adr).WoonPlaats = adresInfo.WoonPlaatsNaam;
                 ((BuitenLandsAdres)adr).PostCode = adresInfo.PostCode;
-                ((BuitenLandsAdres)adr).PostNummer = adresInfo.PostNr;
 
                 Land l = (from lnd in landen
                           where String.Compare(lnd.Naam, adresInfo.LandNaam, StringComparison.OrdinalIgnoreCase) == 0
@@ -252,7 +254,6 @@ namespace Chiro.Gap.Workers
                           // (de truuk met het vraagteken converteert null naar empty voor vergelijken)
                     select adr).FirstOrDefault() ?? ((from adr in adressen.OfType<BuitenLandsAdres>()
                                                       where adr.Straat == adresInfo.StraatNaamNaam
-                                                            && adr.PostNummer == adresInfo.PostNr
                                                             && adr.HuisNr == adresInfo.HuisNr
                                                             && adr.WoonPlaats == adresInfo.WoonPlaatsNaam
                                                             && (adr.Bus ?? String.Empty) == (adresInfo.Bus ?? String.Empty)

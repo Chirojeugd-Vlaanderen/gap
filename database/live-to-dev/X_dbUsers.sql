@@ -35,38 +35,6 @@ CREATE USER [CgDevelop] FOR LOGIN [CgDevelop];
 EXEC sp_addrolemember N'db_owner', N'CgDevelop';
 GO
 
-IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'gapsuper')
-	DROP USER gapsuper;
-GO	
-GO
-
-
-EXEC sp_addrolemember N'GapSuperRole', N'gapsuper'
-GO
-
-GRANT SELECT ON diag.vVerlorenBivakken TO GapSuperRole;
-
-USE kip_local
-GO
-
-IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'gapsuper')
-	DROP USER gapsuper;
-GO	
-
-IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'gapsuper')
-	DROP USER [gapsuper];
-
-CREATE USER [gapsuper] FOR LOGIN [TST-JVE-7\johan]
-GO
-
-EXEC sp_addrolemember N'GapSuperRole', N'gapsuper'
-GO
-
-USE [kip_local]
-
-GRANT SELECT ON biv.BivakOverzicht TO GapSuperRole
-GRANT SELECT ON grp.ChiroGroep TO GapSuperRole
-GRANT SELECT ON dbo.HuidigWerkJaar TO GapSuperRole
 
 USE [gap_local]
 
@@ -87,19 +55,3 @@ GRANT SELECT ON pers.GelieerdePersoon TO GapSuperRole
 GRANT SELECT ON pers.CommunicatieType TO GapSuperRole
 GRANT SELECT ON pers.CommunicatieVorm TO GapSuperRole
 
-USE [master]
-GO
-CREATE LOGIN [cividev] WITH PASSWORD=N'Kukelekip!', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
-GO
-
-
-
-USE [kip_local]
-GO
-IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'CiviDev')
-	DROP USER CiviDev;
-
-CREATE USER [cividev] FOR LOGIN [cividev]
-GO
-EXEC sp_addrolemember N'db_datareader', N'cividev'
-GO

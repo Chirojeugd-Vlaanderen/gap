@@ -1,0 +1,1 @@
+# FixAnomaliesIk heb zelder grotere rommel geschreven als dit.  Sorry sorry sorry! Problemen zijn:* veel duplicate code, die gewoon een gevolg is van copy-paste.* mix van UI en logica (dat moet ook gescheiden zijn voor console applications)Als we dit blijven gebruiken om syncfouten recht te zetten,zouden we het best eens refactoren.

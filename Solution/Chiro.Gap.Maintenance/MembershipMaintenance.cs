@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,16 +37,21 @@ namespace Chiro.Gap.Maintenance
 
         // Businesslogica
         private readonly IGroepsWerkJarenManager _groepsWerkJarenManager;
+        private readonly ILedenManager _ledenManager;
 
         // Synchronisatie
         private readonly IPersonenSync _personenSync;
 
-        public MembershipMaintenance(IRepositoryProvider repositoryProvider, IGroepsWerkJarenManager groepsWerkJarenManager,
+        public MembershipMaintenance(
+            IRepositoryProvider repositoryProvider, 
+            IGroepsWerkJarenManager groepsWerkJarenManager,
+            ILedenManager ledenManager,
             IPersonenSync personenSync)
         {
             _repositoryProvider = repositoryProvider;
             _ledenRepo = _repositoryProvider.RepositoryGet<Lid>();
             _groepsWerkJarenManager = groepsWerkJarenManager;
+            _ledenManager = ledenManager;
             _personenSync = personenSync;
         }
 
@@ -61,21 +66,56 @@ namespace Chiro.Gap.Maintenance
         {
             int huidigWerkJaar = _groepsWerkJarenManager.HuidigWerkJaarNationaal();
             DateTime vandaag = _groepsWerkJarenManager.Vandaag();
+            int overgezetTeller = 0;
+            int totaalTeller = 0;
 
-            var teSyncen = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon.PersoonsVerzekering", "GroepsWerkJaar")
+            // TODO: Het bepalen van de aan te vragen memberships, is eigenlijk business logic,
+            // en moet in de workers. Maar soit.
+
+            // Zoek eerst de leden waarvan IsAangesloten nog niet gezet is.
+            var nietAangeslotenLeden = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon.PersoonsVerzekering", "GroepsWerkJaar")
                 where
-                    (l.GelieerdePersoon.Persoon.LaatsteMembership < huidigWerkJaar ||
-                     l.GelieerdePersoon.Persoon.LaatsteMembership == null) &&
+                    // maak memberships voor niet-aangesloten leden
+                    !l.IsAangesloten && 
+                    // maak enkel memberships voor huidig werkjaar
                     l.GroepsWerkJaar.WerkJaar == huidigWerkJaar &&
-                    l.EindeInstapPeriode < vandaag && !l.NonActief
+                    // actieve leden waarvan de instapperiode voorbij is
+                    l.EindeInstapPeriode < vandaag && !l.NonActief &&
+                    // enkel als de groep nog actief was wanneer instapperiode verviel (#4528)
+                    (l.GroepsWerkJaar.Groep.StopDatum == null || l.GroepsWerkJaar.Groep.StopDatum > l.EindeInstapPeriode)
                 select l).ToArray();
 
-            Console.WriteLine("Syncen van {0} memberships.", teSyncen.Count());
-            foreach (var p in teSyncen)
+            // Overloop de gevonden leden, en kijk na in hoeverre ze naar de Civi moeten.
+            // TODO: Die loop is misschien overkill. We zouden ook de leden die niet iedere keer opnieuw
+            // bekeken moeten worden kunnen markeren met IsAangesloten = true.
+            // TODO: Fix issue #4966
+            foreach (var lid in nietAangeslotenLeden)
             {
-                _personenSync.MembershipRegistreren(p);
-                Console.Write(".");
+                // TODO: We kunnen deze loop ook verwijderen door in UpdateAPI voor alle relevante leden
+                // 'is_aangesloten = 1' te zetten. Dat wil zeggen: als er iemand betalend aangesloten wordt,
+                // dan zijn alle leden van de persoon voor dat werkjaar aangesloten. Wordt iemand
+                // niet-betalend aangesloten, dan worden alle andere niet-betalende leden van die persoon
+                // mee aangesloten. Dan blijft uiteraard #4966 nog te fixen.
+
+                ++totaalTeller;
+                if (_ledenManager.IsBetalendAangesloten(lid))
+                {
+                    // Als er al betaald is voor het membership, dan gaat het membership
+                    // niet opnieuw naar Civi, zodat in het membership de aanvrager dezelfde
+                    // blijft als de betaler.
+                    continue;
+                }
+                if (_ledenManager.GratisAansluiting(lid) && _ledenManager.IsAangesloten(lid))
+                {
+                    // Als deze aansluiting gratis is, en het lid is al ergens anders aangesloten,
+                    // dan moeten we niets meer doen.
+                    continue;
+                }
+                _personenSync.MembershipRegistreren(lid);
+                Console.Write("{0} ", ++overgezetTeller);
             }
+
+            Console.WriteLine("{1} leden nagekeken, {0} memberships gesynct.", overgezetTeller, totaalTeller);
         }
 
 

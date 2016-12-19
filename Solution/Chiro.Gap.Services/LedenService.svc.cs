@@ -1,7 +1,7 @@
 /*
  * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -691,7 +691,7 @@ namespace Chiro.Gap.Services
             }
             catch (BlokkerendeObjectenException<PersoonsVerzekering>)
             {
-                // TODO: beter faultcontract. (VerzkeringsInfo?)
+                // TODO: beter faultcontract. (VerzekeringsInfo?)
                 throw FaultExceptionHelper.BestaatAl("Verzekering");
             }
 

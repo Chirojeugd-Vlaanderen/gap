@@ -2,7 +2,7 @@
  * Copyright 2013, Arno Soontjens
  * Copyright 2013-2015, the GAP developers. See the NOTICE file at the
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * Copyright 2015, Sam Segers (Cleanup en refactoring met module pattern)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -690,40 +690,6 @@ $(function () {
         clearDialog();
     });
 
-    //------------------------------------------------------------------------------------------
-    // verzekering tegen loonverlies
-    $('#bewerkVerzekering').click(function (e) {
-        e.preventDefault();
-
-        url = link("Leden", "LoonVerliesVerzekeren");
-        url += "/" + id + " #ver";
-        $('#bewerkVerzekeringDialog').load(url);
-
-        $('#bewerkVerzekeringDialog').dialog({
-            modal: true,
-            title: "Verzekeren tegen loonverlies",
-            width: 500,
-            buttons: {
-                "Bevestigen": function () {
-
-                    url = link("Leden", "LoonVerliesVerzekeren");
-                    $(this).dialog('close');
-                    bezig();
-                    $.post(url, { id: id, groepID: GID }, function () {
-
-                        success:
-                        {
-                            location.reload();
-                        }
-                    });
-
-                },
-                "Annuleren": function () {
-                    $(this).dialog('close');
-                }
-            }
-        });
-    });
     //------------------------------------------------------------------------------------------
     //EINDE INLINE EDITING
     //------------------------------------------------------------------------------------------

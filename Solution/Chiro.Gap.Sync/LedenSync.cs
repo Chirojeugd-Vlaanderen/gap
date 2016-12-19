@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.Sync.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -109,6 +107,7 @@ namespace Chiro.Gap.Sync
             Debug.Assert(l.GelieerdePersoon.Persoon.InSync);
             Debug.Assert(l.GroepsWerkJaar != null);
             Debug.Assert(l.GroepsWerkJaar.Groep != null);
+
             var nationaleFuncties = (from f in l.Functie
                 where f.IsNationaal
                 select _functieVertaling[(NationaleFunctie) f.ID]).ToList();
@@ -136,7 +135,7 @@ namespace Chiro.Gap.Sync
             var lidGedoe = new LidGedoe
             {
                 StamNummer = l.GroepsWerkJaar.Groep.Code,
-                WerkJaar = l.GroepsWerkJaar.WerkJaar,
+                Werkjaar = l.GroepsWerkJaar.WerkJaar,
                 LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
                 NationaleFuncties = nationaleFuncties,
                 OfficieleAfdelingen = officieleAfdelingen,
@@ -182,7 +181,6 @@ namespace Chiro.Gap.Sync
                 svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
                     lid.GelieerdePersoon.Persoon),
                                            lid.GroepsWerkJaar.Groep.Code,
-                                           lid.GroepsWerkJaar.WerkJaar,
                                            kipFunctieIDs));
         }
 
@@ -223,7 +221,7 @@ namespace Chiro.Gap.Sync
                 svc =>
                 svc.AfdelingenUpdaten(
                     Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
-                    chiroGroep.Code, lid.GroepsWerkJaar.WerkJaar, kipAfdelingen));
+                    chiroGroep.Code, kipAfdelingen));
         }
 
         /// <summary>
@@ -235,7 +233,6 @@ namespace Chiro.Gap.Sync
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidTypeUpdaten(
                 Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
                 lid.GroepsWerkJaar.Groep.Code,
-                lid.GroepsWerkJaar.WerkJaar,
                 _lidTypeVertaling[lid.Type]));
         }
 
@@ -260,14 +257,14 @@ namespace Chiro.Gap.Sync
             {
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidVerwijderen(
                     lid.GelieerdePersoon.Persoon.AdNummer.Value, 
-                    groep.Code, lid.GroepsWerkJaar.WerkJaar, lid.UitschrijfDatum.Value));
+                    groep.Code, lid.UitschrijfDatum.Value));
             }
             else
             {
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidVerwijderen(
                     Mapper.Map<GelieerdePersoon, PersoonDetails>(lid.GelieerdePersoon),
                     groep.Code,
-                    lid.GroepsWerkJaar.WerkJaar, lid.UitschrijfDatum.Value));
+                    lid.UitschrijfDatum.Value));
             }
         }
 
@@ -281,6 +278,21 @@ namespace Chiro.Gap.Sync
             {
                 Bewaren(l);
             }
+        }
+
+        /// <summary>
+        /// Schrijft een lid uit in Chirocivi.
+        /// </summary>
+        /// <param name="info">Informatie over het uit te schrijven lid.</param>
+        /// <remarks>
+        /// Deze dient om een lid uit te schrijven dat niet (meer) bestaat in GAP.
+        /// Dit hebben we enkel nodig om onregelmatigheden te fixen, zie #4554.
+        /// </remarks>
+        public void Uitschrijven(UitschrijfInfo info)
+        {
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidUitschrijven(
+                info.AdNummer,
+                info.StamNummer, info.UitschrijfDatum));
         }
     }
 }
