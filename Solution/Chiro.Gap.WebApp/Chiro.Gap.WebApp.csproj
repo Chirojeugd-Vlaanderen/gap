@@ -132,6 +132,7 @@
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
     <Compile Include="Models\DeelnemerBewerkenModel.cs" />
+    <Compile Include="Models\IMasterViewModel.cs" />
     <Compile Include="Models\VoorkeursMailModel.cs" />
     <Compile Include="Models\DubbelpuntModel.cs" />
     <Compile Include="Models\FunctieModel.cs" />
