@@ -1,3 +1,3 @@
 [submodule "tools/Chiro.CiviCrm.Wcf"]
 	path = tools/Chiro.CiviCrm.Wcf
-	url = http://websites.chiro.be/civicrm-wcf.git
+	url = https://gitlab.chiro.be/civi/civicrm.net.git
