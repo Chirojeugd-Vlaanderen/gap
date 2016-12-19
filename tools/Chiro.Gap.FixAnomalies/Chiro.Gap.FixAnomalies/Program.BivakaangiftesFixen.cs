@@ -47,7 +47,7 @@ namespace Chiro.Gap.FixAnomalies
                 StartDate = new Filter<DateTime?>(WhereOperator.Lte, periodeEinde),
                 // BIVAK
                 EventTypeId = 100,
-                OrganiserendePersoon1Id = new Filter<int?>(WhereOperator.IsNotNull),
+                CourseResponsableId = new Filter<int?>(WhereOperator.IsNotNull),
                 LocBlockIdFilter = new Filter<int>(WhereOperator.IsNotNull),
                 // Organiserende ploeg 1 en GAP-uitstapID
                 ReturnFields = "custom_48,custom_53",
