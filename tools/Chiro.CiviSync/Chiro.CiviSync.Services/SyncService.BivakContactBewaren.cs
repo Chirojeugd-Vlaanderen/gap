@@ -71,12 +71,12 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            if (contactIdPersoon != bivak.OrganiserendePersoon1Id)
+            if (contactIdPersoon != bivak.CourseResponsableId)
             {
                 var request = new EventRequest
                 {
                     Id = bivak.Id,
-                    OrganiserendePersoon1Id = new Filter<int?>(contactIdPersoon)
+                    CourseResponsableId = new Filter<int?>(contactIdPersoon)
                 };
                 var saveResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
                     svc => svc.EventSave(_apiKey, _siteKey, request));
