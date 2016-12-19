@@ -44,6 +44,13 @@ namespace Chiro.Gap.WorkerInterfaces
         int? AdNummerGet();
 
         /// <summary>
+        /// Opvragen van het AD-nummer van de gebruiker met gegeven <paramref name="login"/>.
+        /// </summary>
+        /// <param name="login">Login van de gebruiker van wie we het AD-nummer zoeken.</param>
+        /// <returns>AD-nummer van de gebruiker met gegeven <paramref name="login"/>.</returns>
+        int? AdNummerGet(string login);
+
+        /// <summary>
         /// Vraagt de gebruikersnaam op van de gegeven <paramref name="persoon"/>.
         /// </summary>
         /// <param name="persoon">Persoon wiens gebruikersnaam gezocht is.</param>

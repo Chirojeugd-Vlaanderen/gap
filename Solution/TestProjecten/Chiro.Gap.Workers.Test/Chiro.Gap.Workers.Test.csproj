@@ -88,7 +88,7 @@
     <Compile Include="VerzekeringenManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+    <ProjectReference Include="..\..\..\tools\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
       <Project>{d1e7bbdd-d833-4dc1-af39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>

@@ -108,7 +108,7 @@ namespace Chiro.Gap.Services
 			IFunctiesManager functiesMgr, IAdressenManager adressenMgr, ILedenManager ledenMgr,
 			IAbonnementenManager abonnementenMgr,
 			IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IAbonnementenSync abonnementenSync,
-			IVeelGebruikt veelGebruikt) : base(ledenMgr, groepsWerkJarenMgr, abonnementenMgr)
+			IVeelGebruikt veelGebruikt) : base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr, abonnementenMgr)
 		{
 			_repositoryProvider = repositoryProvider;
 			_straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();

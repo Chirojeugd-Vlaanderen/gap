@@ -96,7 +96,7 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+    <ProjectReference Include="..\..\..\tools\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
       <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>

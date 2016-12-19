@@ -56,6 +56,8 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -63,6 +65,7 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.WebPages">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="EPPlus, Version=4.0.5.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1">
       <HintPath>..\packages\EPPlus.4.0.5\lib\net20\EPPlus.dll</HintPath>
@@ -93,16 +96,6 @@
     <Compile Include="Controllers\FunctiesController.cs" />
     <Compile Include="Controllers\GebruikersRechtController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
-    <Compile Include="App_GlobalResources\MyResources.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MyResources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\MyResources.nl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MyResources.nl.resx</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\list.cs" />
     <Compile Include="Controllers\PersonenEnLedenController.cs" />
     <Compile Include="Controllers\UitstappenController.cs" />
@@ -435,16 +428,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\MyResources.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>MyResources.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\MyResources.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>MyResources.nl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\favicon.ico" />
     <Compile Include="ActionFilters\ParametersMatchAttribute.cs" />
@@ -599,7 +582,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Dubbelpunt\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -295,17 +295,19 @@ namespace Chiro.Gap.Services
         /// </summary>
         public int? AangelogdeGebruikerLidIdGet(int groepID)
         {
-            var userName = _authenticatieMgr.GebruikersNaamGet();
-            var gav = (from g in _gavRepo.Select()
-                where
-                    string.Compare(g.Login, userName,
-                        StringComparison.InvariantCultureIgnoreCase) == 0
-                select g).First();
-            if (!gav.Persoon.Any())
+            int? adNummer = _authenticatieMgr.AdNummerGet();
+
+            var ik = (from p in _personenRepo.Select()
+                      where p.AdNummer == adNummer
+                      select p).First();
+
+            // Mag ik mijn eigen gegevens lezen?
+            if (_autorisatieMgr.MagLezen(ik, ik))
             {
-                return null; // geen persoon gevonden
+                throw FaultExceptionHelper.GeenGav();
             }
-            var lps = (from gp in gav.Persoon.First().GelieerdePersoon
+
+            var lps = (from gp in ik.GelieerdePersoon
                           where gp.Groep.ID == groepID
                           select gp).ToList();
             var leden = lps.SelectMany(gp => gp.Lid).ToList();
@@ -315,13 +317,40 @@ namespace Chiro.Gap.Services
             }
             var maxJaar = leden.Max(l => l.GroepsWerkJaar.WerkJaar);
             return leden.First(l => l.GroepsWerkJaar.WerkJaar == maxJaar).ID;
-                    // Als je hier een exception krijgt dat je gebruiker niet gevonden is, dan kun je die
-                    // aanmaken, en meteen rechten geven op 1 of meerdere willekeurige groepen. Je hebt hiervoor het
-                    // AD-nummer nodig uit de exception. (Als je aan het ontwikkelen bent, is dat een dummy-adnr.)
-                    //
-                    // Stel dat dat AD-nummer 1445 is, dan gaat het bijvoorbeeld als volgt:
-                    //   exec auth.spWillekeurigeGroepToekennenAd 1455, 'Vervloet', 'Johan', '1977-03-08', 1
-                    // De parameters zijn AD-nummer, naam, voornaam, geboortedatum en geslacht.
+        }
+
+        /// <summary>
+        /// Levert de details van de gebruiker met gegeven <paramref name="login"/>.
+        /// </summary>
+        /// <param name="login">Login van een gebruiker.</param>
+        /// <returns>Details van de gebruiker met gegeven <paramref name="login"/>.</returns>
+        public GebruikersDetail GebruikerOphalenViaLogin(string login)
+        {
+            int? adNummer = _authenticatieMgr.AdNummerGet(login);
+            if (adNummer == null)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
+                    Resources.KoppelingLoginPersoonOntbreekt,
+                    login,
+                    adNummer));
+            }
+            var persoon = (from p in _personenRepo.Select()
+                           where p.AdNummer == adNummer
+                           select p).FirstOrDefault();
+
+            if (persoon == null)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
+                    Resources.KoppelingLoginPersoonOntbreekt,
+                    login,
+                    adNummer));
+                // Als je hier een exception krijgt dat je gebruiker niet gevonden is, dan kun je die
+                // aanmaken, en meteen rechten geven op 1 of meerdere willekeurige groepen. Je hebt hiervoor het
+                // AD-nummer nodig uit de exception. (Als je aan het ontwikkelen bent, is dat een dummy-adnr.)
+                //
+                // Stel dat dat AD-nummer 1445 is, dan gaat het bijvoorbeeld als volgt:
+                //   exec auth.spWillekeurigeGroepToekennenAd 1455, 'Vervloet', 'Johan', '1977-03-08', 1
+                // De parameters zijn AD-nummer, naam, voornaam, geboortedatum en geslacht.
             }
 
             // Mag ik mijn eigen gegevens lezen?

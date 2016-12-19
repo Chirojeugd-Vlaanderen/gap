@@ -21,6 +21,7 @@ using System.Linq;
 using System.ServiceModel;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Poco.Model;
+using System;
 
 namespace Chiro.Gap.Workers
 {
@@ -82,6 +83,16 @@ namespace Chiro.Gap.Workers
             }
 
             return _veelGebruikt.GebruikersNaamOphalen(persoon.AdNummer.Value);
+        }
+
+        /// <summary>
+        /// Opvragen van het AD-nummer van de gebruiker met gegeven <paramref name="login"/>.
+        /// </summary>
+        /// <param name="login">Login van de gebruiker van wie we het AD-nummer zoeken.</param>
+        /// <returns>AD-nummer van de gebruiker met gegeven <paramref name="login"/>.</returns>
+        public int? AdNummerGet(string login)
+        {
+            return _veelGebruikt.AdNummerOphalen(login);
         }
     }
 }
