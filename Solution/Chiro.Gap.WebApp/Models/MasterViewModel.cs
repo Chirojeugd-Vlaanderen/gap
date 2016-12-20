@@ -31,7 +31,7 @@ namespace Chiro.Gap.WebApp.Models
 	/// <remarks>
 	/// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
 	/// </remarks>
-	public class MasterViewModel
+	public class MasterViewModel: IMasterViewModel
 	{
 		/// <summary>
 		/// De standaardconstructor maakt gewoon een lege lijst met mededelingen
@@ -111,5 +111,10 @@ namespace Chiro.Gap.WebApp.Models
         /// Aangelogde gebruiker
         /// </summary>
         public GebruikersDetail Ik { get; set; }
-	}
+
+        /// <summary>
+        /// Is een jaarovergang mogelijk?
+        /// </summary>
+        public bool IsInOvergangsPeriode { get; set;  }
+    }
 }
