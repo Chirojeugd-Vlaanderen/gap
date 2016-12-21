@@ -28,10 +28,12 @@
         <th>Login</th>
         <th>Naam</th>
         <th>Vervaldatum</th>
+        <!-- Dit tonen we nog niet, zie #3645
         <th>Zichzelf</th>
         <th>Groepsinfo</th>
         <th>Afdeling</th>
         <th>Iedereen</th>
+        -->
         <th>Actie</th>
     </tr>
     <%
@@ -42,10 +44,12 @@
         <td><%:gebr.Login %></td>
         <td><%=gebr.PersoonID > 0 ? Html.ActionLink(String.Format("{0} {1}", gebr.VoorNaam, gebr.FamilieNaam), "Bewerken", new { Controller = "Personen", id = gebr.GelieerdePersoonID}).ToHtmlString() : "(onbekend)" %></td>
         <td><%:gebr.VervalDatum == null ? "nooit" : ((DateTime)gebr.VervalDatum).ToString("d") %></td>
+        <!-- Dit tonene we nog niet, zie #3645
         <td><%=Html.Permissie(gebr.GebruikersRecht.PersoonsPermissies) %></td>
         <td><%=Html.Permissie(gebr.GebruikersRecht.GroepsPermissies) %></td>
         <td><%=Html.Permissie(gebr.GebruikersRecht.AfdelingsPermissies) %></td>
         <td><%=Html.Permissie(gebr.GebruikersRecht.IedereenPermissies) %></td>
+        -->
         <td>
             <% if (gebr.IsVerlengbaar)
                 { // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
@@ -58,7 +62,9 @@
                 {
 %>
               <%= Html.ActionLink("Afnemen", "Intrekken", new { id = gebr.PersoonID })%>
+              <!-- Bewerken is nog niet geimplementeerd, zie #3647
               <%= Html.ActionLink("Bewerken", "Bewerken", new { id = gebr.PersoonID })%>
+              -->
             <% } %>
         </td>
     </tr>
