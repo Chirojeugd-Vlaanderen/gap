@@ -264,19 +264,19 @@
         <tr>
             <td>Dubbelpunt</td>
             <td>
-                <%= Html.DisplayFor(mdl =>mdl.PersoonLidInfo.DubbelpuntAbonnement) %>
+                <%= Html.DisplayFor(mdl =>mdl.PersoonLidGebruikersInfo.DubbelpuntAbonnement) %>
             </td>
             <td>
-                 <%:Html.ActionLink("[Wijzig]", "Dubbelpunt", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
+                 <%:Html.ActionLink("[Wijzig]", "Dubbelpunt", new {id = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %>
             </td>
         </tr>
         <tr>
-            <td><%= Html.LabelFor(mdl => mdl.PersoonLidInfo.PersoonDetail.NieuwsBrief) %> <%= Html.InfoLink("snelBerichtInfo")%></td>
+            <td><%= Html.LabelFor(mdl => mdl.PersoonLidGebruikersInfo.PersoonDetail.NieuwsBrief) %> <%= Html.InfoLink("snelBerichtInfo")%></td>
             <td>
-                <%: Model.PersoonLidInfo.PersoonDetail.NieuwsBrief ? "ja" : "nee" %>
+                <%: Model.PersoonLidGebruikersInfo.PersoonDetail.NieuwsBrief ? "ja" : "nee" %>
             </td>
             <td>
-                 <%:Html.ActionLink("[Wijzig]", "NieuwsBrief", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
+                 <%:Html.ActionLink("[Wijzig]", "NieuwsBrief", new {id = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %>
             </td>
         </tr>
 
@@ -419,7 +419,7 @@
                <b>Nee</b>
             </td>
             <td>
-                <%=Html.ActionLink("[Verzeker]", "LoonVerliesVerzekeren", new { Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID, groepID = Model.GroepID }) %>
+                <%=Html.ActionLink("[Verzeker]", "LoonVerliesVerzekeren", new { Controller = "Leden", id = Model.PersoonLidGebruikersInfo.LidInfo.LidID, groepID = Model.GroepID }) %>
             <% if (Model.GroepsNiveau.HasFlag(Niveau.KaderGroep))
                { %>
               (dit is gratis voor kaderleden)
