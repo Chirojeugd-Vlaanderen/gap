@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * Refactoring AD-access (#4938) Copyright 2016, Chirojeugd-Vlaanderen vzw.

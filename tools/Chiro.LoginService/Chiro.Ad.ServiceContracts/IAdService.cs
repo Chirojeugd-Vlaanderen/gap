@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
@@ -76,7 +76,7 @@ namespace Chiro.Ad.ServiceContracts
         /// <param name="userName">Gebruikersnaam.</param>
         /// <returns>AD-nummer van gebruiker met gegeven gebruikersnaam.</returns>
         [OperationContract]
-        int? AdNummerOpHalen(string userName);
+        int? AdNummerOphalen(string userName);
 
         /// <summary>
         /// Haalt de gebruikersnaam op van de user met gegeven <paramref name="adNummer"/>.

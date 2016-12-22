@@ -107,7 +107,7 @@ namespace Chiro.Gap.Workers
 
             if (adNummer == null)
             {
-                adNummer = ServiceHelper.CallService<IAdService, int?>(svc => svc.AdNummerOpHalen(gebruikersNaam));
+                adNummer = ServiceHelper.CallService<IAdService, int?>(svc => svc.AdNummerOphalen(gebruikersNaam));
 
                 _cache.Add(
                     string.Format(AdNrCacheKey, gebruikersNaam),
@@ -143,7 +143,7 @@ namespace Chiro.Gap.Workers
 
             if (String.IsNullOrEmpty(gebruikersNaam))
             {
-                gebruikersNaam = ServiceHelper.CallService<IAdService, string>(svc => svc.gebruikersNaamOphalen(adNummer));
+                gebruikersNaam = ServiceHelper.CallService<IAdService, string>(svc => svc.GebruikersNaamOphalen(adNummer));
 
                 _cache.Add(
                     string.Format(UserNameCacheKey, adNummer),

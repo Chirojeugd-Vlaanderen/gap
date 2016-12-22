@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet.
@@ -18,9 +18,7 @@
  */
 
 using System;
-using System.Security.Permissions;
 using System.ServiceModel;
-using System.Text.RegularExpressions;
 using Chiro.Ad.Domain;
 using Chiro.Ad.ServiceContracts;
 using Chiro.Ad.Workers;
@@ -122,7 +120,7 @@ namespace Chiro.Ad.LoginService
         }
 
 
-        public int? AdNummerOpHalen(string userName)
+        public int? AdNummerOphalen(string userName)
         {
             var gebruiker = _loginManager.Zoeken(userName);
             return gebruiker.AdNr;
