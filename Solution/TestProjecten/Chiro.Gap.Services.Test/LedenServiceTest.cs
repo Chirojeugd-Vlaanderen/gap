@@ -2,6 +2,7 @@
  * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +34,6 @@ using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
-
 namespace Chiro.Gap.Services.Test
 {
 
@@ -140,12 +139,25 @@ namespace Chiro.Gap.Services.Test
 
             // testdata genereren
 
+            var ik = new Persoon {AdNummer = 12345};
             var gwj = new GroepsWerkJaar();
             var groep = new ChiroGroep
                             {
+                                ID = 5,
                                 GroepsWerkJaar = new List<GroepsWerkJaar> {gwj}
                             };
             gwj.Groep = groep;
+
+            var gebruikersrRecht = new GebruikersRechtV2
+            {
+                Groep = groep,
+                Persoon = ik,
+                VervalDatum = DateTime.Now.AddDays(1),
+                IedereenPermissies = Permissies.Bewerken,
+                GroepsPermissies = Permissies.Lezen
+            };
+            ik.GebruikersRechtV2.Add(gebruikersrRecht);
+            groep.GebruikersRechtV2.Add(gebruikersrRecht);
 
             var contactPersoon = new Functie
                                      {
@@ -181,12 +193,15 @@ namespace Chiro.Gap.Services.Test
                                    Groep = groep
                                };
             var leiding = new Leiding
-                              {
-                                  ID = 100,
-                                  GroepsWerkJaar = gwj,
-                                  Functie = new List<Functie> {contactPersoon, redactie},
-                                  GelieerdePersoon = new GelieerdePersoon {Groep = groep}
-                              };
+            {
+                ID = 100,
+                GroepsWerkJaar = gwj,
+                Functie = new List<Functie> {contactPersoon, redactie},
+                GelieerdePersoon = new GelieerdePersoon {Groep = groep, Persoon = new Persoon()}
+            };
+
+            groep.GelieerdePersoon.Add(leiding.GelieerdePersoon);
+            groep.GelieerdePersoon.Add(new GelieerdePersoon {Groep = groep, Persoon = ik});
 
             // repositories maken die de testdata opleveren
 
@@ -205,14 +220,7 @@ namespace Chiro.Gap.Services.Test
 
             var authenticatieMgrMock = new Mock<IAuthenticatieManager>();
             authenticatieMgrMock.Setup(src => src.GebruikersNaamGet()).Returns("testGebruiker");
-            groep.GebruikersRecht.Add(new GebruikersRecht
-                                          {
-                                              Groep = groep,
-                                              Gav = new Gav
-                                                        {
-                                                            Login = "testGebruiker"
-                                                        }
-                                          });
+            authenticatieMgrMock.Setup(src => src.AdNummerGet()).Returns(12345);
 
             Factory.InstantieRegistreren<IAutorisatieManager>(new AutorisatieManager(authenticatieMgrMock.Object));
 

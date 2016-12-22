@@ -1,5 +1,5 @@
-/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+﻿/*
+ * Copyright 2015, Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -15,25 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System.Collections.Generic;
-using Chiro.Cdf.Poco;
 
-namespace Chiro.Gap.Poco.Model
+using Chiro.Gap.ServiceContracts.DataContracts;
+
+namespace Chiro.Gap.WebApp.Models
 {
-    public class Gav: BasisEntiteit
+    /// <summary>
+    /// Model voor de gebruikersrechten van 1 gebruiker.
+    /// </summary>
+    public class GebruikersDetailModel: MasterViewModel
     {
-        public Gav()
-        {
-            this.GebruikersRecht = new HashSet<GebruikersRecht>();
-            this.Persoon = new HashSet<Persoon>();
-        }
-    
-        public override int ID { get; set; }
-        public string Login { get; set; }
-        public override byte[] Versie { get; set; }
-    
-        public virtual ICollection<GebruikersRecht> GebruikersRecht { get; set; }
-        public virtual ICollection<Persoon> Persoon { get; set; }
+        public GebruikersDetail Detail { get; set; }
     }
-    
 }

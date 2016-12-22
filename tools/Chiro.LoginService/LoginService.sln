@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjecten", "{E8B9DA2D-7370-4CDA-AD12-7C3DA0933278}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.ServiceContracts", "Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj", "{D1E7BBDD-D833-4DC1-AF39-287448612425}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.Domain", "Chiro.Ad.Domain\Chiro.Ad.Domain.csproj", "{3C42C96B-2F4C-46DC-B24D-0ECEB9BC4EDD}"
@@ -38,6 +40,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.DirectoryInterface", "Chiro.Ad.DirectoryInterface\Chiro.Ad.DirectoryInterface.csproj", "{542E08CF-5551-4406-BD15-707AC97F61DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.Workers.Test", "Chiro.Ad.Workers.Test\Chiro.Ad.Workers.Test.csproj", "{B7FD175C-D61B-4671-9A08-448A2F506CF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceHelper", "..\..\Solution\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
+EndProject
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -106,9 +110,6 @@ Global
 		{C28DE7B1-76DF-4C38-8F25-184A9248A81C}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{C28DE7B1-76DF-4C38-8F25-184A9248A81C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C28DE7B1-76DF-4C38-8F25-184A9248A81C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C28DE7B1-76DF-4C38-8F25-184A9248A81C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C28DE7B1-76DF-4C38-8F25-184A9248A81C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C28DE7B1-76DF-4C38-8F25-184A9248A81C}.Release|x86.ActiveCfg = Release|Any CPU
 		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -190,6 +191,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		{34840A20-9F35-4509-979D-CC86B9F0C249} = {E8B9DA2D-7370-4CDA-AD12-7C3DA0933278}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = LoginService.vsmdi

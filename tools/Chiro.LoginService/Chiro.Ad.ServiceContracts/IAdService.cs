@@ -2,6 +2,7 @@
  * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,5 +69,21 @@ namespace Chiro.Ad.ServiceContracts
         [FaultContract(typeof(FaultException<FormatException>))]
         [FaultContract(typeof(FaultException<InvalidOperationException>))]
         string GapLoginAanvragen(int adNr, string voornaam, string familienaam, string mailadres);
+
+        /// <summary>
+        /// Haalt AD-nummer op van gebruiker met gegeven <paramref name="userName"/>.
+        /// </summary>
+        /// <param name="userName">Gebruikersnaam.</param>
+        /// <returns>AD-nummer van gebruiker met gegeven gebruikersnaam.</returns>
+        [OperationContract]
+        int? AdNummerOpHalen(string userName);
+
+        /// <summary>
+        /// Haalt de gebruikersnaam op van de user met gegeven <paramref name="adNummer"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van user waarvan gebruikersnaam gevraagd is.</param>
+        /// <returns>Gebruikersnaam van de user met gegeven <paramref name="adNummer"/>.</returns>
+        [OperationContract]
+        string gebruikersNaamOphalen(int adNummer);
     }
 }

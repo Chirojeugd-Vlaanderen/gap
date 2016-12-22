@@ -9,12 +9,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Cg2.DummyDaos")]
+[assembly: AssemblyTitle("Chiro.Gap.Dummies")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Chirojeugd-Vlaanderen vzw")]
-[assembly: AssemblyProduct("Cg2.DummyDaos")]
-[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2007-2012")]
+[assembly: AssemblyProduct("Chiro.Gap.Dummies")]
+[assembly: AssemblyCopyright("Copyright © The Gap Developers 2007-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -2,6 +2,7 @@
  * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -331,16 +332,35 @@ namespace Chiro.Gap.Domain
         Speciaal = 7
     }
 
-    /// <summary>
-    /// Mogelijke rollen van een gebruiker. Deze zijn altijd van toepassing op een groep.
-    /// (en dus niet globaal)
-    /// </summary>
     [DataContract]
     [Flags]
-    public enum Rol
+    public enum Permissies
     {
-        [EnumMember] Geen = 0x00,        // Geen rechten
-        [EnumMember] Gav = 0x80          // GAV (voorlopig zijn de mogelijkheden beperkt)
+        /// <summary>
+        /// Geen rechten
+        /// </summary>
+        [EnumMember] Geen = 0x00,
+        /// <summary>
+        /// Leesrechten
+        /// </summary>
+        [EnumMember] Lezen = 0x01,
+        /// <summary>
+        /// Lezen en schrijven
+        /// </summary>
+        [EnumMember] Bewerken = 0x3,
+    }
+
+    /// <summary>
+    /// Zaken waarop je permissies kunt hebben.
+    /// </summary>
+    [Flags]
+    public enum SecurityAspect
+    {
+        [EnumMember] PersoonlijkeGegevens = 0x01,
+        [EnumMember] GroepsGegevens = 0x02,
+        [EnumMember] PersonenInAfdeling = 0x10,
+        [EnumMember] PersonenInGroep = 0x90,
+        [EnumMember] AllesVanGroep = (GroepsGegevens|PersonenInGroep)
     }
 
     public static class Nieuwebackend

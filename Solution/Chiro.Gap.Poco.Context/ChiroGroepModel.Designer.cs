@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\vervljo\Source\Repos\gap-git\Solution\Chiro.Gap.Poco.Context\ChiroGroepModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\johan\Source\Repos\gap-git\Solution\Chiro.Gap.Poco.Context\ChiroGroepModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
