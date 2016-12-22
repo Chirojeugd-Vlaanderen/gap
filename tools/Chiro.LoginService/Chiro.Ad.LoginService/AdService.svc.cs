@@ -124,13 +124,13 @@ namespace Chiro.Ad.LoginService
 
         public int? AdNummerOpHalen(string userName)
         {
-            var gebruiker = new Chirologin(userName);
+            var gebruiker = _loginManager.Zoeken(userName);
             return gebruiker.AdNr;
         }
 
-        public string gebruikersNaamOphalen(int adNummer)
+        public string GebruikersNaamOphalen(int adNummer)
         {
-            var gebruiker = new Chirologin(adNummer);
+            var gebruiker = _loginManager.Zoeken(adNummer);
             return gebruiker.Login;
         }
     }

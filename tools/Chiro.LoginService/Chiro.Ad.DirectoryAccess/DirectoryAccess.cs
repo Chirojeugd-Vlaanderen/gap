@@ -136,6 +136,24 @@ namespace Chiro.Ad.DirectoryAccess
         /// Zoekt de login van een bestaande Chirogebruiker op.
         /// </summary>
         /// <param name="ldapRoot"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public Chirologin GebruikerZoeken(string ldaproot, string username)
+        {
+            using (var entry = EntryOphalen(username, ldaproot))
+            {
+                if (entry != null)
+                {
+                    return EntryToLogin(ldaproot, entry);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Zoekt de login van een bestaande Chirogebruiker op.
+        /// </summary>
+        /// <param name="ldapRoot"></param>
         /// <param name="voornaam"></param>
         /// <param name="familienaam"></param>
         /// <returns></returns>

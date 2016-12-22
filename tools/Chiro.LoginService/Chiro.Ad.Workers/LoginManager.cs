@@ -88,6 +88,33 @@ namespace Chiro.Ad.Workers
         }
 
         /// <summary>
+        /// Zoekt een login op, op basis van AD-nummer.
+        /// 
+        /// Kipdorplogins hebben voorrang op Chiro-wereld-logins.
+        /// </summary>
+        /// <param name="adNr">AD-nummer van te zoeken login.</param>
+        /// <returns>Login op basis van AD-nummer.</returns>
+        public Chirologin Zoeken(int adNr)
+        {
+            // Probeer eerst kipdorp. Als dat niet lukt wereld.
+            return _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapLokaalRoot, adNr)
+                ?? _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapWereldRoot, adNr);
+        }
+
+        /// <summary>
+        /// Zoekt een login op, op basis van username.
+        /// 
+        /// Kipdorplogins hebben voorrang op Chiro-wereld-logins.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public Chirologin Zoeken(string username)
+        {
+            return _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapLokaalRoot, username)
+                ?? _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapWereldRoot, username);
+        }
+
+        /// <summary>
         /// Zoekt een login, of maakt aan als nog niet gevonden.
         /// </summary>
         /// <param name="domein">Domein waarin de login gemaakt moet worden.</param>

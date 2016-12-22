@@ -84,6 +84,6 @@ namespace Chiro.Ad.ServiceContracts
         /// <param name="adNummer">AD-nummer van user waarvan gebruikersnaam gevraagd is.</param>
         /// <returns>Gebruikersnaam van de user met gegeven <paramref name="adNummer"/>.</returns>
         [OperationContract]
-        string gebruikersNaamOphalen(int adNummer);
+        string GebruikersNaamOphalen(int adNummer);
     }
 }
