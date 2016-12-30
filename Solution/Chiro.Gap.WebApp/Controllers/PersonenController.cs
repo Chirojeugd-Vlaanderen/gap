@@ -1265,8 +1265,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Een redirect naar het wijzigen van eigen e-mailadres</returns>
 		public ActionResult MijnEmailInstellen(int groepID)
 		{
-			string mijnUser = System.Web.HttpContext.Current.User.Identity.Name;
-            var ik = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.GebruikerOphalenViaLogin(mijnUser));
+            var ik = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.DetailsOphalen());
 
 			return RedirectToAction("NieuweCommVorm", new { groepID, id = ik.GelieerdePersoonID });
 		}

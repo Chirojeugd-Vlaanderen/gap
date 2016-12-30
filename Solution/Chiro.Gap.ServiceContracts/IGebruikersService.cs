@@ -78,7 +78,7 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        GebruikersDetail GebruikerOphalenViaLogin(string login);
+        GebruikersDetail DetailsOphalen();
 
         /// <summary>
         /// Indien de ingelogde gebruiker lid is voor gegeven groep in het recentste werkjaar, dan wordt de id van dat lid terug gegeven

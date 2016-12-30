@@ -424,7 +424,7 @@ namespace Chiro.Gap.WebApp
             GebruikersDetail detail = (GebruikersDetail)_cache.Get(String.Format(GEBRUIKERCACHEKEY, login));
             if (detail == null)
             {
-                detail = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.GebruikerOphalenViaLogin(login));
+                detail = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.DetailsOphalen());
                 _cache.Add(String.Format(GEBRUIKERCACHEKEY, login),
                     detail, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
             }

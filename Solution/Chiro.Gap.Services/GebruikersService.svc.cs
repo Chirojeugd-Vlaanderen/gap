@@ -320,18 +320,17 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Levert de details van de gebruiker met gegeven <paramref name="login"/>.
+        /// Levert de details van de aangelogde gebruiker.
         /// </summary>
-        /// <param name="login">Login van een gebruiker.</param>
-        /// <returns>Details van de gebruiker met gegeven <paramref name="login"/>.</returns>
-        public GebruikersDetail GebruikerOphalenViaLogin(string login)
+        /// <returns>Details van de aangelogde gebruiker.</returns>
+        public GebruikersDetail DetailsOphalen()
         {
-            int? adNummer = _authenticatieMgr.AdNummerGet(login);
+            int? adNummer = _authenticatieMgr.AdNummerGet();
             if (adNummer == null)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
                     Resources.KoppelingLoginPersoonOntbreekt,
-                    login,
+                    _authenticatieMgr.GebruikersNaamGet(),
                     adNummer));
             }
             var persoon = (from p in _personenRepo.Select()
@@ -342,7 +341,7 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
                     Resources.KoppelingLoginPersoonOntbreekt,
-                    login,
+                    _authenticatieMgr.GebruikersNaamGet(),
                     adNummer));
                 // Als je hier een exception krijgt dat je gebruiker niet gevonden is, dan kun je die
                 // aanmaken, en meteen rechten geven op 1 of meerdere willekeurige groepen. Je hebt hiervoor het

@@ -233,13 +233,15 @@ namespace Chiro.Gap.Services.Test
             Assert.IsTrue(gr.VervalDatum <= DateTime.Now);
         }
 
+        /// <summary>
+        /// Wordt er getest of een gebruiker wel het recht heeft om zijn eigen info te zien?
+        /// </summary>
         [TestMethod()]
         public void GebruikerOphalenTest()
         {
             // ARRANGE
 
             const int mijnAdNr = 1;
-            const string mijnLogin = "joe";
 
             var gebruikersRecht = new GebruikersRechtV2
             {
@@ -254,7 +256,7 @@ namespace Chiro.Gap.Services.Test
             var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
             var autorisatieMangerMock = new Mock<IAutorisatieManager>();
 
-            authenticatieManagerMock.Setup(src => src.AdNummerGet(mijnLogin)).Returns(mijnAdNr);
+            authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(mijnAdNr);
             autorisatieMangerMock.Setup(svc => svc.MagLezen(gebruikersRecht.Persoon, gebruikersRecht.Persoon)).Verifiable();
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
@@ -267,7 +269,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<GebruikersService>();
-            target.GebruikerOphalenViaLogin(mijnLogin);
+            target.DetailsOphalen();
 
             // ASSERT
 
