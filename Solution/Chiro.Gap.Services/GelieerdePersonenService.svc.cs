@@ -1113,7 +1113,9 @@ namespace Chiro.Gap.Services
                         Type = abonnementType.Value
                     };
 
-                    publicatie.Abonnement.Add(teSyncenAbonnement);
+                    // Onderstaande doen we niet. EntityFramework zal dat voor ons wel doen.
+                    // Als we dat hieronder expliciet vermelden, dan vertraagt dat enorm (zie #5611).
+                    // publicatie.Abonnement.Add(teSyncenAbonnement);
                 }
             }
 #if KIPDORP
