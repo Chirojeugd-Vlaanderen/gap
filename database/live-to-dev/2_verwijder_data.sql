@@ -192,12 +192,6 @@ join pers.PersoonsAdres pa on p.PersoonID=pa.PersoonID
 left outer join pers.GelieerdePersoon gp on p.PersoonID=gp.PersoonID
 where gp.GelieerdePersoonID is null
 
-delete gs
-from pers.Persoon p
-join auth.GavSchap gs on p.PersoonID=gs.PersoonID
-left outer join pers.GelieerdePersoon gp on p.PersoonID=gp.PersoonID
-where gp.GelieerdePersoonID is null
-
 delete pv
 from pers.Persoon p
 join verz.PersoonsVerzekering pv on p.PersoonID=pv.PersoonID
@@ -209,18 +203,6 @@ delete p
 from pers.Persoon p
 left outer join pers.GelieerdePersoon gp on p.PersoonID=gp.PersoonID
 where gp.GelieerdePersoonID is null
-
-delete gr
-from auth.Gav gv
-join auth.GebruikersRecht gr on gv.GavID = gr.gavid
-left outer join auth.GavSchap gs on gv.GavID=gs.gavid
-where gs.PersoonID is null
-
-
-delete gv
-from auth.Gav gv
-left outer join auth.GavSchap gs on gv.GavID=gs.gavid
-where gs.PersoonID is null
 
 delete a
 from grp.ChiroGroep cg
