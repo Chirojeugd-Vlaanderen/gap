@@ -186,6 +186,10 @@ from core.Categorie c
 left outer join pers.PersoonsCategorie pc on c.CategorieID = pc.CategorieID
 where pc.GelieerdePersoonID is null
 
+-- Alle gebruikersrechten weg.
+delete gr
+from auth.GebruikersRechtV2 gr
+
 delete pa
 from pers.Persoon p
 join pers.PersoonsAdres pa on p.PersoonID=pa.PersoonID
@@ -239,11 +243,6 @@ delete f
 from grp.Groep g
 join lid.functie f on g.groepid=f.groepid
 left outer join @groepids ids on g.GroepID=ids.groepID
-where ids.GroepID is null;
-
-delete gr
-from auth.GebruikersRecht gr
-left outer join @groepids ids on gr.GroepID = ids.GroepID
 where ids.GroepID is null;
 
 delete g
