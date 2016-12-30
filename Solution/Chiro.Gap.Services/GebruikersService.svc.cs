@@ -339,17 +339,16 @@ namespace Chiro.Gap.Services
 
             if (persoon == null)
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
-                    Resources.KoppelingLoginPersoonOntbreekt,
-                    _authenticatieMgr.GebruikersNaamGet(),
-                    adNummer));
-                // Als je hier een exception krijgt dat je gebruiker niet gevonden is, dan kun je die
-                // aanmaken, en meteen rechten geven op 1 of meerdere willekeurige groepen. Je hebt hiervoor het
-                // AD-nummer nodig uit de exception. (Als je aan het ontwikkelen bent, is dat een dummy-adnr.)
-                //
-                // Stel dat dat AD-nummer 1445 is, dan gaat het bijvoorbeeld als volgt:
-                //   exec auth.spWillekeurigeGroepToekennenAd 1455, 'Vervloet', 'Johan', '1977-03-08', 1
-                // De parameters zijn AD-nummer, naam, voornaam, geboortedatum en geslacht.
+                // We gaan de persoon registreren. Als hij nog niet bestond, had hij nog geen rechten.
+                // TODO: gegevens ophalen uit Civi, ipv leeg te laten (zie #5612).
+                persoon = new Persoon
+                {
+                    VoorNaam = _authenticatieMgr.GebruikersNaamGet(),
+                    AdNummer = adNummer,
+                    Geslacht = GeslachtsType.Onbekend,
+                };
+                _personenRepo.Add(persoon);
+                _personenRepo.SaveChanges();
             }
 
             // Mag ik mijn eigen gegevens lezen?
