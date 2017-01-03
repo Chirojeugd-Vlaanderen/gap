@@ -344,6 +344,8 @@ namespace Chiro.Gap.Services
                 persoon = new Persoon
                 {
                     VoorNaam = _authenticatieMgr.GebruikersNaamGet(),
+                    // FIXME: gefoefel met lege familienaam.
+                    Naam = String.Empty,
                     AdNummer = adNummer,
                     Geslacht = GeslachtsType.Onbekend,
                 };

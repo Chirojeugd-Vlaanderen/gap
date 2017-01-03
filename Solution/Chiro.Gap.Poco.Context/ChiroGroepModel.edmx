@@ -1566,7 +1566,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <Property Name="AdNummer" Type="Int32" ConcurrencyMode="Fixed" />
           <Property Name="Naam" Type="String" Nullable="false" MaxLength="160" Unicode="false" FixedLength="false" />
           <Property Name="VoorNaam" Type="String" MaxLength="60" Unicode="false" FixedLength="false" Nullable="false" />
-          <Property Name="GeboorteDatum" Type="DateTime" Precision="3" />
+          <Property Name="GeboorteDatum" Type="DateTime" Precision="3" Nullable="true" />
           <Property Name="GeslachtsInt" Type="Int32" Nullable="false" a:GetterAccess="Internal" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <Property Name="SterfDatum" Type="DateTime" Precision="0" />
           <Property Name="ID" Type="Int32" Nullable="false" />
