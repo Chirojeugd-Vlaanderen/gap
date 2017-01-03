@@ -201,14 +201,9 @@ GO
 
 -- procedures voor dev (moet weg uit live db)
 
-
 CREATE PROCEDURE [auth].[spWillekeurigeGroepToekennenAd]
 (
-	@adNr int,
-	@naam varchar(max),
-	@voornaam varchar(max),
-	@geboorteDatum DateTime,
-	@geslacht int -- 1 man, 2 vrouw
+	@adNr int
 )
 AS
 -- Doel: Kent rechten toe aan persoon met gegeven AD-nummer.
@@ -217,11 +212,6 @@ AS
 BEGIN
 	DECLARE @stamnr as varchar(10);
 
-	insert into pers.persoon(AdNummer, Naam, VoorNaam, GeboorteDatum, Geslacht)
-	select @adNr, @naam, @voornaam, @geboortedatum, @geslacht
-	where not exists (select adNummer from pers.Persoon where adNummer=@adnr);
-
 	set @stamnr = (select top 1 g.Code from grp.Groep g where g.StopDatum is null order by newid());
 	exec auth.spGebruikersRechtToekennenAd @stamnr, @adNr
 END
-

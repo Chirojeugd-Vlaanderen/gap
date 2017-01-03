@@ -96,7 +96,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
         public ActionResult TestGroepToevoegen()
         {
-            ServiceHelper.CallService<IDbHacksService>(svc => svc.WillekeurigeGroepToekennen(HttpContext.User.Identity.Name));
+            ServiceHelper.CallService<IDbHacksService>(svc => svc.WillekeurigeGroepToekennen());
             return RedirectToAction("Index");
         }
 	}

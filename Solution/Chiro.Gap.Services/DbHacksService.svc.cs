@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2016, 2017 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -16,13 +16,9 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.WorkerInterfaces;
+using System.Diagnostics;
 
 namespace Chiro.Gap.Services
 {
@@ -32,17 +28,24 @@ namespace Chiro.Gap.Services
     /// <remarks>
     /// DEZE FILE MAG NIET AANWEZIG ZIJN IN DE CODE VOOR DE LIVE-OMGEVING!
     /// </remarks>
-    public class DbHacksService : IDbHacksService
+    public class DbHacksService : BaseService, IDbHacksService
     {
+        public DbHacksService(
+            ILedenManager ledenManager,
+            IGroepsWerkJarenManager groepsWerkJarenManager,
+            IAuthenticatieManager authenticatieManager,
+            IAutorisatieManager autorisatieManager,
+            IAbonnementenManager abonnementenManager): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieManager, abonnementenManager)
+        { }
+
         /// <summary>
-        /// Deze method geeft de gebruiker met gegeven <paramref name="gebruikersNaam"/> GAV-rechten voor een
-        /// willekeurige groep.
+        /// Erg lelijke hack die direct in de database schrijft om de aangelogde gebruiker
+        /// toegang te geven tot een testgroep.
         /// </summary>
-        /// <param name="gebruikersNaam"></param>
-        /// <returns>Groep-ID van de groep waarop je rechten hebt gekregen.</returns>
-        public int WillekeurigeGroepToekennen(string gebruikersNaam)
+        public void WillekeurigeGroepToekennen()
         {
-            return TestHacks.TestHacks.TestGroepToevoegen(gebruikersNaam);
+            Debug.Assert(_authenticatieMgr.AdNummerGet().HasValue);
+            TestHacks.TestHacks.TestGroepToevoegen(_authenticatieMgr.AdNummerGet().Value);
         }
     }
 }
