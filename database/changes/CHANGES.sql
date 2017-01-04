@@ -217,5 +217,5 @@ BEGIN
 END
 GO
 
-GRANT EXECUTE ON auth.spWillekeurigeGroepToekennenAd TO GapRole;
+GRANT EXECUTE ON auth.spWillekeurigeGroepToekennenAd TO GapHack;
 GO
