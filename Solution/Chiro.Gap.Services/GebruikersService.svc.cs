@@ -80,7 +80,6 @@ namespace Chiro.Gap.Services
         // Repositories, verantwoordelijk voor data access.
         private readonly IRepositoryProvider _repositoryProvider;
         private readonly IRepository<GebruikersRechtV2> _rechtenRepo;
-        private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
         private readonly IRepository<Persoon> _personenRepo; 
 
@@ -117,7 +116,6 @@ namespace Chiro.Gap.Services
             _repositoryProvider = repositoryProvider;
 
             _rechtenRepo = repositoryProvider.RepositoryGet<GebruikersRechtV2>();
-            _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
             _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
 

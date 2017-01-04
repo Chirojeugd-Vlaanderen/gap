@@ -1030,14 +1030,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				return View("AdresBewerken", model);
 			}
-			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>)
 			{
 				BaseModelInit(model, groepID);
 
 				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalenZelfdeGroep(model.AanvragerID));
-
-				var probleemPersIDs = from pa in ex.Detail.Objecten
-									  select pa.PersoonID;
 
 				model.Bewoners = (from p in bewoners
 								  select new CheckBoxListInfo(
@@ -1213,7 +1210,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				return View("AdresBewerken", model);
 			}
-			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>)
 			{
 				BaseModelInit(model, groepID);
 
@@ -1222,10 +1219,6 @@ namespace Chiro.Gap.WebApp.Controllers
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.
 				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalenZelfdeGroep(model.AanvragerID));
-
-				// Extraheer bewoners met problemen uit exceptie
-				var probleemPersIDs = from pa in ex.Detail.Objecten
-									  select pa.PersoonID;
 
 				model.Bewoners = (from p in bewoners
 								  select new CheckBoxListInfo(

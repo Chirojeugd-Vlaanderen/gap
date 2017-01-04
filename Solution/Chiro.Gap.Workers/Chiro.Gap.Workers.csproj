@@ -1,10 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -46,12 +44,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.ServiceModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
@@ -59,7 +53,6 @@
     <Compile Include="AdressenManager.cs" />
     <Compile Include="AuthenticatieManager.cs" />
     <Compile Include="AutorisatieManager.cs" />
-    <Compile Include="CategorieenManager.cs" />
     <Compile Include="ChiroGroepenManager.cs" />
     <Compile Include="CommunicatieVormenManager.cs" />
     <Compile Include="AfdelingsJaarManager.cs" />
@@ -98,11 +91,11 @@
       <Name>Chiro.Cdf.Poco</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
-      <Project>{b55edf1f-de3f-4e00-a359-0d56be67e197}</Project>
+      <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
       <Name>Chiro.Cdf.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
@@ -122,11 +115,11 @@
       <Name>Chiro.Gap.SyncInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">
-      <Project>{853b7fdf-27b6-48bc-a220-f68cce610b6b}</Project>
+      <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
       <Name>Chiro.Gap.Validatie</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
-      <Project>{bdaf9a9d-49e3-48ac-869d-e17e8a3d9203}</Project>
+      <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
       <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
   </ItemGroup>

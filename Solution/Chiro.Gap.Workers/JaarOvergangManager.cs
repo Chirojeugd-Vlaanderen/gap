@@ -35,31 +35,21 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class JaarOvergangManager : IJaarOvergangManager
     {
-        private readonly IGroepenManager _groepenMgr;
-		private readonly IChiroGroepenManager _chiroGroepenMgr;
         private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
 		private readonly IGroepsWerkJarenManager _groepsWerkJaarManager;
 
     	/// <summary>
     	/// Maakt een nieuwe jaarovergangsmanager aan
     	/// </summary>
-    	/// <param name="gm">
-    	/// 	De worker voor Groepen
-    	/// </param>
-    	/// <param name="cgm">
-    	/// 	De worker voor Chirogroepen
-    	/// </param>
     	/// <param name="ajm">
     	/// 	De worker voor AfdelingsJaren
     	/// </param>
     	/// <param name="wm">
     	/// 	De worker voor GroepsWerkJaren
     	/// </param>
-		public JaarOvergangManager(IGroepenManager gm, IChiroGroepenManager cgm, IAfdelingsJaarManager ajm, IGroepsWerkJarenManager wm)
+		public JaarOvergangManager(IAfdelingsJaarManager ajm, IGroepsWerkJarenManager wm)
         {
             // TODO (#1095): visie ontwikkelen over wanneer we IoC toepassen
-            _groepenMgr = gm;
-            _chiroGroepenMgr = cgm;
             _afdelingsJaarMgr = ajm;
             _groepsWerkJaarManager = wm;
         }

@@ -67,7 +67,6 @@ namespace Chiro.Gap.Services
         // Managers voor niet-triviale businesslogica
 
         private readonly ICommunicatieVormenManager _communicatieVormenMgr;
-        private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
         private readonly IAdressenManager _adressenMgr;
         private readonly IPersonenManager _personenMgr;
@@ -88,7 +87,6 @@ namespace Chiro.Gap.Services
         /// gebruiken context en repository op.</param>
         /// <param name="autorisatieMgr">Logica m.b.t. autorisatie</param>
         /// <param name="communicatieVormenMgr">Logica m.b.t. communicatievormen</param>
-        /// <param name="gebruikersRechtenMgr">Logica m.b.t. gebruikersrechten</param>
         /// <param name="gelieerdePersonenMgr">Logica m.b.t. gelieerde personen</param>
         /// <param name="adressenManager">Logica m.b.t. adressen</param>
         /// <param name="personenManager">Logica m.b.t. personen (geeuw)</param>
@@ -106,7 +104,6 @@ namespace Chiro.Gap.Services
             IRepositoryProvider repositoryProvider, 
             IAutorisatieManager autorisatieMgr,
             ICommunicatieVormenManager communicatieVormenMgr,
-            IGebruikersRechtenManager gebruikersRechtenMgr,
             IGelieerdePersonenManager gelieerdePersonenMgr,
             IAdressenManager adressenManager,
             IPersonenManager personenManager,
@@ -140,7 +137,6 @@ namespace Chiro.Gap.Services
             _publicatieRepo = repositoryProvider.RepositoryGet<Publicatie>();
 
             _communicatieVormenMgr = communicatieVormenMgr;
-            _gebruikersRechtenMgr = gebruikersRechtenMgr;
             _gelieerdePersonenMgr = gelieerdePersonenMgr;
             _adressenMgr = adressenManager;
             _personenMgr = personenManager;
