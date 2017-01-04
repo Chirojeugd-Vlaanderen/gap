@@ -89,9 +89,9 @@ BEGIN
 
 	set @datum =  @jaar + '-11-01';
 
-	INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, GroepsPermissies, IedereenPermissies)
+	INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, GroepsPermissies, IedereenPermissies, PersoonsPermissies)
 	SELECT
-			p.PersoonID, g.GroepID, @datum, 3, 3
+			p.PersoonID, g.GroepID, @datum, 3, 3, 1 -- Je moet jezelf kunnen zien om toegang te hebben, zie #5618
 	FROM
 			pers.Persoon p
 			, grp.Groep g
