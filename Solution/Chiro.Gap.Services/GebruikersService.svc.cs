@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * Bijgewerkt gebruikersbeheer Copyright 2014, 2015 Chirojeugd-Vlaanderen vzw
@@ -352,7 +352,7 @@ namespace Chiro.Gap.Services
             }
 
             // Mag ik mijn eigen gegevens lezen?
-            if (_autorisatieMgr.MagLezen(persoon, persoon))
+            if (!_autorisatieMgr.MagLezen(persoon, persoon))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
