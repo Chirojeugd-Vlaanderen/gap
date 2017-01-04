@@ -375,11 +375,9 @@ namespace Chiro.Gap.Workers
         /// informatie te lezen.</returns>
         public bool MagZichzelfLezen(Persoon persoon)
         {
-            return
-                persoon.GebruikersRechtV2.Any(
-                    gr =>
-                        gr.VervalDatum != null && gr.VervalDatum > DateTime.Now &&
-                        gr.PersoonsPermissies.HasFlag(Permissies.Lezen));
+            // In staging mag iedereen zichzelf lezen, anders kunnen we niet goed testen.
+            // TODO: verwijder dit in master.
+            return true;
         }
 
         /// <summary>
