@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Chirojeugd-Vlaanderen vzw")]
 [assembly: AssemblyProduct("Chiro.Gap.WorkerInterfaces")]
-[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2012")]
+[assembly: AssemblyCopyright("Copyright © The Gap Developers 2012-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

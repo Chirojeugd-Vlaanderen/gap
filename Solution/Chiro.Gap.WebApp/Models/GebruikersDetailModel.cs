@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2015, Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -16,20 +16,15 @@
  * limitations under the License.
  */
 
-using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
-namespace Chiro.Gap.Workers
+namespace Chiro.Gap.WebApp.Models
 {
     /// <summary>
-    /// Worker die alle businesslogica i.v.m. categorieën bevat
+    /// Model voor de gebruikersrechten van 1 gebruiker.
     /// </summary>
-    public class CategorieenManager
+    public class GebruikersDetailModel: MasterViewModel
     {
-        private readonly IAutorisatieManager _autorisatieMgr;
-
-        public CategorieenManager(IAutorisatieManager auMgr)
-        {
-            _autorisatieMgr = auMgr;
-        }
+        public GebruikersDetail Detail { get; set; }
     }
 }

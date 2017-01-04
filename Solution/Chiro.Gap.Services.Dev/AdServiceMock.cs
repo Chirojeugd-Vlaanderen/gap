@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +23,7 @@ using Chiro.Ad.ServiceContracts;
 namespace Chiro.Gap.Services.Dev
 {
     /// <summary>
-    /// Dummy-implementatie van de AdService, voor gebruik bij testen.
+    /// Dummy-implementatie van de AdService, voor gebruik bij development.
     /// </summary>
     public class AdServiceMock : IAdService
     {
@@ -47,6 +48,31 @@ namespace Chiro.Gap.Services.Dev
         public string GapLoginAanvragen(int adNr, string voornaam, string familienaam, string mailadres)
         {
             return String.Format("ONGELDIG-{0}", adNr);
+        }
+
+        /// <summary>
+        /// Levert een dummy ad-nummer op, voor development purposes.
+        /// </summary>
+        /// <param name="userName">Gebruikersnaam waarvoor AD-nummer opgeleverd moet worden.</param>
+        /// <returns></returns>
+        public int? AdNummerOphalen(string userName)
+        {
+            int result = 0;
+            foreach (char c in userName)
+            {
+                result += (int)c;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Levert dummy-gebruikersnaam op, voor development purposes.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer</param>
+        /// <returns>Dummy-gebruikersnaam voor persoon met gegeven adnr.</returns>
+        public string GebruikersNaamOphalen(int adNummer)
+        {
+            return String.Format("ONGELDIG-{0}", adNummer);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2013-2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2013-2017 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-using System;
 using System.Data;
 using System.Data.SqlClient;
 using Chiro.Gap.TestHacks.Properties;
@@ -26,26 +25,23 @@ namespace Chiro.Gap.TestHacks
     public class TestHacks
     {
         /// <summary>
-        /// Erg lelijke hack die direct in de database schrijft om een gebruiker met naam 
-        /// <paramref name="userName"/> toegang te geven tot een testgroep.
+        /// Erg lelijke hack die direct in de database schrijft om een gebruiker met gegeven
+        /// <paramref name="adNummer"/> toegang te geven tot een testgroep.
         /// </summary>
-        /// <param name="userName">naam van de gebruiker die toegang moet krijgen</param>
-        public static int TestGroepToevoegen(string userName)
+        /// <param name="adNummer"> van de gebruiker die toegang moet krijgen</param>
+        public static void TestGroepToevoegen(int adNummer)
         {
-            int result;
-
             using (var connection = new SqlConnection(Settings.Default.ConnectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("auth.spWillekeurigeGroepToekennen", connection)
+                var command = new SqlCommand("auth.spWillekeurigeGroepToekennenAd", connection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-                command.Parameters.Add(new SqlParameter("@login", userName));
-                result = Convert.ToInt32(command.ExecuteScalar());
+                command.Parameters.Add(new SqlParameter("@adNr", adNummer));
+                command.ExecuteNonQuery();
                 connection.Close();
             }
-            return result;
         }
     }
 }

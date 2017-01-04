@@ -57,8 +57,7 @@ namespace Chiro.Gap.Poco.Context
         public DbSet<PersoonsAdres> PersoonsAdres { get; set; }
         public DbSet<GroepsWerkJaar> GroepsWerkJaar { get; set; }
         public DbSet<Lid> Lid { get; set; }
-        public DbSet<Gav> Gav { get; set; }
-        public DbSet<GebruikersRecht> GebruikersRecht { get; set; }
+        public DbSet<GebruikersRechtV2> Gav { get; set; }
         public DbSet<Afdeling> Afdeling { get; set; }
         public DbSet<AfdelingsJaar> AfdelingsJaar { get; set; }
         public DbSet<OfficieleAfdeling> OfficieleAfdeling { get; set; }

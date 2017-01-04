@@ -277,11 +277,11 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We kunnen je login niet koppelen aan een persoon..
+        ///   Looks up a localized string similar to We kunnen je login ({0}, AD {1}) niet koppelen aan een persoon..
         /// </summary>
-        internal static string KoppelingGavPersoonOntbreekt {
+        internal static string KoppelingLoginPersoonOntbreekt {
             get {
-                return ResourceManager.GetString("KoppelingGavPersoonOntbreekt", resourceCulture);
+                return ResourceManager.GetString("KoppelingLoginPersoonOntbreekt", resourceCulture);
             }
         }
         

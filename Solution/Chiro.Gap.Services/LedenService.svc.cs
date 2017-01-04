@@ -2,6 +2,7 @@
  * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +67,6 @@ namespace Chiro.Gap.Services
 
         // Managers voor niet-triviale businesslogica
 
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IVerzekeringenManager _verzekeringenMgr;
         private readonly IGroepenManager _groepenMgr;
         private readonly IFunctiesManager _functiesMgr;
@@ -87,6 +87,7 @@ namespace Chiro.Gap.Services
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="groepenMgr">Businesslogica m.b.t. groepen</param>
         /// <param name="functiesMgr">Businesslogica m.b.t. functies</param>
+        /// <param name="authenticatieMgr">Businesslogica m.b.t. authenticatie</param>
         /// <param name="abonnementenManager">Businesslogica m.b.t. abonnementen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="ledenSync">Voor synchronisatie lidgegevens met Kipadmin</param>
@@ -95,9 +96,10 @@ namespace Chiro.Gap.Services
                             IVerzekeringenManager verzekeringenMgr,
                             ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                             IGroepenManager groepenMgr, IFunctiesManager functiesMgr,
+                            IAuthenticatieManager authenticatieMgr,
                             IRepositoryProvider repositoryProvider, ILedenSync ledenSync,
                             IAbonnementenManager abonnementenManager,
-                            IVerzekeringenSync verzekeringenSync): base(ledenMgr, groepsWerkJarenMgr, abonnementenManager)
+                            IVerzekeringenSync verzekeringenSync): base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -115,7 +117,6 @@ namespace Chiro.Gap.Services
             _afdelingenRepo = repositoryProvider.RepositoryGet<Afdeling>();
 
             _verzekeringenMgr = verzekeringenMgr;
-            _autorisatieMgr = autorisatieMgr;
             _groepenMgr = groepenMgr;
             _functiesMgr = functiesMgr;
 
@@ -502,7 +503,10 @@ namespace Chiro.Gap.Services
         public void FunctiesVervangen(int lidId, IEnumerable<int> functieIds)
         {
             var lid = _ledenRepo.ByID(lidId);
-            Gav.Check(lid);
+            if (_autorisatieMgr.PermissiesOphalen(lid) != Permissies.Bewerken)
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
 
             var functies = _functiesRepo.ByIDs(functieIds);
 
@@ -511,9 +515,9 @@ namespace Chiro.Gap.Services
             // In dat geval volstaat het om 1 check te doen, ipv een check per functie.
             // TIP: controleer GAV-schap functies.SelectMany(fn=>fn.Groep).Distinct().
 
-            foreach (var functie in functies)
+            if (functies.Any(functie => !_autorisatieMgr.PermissiesOphalen(functie).HasFlag(Permissies.Lezen)))
             {
-                Gav.Check(functie);
+                throw FaultExceptionHelper.GeenGav();
             }
 
             try

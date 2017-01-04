@@ -1,7 +1,8 @@
 ﻿/*
- * Copyright 2014,2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +29,6 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Services.Properties;
 using Chiro.Gap.WorkerInterfaces;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 using Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Chiro.Gap.Services
@@ -42,33 +42,41 @@ namespace Chiro.Gap.Services
     {
         protected readonly ILedenManager _ledenMgr;
         protected readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
+        protected readonly IAuthenticatieManager _authenticatieMgr;
         protected readonly IAbonnementenManager _abonnementenMgr;
+        protected readonly IAutorisatieManager _autorisatieMgr;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="ledenManager">LedenManager.</param>
         /// <param name="groepsWerkJarenManager">GroepsWerkJarenManager.</param>
+        /// <param name="authenticatieManager">AuthenticatieManager.</param>
+        /// <param name="autorisatieManager">AutorisatieManager.</param>
         /// <param name="abonnementenManager">AbonnementenManager.</param>
-        public BaseService(ILedenManager ledenManager, IGroepsWerkJarenManager groepsWerkJarenManager,
+        public BaseService(
+            ILedenManager ledenManager, 
+            IGroepsWerkJarenManager groepsWerkJarenManager,
+            IAuthenticatieManager authenticatieManager,
+            IAutorisatieManager autorisatieManager,
             IAbonnementenManager abonnementenManager)
         {
             _ledenMgr = ledenManager;
             _groepsWerkJarenMgr = groepsWerkJarenManager;
             _abonnementenMgr = abonnementenManager;
+            _authenticatieMgr = authenticatieManager;
+            _autorisatieMgr = autorisatieManager;
             MappingsDefinieren();
         }
-
-        #region Mappings voor service
 
         /// <summary>
         /// Definieert meteen alle nodige mappings.
         /// </summary>
         private void MappingsDefinieren()
         {
-            var helper = new MappingHelper(_ledenMgr, _groepsWerkJarenMgr, _abonnementenMgr);
+            var helper = new MappingHelper(_ledenMgr, _groepsWerkJarenMgr, _abonnementenMgr, _authenticatieMgr, _autorisatieMgr);
             helper.MappingsDefinieren();
         }
-        #endregion
+
     }
 }

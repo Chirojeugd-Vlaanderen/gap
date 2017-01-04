@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014,2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,10 +33,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// <summary>
         /// Rol van de gebruiker
         /// </summary>
-        /// <remarks>In praktijk heeft een niet-vervallen gebruiker voorlopig altijd
-        /// de rol GAV. Zie ook #844</remarks>
         [DataMember]
-        public Rol Rol { get; set; }
+        public GebruikersRecht GebruikersRecht { get; set; }
 
         /// <summary>
         /// Vervaldatum gebruikersrecht
@@ -48,7 +47,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// Login voor de gebruiker
         /// </summary>
         [DataMember]
-        public string GavLogin { get; set; }
+        public string Login { get; set; }
 
         /// <summary>
         /// Geeft aan of het gebruikersrecht verlengbaar is

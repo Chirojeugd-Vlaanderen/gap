@@ -30,12 +30,10 @@ namespace Chiro.Gap.ServiceContracts
     public interface IDbHacksService
     {
         /// <summary>
-        /// Deze method geeft de gebruiker met gegeven <paramref name="gebruikersNaam"/> GAV-rechten voor een
-        /// willekeurige groep.
+        /// Erg lelijke hack die direct in de database schrijft om de aangelogde gebruiker
+        /// toegang te geven tot een testgroep.
         /// </summary>
-        /// <param name="gebruikersNaam"></param>
-        /// <returns>Groep-ID van de groep waarop je rechten hebt gekregen.</returns>
         [OperationContract]
-        int WillekeurigeGroepToekennen(string gebruikersNaam);
+        void WillekeurigeGroepToekennen();
     }
 }

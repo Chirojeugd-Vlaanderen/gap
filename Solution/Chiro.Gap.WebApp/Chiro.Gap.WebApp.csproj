@@ -58,7 +58,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -97,16 +96,6 @@
     <Compile Include="Controllers\FunctiesController.cs" />
     <Compile Include="Controllers\GebruikersRechtController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
-    <Compile Include="App_GlobalResources\MyResources.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MyResources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\MyResources.nl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MyResources.nl.resx</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\list.cs" />
     <Compile Include="Controllers\PersonenEnLedenController.cs" />
     <Compile Include="Controllers\UitstappenController.cs" />
@@ -127,6 +116,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HtmlHelpers\InfoLinkHelper.cs" />
+    <Compile Include="HtmlHelpers\PermissieHelper.cs" />
     <Compile Include="HtmlHelpers\RadioButtonListHelper.cs" />
     <Compile Include="HtmlHelpers\PersoonsLinkHelper.cs" />
     <Compile Include="HtmlHelpers\PrintLijstHelper.cs" />
@@ -142,10 +132,12 @@
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
     <Compile Include="Models\DeelnemerBewerkenModel.cs" />
+    <Compile Include="Models\IMasterViewModel.cs" />
     <Compile Include="Models\VoorkeursMailModel.cs" />
     <Compile Include="Models\DubbelpuntModel.cs" />
     <Compile Include="Models\FunctieModel.cs" />
     <Compile Include="Models\GavOverzichtModel.cs" />
+    <Compile Include="Models\GebruikersDetailModel.cs" />
     <Compile Include="Models\GroepInfoModel.cs" />
     <Compile Include="Models\IAdresBewerkenModel.cs" />
     <Compile Include="Models\InschrijvingsModel.cs" />
@@ -411,6 +403,10 @@
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
       <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
       <Name>Chiro.Cdf.Validation</Name>
@@ -437,16 +433,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\MyResources.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>MyResources.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\MyResources.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>MyResources.nl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\favicon.ico" />
     <Compile Include="ActionFilters\ParametersMatchAttribute.cs" />
@@ -601,7 +587,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Dubbelpunt\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

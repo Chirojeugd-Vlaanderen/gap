@@ -563,24 +563,24 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new PersoonEnLidModel();
 			BaseModelInit(model, groepID);
 
-			model.PersoonLidInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(id));
+			model.PersoonLidGebruikersInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidGebruikersInfo>(l => l.AlleDetailsOphalen(id));
 
-			if (!model.PersoonLidInfo.PersoonDetail.SterfDatum.HasValue)
+			if (!model.PersoonLidGebruikersInfo.PersoonDetail.SterfDatum.HasValue)
 			{
 				AfdelingenOphalen(model);
 
-				model.KanVerzekerenLoonVerlies = model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null &&
+				model.KanVerzekerenLoonVerlies = model.PersoonLidGebruikersInfo.PersoonDetail.GeboorteDatum != null &&
 												 DateTime.Today.Year -
-												 ((DateTime)model.PersoonLidInfo.PersoonDetail.GeboorteDatum).Year >=
+												 ((DateTime)model.PersoonLidGebruikersInfo.PersoonDetail.GeboorteDatum).Year >=
 												 Settings.Default.LoonVerliesVanafLeeftijd;
 				model.PrijsVerzekeringLoonVerlies = Settings.Default.PrijsVerzekeringLoonVerlies;
-				model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
+				model.Titel = model.PersoonLidGebruikersInfo.PersoonDetail.VolledigeNaam;
 
 				return View("Bewerken", model);
 			}
 			else
 			{
-				model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " (†)";
+				model.Titel = model.PersoonLidGebruikersInfo.PersoonDetail.VolledigeNaam + " (†)";
 				return View("OverledenPersoon", model);
 			}
 		}
@@ -594,10 +594,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		private void AfdelingenOphalen(PersoonEnLidModel model)
 		{
-			if (model.PersoonLidInfo.LidInfo != null)
+            if (model.PersoonLidGebruikersInfo.LidInfo != null)
 			{
 				model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
-				(groep => groep.ActieveAfdelingenOphalen(model.PersoonLidInfo.LidInfo.GroepsWerkJaarID));
+                (groep => groep.ActieveAfdelingenOphalen(model.PersoonLidGebruikersInfo.LidInfo.GroepsWerkJaarID));
 			}
 		}
 
@@ -1030,14 +1030,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				return View("AdresBewerken", model);
 			}
-			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>)
 			{
 				BaseModelInit(model, groepID);
 
 				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalenZelfdeGroep(model.AanvragerID));
-
-				var probleemPersIDs = from pa in ex.Detail.Objecten
-									  select pa.PersoonID;
 
 				model.Bewoners = (from p in bewoners
 								  select new CheckBoxListInfo(
@@ -1213,7 +1210,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				return View("AdresBewerken", model);
 			}
-			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>)
 			{
 				BaseModelInit(model, groepID);
 
@@ -1222,10 +1219,6 @@ namespace Chiro.Gap.WebApp.Controllers
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.
 				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalenZelfdeGroep(model.AanvragerID));
-
-				// Extraheer bewoners met problemen uit exceptie
-				var probleemPersIDs = from pa in ex.Detail.Objecten
-									  select pa.PersoonID;
 
 				model.Bewoners = (from p in bewoners
 								  select new CheckBoxListInfo(
@@ -1265,21 +1258,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Een redirect naar het wijzigen van eigen e-mailadres</returns>
 		public ActionResult MijnEmailInstellen(int groepID)
 		{
-			// Dit is tamelijk omslachtig, maar ik wil op dit moment niet veel meer
-			// wijzigen aan de oude backend.
+            var ik = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.DetailsOphalen());
 
-			var gavs =
-				ServiceHelper.CallService<IGroepenService, IEnumerable<GebruikersDetail>>(
-					svc => svc.GebruikersOphalen(groepID));
-
-
-			string mijnUser = System.Web.HttpContext.Current.User.Identity.Name;
-
-			var mijnGav = (from gav in gavs
-						   where String.Compare(gav.GavLogin, mijnUser, StringComparison.OrdinalIgnoreCase) == 0
-						   select gav).First();
-
-			return RedirectToAction("NieuweCommVorm", new { groepID, id = mijnGav.GelieerdePersoonID });
+			return RedirectToAction("NieuweCommVorm", new { groepID, id = ik.GelieerdePersoonID });
 		}
 
 

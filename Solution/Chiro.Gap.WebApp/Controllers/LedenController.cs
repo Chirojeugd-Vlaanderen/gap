@@ -673,7 +673,6 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             catch (FaultException<FoutNummerFault> ex) 
             {
-                var lidInfo = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
                 switch (ex.Detail.FoutNummer) 
                 {
                     case FoutNummer.GroepInactief:

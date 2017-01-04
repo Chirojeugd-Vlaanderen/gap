@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -18,12 +18,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Chiro.Ad.ServiceContracts;
 using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.WorkerInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -90,11 +92,11 @@ namespace Chiro.Gap.Services.Test
         #endregion
 
 
-        /// <summary>
-        ///A test for RechtenToekennen
+        ///<summary>
+        ///Test voor gebruiker zonder rechten maken.
         ///</summary>
         [TestMethod()]
-        public void RechtenToekennenTest()
+        public void GebruikerMakenTest()
         {
             // ARRANGE
 
@@ -128,8 +130,20 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Gav>()).Returns(new DummyRepo<Gav>(new List<Gav>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>())
+                .Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                .Returns(new DummyRepo<Groep>(new List<Groep> {gelieerdePersoon.Groep}));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // Mock AD-service
+            var adServiceMock = new Mock<IAdService>();
+            adServiceMock.Setup(src => src.GapLoginAanvragen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(src => src.GetChannel<IAdService>()).Returns(adServiceMock.Object);
+
+            Factory.InstantieRegistreren(channelProviderMock.Object);
 
             // ACT
 
@@ -139,7 +153,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.IsTrue(gelieerdePersoon.Persoon.Gav.Any());
+            adServiceMock.Verify(src => src.GapLoginAanvragen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
         /// <summary>
@@ -150,34 +164,116 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
 
-            var gav = new Gav();
+            var gr = new GebruikersRechtV2();
             var gelieerdePersoon = new GelieerdePersoon
                                    {
                                        ID = 1,
                                        Groep = new ChiroGroep {ID = 3},
-                                       Persoon = new Persoon {ID = 2, Gav = new List<Gav> {gav}}
+                                       Persoon = new Persoon {ID = 2, GebruikersRechtV2 = new List<GebruikersRechtV2> {gr}}
                                    };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
-            gav.Persoon.Add(gelieerdePersoon.Persoon);
-            var gebruikersrecht = new GebruikersRecht {Gav = gav, Groep = gelieerdePersoon.Groep};
-            gav.GebruikersRecht.Add(gebruikersrecht);
+
+            gr.Groep = gelieerdePersoon.Groep;
+            gr.Persoon = gelieerdePersoon.Persoon;
+            gelieerdePersoon.Persoon.GebruikersRechtV2.Add(gr);
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Gav>())
-                .Returns(new DummyRepo<Gav>(new List<Gav> {gav}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>())
+                .Returns(new DummyRepo<Persoon>(new List<Persoon> { gelieerdePersoon.Persoon }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>())
+                .Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2> { gr }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
 
             var target = Factory.Maak<GebruikersService>();
-            target.RechtenAfnemen(gelieerdePersoon.ID, new[] {gelieerdePersoon.Groep.ID});
+            target.RechtenAfnemen(gelieerdePersoon.Persoon.ID, new[] {gelieerdePersoon.Groep.ID});
 
             // ASSERT
 
-            Assert.IsTrue(gebruikersrecht.VervalDatum <= DateTime.Now);
-            
+            Assert.IsTrue(gr.VervalDatum <= DateTime.Now);
+        }
+
+        /// <summary>
+        ///A test for RechtenAfnemen
+        ///</summary>
+        [TestMethod()]
+        public void RechtenAfnemenPermissiesTest()
+        {
+            // ARRANGE
+
+            var gr = new GebruikersRechtV2();
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Groep = new ChiroGroep { ID = 3 },
+                Persoon = new Persoon { ID = 2, GebruikersRechtV2 = new List<GebruikersRechtV2> { gr } }
+            };
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+
+            gr.Groep = gelieerdePersoon.Groep;
+            gr.Persoon = gelieerdePersoon.Persoon;
+            gelieerdePersoon.Persoon.GebruikersRechtV2.Add(gr);
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>())
+                .Returns(new DummyRepo<Persoon>(new List<Persoon> { gelieerdePersoon.Persoon }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>())
+                .Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2> { gr }));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GebruikersService>();
+            target.RechtenAfnemen(gelieerdePersoon.Persoon.ID, new[] { gelieerdePersoon.Groep.ID });
+
+            // ASSERT
+
+            Assert.IsTrue(gr.VervalDatum <= DateTime.Now);
+        }
+
+        /// <summary>
+        /// Wordt er getest of een gebruiker wel het recht heeft om zijn eigen info te zien?
+        /// </summary>
+        [TestMethod()]
+        public void GebruikerOphalenTest()
+        {
+            // ARRANGE
+
+            const int mijnAdNr = 1;
+
+            var gebruikersRecht = new GebruikersRechtV2
+            {
+                Persoon = new Persoon { ID = 2, AdNummer = mijnAdNr },
+                Groep = new ChiroGroep { ID = 3 },
+                PersoonsPermissies = Permissies.Lezen,
+                VervalDatum = DateTime.Now.AddDays(1)
+            };
+            gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
+            gebruikersRecht.Groep.GebruikersRechtV2.Add(gebruikersRecht);
+
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
+            var autorisatieMangerMock = new Mock<IAutorisatieManager>();
+
+            authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(mijnAdNr);
+            autorisatieMangerMock.Setup(svc => svc.MagLezen(gebruikersRecht.Persoon, gebruikersRecht.Persoon)).Verifiable();
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>()).Returns(new DummyRepo<Persoon>(new List<Persoon> {gebruikersRecht.Persoon}));
+
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
+            Factory.InstantieRegistreren(autorisatieMangerMock.Object);
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GebruikersService>();
+            target.DetailsOphalen();
+
+            // ASSERT
+
+            autorisatieMangerMock.Verify(src => src.MagLezen(gebruikersRecht.Persoon, gebruikersRecht.Persoon), Times.AtLeastOnce());
         }
     }
 }

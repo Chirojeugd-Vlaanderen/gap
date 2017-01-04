@@ -1,7 +1,7 @@
-﻿/*
- * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+/*
+ * Copyright 2014 Johan Vervloet. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://gapwiki.chiro.be/copyright
+ * https://develop.chiro.be/gap/wiki/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,23 @@
  * limitations under the License.
  */
 
+using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
-    /// <summary>
-    /// Een gebruikersrecht is niet veel meer dan een combinatie van rollen.
-    /// </summary>
-    [DataContract]
-    public class GebruikersRecht
-    {
+	/// <summary>
+	/// DataContract waarin een gelieerde persoon, zijn/haar LidInfo, zijn/haar adressen, 
+	/// zijn/haar communicatievormen en gebruikersinfo aan elkaar koppeld zijn
+	/// </summary>
+	[DataContract]
+	public class PersoonLidGebruikersInfo: PersoonLidInfo
+	{
+	    /// <summary>
+	    /// Info over eventueel gebruikersrecht van deze gelieerde persoon op zijn eigen groep.
+	    /// (null als er geen gebruikersrecht is)
+	    /// </summary>
         [DataMember]
-        public Permissies PersoonsPermissies { get; set; }
-
-        [DataMember]
-        public Permissies GroepsPermissies { get; set; }
-
-        [DataMember]
-        public Permissies AfdelingsPermissies { get; set; }
-
-        [DataMember]
-        public Permissies IedereenPermissies { get; set; }
-    }
+        public GebruikersInfo GebruikersInfo { get; set; }
+	}
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * Refactoring AD-access (#4938) Copyright 2016, Chirojeugd-Vlaanderen vzw.
@@ -129,6 +129,24 @@ namespace Chiro.Ad.DirectoryAccess
             using (var entry = EntryOphalen(adNr, ldapRoot))
             {
                 return entry == null ? null : EntryToLogin(ldapRoot, entry);
+            }
+        }
+
+        /// <summary>
+        /// Zoekt de login van een bestaande Chirogebruiker op.
+        /// </summary>
+        /// <param name="ldapRoot"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public Chirologin GebruikerZoeken(string ldaproot, string username)
+        {
+            using (var entry = EntryOphalen(username, ldaproot))
+            {
+                if (entry != null)
+                {
+                    return EntryToLogin(ldaproot, entry);
+                }
+                return null;
             }
         }
 
