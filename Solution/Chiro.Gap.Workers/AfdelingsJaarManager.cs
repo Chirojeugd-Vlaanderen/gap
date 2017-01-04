@@ -31,21 +31,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class AfdelingsJaarManager : IAfdelingsJaarManager
 	{
-        private readonly ILedenSync _ledenSync;
-
-        private readonly IVeelGebruikt _veelGebruikt;
-        private readonly IAutorisatieManager _autorisatieMgr;
-
-        public AfdelingsJaarManager(
-            IVeelGebruikt veelGebruikt,
-            IAutorisatieManager autorisatieMgr,
-            ILedenSync ledenSync)
-        {
-            _veelGebruikt = veelGebruikt;
-            _autorisatieMgr = autorisatieMgr;
-            _ledenSync = ledenSync;
-        }
-
         /// <summary>
         /// Maakt een afdelingsjaar voor een groep en een afdeling, persisteert niet.
         /// </summary>
