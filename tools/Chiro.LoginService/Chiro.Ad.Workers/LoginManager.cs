@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
-﻿using System.Collections;
-﻿using System.Collections.Generic;
-﻿using System.Text;
-﻿using Chiro.Ad.DirectoryInterface;
-﻿using Chiro.Ad.Domain;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Chiro.Ad.DirectoryInterface;
+using Chiro.Ad.Domain;
 using Chiro.Cdf.Mailer;
+using System.Linq;
 
 namespace Chiro.Ad.Workers
 {
@@ -110,8 +110,10 @@ namespace Chiro.Ad.Workers
         /// <returns></returns>
         public Chirologin Zoeken(string username)
         {
-            return _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapLokaalRoot, username)
-                ?? _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapWereldRoot, username);
+            var login = username.Split('\\').LastOrDefault();
+           
+            return _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapLokaalRoot, login)
+                ?? _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapWereldRoot, login);
         }
 
         /// <summary>
