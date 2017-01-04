@@ -215,3 +215,7 @@ BEGIN
 	set @stamnr = (select top 1 g.Code from grp.Groep g where g.StopDatum is null order by newid());
 	exec auth.spGebruikersRechtToekennenAd @stamnr, @adNr
 END
+GO
+
+GRANT EXECUTE ON auth.spWillekeurigeGroepToekennenAd TO GapRole;
+GO
