@@ -257,7 +257,7 @@ namespace Chiro.Gap.Services.Test
             var autorisatieMangerMock = new Mock<IAutorisatieManager>();
 
             authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(mijnAdNr);
-            autorisatieMangerMock.Setup(svc => svc.MagLezen(gebruikersRecht.Persoon, gebruikersRecht.Persoon)).Verifiable();
+            autorisatieMangerMock.Setup(svc => svc.MagLezen(gebruikersRecht.Persoon, gebruikersRecht.Persoon)).Returns(true).Verifiable();
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>()).Returns(new DummyRepo<Persoon>(new List<Persoon> {gebruikersRecht.Persoon}));
