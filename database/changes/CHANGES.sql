@@ -43,8 +43,8 @@ GO
 CREATE UNIQUE INDEX AK_GebruikersRechtV2_PersoonID_GroepID ON auth.GebruikersRechtV2(PersoonID, GroepID);
 GO
 
-INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, GroepsPermissies, IedereenPermissies)
-SELECT gs.PersoonID, gr.GroepID, max(gr.VervalDatum) AS VervalDatum, 3 as GroepsPermissies, 3 as IedereenPermissies
+INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, GroepsPermissies, IedereenPermissies, PersoonsPermissies)
+SELECT gs.PersoonID, gr.GroepID, max(gr.VervalDatum) AS VervalDatum, 3 as GroepsPermissies, 3 as IedereenPermissies, 1 as PersoonsPermissies
 FROM auth.GebruikersRecht gr
 JOIN auth.Gav gav on gr.GavID = gav.GavID
 JOIN auth.GavSchap gs on gav.GavID = gs.GavID
