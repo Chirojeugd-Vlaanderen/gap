@@ -89,6 +89,12 @@ BEGIN
 
 	set @datum =  @jaar + '-11-01';
 
+	-- Verwijder eventueel oud gebruikersrecht.
+	DELETE gr FROM auth.GebruikersRechtV2 gr 
+		JOIN pers.Persoon p ON gr.PersoonID = p.PersoonID
+		JOIN grp.Groep g ON gr.GroepID = g.GroepID
+	WHERE p.AdNummer=@adNr AND g.Code=@stamNr;
+
 	INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, GroepsPermissies, IedereenPermissies, PersoonsPermissies)
 	SELECT
 			p.PersoonID, g.GroepID, @datum, 3, 3, 1 -- Je moet jezelf kunnen zien om toegang te hebben, zie #5618
@@ -98,8 +104,6 @@ BEGIN
 	WHERE
 			p.AdNummer=@adNr
 			AND g.Code=@stamnr
-			AND NOT EXISTS (SELECT 1 FROM auth.GebruikersRechtV2 gr
-							WHERE gr.PersoonID = p.PersoonID AND gr.GroepID = g.GroepID)
 
 	IF @@ROWCOUNT <= 0
 	BEGIN
