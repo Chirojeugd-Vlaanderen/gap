@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2014, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
@@ -17,19 +17,11 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using AutoMapper;
-using Chiro.Gap.Domain;
-using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.Services.Properties;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.ServiceContracts.Mappers;
+using Chiro.Cdf.AdnrWcfExtension;
+using System.ServiceModel;
+using System.Linq;
 
 namespace Chiro.Gap.Services
 {
@@ -38,6 +30,7 @@ namespace Chiro.Gap.Services
     /// 
     /// Deze doet in principe niet veel anders dan AutoMapper initializeren.
     /// </summary>
+    [AdnrInspectorBehavior]
     public class BaseService
     {
         protected readonly ILedenManager _ledenMgr;
@@ -45,6 +38,15 @@ namespace Chiro.Gap.Services
         protected readonly IAuthenticatieManager _authenticatieMgr;
         protected readonly IAbonnementenManager _abonnementenMgr;
         protected readonly IAutorisatieManager _autorisatieMgr;
+
+        protected int AdnrCaller
+        {
+            get
+            {
+                var adnrHeader = OperationContext.Current.IncomingMessageProperties.FirstOrDefault(f => f.Key == "AdnrHeader").Value as AdnrHeader;
+                return adnrHeader.AdNr;
+            }
+        }
 
         /// <summary>
         /// Constructor.
@@ -67,6 +69,8 @@ namespace Chiro.Gap.Services
             _authenticatieMgr = authenticatieManager;
             _autorisatieMgr = autorisatieManager;
             MappingsDefinieren();
+
+            int a = AdnrCaller;
         }
 
         /// <summary>
