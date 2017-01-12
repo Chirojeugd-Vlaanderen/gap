@@ -22,6 +22,7 @@ using System.ServiceModel;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Poco.Model;
 using System;
+using Chiro.Cdf.AdnrWcfExtension;
 
 namespace Chiro.Gap.Workers
 {
@@ -61,8 +62,8 @@ namespace Chiro.Gap.Workers
         /// <returns>Het AD-nummer van de momenteel aangemelde gebruiker.</returns>
         public int? AdNummerGet()
         {
-            string gebruikersNaam = GebruikersNaamGet();
-            return _veelGebruikt.AdNummerOphalen(gebruikersNaam);
+            var adnrHeader = OperationContext.Current.IncomingMessageProperties.FirstOrDefault(f => f.Key == "AdnrHeader").Value as AdnrHeader;
+            return adnrHeader == null ? null : (int?)adnrHeader.AdNr;
         }
 
         /// <summary>

@@ -39,15 +39,6 @@ namespace Chiro.Gap.Services
         protected readonly IAbonnementenManager _abonnementenMgr;
         protected readonly IAutorisatieManager _autorisatieMgr;
 
-        protected int AdnrCaller
-        {
-            get
-            {
-                var adnrHeader = OperationContext.Current.IncomingMessageProperties.FirstOrDefault(f => f.Key == "AdnrHeader").Value as AdnrHeader;
-                return adnrHeader.AdNr;
-            }
-        }
-
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -69,8 +60,6 @@ namespace Chiro.Gap.Services
             _authenticatieMgr = authenticatieManager;
             _autorisatieMgr = autorisatieManager;
             MappingsDefinieren();
-
-            int a = AdnrCaller;
         }
 
         /// <summary>
