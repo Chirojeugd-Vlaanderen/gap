@@ -86,10 +86,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				r = RedirectToAction(ex.Detail.FoutNummer == FoutNummer.GeenDatabaseVerbinding ? "GeenVerbinding" : "Index", "Error");
 			}
-			catch (Exception)
-			{
-				r = RedirectToAction("Index", "Error");
-			}
 
 			return r;
 		}
