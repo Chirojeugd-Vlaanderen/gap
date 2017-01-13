@@ -1,8 +1,8 @@
 /*
- * Copyright 2008-2015, 2017 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
- * Bijgewerkt gebruikersbeheer Copyright 2014, 2015 Chirojeugd-Vlaanderen vzw
+ * Bijgewerkt gebruikersbeheer Copyright 2014, 2015, 2017 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

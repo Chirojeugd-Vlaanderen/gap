@@ -140,6 +140,14 @@
       <Project>{07954288-81a1-45b5-8d4a-349356fa8472}</Project>
       <Name>Chiro.Cdf.AdnrWcfExtension</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication.Backend\Chiro.Cdf.Authentication.Backend.csproj">
+      <Project>{33d20616-2d3b-4693-8702-f2fae1dbfbd5}</Project>
+      <Name>Chiro.Cdf.Authentication.Backend</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
+      <Project>{fb9a2752-d976-4d92-9974-0e9339d1fdd2}</Project>
+      <Name>Chiro.Cdf.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
       <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
       <Name>Chiro.Cdf.Ioc.Factory</Name>

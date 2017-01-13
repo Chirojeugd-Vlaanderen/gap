@@ -22,6 +22,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
+using Chiro.Cdf.Authentication;
 
 namespace Chiro.Cdf.AdnrWcfExtension
 {
@@ -50,10 +51,10 @@ namespace Chiro.Cdf.AdnrWcfExtension
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
         {
             //Retrieve Inbound Object from Request
-            var header = request.Headers.GetHeader<AdnrHeader>("adnr-header", "s");
+            var header = request.Headers.GetHeader<UserInfo>("adnr-header", "s");
             if (header != null)
             {
-                OperationContext.Current.IncomingMessageProperties.Add("AdnrHeader", header);
+                OperationContext.Current.IncomingMessageProperties.Add("UserInfo", header);
             }
             return null;
         }
@@ -94,13 +95,13 @@ namespace Chiro.Cdf.AdnrWcfExtension
         public object BeforeSendRequest(ref Message request, IClientChannel channel)
         {
             //Instantiate new HeaderObject with values from ClientContext;
-            var dataToSend = new AdnrHeader
+            var dataToSend = new UserInfo
             {
                 // FIXME: Voorlopig hardgecodeerd test-ad-nummer.
                 AdNr = 39198
             };
 
-            var typedHeader = new MessageHeader<AdnrHeader>(dataToSend);
+            var typedHeader = new MessageHeader<UserInfo>(dataToSend);
             var untypedHeader = typedHeader.GetUntypedHeader("adnr-header", "s");
 
             request.Headers.Add(untypedHeader);

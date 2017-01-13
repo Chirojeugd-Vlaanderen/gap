@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -15,15 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System.Runtime.Serialization;
-
-namespace Chiro.Cdf.AdnrWcfExtension
+namespace Chiro.Cdf.Authentication
 {
-    [DataContract]
-    public class AdnrHeader
+    /// <summary>
+    /// Interface voor auhtenticatie.
+    /// </summary>
+    public interface IAuthenticator
     {
-        [DataMember]
-        public int AdNr { get; set; }
+        /// <summary>
+        /// Levert informatie op over de aangemelde user.
+        /// </summary>
+        /// <returns></returns>
+        UserInfo WieBenIk();
     }
 }

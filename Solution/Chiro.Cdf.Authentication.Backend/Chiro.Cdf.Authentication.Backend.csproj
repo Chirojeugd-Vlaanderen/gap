@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{07954288-81A1-45B5-8D4A-349356FA8472}</ProjectGuid>
+    <ProjectGuid>{33D20616-2D3B-4693-8702-F2FAE1DBFBD5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chiro.Cdf.AdnrWcfExtension</RootNamespace>
-    <AssemblyName>Chiro.Cdf.AdnrWcfExtension</AssemblyName>
+    <RootNamespace>Chiro.Cdf.Authentication.Backend</RootNamespace>
+    <AssemblyName>Chiro.Cdf.Authentication.Backend</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,9 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,13 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdnrInspectorBehavior.cs" />
-    <Compile Include="AdnrInspectorBehaviorExtension.cs" />
+    <Compile Include="BackendAuthenticator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
-      <Project>{fb9a2752-d976-4d92-9974-0e9339d1fdd2}</Project>
+      <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
       <Name>Chiro.Cdf.Authentication</Name>
     </ProjectReference>
   </ItemGroup>

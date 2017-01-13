@@ -1,8 +1,8 @@
 ﻿/*
- * Copyright 2014, 2017 the GAP developers. See the NOTICE file at the 
+ * Copyright 2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
- * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
+ * Verfijnen gebruikersrechten Copyright 2015, 2017 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Cdf.AdnrWcfExtension;
-using System.ServiceModel;
-using System.Linq;
 
 namespace Chiro.Gap.Services
 {

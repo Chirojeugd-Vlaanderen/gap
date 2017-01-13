@@ -17,12 +17,10 @@
  * limitations under the License.
  */
 using System.Linq;
-
-using System.ServiceModel;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Poco.Model;
 using System;
-using Chiro.Cdf.AdnrWcfExtension;
+using Chiro.Cdf.Authentication;
 
 namespace Chiro.Gap.Workers
 {
@@ -32,14 +30,16 @@ namespace Chiro.Gap.Workers
     public class AuthenticatieManager : IAuthenticatieManager
     {
         private readonly IVeelGebruikt _veelGebruikt;
+        private readonly IAuthenticator _authenticator;
 
         /// <summary>
         /// Creeert een nieuwe authenticatiemanager.
         /// </summary>
         /// <param name="veelGebruikt">Gecachete veelgebruikte zaken</param>
-        public AuthenticatieManager(IVeelGebruikt veelGebruikt)
+        public AuthenticatieManager(IVeelGebruikt veelGebruikt, IAuthenticator authenticator)
         {
             _veelGebruikt = veelGebruikt;
+            _authenticator = authenticator;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Chiro.Gap.Workers
         /// <returns>Het AD-nummer van de momenteel aangemelde gebruiker.</returns>
         public int? AdNummerGet()
         {
-            var adnrHeader = OperationContext.Current.IncomingMessageProperties.FirstOrDefault(f => f.Key == "AdnrHeader").Value as AdnrHeader;
+            var adnrHeader = _authenticator.WieBenIk();
             return adnrHeader == null ? null : (int?)adnrHeader.AdNr;
         }
 

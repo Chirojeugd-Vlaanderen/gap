@@ -90,6 +90,10 @@
       <Project>{07954288-81A1-45B5-8D4A-349356FA8472}</Project>
       <Name>Chiro.Cdf.AdnrWcfExtension</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
+      <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
+      <Name>Chiro.Cdf.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>
