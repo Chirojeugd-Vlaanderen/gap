@@ -2,7 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
- * Bijgewerkt gebruikersbeheer Copyright 2014 Johan Vervloet
+ * Bijgewerkt gebruikersbeheer Copyright 2014, 2017 Chirojeugd-Vlaanderen
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,9 +51,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public string GebruikersNaamGet()
         {
-            return ServiceSecurityContext.Current == null
-                       ? string.Empty
-                       : ServiceSecurityContext.Current.WindowsIdentity.Name;
+            return AdNummerGet() == null ? String.Empty : _veelGebruikt.GebruikersNaamOphalen(AdNummerGet().Value);
         }
 
         /// <summary>
