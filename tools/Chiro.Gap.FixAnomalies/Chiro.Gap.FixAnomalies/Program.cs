@@ -50,7 +50,12 @@ namespace Chiro.Gap.FixAnomalies
             var ledenManager = new LedenManager();
             var groepsWerkJarenManager = new GroepsWerkJarenManager(cacherij);
             var abonnementenManager = new AbonnementenManager();
-            var authenticatieManager = new AuthenticatieManager(cacherij);
+
+            // Ik geef null als authenticator, want als deze hacks proberen op te zoeken
+            // wie ik ben, dan is er iets mis. De bedoeling is dat ze dingen in de database
+            // onafhankelijk van wie ze runt. (Maar diegene die ze runt moet uiteraard wel
+            // voldoende rechten hebben op de database.)
+            var authenticatieManager = new AuthenticatieManager(cacherij, null);
             var autorisatieManager = new AutorisatieManager(authenticatieManager);
 
             var helper = new Chiro.Gap.ServiceContracts.Mappers.MappingHelper(ledenManager, groepsWerkJarenManager, abonnementenManager, authenticatieManager, autorisatieManager);

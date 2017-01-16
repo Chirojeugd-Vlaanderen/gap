@@ -82,6 +82,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
+      <Project>{fb9a2752-d976-4d92-9974-0e9339d1fdd2}</Project>
+      <Name>Chiro.Cdf.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{cdea3723-7d66-44bf-93d0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>
