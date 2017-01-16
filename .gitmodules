@@ -1,3 +1,7 @@
 [submodule "tools/Chiro.CiviCrm.Wcf"]
 	path = tools/Chiro.CiviCrm.Wcf
 	url = https://gitlab.chiro.be/civi/civicrm.net.git
+
+[submodule "tools/DotNetCasClient"]
+	path = tools/DotNetCasClient
+	url = https://github.com/apereo/dotnet-cas-client.git
