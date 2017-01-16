@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{07954288-81A1-45B5-8D4A-349356FA8472}</ProjectGuid>
+    <ProjectGuid>{B4FED89C-AB92-4D90-B566-3604A43A998A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chiro.Cdf.AdnrWcfExtension</RootNamespace>
-    <AssemblyName>Chiro.Cdf.AdnrWcfExtension</AssemblyName>
+    <RootNamespace>Chiro.Cdf.Authentication.Ad</RootNamespace>
+    <AssemblyName>Chiro.Cdf.Authentication.Ad</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,10 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,25 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdnrInspectorBehavior.cs" />
-    <Compile Include="AdnrInspectorBehaviorExtension.cs" />
+    <Compile Include="AdAuthenticator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chiro.Cdf.Authentication.Ad\Chiro.Cdf.Authentication.Ad.csproj">
-      <Project>{b4fed89c-ab92-4d90-b566-3604a43a998a}</Project>
-      <Name>Chiro.Cdf.Authentication.Ad</Name>
+    <ProjectReference Include="..\..\tools\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+      <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
+      <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
-      <Project>{fb9a2752-d976-4d92-9974-0e9339d1fdd2}</Project>
+      <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
       <Name>Chiro.Cdf.Authentication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
-      <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
-      <Name>Chiro.Cdf.Ioc.Factory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
   </ItemGroup>

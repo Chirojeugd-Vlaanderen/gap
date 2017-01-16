@@ -18,11 +18,15 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Runtime.Remoting.Services;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using Chiro.Cdf.Authentication;
+using Chiro.Cdf.Authentication.Ad;
+using Chiro.Cdf.Ioc.Factory;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Cdf.AdnrWcfExtension
 {
@@ -95,12 +99,14 @@ namespace Chiro.Cdf.AdnrWcfExtension
         public object BeforeSendRequest(ref Message request, IClientChannel channel)
         {
             //Instantiate new HeaderObject with values from ClientContext;
-            var dataToSend = new UserInfo
-            {
-                // FIXME: Voorlopig hardgecodeerd test-ad-nummer.
-                AdNr = 39198
-            };
 
+            // FIXME: Code smell!
+            // De manier van dependency injection hieronder is lelijk.
+            // Het is echter belangrijk dat in de staging- en live-omgeving de 
+            // 'echte' AD-service wordt aangeroepen, en in dev de fake service.
+            var authenticator = Factory.Maak<IAuthenticator>();
+
+            var dataToSend = authenticator.WieBenIk();
             var typedHeader = new MessageHeader<UserInfo>(dataToSend);
             var untypedHeader = typedHeader.GetUntypedHeader("adnr-header", "s");
 
