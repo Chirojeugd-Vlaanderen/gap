@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -24,6 +24,7 @@ using System.ServiceModel;
 using System.Web.Mvc;
 using System.Web.Routing;
 using AutoMapper;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ExcelManip;
@@ -47,16 +48,18 @@ namespace Chiro.Gap.WebApp.Controllers
 	[HandleError]
 	public class PersonenController : PersonenEnLedenController
 	{
-		/// <summary>
-		/// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
-		/// best toegewezen via inversion of control.
-		/// </summary>
-		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
-		/// service</param>
-		public PersonenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
-			: base(veelGebruikt, serviceHelper)
-		{
-		}
+	    /// <summary>
+	    /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
+	    /// best toegewezen via inversion of control.
+	    /// </summary>
+	    /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+	    /// service</param>
+	    /// <param name="serviceHelper"></param>
+	    /// <param name="authenticator"></param>
+	    public PersonenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
+        {
+        }
 		// TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
 
 		#region personenlijst
@@ -1258,8 +1261,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Een redirect naar het wijzigen van eigen e-mailadres</returns>
 		public ActionResult MijnEmailInstellen(int groepID)
 		{
-            var ik = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.DetailsOphalen());
-
+		    var ik = VeelGebruikt.GebruikersDetail(Authenticator.WieBenIk().AdNr);
 			return RedirectToAction("NieuweCommVorm", new { groepID, id = ik.GelieerdePersoonID });
 		}
 

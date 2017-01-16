@@ -318,45 +318,49 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Levert de details van de aangelogde gebruiker.
+        /// Levert de details van de persoon met gegeven <paramref name="adNummer"/>, inclusief gebruikersnaam.
         /// </summary>
-        /// <returns>Details van de aangelogde gebruiker.</returns>
-        public GebruikersDetail DetailsOphalen()
+        /// <param name="adNummer">AD-nummer van een persoon.</param>
+        /// <param name="aanMaken">Als deze <c>true</c> is, wordt een 'stub' aangemaakt als de persoon niet wordt gevonden.</param>
+        /// <returns>Details van de persoon met gegeven <paramref name="adNummer"/>.</returns>
+        public GebruikersDetail DetailsOphalen(int adNummer, bool aanMaken)
         {
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-            if (adNummer == null)
+            int? mijnAdNummer = _authenticatieMgr.AdNummerGet();
+            if (mijnAdNummer == null)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
                     Resources.KoppelingLoginPersoonOntbreekt,
                     _authenticatieMgr.GebruikersNaamGet(),
-                    adNummer));
+                    mijnAdNummer));
             }
             var persoon = (from p in _personenRepo.Select()
                            where p.AdNummer == adNummer
                            select p).FirstOrDefault();
+            var ik = (from p in _personenRepo.Select()
+                           where p.AdNummer == mijnAdNummer
+                           select p).FirstOrDefault();
 
-            if (persoon == null)
+            if (persoon == null && aanMaken)
             {
                 // We gaan de persoon registreren. Als hij nog niet bestond, had hij nog geen rechten.
                 // TODO: gegevens ophalen uit Civi, ipv leeg te laten (zie #5612).
                 persoon = new Persoon
                 {
-                    VoorNaam = _authenticatieMgr.GebruikersNaamGet(),
-                    // FIXME: gefoefel met lege familienaam.
-                    Naam = String.Empty,
-                    AdNummer = adNummer,
+                    // FIXME: stub-naam is niet zo goed. Misschien login erin verwerken?
+                    VoorNaam = adNummer.ToString(),
+                    Naam = "AD-nummer",
+                    AdNummer = mijnAdNummer,
                     Geslacht = GeslachtsType.Onbekend,
                 };
                 _personenRepo.Add(persoon);
                 _personenRepo.SaveChanges();
-            }
 
-            // Mag ik mijn eigen gegevens lezen?
-            if (!_autorisatieMgr.MagLezen(persoon, persoon))
-            {
-                throw FaultExceptionHelper.GeenGav();
+                // Controleer gebruikersrechten.
+                if (!_autorisatieMgr.MagLezen(ik, persoon))
+                {
+                    throw FaultExceptionHelper.GeenGav();
+                }
             }
-
             return Mapper.Map<Persoon, GebruikersDetail>(persoon);
         }
     }

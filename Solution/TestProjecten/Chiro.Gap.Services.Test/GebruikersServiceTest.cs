@@ -234,10 +234,13 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
-        /// Wordt er getest of een gebruiker wel het recht heeft om zijn eigen info te zien?
+        /// Heb ik de rechten om een opgevraagde persoon te zien?
         /// </summary>
+        /// <remarks>
+        /// FIXME: Deze functionaliteit hoort eigenlijk niet thuis in de GebruikersService.
+        /// </remarks>
         [TestMethod()]
-        public void GebruikerOphalenTest()
+        public void PersoonOphalenTest()
         {
             // ARRANGE
 
@@ -269,7 +272,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<GebruikersService>();
-            target.DetailsOphalen();
+            target.DetailsOphalen(mijnAdNr, false);
 
             // ASSERT
 

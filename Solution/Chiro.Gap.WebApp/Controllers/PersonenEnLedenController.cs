@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 
@@ -26,15 +27,20 @@ namespace Chiro.Gap.WebApp.Controllers
 {
 	public abstract class PersonenEnLedenController : BaseController
 	{
-		/// <summary>
-        /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
-        /// best toegewezen via inversion of control.
-        /// </summary>
-        /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
-        /// service</param>
-        protected PersonenEnLedenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
+	    /// <summary>
+	    /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
+	    /// best toegewezen via inversion of control.
+	    /// </summary>
+	    /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+	    /// service</param>
+	    /// <param name="serviceHelper"></param>
+	    /// <param name="authenticator"></param>
+	    protected PersonenEnLedenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
+        {
+        }
 
-		[HandleError]
+        [HandleError]
 		public abstract override ActionResult Index(int groepID);
 
         /// <summary>

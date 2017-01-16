@@ -415,17 +415,17 @@ namespace Chiro.Gap.WebApp
 
         #region Gebruiker
         /// <summary>
-        /// Levert de details van de gebruiker met de gegeven <paramref name="login"/>.
+        /// Levert de details van de gebruiker met de gegeven <paramref name="adnr"/>.
         /// </summary>
-        /// <param name="login">login van de gebruiker</param>
+        /// <param name="adnr">login van de gebruiker</param>
         /// <returns>De details van de gebruiker</returns>
-        public GebruikersDetail GebruikersDetail(string login)
+        public GebruikersDetail GebruikersDetail(int adnr)
         {
-            GebruikersDetail detail = (GebruikersDetail)_cache.Get(String.Format(GEBRUIKERCACHEKEY, login));
+            GebruikersDetail detail = (GebruikersDetail)_cache.Get(String.Format(GEBRUIKERCACHEKEY, adnr));
             if (detail == null)
             {
-                detail = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.DetailsOphalen());
-                _cache.Add(String.Format(GEBRUIKERCACHEKEY, login),
+                detail = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.DetailsOphalen(adnr, true));
+                _cache.Add(String.Format(GEBRUIKERCACHEKEY, adnr),
                     detail, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
             }
             return detail;
