@@ -71,7 +71,8 @@ namespace Chiro.Gap.WebApp.Test
 
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
-        {    
+        {
+            Factory.ContainerInit();
             _veelGebruiktMock = new Mock<IVeelGebruikt>();
 
             _veelGebruiktMock.Setup(vg => vg.GroepsWerkJaarOphalen(GROEP_ID)).Returns(new GroepsWerkJaarDetail

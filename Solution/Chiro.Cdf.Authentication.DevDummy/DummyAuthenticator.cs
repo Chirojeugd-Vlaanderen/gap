@@ -31,6 +31,13 @@ namespace Chiro.Cdf.Authentication.DevDummy
         /// <returns></returns>
         public UserInfo WieBenIk()
         {
+            if (HttpContext.Current == null)
+            {
+                // Als we unittests uitvoeren, dan is er geen username, dus dan geven we
+                // gewoon een dummy ad-nummer
+                return new UserInfo {AdNr = Properties.Settings.Default.TestAdNr};
+            }
+            // Voor dev 'berekenen' we een dummy-AD-nummer.
             string userName = HttpContext.Current.User.Identity.Name;
             int result = 0;
             foreach (char c in userName)
