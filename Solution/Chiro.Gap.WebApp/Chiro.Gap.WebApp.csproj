@@ -391,6 +391,18 @@
     <Content Include="Views\Shared\Globaal.Master" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chiro.Cdf.AdnrWcfExtension\Chiro.Cdf.AdnrWcfExtension.csproj">
+      <Project>{07954288-81a1-45b5-8d4a-349356fa8472}</Project>
+      <Name>Chiro.Cdf.AdnrWcfExtension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.DevDummy.csproj">
+      <Project>{80b76267-f691-4549-9811-e94e057104cd}</Project>
+      <Name>Chiro.Cdf.Authentication.DevDummy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
+      <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
+      <Name>Chiro.Cdf.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
       <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
       <Name>Chiro.Cdf.Ioc.Factory</Name>

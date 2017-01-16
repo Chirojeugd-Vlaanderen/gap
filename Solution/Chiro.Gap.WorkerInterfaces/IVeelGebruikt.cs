@@ -45,13 +45,6 @@ namespace Chiro.Gap.WorkerInterfaces
         void WerkJaarInvalideren(Groep groep);
 
         /// <summary>
-        /// Haalt het AD-nummer op van de user met gegeven <paramref name="gebruikersNaam"/>.
-        /// </summary>
-        /// <param name="gebruikersNaam">Een gebruikersnaam.</param>
-        /// <returns>Het AD-nummer van de user met die gebruikersnaam.</returns>
-        int? AdNummerOphalen(string gebruikersNaam);
-
-        /// <summary>
         /// Invalideert het gecachete AD-nummer voor de gebruiker met gegeven <paramref name="gebruikersNaam"/>.
         /// </summary>
         /// <param name="gebruikersNaam">Gebruikersnaam van gebruiker waarvan gecachete AD-nummer

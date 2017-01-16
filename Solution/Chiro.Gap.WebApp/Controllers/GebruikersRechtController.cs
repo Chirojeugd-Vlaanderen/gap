@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
@@ -29,12 +30,12 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// Controller voor 
+    /// Controller voor gebruikersrechten.
     /// </summary>
     public class GebruikersRechtController : BaseController
     {
-        public GebruikersRechtController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
-            : base(veelGebruikt, serviceHelper)
+        public GebruikersRechtController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
         {
         }
 

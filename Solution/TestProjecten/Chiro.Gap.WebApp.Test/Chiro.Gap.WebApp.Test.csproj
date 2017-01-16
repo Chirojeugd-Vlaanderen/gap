@@ -107,6 +107,10 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.DevDummy.csproj">
+      <Project>{80b76267-f691-4549-9811-e94e057104cd}</Project>
+      <Name>Chiro.Cdf.Authentication.DevDummy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
       <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
       <Name>Chiro.Cdf.Ioc.Factory</Name>
@@ -137,6 +141,7 @@
     <Folder Include="Test References\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

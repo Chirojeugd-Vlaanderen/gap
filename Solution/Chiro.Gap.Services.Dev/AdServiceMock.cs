@@ -57,12 +57,11 @@ namespace Chiro.Gap.Services.Dev
         /// <returns></returns>
         public int? AdNummerOphalen(string userName)
         {
-            int result = 0;
-            foreach (char c in userName)
-            {
-                result += (int)c;
-            }
-            return result;
+            // Als we hier terecht komen, dan is dat waarschijnlijk fout. Deze mock wordt normaal gezien
+            // enkel gebruikt als de user gebruikersrechten wil toekennen aan een andere persoon.
+            // In dat geval moet het AD-nummer al gekend zijn.
+            throw new InvalidOperationException(
+                "Dummy-AD-nummers worden gemaakt door Chiro.Cdf.Authentication.DevDummy.");
         }
 
         /// <summary>

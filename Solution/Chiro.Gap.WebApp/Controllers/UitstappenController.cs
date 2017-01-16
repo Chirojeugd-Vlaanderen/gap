@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ExcelManip;
@@ -37,8 +38,8 @@ namespace Chiro.Gap.WebApp.Controllers
     /// </summary>
     public class UitstappenController : BaseController
     {
-        public UitstappenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
-            : base(veelGebruikt, serviceHelper)
+        public UitstappenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
         {
         }
 
