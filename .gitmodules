@@ -4,4 +4,4 @@
 
 [submodule "tools/DotNetCasClient"]
 	path = tools/DotNetCasClient
-	url = https://github.com/apereo/dotnet-cas-client.git
+	url = https://github.com/johanv/dotnet-cas-client.git

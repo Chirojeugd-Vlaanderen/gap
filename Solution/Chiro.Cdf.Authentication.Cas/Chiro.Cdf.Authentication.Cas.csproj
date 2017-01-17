@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\tools\DotNetCasClient\DotNetCasClient\DotNetCasClient.csproj">
+      <Project>{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}</Project>
+      <Name>DotNetCasClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
       <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
       <Name>Chiro.Cdf.Authentication</Name>
