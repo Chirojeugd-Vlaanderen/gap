@@ -56,6 +56,10 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.ServiceModel" />
@@ -391,9 +395,17 @@
     <Content Include="Views\Shared\Globaal.Master" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\tools\DotNetCasClient\DotNetCasClient\DotNetCasClient.csproj">
+      <Project>{883a296e-c898-4d1f-9ed9-de7569defb3d}</Project>
+      <Name>DotNetCasClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.AdnrWcfExtension\Chiro.Cdf.AdnrWcfExtension.csproj">
       <Project>{07954288-81a1-45b5-8d4a-349356fa8472}</Project>
       <Name>Chiro.Cdf.AdnrWcfExtension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication.Cas\Chiro.Cdf.Authentication.Cas.csproj">
+      <Project>{22fc3247-9a1a-4b57-89ab-cb53b90146fe}</Project>
+      <Name>Chiro.Cdf.Authentication.Cas</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.DevDummy.csproj">
       <Project>{80b76267-f691-4549-9811-e94e057104cd}</Project>
