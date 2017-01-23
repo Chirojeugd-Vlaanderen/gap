@@ -1,7 +1,7 @@
 GAPIP17
 =======
 
-17-19 maart, [De Hagaard](http://dehagaard.be/), Herentals.
+17-19 maart, [De Hagaard](http://dehagaard.be/), Overijse.
 
 Wat is GAPIP?
 -------------
