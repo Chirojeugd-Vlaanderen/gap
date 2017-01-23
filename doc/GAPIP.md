@@ -9,7 +9,7 @@ Wat is GAPIP?
 GAPIP is het jaarlijkse nerdweekend voor IT'ers (en in het bijzonder de
 vrijwillige IT'ers) uit het Jeugdwerk. Al sinds 2015 organiseren we dit
 samen met de Chiro en Scouts en gidsen Vlaanderen, en ook Mediaraven is
-al een keertje meegweest. (IT-ploegen uit andere
+een keertje meegweest. (IT-ploegen uit andere
 jeugdverenigingen die interesse hebben: laat gerust iets weten ;))
 
 De bedoeling is om in een informele sfeer te kunnen werken aan onze
@@ -47,7 +47,7 @@ Maar als je graag dingen wil veranderen, dan zijn je suggesties welkom.
 ### zaterdag 18 maart
 
 -   ontbijt
--   [lightning talks](Lightning_talks.md)
+-   [lightning talks](LightningTalks.md)
 -   middagmaal
 -   [hackathon](hackathon.md) en [open spaces](Open_spaces.md)
 -   networking event (avondmaal)
@@ -62,10 +62,14 @@ Contact
 -------
 
 -   maillijst: Om alle informatie en discussies over GAPIP in je mailbox
-    te krijgen, schrijf je je in voor de 
+    te krijgen, schrijf je je in voor de
     [GAPIP mailing list](http://lists.maillijst.chiro.be/mailman/listinfo/gapip).
 -   irc: \#\#gapip op freenode (dubbele \#, want het is een
     tijdelijk kanaal)
 -   twitter:
     [\#gapip](https://twitter.com/hashtag/gapip?f=realtime&amp;src=hash)
 
+Archief
+-------
+Wie nog op zoek is naar informatie over vorige edities van GAPIP, kan eens
+kijken op onze [archiefpagina](GapipArchief.md).
