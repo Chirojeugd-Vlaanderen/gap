@@ -42,14 +42,14 @@ Maar als je graag dingen wil veranderen, dan zijn je suggesties welkom.
 ### vrijdag 17 maart
 
 -   welkom vanaf 19:00 uur
--   [hackathon](hackathon.md)
+-   [hackathon](Hackathon.md)
 
 ### zaterdag 18 maart
 
 -   ontbijt
--   [lightning talks](lightningTalks.md)
+-   [lightning talks](Lightning_talks.md)
 -   middagmaal
--   [hackathon](hackathon.md) en [open spaces](openSpaces.md)
+-   [hackathon](hackathon.md) en [open spaces](Open_spaces.md)
 -   networking event (avondmaal)
 -   [hackathon](hackathon.md)
 
