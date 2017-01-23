@@ -14,9 +14,10 @@ een beetje in-depht-materie. De bovengrens van 20 + 10 minuten is wel
 absoluut, als je daarna nog dieper op een onderwerp wil ingaan, dan kan dat
 in de namiddag, bij de [open spaces](Open_spaces.md).
 
-Het programma is nog erg beperkt. Wie suggesties heeft, mag die laten weten
-aan [Johan](https://twitter.com/vohanj), of gewoon een merge request maken
-voor deze file :-)
+Het programma is nog erg beperkt. Maar geef je suggesties zeker door,
+dat kan via de [maillijst](http://lists.maillijst.chiro.be/mailman/listinfo/gapip),
+je mag ze ook laten weten aan [Johan](https://twitter.com/vohanj), of 
+maak eventueel een merge request voor deze file :-)
 
 De suggesties tot zover:
 
