@@ -105,6 +105,7 @@ namespace Chiro.Gap.WebApp.Controllers
             string login = User == null ? null : User.Identity.Name;
 
             model.IsLive = VeelGebruikt.IsLive();
+            model.DeveloperMode = Authenticator.WieBenIk().DeveloperMode;
             int adnr = Authenticator.WieBenIk().AdNr;
             model.Ik = VeelGebruikt.GebruikersDetail(adnr);
 

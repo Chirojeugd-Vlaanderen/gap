@@ -100,7 +100,6 @@
     <Compile Include="Controllers\FunctiesController.cs" />
     <Compile Include="Controllers\GebruikersRechtController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
-    <Compile Include="Controllers\list.cs" />
     <Compile Include="Controllers\PersonenEnLedenController.cs" />
     <Compile Include="Controllers\UitstappenController.cs" />
     <Compile Include="ExcelResult.cs" />

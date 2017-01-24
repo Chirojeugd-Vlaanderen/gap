@@ -42,7 +42,7 @@
 			}
 		%>
         <%
-			if (!Model.IsLive)
+			if (!Model.IsLive && Model.DeveloperMode)
 			{
         %>
         <li><%= Html.ActionLink("Testgroep toevoegen", "TestGroepToevoegen", new {Controller = "Gav", groepID = 0}) %></li>
