@@ -33,6 +33,10 @@ wel toegelaten om zelf drinken of versnapering mee te brengen. Op
 voorwaarde dat de andere weekendgangers er ook van mogen eten/drinken
 uiteraard :-)
 
+Deelnemers
+----------
+Zie [Deelnemerslijst 2017](Deelnemers2017.md)
+
 Schedule
 --------
 
