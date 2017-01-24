@@ -108,6 +108,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication.Ad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication.DevDummy", "Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.DevDummy.csproj", "{80B76267-F691-4549-9811-E94E057104CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication.Cas", "Chiro.Cdf.Authentication.Cas\Chiro.Cdf.Authentication.Cas.csproj", "{22FC3247-9A1A-4B57-89AB-CB53B90146FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCasClient", "..\tools\DotNetCasClient\DotNetCasClient\DotNetCasClient.csproj", "{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -716,6 +720,38 @@ Global
 		{80B76267-F691-4549-9811-E94E057104CD}.Release|Win32.Build.0 = Release|Any CPU
 		{80B76267-F691-4549-9811-E94E057104CD}.Release|x86.ActiveCfg = Release|Any CPU
 		{80B76267-F691-4549-9811-E94E057104CD}.Release|x86.Build.0 = Release|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|Win32.Build.0 = Debug|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|x86.Build.0 = Debug|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Release|Win32.ActiveCfg = Release|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Release|Win32.Build.0 = Release|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Release|x86.Build.0 = Release|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Debug|Win32.Build.0 = Debug|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Debug|x86.Build.0 = Debug|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Release|Win32.ActiveCfg = Release|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Release|Win32.Build.0 = Release|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Release|x86.ActiveCfg = Release|Any CPU
+		{883A296E-C898-4D1F-9ED9-DE7569DEFB3D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -736,8 +772,8 @@ Global
 		{5CAA5C51-8250-4E6E-851F-FACE0951BEA9} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution8.vsmdi

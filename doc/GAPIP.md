@@ -1,16 +1,15 @@
-GAPIP16
+GAPIP17
 =======
 
-11-13 maart, [De
-Brink](https://www.hopper.be/nl/jeugdverblijf/de-brink), Herentals.
+17-19 maart, [De Hagaard](http://dehagaard.be/), Overijse.
 
 Wat is GAPIP?
 -------------
 
 GAPIP is het jaarlijkse nerdweekend voor IT'ers (en in het bijzonder de
-vrijwillige IT'ers) uit het Jeugdwerk. Vorig jaar was GAPIP voor het
-eerst een gezamenlijk weekend met Chiro, Scouts en Mediaraven, en we
-hopen dat nog vaak te kunnen herhalen. (IT-ploegen uit andere
+vrijwillige IT'ers) uit het Jeugdwerk. Al sinds 2015 organiseren we dit
+samen met de Chiro en Scouts en gidsen Vlaanderen, en ook Mediaraven is
+een keertje meegweest. (IT-ploegen uit andere
 jeugdverenigingen die interesse hebben: laat gerust iets weten ;))
 
 De bedoeling is om in een informele sfeer te kunnen werken aan onze
@@ -20,10 +19,6 @@ uitwisseling.
 
 We zorgen voor een bed, eten, drinken, stroom en een internetverbinding.
 De rest neem je zelf mee.
-
-(Als er andere jeugdverenigingen zijn die met een ploegje vrijwilligers
-willen komen, dan valt er zeker iets te regelen; neem gerust contact
-op).
 
 Het weekend begint vrijdagavond om 19.00 uur, en eindigt zondagmiddag.
 Maar als je je geen heel weekend kunt vrijmaken, dan mag je ook later
@@ -41,23 +36,24 @@ uiteraard :-)
 Schedule
 --------
 
-Het programma is gelijkaardig aan dat van vorig jaar.
+De structuur van het GAPIP-weekend is ieder jaar ongeveer hetzelfde.
+Maar als je graag dingen wil veranderen, dan zijn je suggesties welkom.
 
-### vrijdag 11 maart
+### vrijdag 17 maart
 
 -   welkom vanaf 19:00 uur
--   [hackathon](hackathon.md)
+-   [hackathon](Hackathon.md)
 
-### zaterdag 12 maart
+### zaterdag 18 maart
 
 -   ontbijt
--   [lightning talks|(lightning) talks](lightning talks|(lightning) talks.md)
+-   [lightning talks](LightningTalks.md)
 -   middagmaal
--   [hackathon](hackathon.md) en [open spaces](open spaces.md)
+-   [hackathon](hackathon.md) en [open spaces](Open_spaces.md)
 -   networking event (avondmaal)
 -   [hackathon](hackathon.md)
 
-### zondag 13 maart
+### zondag 19 maart
 
 -   ontbijt en opruim
 -   closing session om 12:00 uur
@@ -66,11 +62,14 @@ Contact
 -------
 
 -   maillijst: Om alle informatie en discussies over GAPIP in je mailbox
-    te krijgen, schrijf je je in voor de [GAPIP mailing
-    list](http://lists.maillijst.chiro.be/mailman/listinfo/gapip).
+    te krijgen, schrijf je je in voor de
+    [GAPIP mailing list](http://lists.maillijst.chiro.be/mailman/listinfo/gapip).
 -   irc: \#\#gapip op freenode (dubbele \#, want het is een
     tijdelijk kanaal)
 -   twitter:
     [\#gapip](https://twitter.com/hashtag/gapip?f=realtime&amp;src=hash)
--   facebook: https://www.facebook.com/events/1396004794031403/
 
+Archief
+-------
+Wie nog op zoek is naar informatie over vorige edities van GAPIP, kan eens
+kijken op onze [archiefpagina](GapipArchief.md).
