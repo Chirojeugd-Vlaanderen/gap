@@ -25,5 +25,12 @@ namespace Chiro.Cdf.Authentication
     {
         [DataMember]
         public int AdNr { get; set; }
+
+        /// <summary>
+        /// Als DeveloperMode gezet is, dan kan de user in dev en staging
+        /// toegang krijgen tot data van een willekeurige groep.
+        /// </summary>
+        [DataMember]
+        public bool DeveloperMode { get; set; }
     }
 }

@@ -45,6 +45,8 @@ namespace Chiro.Gap.Services
         public void WillekeurigeGroepToekennen()
         {
             Debug.Assert(_authenticatieMgr.AdNummerGet().HasValue);
+            // Eigenlijk moet de autorisatiemanager de rechten controleren.
+            Debug.Assert(_authenticatieMgr.IsDeveloper());
             TestHacks.TestHacks.TestGroepToevoegen(_authenticatieMgr.AdNummerGet().Value);
         }
     }
