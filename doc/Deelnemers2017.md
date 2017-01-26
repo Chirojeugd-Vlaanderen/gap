@@ -5,6 +5,8 @@
 * Johan (Chiro)
 * Wannes (Chiro) zaterdag
 * Jo (Chiro) misschien zaterdag
+* Pieter (Chiro)
+* Janec (Chiro) gaat zaterdagavond naar huis
 
 ## Komen niet
 
