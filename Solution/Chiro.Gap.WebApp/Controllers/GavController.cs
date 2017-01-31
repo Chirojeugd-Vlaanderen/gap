@@ -27,6 +27,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Models;
+using DotNetCasClient;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -100,5 +101,11 @@ namespace Chiro.Gap.WebApp.Controllers
             ServiceHelper.CallService<IDbHacksService>(svc => svc.WillekeurigeGroepToekennen());
             return RedirectToAction("Index");
         }
+
+	    public ActionResult Logout()
+	    {
+	        CasAuthentication.SingleSignOut();
+	        return RedirectToAction("Index");
+	    }
 	}
 }
