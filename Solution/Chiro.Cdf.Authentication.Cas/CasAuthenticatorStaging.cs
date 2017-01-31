@@ -32,7 +32,7 @@ namespace Chiro.Cdf.Authentication.Cas
         {
             var principal = System.Web.HttpContext.Current.User as CasPrincipal;
             Debug.Assert(principal != null);
-            bool isDev = principal.Assertion.Attributes["cas:drupal_roles"].Any(role => role == "Toegang tot GAP-staging");
+            bool isDev = principal.Assertion.Attributes["cas:drupal_roles"].Any(role => role == Properties.Settings.Default.DrupalDevRole);
             return new UserInfo()
             {
                 AdNr = int.Parse(principal.Assertion.Attributes["cas:ad_nummer"].First()),
