@@ -16,21 +16,26 @@
  * limitations under the License.
  */
 
-using System.Runtime.Serialization;
+using System.Linq;
+using DotNetCasClient.Security;
 
-namespace Chiro.Cdf.Authentication
+namespace Chiro.Cdf.Authentication.Cas
 {
-    [DataContract]
-    public class UserInfo
+    /// <summary>
+    /// Haalt het AD-nummer op uit de CasPrincipal, en geeft sowieso developerrechten.
+    /// DIT IS ENKEL TE GEBRUIKEN IN DEV!
+    /// </summary>
+    public class CasAuthenticatorDev: IAuthenticator
     {
-        [DataMember]
-        public int AdNr { get; set; }
-
-        /// <summary>
-        /// Als DeveloperMode gezet is, dan kan de user in dev en staging
-        /// toegang krijgen tot data van een willekeurige groep.
-        /// </summary>
-        [DataMember]
-        public bool DeveloperMode { get; set; }
+        public UserInfo WieBenIk()
+        {
+            var principal = System.Web.HttpContext.Current.User as CasPrincipal;
+            return new UserInfo()
+            {
+                AdNr = int.Parse(principal.Assertion.Attributes["cas:ad_nummer"].First()),
+                // Normally no developer mode.
+                DeveloperMode = true
+            };
+        }
     }
 }

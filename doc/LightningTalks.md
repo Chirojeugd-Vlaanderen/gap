@@ -22,6 +22,7 @@ maak eventueel een merge request voor deze file :-)
 De suggesties tot zover:
 
 - CAS-authenticatie voor het GAP. Hoe werkt het? (Johan van de Chiro)
+- Het grote masterplan Chiro-IT (Jo van de Chiro, onder voorbehoud)
 - ...
 
 Als je niet van vrijdagavond mee op GAPIP bent, maar je wilt wel de

@@ -46,10 +46,15 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public bool IsLive { get; set; }
 
-		/// <summary>
-		/// ID van de Chirogroep
-		/// </summary>
-		public int GroepID { get; set; }
+        /// <summary>
+        /// In developer mode mag wat meer, zoals jezelf rechten toekennen.
+        /// </summary>
+        public bool DeveloperMode { get; set; }
+
+        /// <summary>
+        /// ID van de Chirogroep
+        /// </summary>
+        public int GroepID { get; set; }
 
 		/// <summary>
 		/// Naam van de Chirogroep

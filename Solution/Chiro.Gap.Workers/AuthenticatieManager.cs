@@ -55,6 +55,18 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// <c>true</c> als de gebruiker developer is, en bijv. rechten kan krijgen op
+        /// een willekeurige groep.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Dit zit qua architectuur niet helemaal juist. De authenticatiemanager
+        /// zou beter een lijstje met rollen opleveren.</remarks>
+        public bool IsDeveloper()
+        {
+            return _authenticator.WieBenIk().DeveloperMode;
+        }
+
+        /// <summary>
         /// Opvragen AD-nummer huidige gebruiker.
         /// </summary>
         /// <returns>Het AD-nummer van de momenteel aangemelde gebruiker.</returns>
