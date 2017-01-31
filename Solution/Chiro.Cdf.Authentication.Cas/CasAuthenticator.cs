@@ -31,7 +31,9 @@ namespace Chiro.Cdf.Authentication.Cas
             var principal = System.Web.HttpContext.Current.User as CasPrincipal;
             return new UserInfo()
             {
-                AdNr = int.Parse(principal.Assertion.Attributes["cas:ad_nummer"].First())
+                AdNr = int.Parse(principal.Assertion.Attributes["cas:ad_nummer"].First()),
+                // Normally no developer mode.
+                DeveloperMode = false
             };
         }
     }
