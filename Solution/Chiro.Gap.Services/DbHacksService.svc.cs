@@ -46,6 +46,10 @@ namespace Chiro.Gap.Services
         {
             Debug.Assert(_authenticatieMgr.AdNummerGet().HasValue);
             // Eigenlijk moet de autorisatiemanager de rechten controleren.
+            if (!_authenticatieMgr.IsDeveloper())
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
             Debug.Assert(_authenticatieMgr.IsDeveloper());
             TestHacks.TestHacks.TestGroepToevoegen(_authenticatieMgr.AdNummerGet().Value);
         }
