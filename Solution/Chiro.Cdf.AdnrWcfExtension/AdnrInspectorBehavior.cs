@@ -55,7 +55,17 @@ namespace Chiro.Cdf.AdnrWcfExtension
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
         {
             //Retrieve Inbound Object from Request
-            var header = request.Headers.GetHeader<UserInfo>("adnr-header", "s");
+            UserInfo header;
+
+            try
+            {
+                header = request.Headers.GetHeader<UserInfo>("adnr-header", "s");
+            }
+            catch (MessageHeaderException)
+            {
+                return null;
+            }
+            
             if (header != null)
             {
                 OperationContext.Current.IncomingMessageProperties.Add("UserInfo", header);
