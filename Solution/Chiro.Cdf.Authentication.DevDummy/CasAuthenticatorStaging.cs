@@ -20,11 +20,12 @@ using System.Diagnostics;
 using System.Linq;
 using DotNetCasClient.Security;
 
-namespace Chiro.Cdf.Authentication.Cas
+namespace Chiro.Cdf.Authentication.Dev
 {
     /// <summary>
-    /// Haalt het AD-nummer op uit de CasPrincipal, en geeft sowieso developerrechten.
-    /// DIT IS ENKEL TE GEBRUIKEN IN DEV!
+    /// Haalt het AD-nummer op uit de CasPrincipal, en geeft developerrechten
+    /// als de user de overeenkmostige Drupalrol heeft op de loginserver.
+    /// DIT IS ENKEL TE GEBRUIKEN IN DEV OF STAGING!
     /// </summary>
     public class CasAuthenticatorStaging: IAuthenticator
     {

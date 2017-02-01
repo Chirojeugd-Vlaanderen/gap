@@ -18,7 +18,7 @@
 
 using System.Web;
 
-namespace Chiro.Cdf.Authentication.DevDummy
+namespace Chiro.Cdf.Authentication.Dev
 {
     /// <summary>
     /// Dummy-authenticator voor dev, zodat het ook werkt als AD niet beschikbaar is.
