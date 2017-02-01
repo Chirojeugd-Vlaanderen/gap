@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chiro.Cdf.Authentication.DevDummy.Properties {
+namespace Chiro.Cdf.Authentication.Dev.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -23,15 +23,12 @@ namespace Chiro.Cdf.Authentication.DevDummy.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("18")]
-        public int TestAdNr {
+        [global::System.Configuration.DefaultSettingValueAttribute("Toegang tot GAP-staging")]
+        public string DrupalDevRole {
             get {
-                return ((int)(this["TestAdNr"]));
-            }
-            set {
-                this["TestAdNr"] = value;
+                return ((string)(this["DrupalDevRole"]));
             }
         }
     }

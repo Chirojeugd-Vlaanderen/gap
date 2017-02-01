@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -16,26 +16,22 @@
  * limitations under the License.
  */
 
-using System.Linq;
-using DotNetCasClient.Security;
+using Chiro.Cdf.Authentication;
 
-namespace Chiro.Cdf.Authentication.Cas
+namespace Chiro.Gap.Dummies
 {
     /// <summary>
-    /// Haalt het AD-nummer op uit de CasPrincipal, en geeft sowieso developerrechten.
-    /// DIT IS ENKEL TE GEBRUIKEN IN DEV!
+    /// Dummy-authenticator voor unit tests.
     /// </summary>
-    public class CasAuthenticatorDev: IAuthenticator
+    public class DummyAuthenticator: IAuthenticator
     {
+        /// <summary>
+        /// Levert een dummy-AD-nummer op, voor dev/testing.
+        /// </summary>
+        /// <returns></returns>
         public UserInfo WieBenIk()
         {
-            var principal = System.Web.HttpContext.Current.User as CasPrincipal;
-            return new UserInfo()
-            {
-                AdNr = int.Parse(principal.Assertion.Attributes["cas:ad_nummer"].First()),
-                // Normally no developer mode.
-                DeveloperMode = true
-            };
+            return new UserInfo {AdNr = Properties.Settings.Default.TestAdNr};
         }
     }
 }

@@ -89,7 +89,7 @@
                         {
                          %>
                     <li>Aangemeld als <%:Model.Ik.VoorNaam%> <%:Model.Ik.FamilieNaam %></li>
-                    <li><%:Model.Ik.AdNummer %></li>
+                    <li><%:Model.Ik.AdNummer %> (<%=Html.ActionLink("Afmelden", "Logout", new {Controller = "Gav", groepID = 0}) %>)</li>
                     <%  } %>
 					<li>[<a href="https://login.chiro.be/" title="Je wachtwoord veranderen">Wachtwoord wijzigen</a>]</li>
 					<asp:ContentPlaceHolder ID="settingsitems" runat="server" />

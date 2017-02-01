@@ -113,6 +113,42 @@ END
 
 GO
 
+CREATE PROCEDURE auth.spGebruikersrechtenPerLoginPerGroepVerlengenAd
+(
+	@adnr int
+	, @stamnr varchar(8)
+)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SET DATEFORMAT DMY;
+
+	DECLARE @groepid int
+			, @jaar varchar(4);
+
+	-- groep-ID ophalen
+
+	select @groepid = groepid
+	from grp.groep
+	where code = @stamnr
+
+	-- Vanaf augustus gaan we ervan uit dat de login voor degene is
+	-- die het volgende werkjaar de groepsadministratie zal regelen.
+	IF MONTH(getdate()) >= 8
+		set @jaar = cast(year(getdate()) + 1 as varchar)
+	ELSE
+		set @jaar = cast(year(getdate()) as varchar)
+
+	update gr
+	set vervaldatum = '1/11/' + @jaar
+	FROM auth.gebruikersrechtV2 gr
+	JOIN pers.Persoon p on gr.PersoonID = p.PersoonID
+	where p.AdNummer = @adnr
+		and gr.groepid = @groepid;
+END
+
+GO
+
 CREATE PROCEDURE auth.spAlleGebruikersRechtenOntnemenAd
 (
 	@adNr INT
