@@ -19,7 +19,7 @@
 using System.Linq;
 using DotNetCasClient.Security;
 
-namespace Chiro.Cdf.Authentication.Cas
+namespace Chiro.Cdf.Authentication.Dev
 {
     /// <summary>
     /// Haalt het AD-nummer op uit de CasPrincipal, en geeft sowieso developerrechten.
