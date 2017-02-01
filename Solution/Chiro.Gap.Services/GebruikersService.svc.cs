@@ -334,11 +334,11 @@ namespace Chiro.Gap.Services
                     mijnAdNummer));
             }
             var persoon = (from p in _personenRepo.Select()
-                           where p.AdNummer == adNummer
-                           select p).FirstOrDefault();
+                where p.AdNummer == adNummer
+                select p).FirstOrDefault();
             var ik = (from p in _personenRepo.Select()
-                           where p.AdNummer == mijnAdNummer
-                           select p).FirstOrDefault();
+                where p.AdNummer == mijnAdNummer
+                select p).FirstOrDefault();
 
             if (persoon == null && aanMaken)
             {
@@ -354,13 +354,15 @@ namespace Chiro.Gap.Services
                 };
                 _personenRepo.Add(persoon);
                 _personenRepo.SaveChanges();
-
-                // Controleer gebruikersrechten.
-                if (!_autorisatieMgr.MagLezen(ik, persoon))
-                {
-                    throw FaultExceptionHelper.GeenGav();
-                }
             }
+
+            // Controleer gebruikersrechten. Ik test ook op AD-nummer, want als ik mezelf net heb
+            // aangemaakt loopt het anders fout.
+            if (adNummer != mijnAdNummer && !_autorisatieMgr.MagLezen(ik, persoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
             return Mapper.Map<Persoon, GebruikersDetail>(persoon);
         }
     }
