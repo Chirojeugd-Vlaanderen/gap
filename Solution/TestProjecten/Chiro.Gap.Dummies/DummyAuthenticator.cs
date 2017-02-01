@@ -16,29 +16,22 @@
  * limitations under the License.
  */
 
-using System.Web;
+using Chiro.Cdf.Authentication;
 
-namespace Chiro.Cdf.Authentication.Dev
+namespace Chiro.Gap.Dummies
 {
     /// <summary>
-    /// Dummy-authenticator voor dev, zodat het ook werkt als CAS niet beschikbaar is.
+    /// Dummy-authenticator voor unit tests.
     /// </summary>
     public class DummyAuthenticator: IAuthenticator
     {
         /// <summary>
-        /// Levert een dummy-AD-nummer op, voor dev.
+        /// Levert een dummy-AD-nummer op, voor dev/testing.
         /// </summary>
         /// <returns></returns>
         public UserInfo WieBenIk()
         {
-            // Voor dev 'berekenen' we een dummy-AD-nummer.
-            string userName = HttpContext.Current.User.Identity.Name;
-            int result = 0;
-            foreach (char c in userName)
-            {
-                result += (int)c;
-            }
-            return new UserInfo {AdNr = result};
+            return new UserInfo {AdNr = Properties.Settings.Default.TestAdNr};
         }
     }
 }
