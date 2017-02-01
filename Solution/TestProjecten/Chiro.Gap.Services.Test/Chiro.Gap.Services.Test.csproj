@@ -100,7 +100,7 @@
       <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.DevDummy.csproj">
+    <ProjectReference Include="..\..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.Dev.csproj">
       <Project>{80b76267-f691-4549-9811-e94e057104cd}</Project>
       <Name>Chiro.Cdf.Authentication.DevDummy</Name>
     </ProjectReference>
