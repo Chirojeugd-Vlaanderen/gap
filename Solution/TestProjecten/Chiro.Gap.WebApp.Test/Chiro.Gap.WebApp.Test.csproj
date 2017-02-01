@@ -107,10 +107,6 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.DevDummy.csproj">
-      <Project>{80b76267-f691-4549-9811-e94e057104cd}</Project>
-      <Name>Chiro.Cdf.Authentication.DevDummy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
       <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
       <Name>Chiro.Cdf.Ioc.Factory</Name>
@@ -134,6 +130,10 @@
     <ProjectReference Include="..\..\Chiro.Gap.WebApp\Chiro.Gap.WebApp.csproj">
       <Project>{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}</Project>
       <Name>Chiro.Gap.WebApp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj">
+      <Project>{2d7b3c9f-1f19-41ea-9538-ae5d4b11388a}</Project>
+      <Name>Chiro.Gap.Dummies</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
