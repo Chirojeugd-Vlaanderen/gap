@@ -214,7 +214,7 @@ namespace Chiro.Ad.Workers
 
             var boodschap = string.Format(Properties.Resources.GapRechtenInfoMail, gebruiker.Voornaam);
 
-            _mailer.Verzenden(gebruiker.Mailadres, "GAP-toegang", boodschap);
+            _mailer.Verzenden(gebruiker.Mailadres, "GAP-toegang (STAGING!)", boodschap);
         }
     }
 }

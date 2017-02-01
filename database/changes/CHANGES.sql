@@ -259,3 +259,6 @@ GO
 
 GRANT EXECUTE ON auth.spWillekeurigeGroepToekennenAd TO GapHackRole;
 GO
+
+GRANT INSERT,UPDATE,DELETE ON auth.GebruikersRechtV2 TO GapRole;
+GO
