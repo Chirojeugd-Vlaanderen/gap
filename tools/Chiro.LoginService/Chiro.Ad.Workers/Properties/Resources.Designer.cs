@@ -63,18 +63,23 @@ namespace Chiro.Ad.Workers.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Dag {0}
         ///
+        ///
+        ///
         ///Er wordt momenteel een Chiro-account voor je aangemaakt. Binnen een kwartiertje zal hij op al onze services beschikbaar zijn.
         ///
-        ///  Gebruikersnaam: {1}
-        ///  Wachtwoord: {2}
-        ///  E-mailadres: {3}
+        ///  
         ///
-        ///Je kunt deze account gebruiken om aan te melden bij webtoepassingen van de Chiro, zoals het GAP (https://gap.chiro.be) en de Chirosite (https://www.chiro.be/user).
+        ///Gebruikersnaam: {1}
+        ///  
+        ///Wachtwoord: {2}
+        ///  
+        ///E-mailadres: {3}
         ///
-        ///De accountinstellingen kun je wijzigen op https://login.chiro.be. We raden aan om zeker je wachtwoord te veranderen.
         ///
-        ///Groeten
-        ///De Chirohelp [rest of string was truncated]&quot;;.
+        ///
+        ///Je kunt deze account gebruiken om aan te melden bij webtoepassingen van de Chiro, zoals het GAP (https://gap.chiro.be), de GAP-staging (https://develop.chiro.be:2000/staging) en de Chirosite (https://www.chiro.be/user).
+        ///
+        ///De accountinstellingen kun je wijzigen op https://login.chiro.be. We raden aan  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string GapAccountInfoMail {
             get {
@@ -85,11 +90,18 @@ namespace Chiro.Ad.Workers.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Dag {0}
         ///
-        ///Vanaf nu heb je met je Chirologin ook toegang tot de GAP-website, waar je de administratie van je groep vindt: https://gap.chiro.be.
+        ///
+        ///
+        ///Vanaf nu heb je met je Chirologin ook toegang tot GAP-staging, dat is een versie van het GAP om mee te spelen en te testen. De gegevens zijn een kopie van de echte, maar als je dingen wijzigt of toevoegt, dan wordt dat niet aangepast in de centrale Chirodatabank.
+        ///
+        ///
         ///
         ///Als je je login of wachtwoord niet meer kent, surf dan naar https://login.chiro.be. Klik daar op &apos;Nieuw wachtwoord&apos; en vul je mailadres in.
         ///
+        ///
+        ///
         ///Groeten
+        ///
         ///De Chirohelpdesk (Helpdesk@chiro.be).
         /// </summary>
         internal static string GapRechtenInfoMail {
