@@ -403,12 +403,16 @@
       <Project>{07954288-81a1-45b5-8d4a-349356fa8472}</Project>
       <Name>Chiro.Cdf.AdnrWcfExtension</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication.Ad\Chiro.Cdf.Authentication.Ad.csproj">
+      <Project>{b4fed89c-ab92-4d90-b566-3604a43a998a}</Project>
+      <Name>Chiro.Cdf.Authentication.Ad</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication.Cas\Chiro.Cdf.Authentication.Cas.csproj">
       <Project>{22fc3247-9a1a-4b57-89ab-cb53b90146fe}</Project>
       <Name>Chiro.Cdf.Authentication.Cas</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.Dev.csproj">
-      <Project>{b4fed89c-ab92-4d90-b566-3604a43a998a}</Project>
+      <Project>{80b76267-f691-4549-9811-e94e057104cd}</Project>
       <Name>Chiro.Cdf.Authentication.Dev</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
