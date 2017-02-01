@@ -35,8 +35,6 @@ using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
-
 namespace Chiro.Gap.Services.Test
 {
     /// <summary>
@@ -47,25 +45,19 @@ namespace Chiro.Gap.Services.Test
     [TestClass]
     public class GroepenServiceTest
     {
-        public GroepenServiceTest()
-        {
-        }
-
-        [ClassCleanup]
-        public static void AfsluitenTests()
-        {
-        }
-
-
         /// <summary>
         /// Deze functie zorgt ervoor dat de PrincipalPermissionAttributes op de service methods
         /// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
-        /// security
+        /// security.
+        /// 
+        /// Bovendien herinitialiseren we iedere keer de IOC-container, want daar wordt in
+        /// verschillende tests deftig mee geprutst.
         /// </summary>
         [TestInitialize]
         public void VoorElkeTest()
         {
             Factory.ContainerInit();
+
             var identity = new GenericIdentity(Settings.Default.TestUser);
             var roles = new[] {Settings.Default.TestSecurityGroep};
             var principal = new GenericPrincipal(identity, roles);
@@ -476,15 +468,15 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             // testgroep; toegang met mijnLogin net vervallen.
-            const string mijnLogin = "MijnLogin";
+            const int mijnAdNummer = 12345;
 
             Groep groep = new ChiroGroep
             {
-                GebruikersRecht = new[]
+                GebruikersRechtV2 = new[]
                                                         {
-                                                            new GebruikersRecht
+                                                            new GebruikersRechtV2
                                                                 {
-                                                                    Gav = new Gav {Login = "MijnLogin"},
+                                                                    Persoon = new Persoon {AdNummer = mijnAdNummer},
                                                                     VervalDatum = DateTime.Today // net vervallen
                                                                 }
                                                         }
@@ -492,7 +484,7 @@ namespace Chiro.Gap.Services.Test
 
             // Zet mock op voor het opleveren van gebruikersnaam, en voor data-access groepen
             var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
-            authenticatieManagerMock.Setup(src => src.GebruikersNaamGet()).Returns(mijnLogin);
+            authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(mijnAdNummer);
             Factory.InstantieRegistreren(authenticatieManagerMock.Object);
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();

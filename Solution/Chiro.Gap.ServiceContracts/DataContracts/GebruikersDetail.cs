@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,5 +50,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public int? GelieerdePersoonID { get; set; }
+
+        /// <summary>
+        /// AD-nummer
+        /// </summary>
+        [DataMember]
+        public int AdNummer { get; set; }
     }
 }

@@ -43,6 +43,8 @@ namespace Chiro.Gap.Workers.Test
 		public static void MyClassInitialize(TestContext testContext)
 		{
 			Factory.ContainerInit();
+
+		    Chiro.Gap.Services.Dev.AdServiceMock blablabla;
 		}
 		//
 		// Use ClassCleanup to run code after all tests in a class have run

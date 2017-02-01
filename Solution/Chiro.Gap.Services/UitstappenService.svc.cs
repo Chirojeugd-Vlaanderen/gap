@@ -56,7 +56,6 @@ namespace Chiro.Gap.Services
 
         // Managers voor niet-triviale businesslogica
 
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IUitstappenManager _uitstappenMgr;
         private readonly IAdressenManager _adressenMgr;
 
@@ -77,6 +76,7 @@ namespace Chiro.Gap.Services
         /// <param name="adressenManager">Businesslogica m.b.t. adressen</param>
         /// <param name="ledenManager">Businesslogica m.b.t. leden</param>
         /// <param name="groepsWerkJarenManager">Businesslogica m.b.t. groepswerkjaren</param>
+        /// <param name="authenticatieManager">Businesslogica m.b.t. authenticatie</param>
         /// <param name="abonnementenManager">Businesslogica m.b.t. abonnementen</param>
         /// <param name="bivakSync"></param>
         public UitstappenService(IRepositoryProvider repositoryProvider,
@@ -85,8 +85,9 @@ namespace Chiro.Gap.Services
                                  IAdressenManager adressenManager,
                                  ILedenManager ledenManager,
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
+                                 IAuthenticatieManager authenticatieManager,
                                  IAbonnementenManager abonnementenManager,
-                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager, abonnementenManager)
+                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieManager, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
@@ -99,7 +100,6 @@ namespace Chiro.Gap.Services
             _woonPlaatsenRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
             _landenRepo = repositoryProvider.RepositoryGet<Land>();
 
-            _autorisatieMgr = autorisatieManager;
             _uitstappenMgr = uitstappenManager;
             _adressenMgr = adressenManager;
 

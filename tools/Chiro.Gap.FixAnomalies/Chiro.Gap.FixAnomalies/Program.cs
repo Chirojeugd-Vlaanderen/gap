@@ -45,18 +45,25 @@ namespace Chiro.Gap.FixAnomalies
             // Dependency injection gebeurt hier overal manueel
             // TODO: Chiro.Gap.Ioc gebruiken.
 
+            var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
+            var cacherij = new VeelGebruikt(serviceHelper);
             var ledenManager = new LedenManager();
-            var groepsWerkJarenManager = new GroepsWerkJarenManager(new VeelGebruikt());
+            var groepsWerkJarenManager = new GroepsWerkJarenManager(cacherij);
             var abonnementenManager = new AbonnementenManager();
 
-            var helper = new Chiro.Gap.ServiceContracts.Mappers.MappingHelper(ledenManager, groepsWerkJarenManager, abonnementenManager);
+            // Ik geef null als authenticator, want als deze hacks proberen op te zoeken
+            // wie ik ben, dan is er iets mis. De bedoeling is dat ze dingen in de database
+            // onafhankelijk van wie ze runt. (Maar diegene die ze runt moet uiteraard wel
+            // voldoende rechten hebben op de database.)
+            var authenticatieManager = new AuthenticatieManager(cacherij, null);
+            var autorisatieManager = new AutorisatieManager(authenticatieManager);
+
+            var helper = new Chiro.Gap.ServiceContracts.Mappers.MappingHelper(ledenManager, groepsWerkJarenManager, abonnementenManager, authenticatieManager, autorisatieManager);
 
             // Mappings naar civi
             helper.MappingsDefinieren();
             // Mappings naar 'kipsync' (nu civisync)
             Chiro.Gap.Sync.MappingHelper.MappingsDefinieren();
-
-            var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
 
             // TODO: via command line opties verbositeit van dit script bepalen.
 

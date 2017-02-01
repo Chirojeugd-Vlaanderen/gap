@@ -26,13 +26,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class PlaatsenManager
     {
-        private readonly IAutorisatieManager _autorisatieManager;
-
-        public PlaatsenManager(IAutorisatieManager auMgr)
-        {
-            _autorisatieManager = auMgr;
-        }
-
         /// <summary>
         /// Maakt een bivakplaats op basis van de naam <paramref name="plaatsNaam"/>, het
         /// <paramref name="adres"/> van de bivakplaats, en de ingevende

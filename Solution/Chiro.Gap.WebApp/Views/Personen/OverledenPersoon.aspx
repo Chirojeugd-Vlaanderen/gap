@@ -27,32 +27,32 @@
     <h3>
         Persoonlijke gegevens</h3>
     <p>
-        <%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VolledigeNaam) %>
-        (<%=Html.Geslacht(Model.PersoonLidInfo.PersoonDetail.Geslacht) %>)
+        <%= Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.VolledigeNaam) %>
+        (<%=Html.Geslacht(Model.PersoonLidGebruikersInfo.PersoonDetail.Geslacht) %>)
         <br />
-        <%if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
+        <%if (Model.PersoonLidGebruikersInfo.PersoonDetail.AdNummer != null)
           {%>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %>&nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "AD-nummer", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een Civi-ID?" } ) %>:
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><br />
+        <%=Html.LabelFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.AdNummer) %>&nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "AD-nummer", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een Civi-ID?" } ) %>:
+        <%=Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.AdNummer) %><br />
         <%
             }%>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>:
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
+        <%=Html.LabelFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.GeboorteDatum)%>:
+        <%=Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.GeboorteDatum)%>
         <br />
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.SterfDatum)%>:
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.SterfDatum)%>
+        <%=Html.LabelFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.SterfDatum)%>:
+        <%=Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.SterfDatum)%>
         <br />
-        <%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "Nieuw", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %><br />
+        <%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "Nieuw", new {id=Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %><br />
     </p>
     <h3>
         Laatst gekende adressen</h3>
     <ul>
-        <% foreach (PersoonsAdresInfo pa in ViewData.Model.PersoonLidInfo.PersoonsAdresInfo)
+        <% foreach (PersoonsAdresInfo pa in ViewData.Model.PersoonLidGebruikersInfo.PersoonsAdresInfo)
            { %>
         <li>
             <%=Html.Encode(String.Format("{0} {1} {2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus))%>,
             <%=Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode))%>
-            <%=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+            <%=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.ID, gelieerdePersoonID = ViewData.Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID })%>
         </li>
         <%} %>
     </ul>

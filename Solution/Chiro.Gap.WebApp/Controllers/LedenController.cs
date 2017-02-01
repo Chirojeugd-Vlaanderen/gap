@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ExcelManip;
@@ -46,7 +47,12 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        public LedenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
+        /// <param name="serviceHelper"></param>
+        /// <param name="authenticator"></param>
+        public LedenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
+        {
+        }
 
         /// <summary>
         /// Sorteert een rij records van type LidOverzicht
@@ -673,7 +679,6 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             catch (FaultException<FoutNummerFault> ex) 
             {
-                var lidInfo = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
                 switch (ex.Detail.FoutNummer) 
                 {
                     case FoutNummer.GroepInactief:

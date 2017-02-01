@@ -136,7 +136,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID);
+		PersoonLidGebruikersInfo AlleDetailsOphalen(int gelieerdePersoonID);
 
 		/// <summary>
 		/// Haalt gegevens op van alle personen uit categorie met ID <paramref name="categorieID"/>

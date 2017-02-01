@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014, 2016 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014, 2016, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
@@ -36,20 +37,25 @@ namespace Chiro.Gap.WebApp.Controllers
 	[HandleError]
 	public class GroepController : BaseController
 	{
-		/// <summary>
-		/// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
-		/// best toegewezen via inversion of control.
-		/// </summary>
-		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
-		/// service</param>
-        public GroepController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
+	    /// <summary>
+	    /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
+	    /// best toegewezen via inversion of control.
+	    /// </summary>
+	    /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+	    /// service</param>
+	    /// <param name="serviceHelper"></param>
+	    /// <param name="authenticator"></param>
+	    public GroepController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
+        {
+        }
 
-		/// <summary>
-		/// Genereert een view met algemene gegevens over de groep
-		/// </summary>
-		/// <param name="groepID">ID van de gewenste groep</param>
-		/// <returns>View met algemene gegevens over de groep</returns>
-		[HandleError]
+        /// <summary>
+        /// Genereert een view met algemene gegevens over de groep
+        /// </summary>
+        /// <param name="groepID">ID van de gewenste groep</param>
+        /// <returns>View met algemene gegevens over de groep</returns>
+        [HandleError]
 		public override ActionResult Index(int groepID)
 		{
 		    var gwj = VeelGebruikt.GroepsWerkJaarOphalen(groepID);

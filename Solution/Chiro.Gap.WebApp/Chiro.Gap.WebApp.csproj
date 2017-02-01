@@ -56,9 +56,12 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -97,17 +100,6 @@
     <Compile Include="Controllers\FunctiesController.cs" />
     <Compile Include="Controllers\GebruikersRechtController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
-    <Compile Include="App_GlobalResources\MyResources.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MyResources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\MyResources.nl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MyResources.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\list.cs" />
     <Compile Include="Controllers\PersonenEnLedenController.cs" />
     <Compile Include="Controllers\UitstappenController.cs" />
     <Compile Include="ExcelResult.cs" />
@@ -127,6 +119,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HtmlHelpers\InfoLinkHelper.cs" />
+    <Compile Include="HtmlHelpers\PermissieHelper.cs" />
     <Compile Include="HtmlHelpers\RadioButtonListHelper.cs" />
     <Compile Include="HtmlHelpers\PersoonsLinkHelper.cs" />
     <Compile Include="HtmlHelpers\PrintLijstHelper.cs" />
@@ -142,10 +135,12 @@
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
     <Compile Include="Models\DeelnemerBewerkenModel.cs" />
+    <Compile Include="Models\IMasterViewModel.cs" />
     <Compile Include="Models\VoorkeursMailModel.cs" />
     <Compile Include="Models\DubbelpuntModel.cs" />
     <Compile Include="Models\FunctieModel.cs" />
     <Compile Include="Models\GavOverzichtModel.cs" />
+    <Compile Include="Models\GebruikersDetailModel.cs" />
     <Compile Include="Models\GroepInfoModel.cs" />
     <Compile Include="Models\IAdresBewerkenModel.cs" />
     <Compile Include="Models\InschrijvingsModel.cs" />
@@ -202,6 +197,7 @@
     <Content Include="Content\images\sort_both.png" />
     <Content Include="Content\images\sort_desc.png" />
     <Content Include="Content\images\sort_desc_disabled.png" />
+    <Content Include="Content\images\staging.png" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -399,6 +395,26 @@
     <Content Include="Views\Shared\Globaal.Master" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\tools\DotNetCasClient\DotNetCasClient\DotNetCasClient.csproj">
+      <Project>{883a296e-c898-4d1f-9ed9-de7569defb3d}</Project>
+      <Name>DotNetCasClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.AdnrWcfExtension\Chiro.Cdf.AdnrWcfExtension.csproj">
+      <Project>{07954288-81a1-45b5-8d4a-349356fa8472}</Project>
+      <Name>Chiro.Cdf.AdnrWcfExtension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication.Cas\Chiro.Cdf.Authentication.Cas.csproj">
+      <Project>{22fc3247-9a1a-4b57-89ab-cb53b90146fe}</Project>
+      <Name>Chiro.Cdf.Authentication.Cas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication.Ad\Chiro.Cdf.Authentication.Ad.csproj">
+      <Project>{b4fed89c-ab92-4d90-b566-3604a43a998a}</Project>
+      <Name>Chiro.Cdf.Authentication.Ad</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
+      <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
+      <Name>Chiro.Cdf.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
       <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
       <Name>Chiro.Cdf.Ioc.Factory</Name>
@@ -410,6 +426,10 @@
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
       <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
@@ -433,16 +453,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\MyResources.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>MyResources.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\MyResources.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>MyResources.nl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\favicon.ico" />
     <Compile Include="ActionFilters\ParametersMatchAttribute.cs" />
@@ -597,7 +607,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Dubbelpunt\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

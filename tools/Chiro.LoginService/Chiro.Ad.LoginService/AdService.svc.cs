@@ -1,7 +1,8 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +18,7 @@
  */
 
 using System;
-using System.Security.Permissions;
 using System.ServiceModel;
-using System.Text.RegularExpressions;
 using Chiro.Ad.Domain;
 using Chiro.Ad.ServiceContracts;
 using Chiro.Ad.Workers;
@@ -118,6 +117,19 @@ namespace Chiro.Ad.LoginService
             {
                 throw new FaultException<InvalidOperationException>(ex, ex.Message);
             }
+        }
+
+
+        public int? AdNummerOphalen(string userName)
+        {
+            var gebruiker = _loginManager.Zoeken(userName);
+            return gebruiker.AdNr;
+        }
+
+        public string GebruikersNaamOphalen(int adNummer)
+        {
+            var gebruiker = _loginManager.Zoeken(adNummer);
+            return gebruiker.Login;
         }
     }
 }

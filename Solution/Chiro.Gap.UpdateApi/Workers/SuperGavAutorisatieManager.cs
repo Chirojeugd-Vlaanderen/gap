@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Verfijning gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -125,7 +127,7 @@ namespace Chiro.Gap.UpdateApi.Workers
             throw new NotImplementedException();
         }
 
-        public bool IsGav(GebruikersRecht gelieerdePersoon)
+        public bool IsGav(GebruikersRechtV2 gelieerdePersoon)
         {
             throw new NotImplementedException();
         }
@@ -186,7 +188,7 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// <param name="gelieerdePersoonID">The gelieerde persoon ID.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+        public GebruikersRechtV2 GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
         {
             throw new NotImplementedException();
         }
@@ -198,7 +200,57 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// <param name="gebruikersrecht">The gebruikersrecht.</param>
         /// <returns><c>true</c> if the specified gebruikersrecht is verlengbaar; otherwise, <c>false</c>.</returns>
         /// <remarks></remarks>
-        public bool IsVerlengbaar(GebruikersRecht gebruikersrecht)
+        public bool IsVerlengbaar(GebruikersRechtV2 gebruikersrecht)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGav(Persoon p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HeeftPermissies(Groep groep, Domain.Permissies permissies)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Permissies PermissiesOphalen(Lid lid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Permissies PermissiesOphalen(Functie functie)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool MagLezen(Persoon ik, Persoon persoon2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Permissies PermissiesOphalen(Groep groep, SecurityAspect aspecten)
+        {
+            throw new NotImplementedException();         
+        }
+
+        public bool MagZichzelfLezen(Persoon persoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Permissies PermissiesOphalen(GelieerdePersoon gelieerdePersoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Permissies EigenPermissies(Persoon persoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GebruikersRechtV2 GebruikersRechtOpEigenGroep(GelieerdePersoon gp)
         {
             throw new NotImplementedException();
         }

@@ -2,6 +2,7 @@
  * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -29,7 +31,7 @@ namespace Chiro.Gap.WebApp.Models
 	/// <remarks>
 	/// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
 	/// </remarks>
-	public class MasterViewModel
+	public class MasterViewModel: IMasterViewModel
 	{
 		/// <summary>
 		/// De standaardconstructor maakt gewoon een lege lijst met mededelingen
@@ -44,10 +46,15 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public bool IsLive { get; set; }
 
-		/// <summary>
-		/// ID van de Chirogroep
-		/// </summary>
-		public int GroepID { get; set; }
+        /// <summary>
+        /// In developer mode mag wat meer, zoals jezelf rechten toekennen.
+        /// </summary>
+        public bool DeveloperMode { get; set; }
+
+        /// <summary>
+        /// ID van de Chirogroep
+        /// </summary>
+        public int GroepID { get; set; }
 
 		/// <summary>
 		/// Naam van de Chirogroep
@@ -104,5 +111,15 @@ namespace Chiro.Gap.WebApp.Models
 		/// Niveau van de groep (chirogroep of kadergroep)
 		/// </summary>
 		public Niveau GroepsNiveau { get; set; }
-	}
+
+        /// <summary>
+        /// Aangelogde gebruiker
+        /// </summary>
+        public GebruikersDetail Ik { get; set; }
+
+        /// <summary>
+        /// Is een jaarovergang mogelijk?
+        /// </summary>
+        public bool IsInOvergangsPeriode { get; set;  }
+    }
 }

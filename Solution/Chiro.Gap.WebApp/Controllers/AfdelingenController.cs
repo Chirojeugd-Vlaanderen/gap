@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceModel;
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
@@ -39,22 +40,27 @@ namespace Chiro.Gap.WebApp.Controllers
 	[HandleError]
 	public class AfdelingenController : BaseController
 	{
-		/// <summary>
-        /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
-		/// best toegewezen via inversion of control.
-		/// </summary>
-		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
-		/// service</param>
-        public AfdelingenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
+	    /// <summary>
+	    /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
+	    /// best toegewezen via inversion of control.
+	    /// </summary>
+	    /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+	    /// service</param>
+	    /// <param name="serviceHelper"></param>
+	    /// <param name="authenticator"></param>
+	    public AfdelingenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
+        {
+        }
 
-		/// <summary>
+        /// <summary>
         /// Toont het afdelingsoverzicht voor het huidge groepswerkjaar: de actieve afdelingen, 
         /// met links om dien te bekijken/bewerken.  De inactieve afdelingen worden ook getoond, 
         /// met dan de mogelijkheid  om ze te activeren.
         /// </summary>
         /// <param name="groepID">ID van de groep die de pagina oproept, en van dewelke we dus gegevens moeten tonen</param>
         /// <returns>Het afdelingsoverzicht voor het huidige werkJaar</returns>
-		[HandleError]
+        [HandleError]
 		public override ActionResult Index(int groepID)
 		{
             return RedirectToAction("Afdelingen", new { Controller = "Groep", groepID = groepID });

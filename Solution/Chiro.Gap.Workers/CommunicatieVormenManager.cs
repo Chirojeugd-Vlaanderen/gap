@@ -38,17 +38,10 @@ namespace Chiro.Gap.Workers
     public class CommunicatieVormenManager : ICommunicatieVormenManager
     {
         private readonly IAutorisatieManager _autorisatieMgr;
-        private readonly ICommunicatieSync _communicatieSync;
-        private readonly IPersonenSync _personenSync;
 
-        public CommunicatieVormenManager(
-            IAutorisatieManager autorisatieMgr, 
-            ICommunicatieSync communicatieSync, 
-            IPersonenSync personenSync)
+        public CommunicatieVormenManager(IAutorisatieManager autorisatieMgr)
         {
             _autorisatieMgr = autorisatieMgr;
-            _communicatieSync = communicatieSync;
-            _personenSync = personenSync;
         }
 
         /// <summary>

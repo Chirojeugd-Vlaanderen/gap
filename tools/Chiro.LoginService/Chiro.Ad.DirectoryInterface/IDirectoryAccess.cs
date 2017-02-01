@@ -70,5 +70,13 @@ namespace Chiro.Ad.DirectoryInterface
         /// <param name="groep">Groep waaraan <paramref name="gebruiker"/> toegevoegd moet worden.</param>
         /// <param name="groepOu">OU van de security group.</param>
         void GebruikerToevoegenAanGroep(Chirologin gebruiker, string groep, string groepOu);
+
+        /// <summary>
+        /// Zoekt de login van een bestaande Chirogebruiker.
+        /// </summary>
+        /// <param name="ldaproot"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        Chirologin GebruikerZoeken(string ldaproot, string username);
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.FixAnomalies", "Chiro.Gap.FixAnomalies\Chiro.Gap.FixAnomalies.csproj", "{1DFBE11B-A67A-42EA-BD31-7570307FDB44}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Validation", "..\..\Solution\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj", "{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Validatie", "..\..\Solution\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj", "{853B7FDF-27B6-48BC-A220-F68CCE610B6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication", "..\..\Solution\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj", "{FB9A2752-D976-4D92-9974-0E9339D1FDD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,10 @@ Global
 		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB9A2752-D976-4D92-9974-0E9339D1FDD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB9A2752-D976-4D92-9974-0E9339D1FDD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB9A2752-D976-4D92-9974-0E9339D1FDD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB9A2752-D976-4D92-9974-0E9339D1FDD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

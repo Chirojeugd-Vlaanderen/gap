@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +39,7 @@ namespace Chiro.Gap.Workers
         /// <param name="gebruikersRecht">
         /// Te verlengen gebruikersrecht
         /// </param>
-        public void Verlengen(GebruikersRecht gebruikersRecht)
+        public void Verlengen(GebruikersRechtV2 gebruikersRecht)
         {
             if (!gebruikersRecht.IsVerlengbaar)
             {
@@ -80,7 +81,7 @@ namespace Chiro.Gap.Workers
         /// <param name="gebruikersRecht">
         /// Te vervallen gebruikersrecht
         /// </param>
-        public void Intrekken(GebruikersRecht gebruikersRecht)
+        public void Intrekken(GebruikersRechtV2 gebruikersRecht)
         {
             Intrekken(new[] { gebruikersRecht });
         }
@@ -93,71 +94,12 @@ namespace Chiro.Gap.Workers
         /// Te vervallen gebruikersrechten
         /// </param>
         /// <remarks>Gebruikersrechten die al vervallen zijn, blijven onaangeroerd</remarks>
-        public void Intrekken(GebruikersRecht[] gebruikersRechten)
+        public void Intrekken(GebruikersRechtV2[] gebruikersRechten)
         {
             foreach (var gr in gebruikersRechten.Where(r => r.VervalDatum > DateTime.Now))
             {
                 gr.VervalDatum = DateTime.Now.AddDays(-1);
             }
-        }
-        
-        /// <summary>
-        /// Koppelt de <paramref name="gav"/> aan de <paramref name="groep"/> met gegeven 
-        /// <paramref name="vervalDatum"/>.  PERSISTEERT NIET.
-        /// </summary>
-        /// <param name="gav">
-        /// Te koppelen GAV
-        /// </param>
-        /// <param name="groep">
-        /// Groep waaraan te koppelen
-        /// </param>
-        /// <param name="vervalDatum">
-        /// Vervaldatum gebruikersrecht
-        /// </param>
-        /// <returns>
-        /// Deze method is PRIVATE en moet dat ook blijven, want er wordt niet gecheckt
-        /// op fouten, en er worden geen notificatiemails gestuurd.  Deze method mag enkel
-        /// onrechtstreeks gebruikt worden, via de publieke methods <see name="ToekennenOfVerlengen"/>
-        /// </returns>
-        private GebruikersRecht ToekennenOfVerlengen(Gav gav, Groep groep, DateTime vervalDatum)
-        {
-            // Eerst controleren of de groep nog niet aan de gebruiker is/was gekoppeld
-            var gebruikersrecht = (from gr in gav.GebruikersRecht
-                                   where gr.Groep.ID == groep.ID
-                                   select gr).FirstOrDefault();
-
-            if (gebruikersrecht == null)
-            {
-                // Nog geen gebruikersrecht.  Maak aan.
-                gebruikersrecht = new GebruikersRecht { ID = 0, Gav = gav, Groep = groep };
-                gav.GebruikersRecht.Add(gebruikersrecht);
-                groep.GebruikersRecht.Add(gebruikersrecht);
-            }
-            else if (!gebruikersrecht.IsVerlengbaar)
-            {
-                throw new FoutNummerException(FoutNummer.GebruikersRechtNietVerlengbaar,
-                                              Resources.GebruikersRechtNietVerlengbaar);
-            }
-
-            gebruikersrecht.VervalDatum = vervalDatum;
-
-            return gebruikersrecht;
-        }
-
-
-        /// <summary>
-        /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="account"/>.
-        /// Als de gebruikersrechten al bestonden, worden ze indien mogelijk verlengd.
-        /// </summary>
-        /// <param name="account">Account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
-        /// <param name="groep">Groep waarvoor <paramref name="account"/> gebruikersrecht moet krijgen</param>
-        /// <returns>Het gebruikersrecht</returns>
-        /// <remarks>Persisteert niet.</remarks>
-        public GebruikersRecht ToekennenOfVerlengen(Gav account, Groep groep)
-        {
-            DateTime vervaldatum = NieuweVervalDatum();
-
-            return ToekennenOfVerlengen(account, groep, vervaldatum);
         }
 
         /// <summary>
@@ -171,11 +113,41 @@ namespace Chiro.Gap.Workers
         /// Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt <c>null</c> 
         /// opgeleverd.
         /// </returns>
-        public GebruikersRecht GebruikersRechtGet(GelieerdePersoon gelieerdePersoon)
+        public GebruikersRechtV2 GebruikersRechtGet(GelieerdePersoon gelieerdePersoon)
         {
             return
-                gelieerdePersoon.Groep.GebruikersRecht.FirstOrDefault(
-                    gr => gr.Gav.Persoon.Any(p => p.ID == gelieerdePersoon.Persoon.ID));
+                gelieerdePersoon.Groep.GebruikersRechtV2.FirstOrDefault(
+                    gr => gr.Persoon.ID == gelieerdePersoon.Persoon.ID);
+        }
+
+        /// <summary>
+        /// Zoekt het gebruikersrecht op van <paramref name="persoon"/> op <paramref name="groep"/>. Als dat nog niet
+        /// bestaat, maak er een aan. Voeg de gevraagde permissies toe. De vervaldatum wordt vervangen door de
+        /// standaardvervaldatum op dit moment.
+        /// </summary>
+        /// <param name="persoon">Persoon die gebruikersrechten moet krijgen.</param>
+        /// <param name="groep">Groep waarvoor de persoon gebruikersrechten moet krijgen.</param>
+        /// <param name="persoonlijkeGegevens">Permissies op persoonlijke gegevens.</param>
+        /// <param name="groepsGegevens">Permissies op de gegevens van de groep.</param>
+        /// <param name="personenInAfdeling">Permissies op de leden in de eigen afdeling.</param>
+        /// <param name="personenInGroep">Permissies op alle personen van de eigen groep.</param>
+        public void ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies persoonlijkeGegevens, Permissies groepsGegevens,
+            Permissies personenInAfdeling, Permissies personenInGroep)
+        {
+            var gebruikersRecht = persoon.GebruikersRechtV2.FirstOrDefault(gr => gr.Groep.Equals(groep));
+
+            if (gebruikersRecht == null)
+            {
+                gebruikersRecht = new GebruikersRechtV2 { Groep = groep, Persoon = persoon };
+                groep.GebruikersRechtV2.Add(gebruikersRecht);
+                persoon.GebruikersRechtV2.Add(gebruikersRecht);
+            }
+
+            gebruikersRecht.PersoonsPermissies |= persoonlijkeGegevens;
+            gebruikersRecht.GroepsPermissies |= groepsGegevens;
+            gebruikersRecht.AfdelingsPermissies |= personenInAfdeling;
+            gebruikersRecht.IedereenPermissies |= personenInGroep;
+            gebruikersRecht.VervalDatum = NieuweVervalDatum();
         }
     }
 }

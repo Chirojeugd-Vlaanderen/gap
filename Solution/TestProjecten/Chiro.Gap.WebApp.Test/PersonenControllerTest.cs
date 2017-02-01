@@ -77,7 +77,7 @@ namespace Chiro.Gap.WebApp.Test
 
             var gelieerdePersonenServiceMock = new Mock<IGelieerdePersonenService>();
             gelieerdePersonenServiceMock.Setup(svc => svc.AlleDetailsOphalen(gelieerdePersoonId))
-                .Returns(new PersoonLidInfo
+                .Returns(new PersoonLidGebruikersInfo
                 {
                     CommunicatieInfo = new List<CommunicatieDetail>(),
                     PersoonDetail = new PersoonDetail {NieuwsBrief = false}
@@ -144,7 +144,7 @@ namespace Chiro.Gap.WebApp.Test
 
             var gelieerdePersonenServiceMock = new Mock<IGelieerdePersonenService>();
             gelieerdePersonenServiceMock.Setup(svc => svc.AlleDetailsOphalen(gelieerdePersoonId))
-                .Returns(new PersoonLidInfo
+                .Returns(new PersoonLidGebruikersInfo
                 {
                     CommunicatieInfo = new List<CommunicatieDetail>(),
                     PersoonDetail = new PersoonDetail { NieuwsBrief = false }

@@ -2,6 +2,7 @@
  * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +31,6 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 #if KIPDORP
 using System.Transactions;
 #endif
@@ -66,9 +66,7 @@ namespace Chiro.Gap.Services
 
         // Managers voor niet-triviale businesslogica
 
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly ICommunicatieVormenManager _communicatieVormenMgr;
-        private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
         private readonly IAdressenManager _adressenMgr;
         private readonly IPersonenManager _personenMgr;
@@ -89,34 +87,36 @@ namespace Chiro.Gap.Services
         /// gebruiken context en repository op.</param>
         /// <param name="autorisatieMgr">Logica m.b.t. autorisatie</param>
         /// <param name="communicatieVormenMgr">Logica m.b.t. communicatievormen</param>
-        /// <param name="gebruikersRechtenMgr">Logica m.b.t. gebruikersrechten</param>
         /// <param name="gelieerdePersonenMgr">Logica m.b.t. gelieerde personen</param>
         /// <param name="adressenManager">Logica m.b.t. adressen</param>
         /// <param name="personenManager">Logica m.b.t. personen (geeuw)</param>
         /// <param name="groepenManager">Logica m.b.t. groepen</param>
         /// <param name="ledenManager">Logica m.b.t. leden</param>
         /// <param name="groepsWerkJarenManager">Logica m.b.t. groepswerkjaren</param>
+        /// <param name="authenticatieManager">Logica m.b.t. authenticatie</param>
         /// <param name="abonnementenManager">Logica m.b.t. abonnementen.</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
         /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         /// <param name="adressenSync">Voor synchronisatie van adressen naar Kipadmin</param>
         /// <param name="ledenSync">Voor synchronisatie lidgegevens naar Kipadmin</param>
         /// <param name="abonnementenSync">Voor synchronisatie abonnementen naar MAILCHIMP</param>
-        public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
+        public GelieerdePersonenService(
+            IRepositoryProvider repositoryProvider, 
+            IAutorisatieManager autorisatieMgr,
             ICommunicatieVormenManager communicatieVormenMgr,
-            IGebruikersRechtenManager gebruikersRechtenMgr,
             IGelieerdePersonenManager gelieerdePersonenMgr,
             IAdressenManager adressenManager,
             IPersonenManager personenManager,
             IGroepenManager groepenManager,
             ILedenManager ledenManager,
             IGroepsWerkJarenManager groepsWerkJarenManager,
+            IAuthenticatieManager authenticatieManager,
             IAbonnementenManager abonnementenManager,
             ICommunicatieSync communicatieSync,
             IPersonenSync personenSync,
             IAdressenSync adressenSync,
             ILedenSync ledenSync,
-            IAbonnementenSync abonnementenSync): base(ledenManager, groepsWerkJarenManager, abonnementenManager)
+            IAbonnementenSync abonnementenSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieMgr, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -136,9 +136,7 @@ namespace Chiro.Gap.Services
             _abonnementenRepo = repositoryProvider.RepositoryGet<Abonnement>();
             _publicatieRepo = repositoryProvider.RepositoryGet<Publicatie>();
 
-            _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
-            _gebruikersRechtenMgr = gebruikersRechtenMgr;
             _gelieerdePersonenMgr = gelieerdePersonenMgr;
             _adressenMgr = adressenManager;
             _personenMgr = personenManager;
@@ -349,38 +347,18 @@ namespace Chiro.Gap.Services
         /// <returns>
         /// Gelieerde persoon met ALLE nodige info om het persoons-bewerken scherm te vullen:
         /// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
-        /// functies, abonnementen.
+        /// functies, abonnementen, gebruikersinfo
         /// </returns>
-        public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
+        public PersoonLidGebruikersInfo AlleDetailsOphalen(int gelieerdePersoonID)
         {
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
 
-            if (gelieerdePersoon == null || !_autorisatieMgr.IsGav(gelieerdePersoon))
+            if (gelieerdePersoon == null || !_autorisatieMgr.PermissiesOphalen(gelieerdePersoon).HasFlag(Permissies.Lezen))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gelieerdePersoon);
-
-            // Gebruikersrechten kunnen nog niet automatisch gemapt worden.
-
-            // Als er gebruikersrechten zijn op de eigen groep, dan mappen we die gebruikersrechten naar 
-            // GebruikersInfo
-
-            var gebruikersRecht = _gebruikersRechtenMgr.GebruikersRechtGet(gelieerdePersoon);
-
-            if (gebruikersRecht != null)
-            {
-                result.GebruikersInfo = Mapper.Map<GebruikersRecht, GebruikersInfo>(gebruikersRecht);
-            }
-            else if (gelieerdePersoon.Persoon.Gav.Any())
-            {
-                // Als er geen gebruikersrecht is op eigen groep, maar wel een gebruiker, dan mappen we de gebruiker
-                // naar GebruikersInfo
-                result.GebruikersInfo = Mapper.Map<Gav, GebruikersInfo>(gelieerdePersoon.Persoon.Gav.FirstOrDefault());
-            }
-
-            return result;
+            return Mapper.Map<GelieerdePersoon, PersoonLidGebruikersInfo>(gelieerdePersoon);
         }
 
         /// <summary>

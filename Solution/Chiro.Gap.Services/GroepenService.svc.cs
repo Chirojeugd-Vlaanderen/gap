@@ -2,6 +2,7 @@
  * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +32,6 @@ using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 #if KIPDORP
 using System.Transactions;
 #endif
@@ -67,8 +67,6 @@ namespace Chiro.Gap.Services
 		// Managers voor niet-triviale businesslogica
 
 		private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
-		private readonly IAuthenticatieManager _authenticatieMgr;
-		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IGroepenManager _groepenMgr;
 		private readonly IChiroGroepenManager _chiroGroepenMgr;
 		private readonly IAdressenManager _adressenMgr;
@@ -97,7 +95,7 @@ namespace Chiro.Gap.Services
 		/// <param name="functiesMgr">Businesslogica aangaande functies</param>
 		/// <param name="jaarOvergangMgr">Businesslogica aangaande de jaarovergang</param>
 		/// <param name="adressenMgr">Businesslogica wat betreft adressen</param>
-		/// <param name="ledenMgr">Businesslogica wat betreft leden.</param>
+        /// <param name="ledenMgr">Businesslogica m.b.t. de leden</param>
 		/// <param name="abonnementenMgr">Businesslogica wat betreft abonnementen.</param>
 		/// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
 		/// <param name="groepenSync">Synchronisatie met Kipadmin</param>
@@ -110,7 +108,7 @@ namespace Chiro.Gap.Services
 			IFunctiesManager functiesMgr, IAdressenManager adressenMgr, ILedenManager ledenMgr,
 			IAbonnementenManager abonnementenMgr,
 			IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IAbonnementenSync abonnementenSync,
-			IVeelGebruikt veelGebruikt) : base(ledenMgr, groepsWerkJarenMgr, abonnementenMgr)
+			IVeelGebruikt veelGebruikt) : base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr, abonnementenMgr)
 		{
 			_repositoryProvider = repositoryProvider;
 			_straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
@@ -137,8 +135,6 @@ namespace Chiro.Gap.Services
 			_functiesMgr = functiesMgr;
 			_afdelingsJaarMgr = afdelingsJaarMgr;
 			_adressenMgr = adressenMgr;
-			_authenticatieMgr = authenticatieMgr;
-			_autorisatieMgr = autorisatieMgr;
 			_groepenSync = groepenSync;
 
 		    _veelGebruikt = veelGebruikt;
@@ -237,38 +233,25 @@ namespace Chiro.Gap.Services
 		public IEnumerable<GroepInfo> MijnGroepenOphalen()
 		{
 			IEnumerable<Groep> groepen = new List<Groep>();
-			var mijnLogin = _authenticatieMgr.GebruikersNaamGet();
-			try
+            int? mijnAdNr = _authenticatieMgr.AdNummerGet();
+            if (mijnAdNr == null)
 			{
-				groepen = from g in _groepenRepo.Select()
-						  where
-							  g.GebruikersRecht.Any(
-								  gr =>
-								  String.Compare(gr.Gav.Login, mijnLogin, StringComparison.InvariantCultureIgnoreCase) ==
-								  0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
-						  select g;
+                throw FaultExceptionHelper.GeenGav();
+            }
+            groepen = from g in _groepenRepo.Select()
+                        where
+                            g.GebruikersRechtV2.Any(
+                                gr => gr.Persoon.AdNummer == mijnAdNr 
+                                    && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
+                        select g;
 
-				return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
+            return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
 
-				// ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
-				// Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
-				// Werk je op de algemene dev-db, check dan de connectie met devsrv1.
-				// Werk je op een eigen database, dan moeten je connectionstrings aangepast zijn.
-				// en uiteraard moet je database service gestart zijn :-P
-
-			}
-			catch (Exception ex)
-			{
-				// ******************************************************************************************
-				// **                                                                                      **
-				// ** Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.            **
-				// ** Check je databaseserver, je connection string in Web.Config, of indien nodig je VPN. **
-				// **                                                                                      **
-				// ******************************************************************************************
-
-				Console.WriteLine(ex.Message);
-				throw;
-			}
+            // ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
+            // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
+            // Werk je op de algemene dev-db, check dan de connectie met devsrv1.
+            // Werk je op een eigen database, dan moeten je connectionstrings aangepast zijn.
+            // en uiteraard moet je database service gestart zijn :-P
 		}
 
 		/// <summary>
@@ -431,7 +414,7 @@ namespace Chiro.Gap.Services
 		public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepId)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
-			return Mapper.Map<IEnumerable<GebruikersRecht>, IEnumerable<GebruikersDetail>>(groep.GebruikersRecht);
+            return Mapper.Map<IEnumerable<GebruikersRechtV2>, IEnumerable<GebruikersDetail>>(groep.GebruikersRechtV2);
 		}
 
 		#endregion

@@ -186,15 +186,13 @@ from core.Categorie c
 left outer join pers.PersoonsCategorie pc on c.CategorieID = pc.CategorieID
 where pc.GelieerdePersoonID is null
 
+-- Alle gebruikersrechten weg.
+delete gr
+from auth.GebruikersRechtV2 gr
+
 delete pa
 from pers.Persoon p
 join pers.PersoonsAdres pa on p.PersoonID=pa.PersoonID
-left outer join pers.GelieerdePersoon gp on p.PersoonID=gp.PersoonID
-where gp.GelieerdePersoonID is null
-
-delete gs
-from pers.Persoon p
-join auth.GavSchap gs on p.PersoonID=gs.PersoonID
 left outer join pers.GelieerdePersoon gp on p.PersoonID=gp.PersoonID
 where gp.GelieerdePersoonID is null
 
@@ -209,18 +207,6 @@ delete p
 from pers.Persoon p
 left outer join pers.GelieerdePersoon gp on p.PersoonID=gp.PersoonID
 where gp.GelieerdePersoonID is null
-
-delete gr
-from auth.Gav gv
-join auth.GebruikersRecht gr on gv.GavID = gr.gavid
-left outer join auth.GavSchap gs on gv.GavID=gs.gavid
-where gs.PersoonID is null
-
-
-delete gv
-from auth.Gav gv
-left outer join auth.GavSchap gs on gv.GavID=gs.gavid
-where gs.PersoonID is null
 
 delete a
 from grp.ChiroGroep cg
@@ -257,11 +243,6 @@ delete f
 from grp.Groep g
 join lid.functie f on g.groepid=f.groepid
 left outer join @groepids ids on g.GroepID=ids.groepID
-where ids.GroepID is null;
-
-delete gr
-from auth.GebruikersRecht gr
-left outer join @groepids ids on gr.GroepID = ids.GroepID
 where ids.GroepID is null;
 
 delete g
