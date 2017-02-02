@@ -313,15 +313,6 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (onbeschikbaar).
-        /// </summary>
-        internal static string GebruikersnaamNietOpvraagbaar {
-            get {
-                return ResourceManager.GetString("GebruikersnaamNietOpvraagbaar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Dit gebruikersrecht kan niet verlengd worden..
         /// </summary>
         internal static string GebruikersRechtNietVerlengbaar {
@@ -336,6 +327,24 @@ namespace Chiro.Gap.Workers.Properties {
         internal static string GebruikersRechtWasAlVervallen {
             get {
                 return ResourceManager.GetString("GebruikersRechtWasAlVervallen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (not configured).
+        /// </summary>
+        internal static string GebruikersServiceNietGeconfigureerd {
+            get {
+                return ResourceManager.GetString("GebruikersServiceNietGeconfigureerd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (onbeschikbaar).
+        /// </summary>
+        internal static string GebruikersServiceOnbeschikbaar {
+            get {
+                return ResourceManager.GetString("GebruikersServiceOnbeschikbaar", resourceCulture);
             }
         }
         
