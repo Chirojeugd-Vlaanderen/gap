@@ -331,6 +331,24 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (not configured).
+        /// </summary>
+        internal static string GebruikersServiceNietGeconfigureerd {
+            get {
+                return ResourceManager.GetString("GebruikersServiceNietGeconfigureerd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (onbeschikbaar).
+        /// </summary>
+        internal static string GebruikersServiceOnbeschikbaar {
+            get {
+                return ResourceManager.GetString("GebruikersServiceOnbeschikbaar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleer de leeftijd van wie je wilt inschrijven)..
         /// </summary>
         internal static string GeenAfdelingVoorLeeftijd {
@@ -640,7 +658,7 @@ namespace Chiro.Gap.Workers.Properties {
         ///Als je niet weet waarover dit gaat, neem je best contact op met het secretariaat (03-231 07 95).
         ///
         ///Een overzichtje van wie er allemaal toegang heeft tot jouw GroepsAdministratieProgramma, vind je op
-        ///https://gap.chiro.be/live/{4}/G [rest of string was truncated]&quot;;.
+        ///https://gap.chiro.be/live/{4}/GebruikersRec [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TijdelijkeRechtenMailBody {
             get {
