@@ -19,6 +19,7 @@
 
 using System;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using System.Web.Caching;
 using Chiro.Ad.ServiceContracts;
@@ -117,7 +118,15 @@ namespace Chiro.Gap.Workers
 
             if (String.IsNullOrEmpty(gebruikersNaam))
             {
-                gebruikersNaam = ServiceHelper.CallService<IAdService, string>(svc => svc.GebruikersNaamOphalen(adNummer));
+                try
+                {
+                    gebruikersNaam =
+                        ServiceHelper.CallService<IAdService, string>(svc => svc.GebruikersNaamOphalen(adNummer));
+                }
+                catch (EndpointNotFoundException)
+                {
+                    gebruikersNaam = Properties.Resources.GebruikersnaamNietOpvraagbaar;
+                }
 
                 _cache.Add(
                     string.Format(UserNameCacheKey, adNummer),
