@@ -125,7 +125,11 @@ namespace Chiro.Gap.Workers
                 }
                 catch (EndpointNotFoundException)
                 {
-                    gebruikersNaam = Properties.Resources.GebruikersnaamNietOpvraagbaar;
+                    gebruikersNaam = Properties.Resources.GebruikersServiceOnbeschikbaar;
+                }
+                catch (InvalidOperationException)
+                {
+                    gebruikersNaam = Properties.Resources.GebruikersServiceNietGeconfigureerd;
                 }
 
                 _cache.Add(
