@@ -32,7 +32,8 @@ namespace Chiro.Cdf.Authentication.Dev
         public UserInfo WieBenIk()
         {
             // Voor dev 'berekenen' we een dummy-AD-nummer.
-            string userName = HttpContext.Current.User.Identity.Name;
+            string userName;
+            userName = HttpContext.Current == null ? "Unknown user" : HttpContext.Current.User.Identity.Name;
             int result = 0;
             foreach (char c in userName)
             {

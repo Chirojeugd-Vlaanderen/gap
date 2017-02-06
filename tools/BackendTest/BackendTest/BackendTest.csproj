@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{56101464-A12C-446C-AF41-2207A7179ED4}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chiro.Cdf.Ioc.Factory</RootNamespace>
-    <AssemblyName>Chiro.Cdf.Ioc.Factory</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>BackendTest</RootNamespace>
+    <AssemblyName>BackendTest</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,18 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\tools\BackendTest\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\tools\BackendTest\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\tools\BackendTest\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,17 +43,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Factory.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
-      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
-      <Name>Chiro.Cdf.Ioc</Name>
-    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.AdnrWcfExtension\Chiro.Cdf.AdnrWcfExtension.csproj">
+      <Project>{07954288-81a1-45b5-8d4a-349356fa8472}</Project>
+      <Name>Chiro.Cdf.AdnrWcfExtension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.Dev.csproj">
+      <Project>{80b76267-f691-4549-9811-e94e057104cd}</Project>
+      <Name>Chiro.Cdf.Authentication.Dev</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
+      <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
+      <Name>Chiro.Cdf.Ioc.Factory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
+      <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
+      <Name>Chiro.Gap.ServiceContracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
