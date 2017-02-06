@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 
+using System.Security.Permissions;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Cdf.AdnrWcfExtension;
@@ -28,6 +29,7 @@ namespace Chiro.Gap.Services
     /// 
     /// Deze doet in principe niet veel anders dan AutoMapper initializeren.
     /// </summary>
+    [PrincipalPermission(SecurityAction.Demand, Role = @"KIPDORP\GapServiceRole_TST")]
     [AdnrInspectorBehavior]
     public class BaseService
     {
