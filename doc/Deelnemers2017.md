@@ -7,6 +7,7 @@
 * Jo (Chiro) misschien zaterdag
 * Pieter (Chiro)
 * Janec (Chiro) gaat zaterdagavond naar huis
+* Willem (Chiro) komt zaterdagnamiddag of zaterdagavond
 
 ## Komen niet
 
