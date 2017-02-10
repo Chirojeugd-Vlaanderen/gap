@@ -57,11 +57,6 @@ namespace Chiro.Gap.Services.Test
         public void VoorElkeTest()
         {
             Factory.ContainerInit();
-
-            var identity = new GenericIdentity(Settings.Default.TestUser);
-            var roles = new[] {Settings.Default.TestSecurityGroep};
-            var principal = new GenericPrincipal(identity, roles);
-            Thread.CurrentPrincipal = principal;
         }
 
 
