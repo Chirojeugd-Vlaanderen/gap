@@ -19,6 +19,7 @@
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WorkerInterfaces;
 using System.Diagnostics;
+using System.Security.Permissions;
 
 namespace Chiro.Gap.Services
 {
@@ -42,6 +43,8 @@ namespace Chiro.Gap.Services
         /// Erg lelijke hack die direct in de database schrijft om de aangelogde gebruiker
         /// toegang te geven tot een testgroep.
         /// </summary>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void WillekeurigeGroepToekennen()
         {
             Debug.Assert(_authenticatieMgr.AdNummerGet().HasValue);

@@ -29,7 +29,6 @@ namespace Chiro.Gap.Services
     /// 
     /// Deze doet in principe niet veel anders dan AutoMapper initializeren.
     /// </summary>
-    [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
     [AdnrInspectorBehavior]
     public class BaseService
     {

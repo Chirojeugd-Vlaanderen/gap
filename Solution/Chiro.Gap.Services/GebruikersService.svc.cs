@@ -19,6 +19,7 @@
 
 using System;
 using System.Linq;
+using System.Security.Permissions;
 using System.ServiceModel;
 using System.Web;
 using Chiro.Ad.ServiceContracts;
@@ -143,6 +144,8 @@ namespace Chiro.Gap.Services
         /// voorkomen, eventuele bestaande rechten niet in <paramref name="gebruikersRecht"/> blijven
         /// onaangeroerd.
         /// </param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void RechtenToekennen(int gelieerdePersoonId, GebruikersRecht gebruikersRecht)
         {
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
@@ -198,6 +201,8 @@ namespace Chiro.Gap.Services
         /// <param name="persoonID">Id van persoon met af te nemen gebruikersrechten</param>
         /// <param name="groepIDs">Id's van groepen waarvoor gebruikersrecht afgenomen moet worden.</param>
         /// <remarks>In praktijk gebeurt dit door de vervaldatum in het verleden te leggen.</remarks>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void RechtenAfnemen(int persoonID, int[] groepIDs)
         {
             var persoon = _personenRepo.ByID(persoonID);
@@ -225,6 +230,8 @@ namespace Chiro.Gap.Services
         /// Levert een redirection-url op naar de site van de verzekeraar
         /// </summary>
         /// <returns>Redirection-url naar de site van de verzekeraar</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public string VerzekeringsUrlGet(int groepID)
         {
             int? adNummer = _authenticatieMgr.AdNummerGet();
@@ -291,6 +298,8 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Indien de ingelogde gebruiker lid is voor gegeven groep in het recentste werkjaar, dan wordt de id van dat lid terug gegeven
         /// </summary>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public int? AangelogdeGebruikerLidIdGet(int groepID)
         {
             int? adNummer = _authenticatieMgr.AdNummerGet();
@@ -323,6 +332,8 @@ namespace Chiro.Gap.Services
         /// <param name="adNummer">AD-nummer van een persoon.</param>
         /// <param name="aanMaken">Als deze <c>true</c> is, wordt een 'stub' aangemaakt als de persoon niet wordt gevonden.</param>
         /// <returns>Details van de persoon met gegeven <paramref name="adNummer"/>.</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public GebruikersDetail DetailsOphalen(int adNummer, bool aanMaken)
         {
             int? mijnAdNummer = _authenticatieMgr.AdNummerGet();
