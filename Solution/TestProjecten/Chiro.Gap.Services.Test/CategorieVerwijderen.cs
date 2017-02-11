@@ -43,7 +43,7 @@ namespace Chiro.Gap.Services.Test
             // Dit gebeurt normaal gesproken bij het starten van de service,
             // maar blijkbaar is het moeilijk de service te herstarten bij het testen.
             // Vandaar op deze manier:
-
+            PermissionHelper.FixPermissions();
             Factory.ContainerInit();
         }
 

@@ -25,7 +25,7 @@ namespace Chiro.Gap.Services.Test.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CgUsers")]
+        [global::System.Configuration.DefaultSettingValueAttribute("GapServiceConsumers")]
         public string TestSecurityGroep {
             get {
                 return ((string)(this["TestSecurityGroep"]));

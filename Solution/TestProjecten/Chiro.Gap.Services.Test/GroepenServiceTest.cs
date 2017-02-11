@@ -56,6 +56,7 @@ namespace Chiro.Gap.Services.Test
         [TestInitialize]
         public void VoorElkeTest()
         {
+            PermissionHelper.FixPermissions();
             Factory.ContainerInit();
         }
 

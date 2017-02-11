@@ -82,6 +82,7 @@
     <Compile Include="GebruikersServiceTest.cs" />
     <Compile Include="GelieerdePersonenServiceTest.cs" />
     <Compile Include="LedenServiceTest.cs" />
+    <Compile Include="PermissionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GroepenServiceTest.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
