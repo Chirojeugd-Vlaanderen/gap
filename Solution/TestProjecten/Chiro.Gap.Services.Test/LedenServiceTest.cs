@@ -74,6 +74,7 @@ namespace Chiro.Gap.Services.Test
         [TestInitialize]
         public void MyTestInitialize()
         {
+            PermissionHelper.FixPermissions();
             // Reset de IOC-container voor iedere test.
             Factory.ContainerInit();
         }

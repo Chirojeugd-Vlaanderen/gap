@@ -39,6 +39,7 @@ namespace Chiro.Gap.Services.Test
         [ClassInitialize]
         public static void Init(TestContext ctx)
         {
+            PermissionHelper.FixPermissions();
             Factory.ContainerInit();
             // Een BaseService insantieren definieert de mappings.
             var dummy = Factory.Maak<BaseService>();
