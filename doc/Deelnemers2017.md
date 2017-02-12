@@ -15,3 +15,4 @@
 * Dokken (Chiro)
 * Niels (Chiro)
 * Sam (Chiro)
+* Edward (Chiro)
