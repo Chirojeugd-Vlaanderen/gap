@@ -6,6 +6,7 @@
 * Wannes (Chiro) zaterdag
 * Jo (Chiro) misschien zaterdag
 * Pieter (Chiro)
+* Tim (Chiro)
 * Janec (Chiro) gaat zaterdagavond naar huis
 * Willem (Chiro) komt zaterdagnamiddag of zaterdagavond
 
