@@ -14,6 +14,7 @@ public class Startup
 
         ConfigureOAuth(app);
         UnityConfig.RegisterComponents(config);
+        MappingHelper.CreateMappings();
         WebApiConfig.Register(config);
         app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
         app.UseWebApi(config);
