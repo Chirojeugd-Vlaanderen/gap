@@ -25,6 +25,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Chiro.Cdf.Authentication.Oauth;
 using Chiro.Gap.Api.Models;
 using Microsoft.AspNet.Identity;
 
@@ -67,10 +68,9 @@ namespace Chiro.Gap.Api.Controllers
         [AcceptVerbs("GET")]
         public IHttpActionResult Hello()
         {
-            var claims = ((ClaimsIdentity) User.Identity).Claims;
-            int adnr = int.Parse((from c in claims where c.Type == "adnr" select c.Value).First());
-            string userName = User.Identity.GetUserName();
-            return Ok(String.Format("Hello {0} ({1})", userName, adnr));
+            var authenticator = new OauthAuthenticator();
+            var ik = authenticator.WieBenIk();
+            return Ok(String.Format("AD-nr {0}", ik.AdNr));
         }
 
         protected override void Dispose(bool disposing)

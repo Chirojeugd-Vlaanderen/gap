@@ -163,6 +163,16 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication.Oauth\Chiro.Cdf.Authentication.Oauth.csproj">
+      <Project>{0c546564-f463-4c06-9592-ef3345d9ad73}</Project>
+      <Name>Chiro.Cdf.Authentication.Oauth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
+      <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
+      <Name>Chiro.Cdf.Authentication</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
