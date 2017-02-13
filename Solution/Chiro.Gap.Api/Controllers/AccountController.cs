@@ -21,22 +21,21 @@
  */
 
 using System;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Chiro.Cdf.Authentication.Oauth;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Api.Models;
 using Microsoft.AspNet.Identity;
 
 namespace Chiro.Gap.Api.Controllers
 {
     [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountController : BaseController
     {
         private AuthRepository _repo = null;
 
-        public AccountController()
+        public AccountController(ServiceHelper serviceHelper) : base(serviceHelper)
         {
             _repo = new AuthRepository();
         }

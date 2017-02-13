@@ -13,7 +13,7 @@ public class Startup
         HttpConfiguration config = new HttpConfiguration();
 
         ConfigureOAuth(app);
-
+        UnityConfig.RegisterComponents(config);
         WebApiConfig.Register(config);
         app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
         app.UseWebApi(config);

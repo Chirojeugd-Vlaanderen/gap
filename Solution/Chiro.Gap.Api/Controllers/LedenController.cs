@@ -2,12 +2,17 @@
 
 using System.Collections.Generic;
 using System.Web.Http;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.Api.Controllers
 {
     [RoutePrefix("api/Leden")]
-    public class LedenController : ApiController
+    public class LedenController : BaseController
     {
+        public LedenController(ServiceHelper serviceHelper) : base(serviceHelper)
+        {
+        }
+
         [Authorize]
         [Route("")]
         public IHttpActionResult Get()
