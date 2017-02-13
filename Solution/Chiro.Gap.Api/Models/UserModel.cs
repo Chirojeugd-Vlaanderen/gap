@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Source: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
+
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Chiro.Gap.Api.Models
 {

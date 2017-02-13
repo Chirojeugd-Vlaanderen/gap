@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Source: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
+using System;
 using System.Web.Http;
 using Chiro.Gap.Api;
 using Microsoft.Owin;
