@@ -143,6 +143,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="AuthContext.cs" />
     <Compile Include="AuthRepository.cs" />
+    <Compile Include="ChiroIdentityUser.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\LedenController.cs" />
     <Compile Include="Models\UserModel.cs" />

@@ -20,5 +20,9 @@ namespace Chiro.Gap.Api.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "AD-nummer")]
+        public int AdNummer { get; set; }
     }
 }

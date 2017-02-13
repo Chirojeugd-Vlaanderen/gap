@@ -12,19 +12,20 @@ namespace Chiro.Gap.Api
     {
         private AuthContext _ctx;
 
-        private UserManager<IdentityUser> _userManager;
+        private UserManager<ChiroIdentityUser> _userManager;
 
         public AuthRepository()
         {
             _ctx = new AuthContext();
-            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
+            _userManager = new UserManager<ChiroIdentityUser>(new UserStore<ChiroIdentityUser>(_ctx));
         }
 
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
         {
-            IdentityUser user = new IdentityUser
+            ChiroIdentityUser user = new ChiroIdentityUser
             {
-                UserName = userModel.UserName
+                UserName = userModel.UserName,
+                AdNummer = userModel.AdNummer,
             };
 
             var result = await _userManager.CreateAsync(user, userModel.Password);
@@ -32,9 +33,9 @@ namespace Chiro.Gap.Api
             return result;
         }
 
-        public async Task<IdentityUser> FindUser(string userName, string password)
+        public async Task<ChiroIdentityUser> FindUser(string userName, string password)
         {
-            IdentityUser user = await _userManager.FindAsync(userName, password);
+            ChiroIdentityUser user = await _userManager.FindAsync(userName, password);
 
             return user;
         }

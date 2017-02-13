@@ -7,7 +7,7 @@ namespace Chiro.Gap.Api
     /// <summary>
     /// Entity-Framework hocus-pocus voor gebruikers.
     /// </summary>
-    public class AuthContext : IdentityDbContext<IdentityUser>
+    public class AuthContext : IdentityDbContext<ChiroIdentityUser>
     {
         public AuthContext()
             : base("AuthContext")
