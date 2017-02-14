@@ -17,6 +17,8 @@
  */
 
 using Chiro.Gap.Domain;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Chiro.Gap.Api.Models
 {
@@ -30,6 +32,7 @@ namespace Chiro.Gap.Api.Models
         public string Woonplaats { get; set; }
         public string Land { get; set; }
         public bool IsVoorkeur { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public AdresTypeEnum Adrestype { get; set; }
     }
 }

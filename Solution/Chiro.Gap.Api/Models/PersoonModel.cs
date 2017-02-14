@@ -18,6 +18,8 @@
 
 using System;
 using Chiro.Gap.Domain;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Chiro.Gap.Api.Models
 {
@@ -31,6 +33,7 @@ namespace Chiro.Gap.Api.Models
         public ContactinfoModel[] Telefoon { get; set; }
         public ContactinfoModel[] Email { get; set; }
         public DateTime? Geboortedatum { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public GeslachtsType Geslacht { get; set; }
         public bool IsIngeschreven { get; set; }
         public bool IsLeiding { get; set; }
