@@ -17,8 +17,10 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Chiro.Gap.Api.Models;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Api
@@ -43,6 +45,11 @@ namespace Chiro.Gap.Api
                 .ForMember(dst => dst.Adrestype, opt => opt.MapFrom(src => src.AdresType));
                 // Voorkeursadres moet achteraf nog gefixt worden.
 
+            Mapper.CreateMap<CommunicatieDetail, ContactinfoModel>()
+                .ForMember(dst => dst.Info, opt => opt.MapFrom(src => src.Nummer))
+                .ForMember(dst => dst.IsVoorkeur, opt => opt.MapFrom(src => src.Voorkeur))
+                .ForMember(dst => dst.Opmerking, opt => opt.MapFrom(src => src.Nota));
+
             Mapper.CreateMap<PersoonLidInfo, PersoonModel>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.PersoonDetail.AdNummer))
                 .ForMember(dst => dst.PersoonId, opt => opt.MapFrom(src => src.PersoonDetail.PersoonID))
@@ -55,7 +62,22 @@ namespace Chiro.Gap.Api
                 .ForMember(dst => dst.GeboortejaarCorrectie, opt => opt.MapFrom(src => src.PersoonDetail.ChiroLeefTijd))
                 .ForMember(dst => dst.LidgeldBetaald, opt => opt.MapFrom(src => src.LidInfo.LidgeldBetaald))
                 .ForMember(dst => dst.EindeInstapperiode, opt => opt.MapFrom(src => src.LidInfo.EindeInstapperiode))
-                .ForMember(dst => dst.Adressen, opt => opt.MapFrom(src => MapAddressen(src)));
+                .ForMember(dst => dst.Adressen, opt => opt.MapFrom(src => MapAddressen(src)))
+                .ForMember(dst => dst.Telefoon,
+                    opt => opt.MapFrom(src => MapCommunicatie(src, CommunicatieTypeEnum.TelefoonNummer)))
+                .ForMember(dst => dst.Email, opt => opt.MapFrom(src => MapCommunicatie(src, CommunicatieTypeEnum.Email)));
+        }
+
+        private static IList<ContactinfoModel> MapCommunicatie(PersoonLidInfo src, CommunicatieTypeEnum communicatyeType)
+        {
+            var lijst = new List<ContactinfoModel>();
+            foreach (var i in src.CommunicatieInfo.Where(ci => ci.CommunicatieTypeID == (int)communicatyeType))
+            {
+                var info = Mapper.Map<CommunicatieDetail, ContactinfoModel>(i);
+                info.PersoonId = src.PersoonDetail.PersoonID;
+                lijst.Add(info);
+            }
+            return lijst;
         }
 
         private static IList<AdresModel> MapAddressen(PersoonLidInfo src)

@@ -27,7 +27,7 @@ namespace Chiro.Gap.Api.Models
     {
         public int PersoonId { get; set; }
         public string Info { get; set; }
-        public bool Voorkeur { get; set; }
+        public bool IsVoorkeur { get; set; }
         public string Opmerking { get; set; }
     }
 }
