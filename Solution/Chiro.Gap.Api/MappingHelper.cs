@@ -16,10 +16,6 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using AutoMapper;
 using Chiro.Gap.Api.Models;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -32,7 +28,8 @@ namespace Chiro.Gap.Api
         {
             // TODO: Damn, nog steeds automapper 3. (zie #5401).
 
-            Mapper.CreateMap<GroepInfo, GroepModel>();
+            Mapper.CreateMap<GroepInfo, GroepModel>()
+                .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.StamNummer.Trim()));
         }
     }
 }
