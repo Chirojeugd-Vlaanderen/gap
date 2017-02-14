@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System.Collections.Generic;
 using AutoMapper;
 using Chiro.Gap.Api.Models;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -40,6 +41,7 @@ namespace Chiro.Gap.Api
                 .ForMember(dst => dst.Woonplaats, opt => opt.MapFrom(src => src.WoonPlaatsNaam))
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.LandNaam))
                 .ForMember(dst => dst.Adrestype, opt => opt.MapFrom(src => src.AdresType));
+                // Voorkeursadres moet achteraf nog gefixt worden.
 
             Mapper.CreateMap<PersoonLidInfo, PersoonModel>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.PersoonDetail.AdNummer))
@@ -53,7 +55,19 @@ namespace Chiro.Gap.Api
                 .ForMember(dst => dst.GeboortejaarCorrectie, opt => opt.MapFrom(src => src.PersoonDetail.ChiroLeefTijd))
                 .ForMember(dst => dst.LidgeldBetaald, opt => opt.MapFrom(src => src.LidInfo.LidgeldBetaald))
                 .ForMember(dst => dst.EindeInstapperiode, opt => opt.MapFrom(src => src.LidInfo.EindeInstapperiode))
-                .ForMember(dst => dst.Adressen, opt => opt.MapFrom(src => src.PersoonsAdresInfo));
+                .ForMember(dst => dst.Adressen, opt => opt.MapFrom(src => MapAddressen(src)));
+        }
+
+        private static IList<AdresModel> MapAddressen(PersoonLidInfo src)
+        {
+            var lijst = new List<AdresModel>();
+            foreach (var a in src.PersoonsAdresInfo)
+            {
+                var adres = Mapper.Map<PersoonsAdresInfo, AdresModel>(a);
+                adres.IsVoorkeur = (src.PersoonDetail.VoorkeursAdresID == a.PersoonsAdresID);
+                lijst.Add(adres);
+            }
+            return lijst;
         }
     }
 }
