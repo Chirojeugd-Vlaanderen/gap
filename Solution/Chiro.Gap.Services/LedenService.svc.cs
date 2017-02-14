@@ -32,6 +32,8 @@ using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Workers;
+
 #if KIPDORP
 using System.Transactions; // NIET VERWIJDEREN!!
 #endif
@@ -873,6 +875,20 @@ namespace Chiro.Gap.Services
             var resultaat = Mapper.Map<IList<Lid>, List<PersoonLidInfo>>(leden.ToList());
 
             return resultaat;
+        }
+
+        /// <summary>
+        /// Haalt alle actieve leden op van de groep met gegeven GroepId. Dat
+        /// wil zeggen: leden van het recentste werkjaar, die niet uitgescheven zijn.
+        /// </summary>
+        /// <param name="GroepId"></param>
+        /// <returns></returns>
+        public List<PersoonLidInfo> ActieveLedenOphalen(int GroepId)
+        {
+            // TODO: Cache groepswerkjaarId op basis van GroepId.
+            var groep = _groepenRepo.ByID(GroepId);
+            var werkjaar = _groepenMgr.HuidigWerkJaar(groep);
+            return LijstZoekenPersoonLidInfo(new LidFilter {GroepsWerkJaarID = werkjaar.ID});
         }
 
         #endregion

@@ -2,7 +2,11 @@
 
 using System.Collections.Generic;
 using System.Web.Http;
+using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Api.Models;
+using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Api.Controllers
 {
@@ -14,43 +18,15 @@ namespace Chiro.Gap.Api.Controllers
         }
 
         [Authorize]
-        [Route("")]
-        public IHttpActionResult Get()
+        [Route("{groepId}")]
+        public IHttpActionResult Get(int groepId)
         {
+            var svcResult = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(
+                svc => svc.ActieveLedenOphalen(groepId));
+            var result = Mapper.Map<IList<PersoonLidInfo>, PersoonModel[]>(svcResult);
             // Return dummy data.
-            return Ok(Lid.CreateLeden());
+            return Ok(result);
         }
 
     }
-
-    #region Helpers
-
-    public class Lid
-    {
-        public int AdNummer { get; set; }
-        public string Naam { get; set; }
-        public string Voornaam { get; set; }
-        public string[] Afdelingen { get; set; }
-        public bool IsLeiding { get; set; }
-
-        public static List<Lid> CreateLeden()
-        {
-            List<Lid> Ledenlijst = new List<Lid>
-            {
-                new Lid {AdNummer = 1, Afdelingen = new[] {"SP"}, Naam = "Mallezie", Voornaam = "Tim", IsLeiding = true},
-                new Lid
-                {
-                    AdNummer = 2,
-                    Afdelingen = new[] {"RAK"},
-                    Naam = "Severs",
-                    Voornaam = "Paul",
-                    IsLeiding = false
-                }
-            };
-
-            return Ledenlijst;
-        }
-    }
-
-    #endregion
 }

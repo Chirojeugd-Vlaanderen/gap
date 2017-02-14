@@ -16,13 +16,20 @@
  * limitations under the License.
  */
 
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.Api.Models
 {
-    public class GroepModel
+    public class AdresModel
     {
-        public int GroepId { get; set; }
-        public string Naam { get; set; }
-        public string Plaats { get; set; }
-        public string StamNummer { get; set; }
+        public int AdresId { get; set; }
+        public string Straat { get; set; }
+        public int? Huisnr { get; set; }
+        public string Bus { get; set; }
+        public string Postcode { get; set; }
+        public string Woonplaats { get; set; }
+        public string Land { get; set; }
+        public bool IsVoorkeur { get; set; }
+        public AdresTypeEnum Adrestype { get; set; }
     }
 }

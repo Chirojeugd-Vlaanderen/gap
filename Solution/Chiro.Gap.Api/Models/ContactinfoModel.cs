@@ -16,13 +16,18 @@
  * limitations under the License.
  */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
 namespace Chiro.Gap.Api.Models
 {
-    public class GroepModel
+    public class ContactinfoModel
     {
-        public int GroepId { get; set; }
-        public string Naam { get; set; }
-        public string Plaats { get; set; }
-        public string StamNummer { get; set; }
+        public int PersoonId { get; set; }
+        public string Info { get; set; }
+        public bool Voorkeur { get; set; }
+        public string Opmerking { get; set; }
     }
 }

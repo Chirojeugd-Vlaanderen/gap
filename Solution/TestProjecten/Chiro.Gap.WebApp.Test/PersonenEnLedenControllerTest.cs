@@ -105,6 +105,11 @@ namespace Chiro.Gap.WebApp.Test
             throw new NotImplementedException();
         }
 
+        public List<PersoonLidInfo> ActieveLedenOphalen(int GroepId)
+        {
+            throw new NotImplementedException();
+        }
+
         public int LidGeldToggle(int id)
         {
             throw new NotImplementedException();

@@ -29,7 +29,21 @@ namespace Chiro.Gap.Api
             // TODO: Damn, nog steeds automapper 3. (zie #5401).
 
             Mapper.CreateMap<GroepInfo, GroepModel>()
-                .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.StamNummer.Trim()));
+                .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.StamNummer.Trim()))
+                .ForMember(dst => dst.GroepId, opt => opt.MapFrom(src => src.ID));
+
+            Mapper.CreateMap<PersoonLidInfo, PersoonModel>()
+                .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.PersoonDetail.AdNummer))
+                .ForMember(dst => dst.PersoonId, opt => opt.MapFrom(src => src.PersoonDetail.PersoonID))
+                .ForMember(dst => dst.Voornaam, opt => opt.MapFrom(src => src.PersoonDetail.VoorNaam))
+                .ForMember(dst => dst.Familienaam, opt => opt.MapFrom(src => src.PersoonDetail.Naam))
+                .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.PersoonDetail.Geslacht))
+                .ForMember(dst => dst.Geboortedatum, opt => opt.MapFrom(src => src.PersoonDetail.GeboorteDatum))
+                .ForMember(dst => dst.IsIngeschreven, opt => opt.MapFrom(src => src.PersoonDetail.IsLid))
+                .ForMember(dst => dst.IsLeiding, opt => opt.MapFrom(src => src.PersoonDetail.IsLeiding))
+                .ForMember(dst => dst.GeboortejaarCorrectie, opt => opt.MapFrom(src => src.PersoonDetail.ChiroLeefTijd))
+                .ForMember(dst => dst.LidgeldBetaald, opt => opt.MapFrom(src => src.LidInfo.LidgeldBetaald))
+                .ForMember(dst => dst.EindeInstapperiode, opt => opt.MapFrom(src => src.LidInfo.EindeInstapperiode));
         }
     }
 }
