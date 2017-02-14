@@ -18,6 +18,7 @@
 
 using System;
 using System.Diagnostics;
+using Microsoft.Practices.Unity;
 
 namespace Chiro.Cdf.Ioc.Factory
 {
@@ -29,6 +30,29 @@ namespace Chiro.Cdf.Ioc.Factory
 		private static readonly object ThreadLock = new object();
 
 		private static IDiContainer _container;
+
+        /// <summary>
+        /// Returns the underelying unity container.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// FIXME: Deze code stinkt.
+        /// Chiro.Cdf.AdnrWcfExtension gebruikt de deze statische klasse om
+        /// de authenticator te gebruiken. De api heeft ook dependency injection
+        /// nodig, en dan liefst via dezelfde unity container. Vandaar dat ik hem
+        /// hier nu ga exposen.
+        /// 
+        /// Wat ik in de plaats moet doen, is een IDependencyResolver maken die deze
+        /// factory gebruikt, en die dan gebruiken in Chiro.Gap.Api.
+        /// </remarks>
+	    public static IUnityContainer ContainerGet()
+        {
+            if (_container is UnityDiContainer)
+	        {
+                return (_container as UnityDiContainer).UnityContainer;
+            }
+            return null;
+        }
 
 		/// <summary>
 		/// Initialiseert de unity container voor de factory.
