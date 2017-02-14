@@ -32,6 +32,15 @@ namespace Chiro.Gap.Api
                 .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.StamNummer.Trim()))
                 .ForMember(dst => dst.GroepId, opt => opt.MapFrom(src => src.ID));
 
+            Mapper.CreateMap<PersoonsAdresInfo, AdresModel>()
+                .ForMember(dst => dst.AdresId, opt => opt.MapFrom(src => src.ID))
+                .ForMember(dst => dst.Straat, opt => opt.MapFrom(src => src.StraatNaamNaam))
+                .ForMember(dst => dst.Huisnr, opt => opt.MapFrom(src => src.HuisNr))
+                .ForMember(dst => dst.Postcode, opt => opt.MapFrom(src => src.IsBelgisch ? src.PostNr.ToString() : src.PostCode))
+                .ForMember(dst => dst.Woonplaats, opt => opt.MapFrom(src => src.WoonPlaatsNaam))
+                .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.LandNaam))
+                .ForMember(dst => dst.Adrestype, opt => opt.MapFrom(src => src.AdresType));
+
             Mapper.CreateMap<PersoonLidInfo, PersoonModel>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.PersoonDetail.AdNummer))
                 .ForMember(dst => dst.PersoonId, opt => opt.MapFrom(src => src.PersoonDetail.PersoonID))
@@ -43,7 +52,8 @@ namespace Chiro.Gap.Api
                 .ForMember(dst => dst.IsLeiding, opt => opt.MapFrom(src => src.PersoonDetail.IsLeiding))
                 .ForMember(dst => dst.GeboortejaarCorrectie, opt => opt.MapFrom(src => src.PersoonDetail.ChiroLeefTijd))
                 .ForMember(dst => dst.LidgeldBetaald, opt => opt.MapFrom(src => src.LidInfo.LidgeldBetaald))
-                .ForMember(dst => dst.EindeInstapperiode, opt => opt.MapFrom(src => src.LidInfo.EindeInstapperiode));
+                .ForMember(dst => dst.EindeInstapperiode, opt => opt.MapFrom(src => src.LidInfo.EindeInstapperiode))
+                .ForMember(dst => dst.Adressen, opt => opt.MapFrom(src => src.PersoonsAdresInfo));
         }
     }
 }
