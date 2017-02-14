@@ -40,6 +40,21 @@ namespace Chiro.Gap.Api
             return user;
         }
 
+        public async Task<ChiroIdentityUser> FindUser(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            return user;
+        }
+
+        public async Task DeleteUser(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+            }
+        }
+
         public void Dispose()
         {
             _ctx.Dispose();
