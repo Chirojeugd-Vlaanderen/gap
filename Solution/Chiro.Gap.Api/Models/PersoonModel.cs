@@ -37,7 +37,7 @@ namespace Chiro.Gap.Api.Models
         public GeslachtsType Geslacht { get; set; }
         public bool IsIngeschreven { get; set; }
         public bool IsLeiding { get; set; }
-        public int GeboortejaarCorrectie { get; set; }
+        public int Leeftijdscorrectie { get; set; }
         public bool LidgeldBetaald { get; set; }
         public DateTime? EindeInstapperiode { get; set; }
         public string[] Afdelingen { get; set; }

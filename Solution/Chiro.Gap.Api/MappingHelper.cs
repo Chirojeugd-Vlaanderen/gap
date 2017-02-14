@@ -59,7 +59,7 @@ namespace Chiro.Gap.Api
                 .ForMember(dst => dst.Geboortedatum, opt => opt.MapFrom(src => src.PersoonDetail.GeboorteDatum))
                 .ForMember(dst => dst.IsIngeschreven, opt => opt.MapFrom(src => src.PersoonDetail.IsLid))
                 .ForMember(dst => dst.IsLeiding, opt => opt.MapFrom(src => src.PersoonDetail.IsLeiding))
-                .ForMember(dst => dst.GeboortejaarCorrectie, opt => opt.MapFrom(src => src.PersoonDetail.ChiroLeefTijd))
+                .ForMember(dst => dst.Leeftijdscorrectie, opt => opt.MapFrom(src => src.PersoonDetail.ChiroLeefTijd))
                 .ForMember(dst => dst.LidgeldBetaald, opt => opt.MapFrom(src => src.LidInfo.LidgeldBetaald))
                 .ForMember(dst => dst.EindeInstapperiode, opt => opt.MapFrom(src => src.LidInfo.EindeInstapperiode))
                 .ForMember(dst => dst.Adressen, opt => opt.MapFrom(src => MapAddressen(src)))
