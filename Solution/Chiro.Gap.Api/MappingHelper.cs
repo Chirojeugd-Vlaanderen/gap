@@ -66,7 +66,10 @@ namespace Chiro.Gap.Api
                 .ForMember(dst => dst.Telefoon,
                     opt => opt.MapFrom(src => MapCommunicatie(src, CommunicatieTypeEnum.TelefoonNummer)))
                 .ForMember(dst => dst.Email, opt => opt.MapFrom(src => MapCommunicatie(src, CommunicatieTypeEnum.Email)))
-                .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(src => src.LidInfo.AfdelingAfkortingLijst));
+                .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(src => src.LidInfo.AfdelingAfkortingLijst))
+                .ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.LidInfo.Functies.Select(fn => fn.Code)))
+                .ForMember(dst => dst.Categorieen,
+                    opt => opt.MapFrom(src => src.PersoonDetail.CategorieLijst.Select(ct => ct.Code)));
         }
 
         private static IList<ContactinfoModel> MapCommunicatie(PersoonLidInfo src, CommunicatieTypeEnum communicatyeType)
