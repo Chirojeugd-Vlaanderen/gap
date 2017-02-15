@@ -316,6 +316,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.AfdelingIdLijst,
                     opt => opt.MapFrom(src => src.AfdelingIds))
                 .ForMember(
+                    dst => dst.AfdelingAfkortingLijst,
+                    opt => opt.MapFrom(src => Afdelingen(src).Select(a => a.Afkorting).ToList()))
+                .ForMember(
                     dst => dst.Functies,
                     opt => opt.MapFrom(src => src.Functie))
                 .ForMember(

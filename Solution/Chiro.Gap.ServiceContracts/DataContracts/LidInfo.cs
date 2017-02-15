@@ -66,16 +66,25 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DisplayName(@"Non-actief")]
 		public bool NonActief { get; set; }
 
+        // FIXME: het is wat raar dat zowel afdeling-ID's als afdelingsafkortingen worden meegegeven
+        // in aparte arrays.
+
 		/// <summary>
 		/// De lijst van afdelingIDs waarin het lid zit (1 voor een kind)
 		/// </summary>
 		[DataMember]
 		public IList<int> AfdelingIdLijst { get; set; }
 
-		/// <summary>
-		/// Functies van het lid
-		/// </summary>
-		[DataMember]
+        /// <summary>
+        /// Lijst van afdelingsafkortingen.
+        /// </summary>
+        [DataMember]
+        public IList<string> AfdelingAfkortingLijst { get; set; }
+
+        /// <summary>
+        /// Functies van het lid
+        /// </summary>
+        [DataMember]
 		public IList<FunctieDetail> Functies { get; set; }
 
 		/// <summary>
@@ -89,5 +98,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public bool VerzekeringLoonVerlies { get; set; }
+
 	}
 }
