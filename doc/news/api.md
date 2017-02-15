@@ -7,10 +7,10 @@ vraag naar een API (#845). We hebben intussen ook al wel wat pogingen
 achter de rug.
 
 Een eerste poging was OData (dc1df503). OData is een standaard die
-via ingewikkelde querystrings toelaat om gegevens gefilterd op te halen.
-Helaas was die syntax tamelijk ingewikkeld, en daarenboven was hij niet
-efficient, omdat hij eerst heel veel informatie ophaalde uit de backend,
-om dan in-memory te filteren.
+via rare querystrings toelaat om gegevens gefilterd op te halen.
+Helaas is de syntax tamelijk ingewikkeld, en daarenboven was onze
+implementatie niet efficient, omdat hij eerst heel veel informatie 
+ophaalde uit de backend, om dan in-memory te filteren.
 
 Een tweede poging was die van Ben. Hij gebruikte ASP.NET Webapi, en
 werkte via Entity-Framework rechtstreeks op de GAP-database, zodat het
