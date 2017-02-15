@@ -12,7 +12,7 @@ Helaas is de syntax tamelijk ingewikkeld, en daarenboven was onze
 implementatie niet efficient, omdat hij eerst heel veel informatie 
 ophaalde uit de backend, om dan in-memory te filteren.
 
-Een tweede poging was die van Ben. Hij gebruikte ASP.NET Webapi, en
+Een tweede poging was die van @bridtbe. Hij gebruikte ASP.NET Webapi, en
 werkte via Entity-Framework rechtstreeks op de GAP-database, zodat het
 ophalen van gegevens veel efficienter verliep (8be29567). Nadeel was
 dat de autorisatielogica dan opnieuw geschreven moest worden. De
