@@ -14,8 +14,10 @@ om dan in-memory te filteren.
 Een tweede poging was die van Ben. Hij gebruikte ASP.NET Webapi, en
 werkte via Entity-Framework rechtstreeks op de GAP-database, zodat het
 ophalen van gegevens veel efficienter verliep (8be29567). Nadeel was
-dat de autorisatielogica dan opnieuw geschreven moest worden, en het was
-niet voor de hand liggend om de authenticatie goed te regelen.
+dat de autorisatielogica dan opnieuw geschreven moest worden. De
+structuur van de tabellen is ook niet ideaal voor een 
+API-eindgebruiker, en het was niet voor de hand liggend om de 
+authenticatie goed te regelen.
 
 Maar derde keer, goeie keer, laat ons hopen. Ik heb nu een API in dev (#3283),
 die werkt met OAuth, die achterliggend onze webservices aanspreekt, en
