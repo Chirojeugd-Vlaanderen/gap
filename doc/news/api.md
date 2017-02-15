@@ -3,7 +3,8 @@
 *2017-02-15*
 
 Niet veel na de initiele release van het GAP als webtoepassing, was er de
-vraag naar een API. We hebben al wel wat pogingen achter de rug.
+vraag naar een API (#845). We hebben intussen ook al wel wat pogingen 
+achter de rug.
 
 Een eerste poging was OData (dc1df503). OData is een standaard die
 via ingewikkelde html-query's toelaat om gegevens gefilterd op te halen.
