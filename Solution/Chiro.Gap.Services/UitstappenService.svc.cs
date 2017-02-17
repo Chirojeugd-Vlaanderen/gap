@@ -1,14 +1,14 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -209,6 +209,8 @@ namespace Chiro.Gap.Services
         public DeelnemerDetail DeelnemerOphalen(int deelnemerId)
         {
             var resultaat = _deelnemersRepo.Select().FirstOrDefault(dln => dln.ID == deelnemerId);
+            Gav.Check(resultaat.GelieerdePersoon);
+			      Gav.Check(resultaat.Uitstap);
             return Mapper.Map<Deelnemer, DeelnemerDetail>(resultaat);
         }
 
@@ -226,14 +228,14 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepId"/> voor diens recentste 
+        /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepId"/> voor diens recentste
         /// werkJaar.
         /// </summary>
         /// <param name="groepId">
         /// De groep waarvan info wordt gevraagd
         /// </param>
         /// <returns>
-        /// Een lijstje met de geregistreerde bivakken en feedback over wat er op dit moment moet gebeuren 
+        /// Een lijstje met de geregistreerde bivakken en feedback over wat er op dit moment moet gebeuren
         /// voor de bivakaangifte
         /// </returns>
         public BivakAangifteLijstInfo BivakStatusOphalen(int groepId)
@@ -365,7 +367,7 @@ namespace Chiro.Gap.Services
             var uitstap = _uitstappenRepo.ByID(uitstapId);
             Gav.Check(uitstap);
             var groep = uitstap.GroepsWerkJaar.Groep;
-            
+
             // zoek of maak adres
             var adres = _adressenMgr.ZoekenOfMaken(adresInfo, _adressenRepo.Select(), _straatNamenRepo.Select(), _woonPlaatsenRepo.Select(), _landenRepo.Select());
 
@@ -490,7 +492,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonIDs">ID's van in te schrijven gelieerde personen</param>
         /// <param name="geselecteerdeUitstapId">ID van uitstap waarvoor in te schrijven</param>
-        /// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
+        /// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als
         /// logistieker</param>
         /// <returns>De basisgegevens van de uitstap, zodat die in de feedback gebruikt kan worden</returns>
         public UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapId,
