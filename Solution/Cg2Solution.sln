@@ -55,6 +55,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Validatie.Test", "TestProjecten\Chiro.Gap.Validatie.Test\Chiro.Gap.Validatie.Test.csproj", "{D1C65B7E-8F0E-497A-A6A2-4CD36175219C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1A77A926-AC69-41E5-842B-78504EB4A356}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services.Dev", "Chiro.Gap.Services.Dev\Chiro.Gap.Services.Dev.csproj", "{DF253C73-7632-476E-B760-DEBA6D306E69}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateApi", "Chiro.Gap.UpdateApi\Chiro.Gap.UpdateApi.csproj", "{25241B90-0CC2-4F25-B794-21DFE6A6FBF0}"
@@ -102,8 +103,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication.Backend", "Chiro.Cdf.Authentication.Backend\Chiro.Cdf.Authentication.Backend.csproj", "{33D20616-2D3B-4693-8702-F2FAE1DBFBD5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication.Ad", "Chiro.Cdf.Authentication.Ad\Chiro.Cdf.Authentication.Ad.csproj", "{B4FED89C-AB92-4D90-B566-3604A43A998A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication.Dev", "Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.Dev.csproj", "{80B76267-F691-4549-9811-E94E057104CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication.Cas", "Chiro.Cdf.Authentication.Cas\Chiro.Cdf.Authentication.Cas.csproj", "{22FC3247-9A1A-4B57-89AB-CB53B90146FE}"
 EndProject
@@ -361,18 +360,6 @@ Global
 		{D1C65B7E-8F0E-497A-A6A2-4CD36175219C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D1C65B7E-8F0E-497A-A6A2-4CD36175219C}.Release|Win32.ActiveCfg = Release|Any CPU
 		{D1C65B7E-8F0E-497A-A6A2-4CD36175219C}.Release|x86.ActiveCfg = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Win32.ActiveCfg = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|x86.ActiveCfg = Release|Any CPU
 		{DF253C73-7632-476E-B760-DEBA6D306E69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF253C73-7632-476E-B760-DEBA6D306E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF253C73-7632-476E-B760-DEBA6D306E69}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -701,22 +688,6 @@ Global
 		{B4FED89C-AB92-4D90-B566-3604A43A998A}.Release|Win32.Build.0 = Release|Any CPU
 		{B4FED89C-AB92-4D90-B566-3604A43A998A}.Release|x86.ActiveCfg = Release|Any CPU
 		{B4FED89C-AB92-4D90-B566-3604A43A998A}.Release|x86.Build.0 = Release|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Debug|Win32.Build.0 = Debug|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Debug|x86.Build.0 = Debug|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Release|Win32.ActiveCfg = Release|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Release|Win32.Build.0 = Release|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Release|x86.ActiveCfg = Release|Any CPU
-		{80B76267-F691-4549-9811-E94E057104CD}.Release|x86.Build.0 = Release|Any CPU
 		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22FC3247-9A1A-4B57-89AB-CB53B90146FE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -769,8 +740,8 @@ Global
 		{5CAA5C51-8250-4E6E-851F-FACE0951BEA9} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution8.vsmdi
