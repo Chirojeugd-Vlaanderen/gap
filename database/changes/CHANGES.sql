@@ -238,27 +238,5 @@ BEGIN
 END
 GO
 
-
--- procedures voor dev (moet weg uit live db)
-
-CREATE PROCEDURE [auth].[spWillekeurigeGroepToekennenAd]
-(
-	@adNr int
-)
-AS
--- Doel: Kent rechten toe aan persoon met gegeven AD-nummer.
--- Als er geen gebruiker is met gegeven AD-nummer, wordt die gemaakt op basis
--- van meegeleverde naam en voornaam.
-BEGIN
-	DECLARE @stamnr as varchar(10);
-
-	set @stamnr = (select top 1 g.Code from grp.Groep g where g.StopDatum is null order by newid());
-	exec auth.spGebruikersRechtToekennenAd @stamnr, @adNr
-END
-GO
-
-GRANT EXECUTE ON auth.spWillekeurigeGroepToekennenAd TO GapHackRole;
-GO
-
 GRANT INSERT,UPDATE,DELETE ON auth.GebruikersRechtV2 TO GapRole;
 GO
