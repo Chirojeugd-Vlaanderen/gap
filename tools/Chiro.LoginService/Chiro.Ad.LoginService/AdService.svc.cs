@@ -18,6 +18,7 @@
  */
 
 using System;
+using System.Security.Permissions;
 using System.ServiceModel;
 using Chiro.Ad.Domain;
 using Chiro.Ad.ServiceContracts;
@@ -83,7 +84,7 @@ namespace Chiro.Ad.LoginService
         ///   </code>
         /// </example>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        //[PrincipalPermission(SecurityAction.Demand, Name = @"KIPDORP\LoginSvcUser")]
+        [PrincipalPermission(SecurityAction.Demand, Role = @"LoginSvc")]
         public string GapLoginAanvragen(int adNr, string voornaam, string familienaam, string mailadres)
         {
             try
@@ -119,13 +120,14 @@ namespace Chiro.Ad.LoginService
             }
         }
 
-
+        [PrincipalPermission(SecurityAction.Demand, Role = @"LoginSvc")]
         public int? AdNummerOphalen(string userName)
         {
             var gebruiker = _loginManager.Zoeken(userName);
             return gebruiker.AdNr;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = @"LoginSvc")]
         public string GebruikersNaamOphalen(int adNummer)
         {
             var gebruiker = _loginManager.Zoeken(adNummer);
