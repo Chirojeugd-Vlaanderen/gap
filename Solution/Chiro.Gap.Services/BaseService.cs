@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 
+using System.Security.Permissions;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Cdf.AdnrWcfExtension;

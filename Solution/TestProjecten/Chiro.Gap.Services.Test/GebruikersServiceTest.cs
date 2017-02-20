@@ -80,6 +80,7 @@ namespace Chiro.Gap.Services.Test
         [TestInitialize()]
         public void MyTestInitialize()
         {
+            PermissionHelper.FixPermissions();
             Factory.ContainerInit();
         }
         //

@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using AutoMapper;
 using Chiro.Cdf.Poco;
@@ -161,12 +162,14 @@ namespace Chiro.Gap.Services
 
         #endregion
 
- 
+
         /// <summary>
         /// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
         /// </summary>
         /// <param name="gelieerdePersoonIds">Lijst van gelieerde persoonIds waarover we inforamtie willen</param>
         /// <returns>De LidIds van de personen die lid zijn gemaakt</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public List<InschrijvingsVoorstel> InschrijvingVoorstellen(IList<int> gelieerdePersoonIds)
         {
             // TODO (#195): van onderstaande logica moet wel wat verhuizen naar de workers!
@@ -240,6 +243,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="inschrijfInfo">Lijst van informatie over wie lid moet worden</param>
         /// <returns>Lijst met meer informatie over de personen die niet ingeschreven konden worden.</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public List<InschrijvingsVoorstel> Inschrijven(IList<InschrijvingsVerzoek> inschrijfInfo)
         {
             // TODO: Te veel nesting. Opkuis nodig.
@@ -411,6 +416,8 @@ namespace Chiro.Gap.Services
         /// <param name="gelieerdePersoonIDs">Id's van de gelieerde personen</param>
         /// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een
         ///     string waarin wat uitleg staat.</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void Uitschrijven(IList<int> gelieerdePersoonIDs, out string foutBerichten)
         {
             // Deze code is tamelijk rommelig; gebruik ze niet als referentie-implementatie
@@ -500,6 +507,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="lidId">Id van lid met te vervangen functies</param>
         /// <param name="functieIds">Ids van nieuwe functies voor het lid</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void FunctiesVervangen(int lidId, IEnumerable<int> functieIds)
         {
             var lid = _ledenRepo.ByID(lidId);
@@ -562,6 +571,8 @@ namespace Chiro.Gap.Services
         /// <param name="lidId">Lid dat nieuwe afdelingen moest krijgen</param>
         /// <param name="afdelingsJaarIds">Id's van de te koppelen afdelingsjaren</param>
         /// <returns>De GelieerdePersoonId van het lid</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public int AfdelingenVervangen(int lidId, IList<int> afdelingsJaarIds)
         {
             var lid = _ledenRepo.ByID(lidId);
@@ -578,6 +589,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="lidIds">Id's van leden die nieuwe afdelingen moeten krijgen</param>
         /// <param name="afdelingsJaarIds">Id's van de te koppelen afdelingsjaren</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void AfdelingenVervangenBulk(IList<int> lidIds, IList<int> afdelingsJaarIds)
         {
             // Dit is een beetje een rare functie. Als er meerdere leden zijn, en meerdere afdelingen, dan moeten
@@ -667,6 +680,8 @@ namespace Chiro.Gap.Services
         /// <remarks>Dit is nogal een specifieke method.  In ons domain model is gegeven dat verzekeringen gekoppeld zijn aan
         /// personen, voor een bepaalde periode.  Maar in eerste instantie zal alleen de verzekering loonverlies gebruikt worden,
         /// die per definitie enkel voor leden bestaat.</remarks>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public int LoonVerliesVerzekeren(int lidId)
         {
             PersoonsVerzekering persoonsVerzekering;
@@ -713,6 +728,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="lidId">Id van lid met te togglen lidtype</param>
         /// <returns>Lid-ID van lid</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public int TypeToggle(int lidId)
         {
             var origineelLid = _ledenRepo.ByID(lidId);
@@ -754,6 +771,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="lidId">Id van het lid waarin we geinteresseerd zijn</param>
         /// <returns>naam, afdeling en lidtype van het gegeven lid</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public LidAfdelingInfo AfdelingenOphalen(int lidId)
         {
             var lid = _ledenRepo.ByID(lidId);
@@ -767,6 +786,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="lidId">Id op te halen lid</param>
         /// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen en functies</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public PersoonLidInfo DetailsOphalen(int lidId)
         {
             var lid = _ledenRepo.ByID(lidId);
@@ -783,6 +804,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="lidID">ID van een lid</param>
         /// <returns>beperkte informatie over de person</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public PersoonInfo PersoonOphalen(int lidID)
         {
             var lid = _ledenRepo.ByID(lidID);
@@ -799,6 +822,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="lidID">ID van een lid</param>
         /// <returns>beperkte lidinfo voor lid met gegeven <paramref name="lidID" /></returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public LidInfo LidInfoOphalen(int lidID)
         {
             var lid = _ledenRepo.ByID(lidID);
@@ -824,6 +849,8 @@ namespace Chiro.Gap.Services
         /// Let er ook op dat je in de filter iets opgeeft als LidType
         /// (Kind, Leiding of Alles), want anders krijg je niets terug.
         /// </remarks>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public List<LidOverzicht> LijstZoekenLidOverzicht(LidFilter filter, bool metAdressen)
         {
             // Onderstaande throwt een exception als de filter zaken bevat waar je geen rechten op
@@ -862,6 +889,8 @@ namespace Chiro.Gap.Services
         /// Let er ook op dat je in de filter iets opgeeft als LidType
         /// (Kind, Leiding of Alles), want anders krijg je niets terug.
         /// </remarks>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public List<PersoonLidInfo> LijstZoekenPersoonLidInfo(LidFilter filter)
         {
             // Onderstaande throwt een exception als de filter zaken bevat waar je geen rechten op
@@ -884,6 +913,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="lidId">Id van lid met te togglen lidgeld</param>
         /// <returns>GelieerdePersoonId van lid</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public int LidGeldToggle(int lidId)
         {
             var lid = _ledenRepo.ByID(lidId);
