@@ -8,6 +8,16 @@ Het GAP is het GroepsAdministratiePortaal van de Chiro.
 * 2017-02-15 [Een API In dev](doc/news/api.md)
 * 2017-02-02 [CAS-authenticatie in beta](doc/news/cas.md)
 
+## Docker
+
+Experimenteel: GAP met Docker en Linux.
+
+```
+sudo docker-compose build
+sudo docker-compose run mssql /opt/gap/mssqlsetup.sh
+sudo docker-compose up
+```
+
 ## Documentatie
 
 De [documentatie voor ontwikkelaars](doc/README.md) was vroeger een
