@@ -24,6 +24,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.UpdateApi.Models;
 using System.Text;
+using System.Diagnostics;
 
 namespace Chiro.Gap.UpdateApi.Workers
 {
@@ -39,7 +40,7 @@ namespace Chiro.Gap.UpdateApi.Workers
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
         private readonly IRepository<PersoonsAdres> _persoonsAdressenRepo;
         private readonly IRepository<PersoonsVerzekering> _persoonsVerzekeringenRepo;
-        private readonly IRepository<GebruikersRecht> _gebruikersRechtenRepo;
+        private readonly IRepository<GebruikersRechtV2> _gebruikersRechtenRepo;
 
         public GapUpdater(IRepositoryProvider repositoryProvider)
         {
@@ -61,7 +62,7 @@ namespace Chiro.Gap.UpdateApi.Workers
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
             _persoonsAdressenRepo = repositoryProvider.RepositoryGet<PersoonsAdres>();
             _persoonsVerzekeringenRepo = repositoryProvider.RepositoryGet<PersoonsVerzekering>();
-            _gebruikersRechtenRepo = repositoryProvider.RepositoryGet<GebruikersRecht>();
+            _gebruikersRechtenRepo = repositoryProvider.RepositoryGet<GebruikersRechtV2>();
         }
 
         #region Disposable etc
@@ -406,44 +407,38 @@ namespace Chiro.Gap.UpdateApi.Workers
 
             // Gebruikersrechten nog
 
-            var teVerleggenGavs = (from g in dubbel.Gav
-                                   where
-                                       !g.GebruikersRecht.Any(
-                                           gr =>
-                                           gr.Groep.GebruikersRecht.Any(gr2 => gr2.Gav.Persoon.Contains(origineel)))
-                                   select g).ToList();
+            var teVerleggenGebruikersrechten = (from gr in dubbel.GebruikersRechtV2
+                                   where !gr.Groep.GebruikersRechtV2.Any(gr2 => Equals(gr2.Persoon, origineel))
+                                   select gr).ToList();
 
-            foreach (var g in teVerleggenGavs.ToList())
+            foreach (var g in teVerleggenGebruikersrechten.ToList())
             {
-                dubbel.Gav.Remove(g);
-                origineel.Gav.Add(g);
+                dubbel.GebruikersRechtV2.Remove(g);
+                origineel.GebruikersRechtV2.Add(g);
             }
 
-            foreach (var g in dubbel.Gav.ToList())
+            foreach (var dubbelGebruikersRecht in dubbel.GebruikersRechtV2.ToList())
             {
-                // wat een gepruts.
+                // De dubbele gebruikersrechten zullen verwijderd worden, maar eerst moeten we eens
+                // nakijken of die dubbele niet later vervallen als wat we behouden. Zo ja, moeten
+                // we de datum bijwerken.
+                // Iets gelijkaardigs geldt voor de rollen.
 
-                foreach (var dubbelGebruikersRecht in g.GebruikersRecht.ToList())
+                var origineelGebruikersRecht = (from gr in origineel.GebruikersRechtV2
+                                                where Equals(gr.Groep, dubbelGebruikersRecht.Groep)
+                                                select gr).SingleOrDefault();
+
+                Debug.Assert(origineelGebruikersRecht != null);
+
+                if (dubbelGebruikersRecht.VervalDatum > origineelGebruikersRecht.VervalDatum)
                 {
-                    var origineelGebruikersRecht = (from gr in origineel.Gav.SelectMany(g2 => g2.GebruikersRecht)
-                                                    where Equals(gr.Groep, dubbelGebruikersRecht.Groep)
-                                                    select gr).SingleOrDefault();
-
-                    if (origineelGebruikersRecht != null)
-                    {
-                        // TODO: Rollen (maar die hebben we nu nog niet, zie #844)
-
-                        if (dubbelGebruikersRecht.VervalDatum > origineelGebruikersRecht.VervalDatum)
-                        {
-                            origineelGebruikersRecht.VervalDatum = dubbelGebruikersRecht.VervalDatum;
-                        }
-                        _gebruikersRechtenRepo.Delete(dubbelGebruikersRecht);
-                    }
-                    else
-                    {
-                        dubbelGebruikersRecht.Gav = origineel.Gav.Single();
-                    }
+                    origineelGebruikersRecht.VervalDatum = dubbelGebruikersRecht.VervalDatum;
                 }
+                origineelGebruikersRecht.PersoonsPermissies |= dubbelGebruikersRecht.PersoonsPermissies;
+                origineelGebruikersRecht.GroepsPermissies |= dubbelGebruikersRecht.GroepsPermissies;
+                origineelGebruikersRecht.AfdelingsPermissies |= dubbelGebruikersRecht.AfdelingsPermissies;
+                origineelGebruikersRecht.IedereenPermissies |= dubbelGebruikersRecht.IedereenPermissies;
+                _gebruikersRechtenRepo.Delete(dubbelGebruikersRecht);
             }
 
             foreach (var b in dubbel.BerichtGebruiker)

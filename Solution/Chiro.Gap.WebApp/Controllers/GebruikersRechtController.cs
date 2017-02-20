@@ -1,7 +1,8 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +17,10 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
@@ -27,17 +30,17 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// Controller voor 
+    /// Controller voor gebruikersrechten.
     /// </summary>
     public class GebruikersRechtController : BaseController
     {
-        public GebruikersRechtController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
-            : base(veelGebruikt, serviceHelper)
+        public GebruikersRechtController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
         {
         }
 
         /// <summary>
-        /// Kent een gebruikersrecht voor 14 maanden toe aan de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>.
+        /// Kent een GAV-gebruikersrecht voor 14 maanden toe aan de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>.
         /// Als het gebruikersrecht al bestaat, dan wordt het indien mogelijk verlengd tot 14 maanden vanaf vandaag.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvoor gebruikersrecht toegekend moet worden</param>
@@ -46,7 +49,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult AanGpToekennen(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(
-                svc => svc.RechtenToekennen(id, new[] {new GebruikersRecht {GroepID = groepID, Rol = Rol.Gav}}));
+                svc => svc.RechtenToekennen(id, new GebruikersRecht {GroepsPermissies = Permissies.Bewerken, IedereenPermissies = Permissies.Bewerken}));
             return RedirectToAction("Bewerken", new { Controller = "Personen", id });
         }
 
@@ -59,7 +62,10 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns>Redirect naar personenfiche</returns>
         public ActionResult VanGpAfnemen(int groepID, int id)
         {
-            ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenAfnemen(id, new[] {groepID}));
+            // Bepaal PersoonID.
+            var persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.PersoonIDGet(id));
+
+            ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenAfnemen(persoonID, new[] {groepID}));
             return RedirectToAction("Bewerken", new { Controller = "Personen", id });
         }
 
@@ -81,34 +87,37 @@ namespace Chiro.Gap.WebApp.Controllers
 
         /// <summary>
         /// Creert of verlengt het gebruikersrecht op de groep met gegeven <paramref name="groepID"/> van de
-        /// gebruiker met gegeven <paramref name="gebruikersNaam"/>
+        /// gebruiker met gegeven GelieerdePersoonID <paramref name="id"/>
         /// </summary>
-        /// <param name="gebruikersNaam">gebruikersnaam van gebruiker met aan te maken of te verlengen 
-        /// gebruikersrecht.</param>
+        /// <param name="id">GelieerdePersoonID van gelieerde persoon die gebruikersrecht moet krijgen.</param>
         /// <param name="groepID">ID van groep waarvoor gebruikersrecht aan te maken of te verlengen</param>
         /// <returns>Een redirect naar het gebruikersrechtenoverzicht</returns>
-        public ActionResult AanmakenOfVerlengen(int groepID, string gebruikersNaam)
+        public ActionResult AanmakenOfVerlengen(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(
                 gs =>
-                gs.RechtenToekennenGebruiker(gebruikersNaam,
-                                             new[] {new GebruikersRecht {GroepID = groepID, Rol = Rol.Gav}}));
+                    gs.RechtenToekennen(id,
+                        new GebruikersRecht
+                        {
+                            GroepsPermissies = Permissies.Bewerken,
+                            IedereenPermissies = Permissies.Bewerken
+                        }));
 
             return RedirectToAction("Index");
         }
 
         /// <summary>
-        /// Ontneemt de user met gegeven <paramref name="gebruikersNaam"/> alle rechten op de groep met
+        /// Ontneemt de user met PersoonID <paramref name="id"/> alle rechten op de groep met
         /// gegeven <paramref name="groepID"/>
         /// </summary>
         /// <param name="groepID">groepID van groep waarop de user geen gebruikersrechten meer mag hebben</param>
-        /// <param name="gebruikersNaam">gebruikersnaam van user die geen gebruikersrechten meer mag hebben op
+        /// <param name="id">PersoonID van user die geen gebruikersrechten meer mag hebben op
         /// gegeven groep</param>
         /// <returns>Een redirect naar het gebruikersrechtenoverzicht</returns>
-        public ActionResult Intrekken(int groepID, string gebruikersNaam)
+        public ActionResult Intrekken(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(
-                gs => gs.RechtenAfnemenGebruiker(gebruikersNaam, new[] {groepID}));
+                gs => gs.RechtenAfnemen(id, new[] {groepID}));
             return RedirectToAction("Index");
         }
 
@@ -123,6 +132,23 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenToekennen(id, null));
             return RedirectToAction("Bewerken", "Personen", new { groepID, id });
+        }
+
+        /// <summary>
+        /// Toont de view om de gebruikersrechten van de gelieerde persoon met gegeven gelieerdePersoonID
+        /// <paramref name="id"/> aan te passen.
+        /// </summary>
+        /// <param name="groepID">ID van de actieve groep in het GAP.</param>
+        /// <param name="id">GelieerdePersoonID van de gelieerde persoon waarvan de gebruikersrechten
+        /// aangepast moeten worden.</param>
+        /// <returns>Een view die toelaat om die gebruikersrechten aan te passen.</returns>
+        public ActionResult Bewerken(int groepID, int id)
+        {
+            var model = new GebruikersDetailModel();
+            BaseModelInit(model, groepID);
+
+            throw new NotImplementedException();
+            //model.Detail = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.GebruikerOphalen)
         }
     }
 }

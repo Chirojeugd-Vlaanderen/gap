@@ -1,7 +1,8 @@
 ﻿/*
  * Copyright 2013-2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://gapwiki.chiro.be/copyright
+ * https://develop.chiro.be/gap/wiki/copyright
+ * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +18,8 @@
  */
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -32,90 +34,73 @@ namespace Chiro.Gap.Workers.Test
     [TestClass()]
     public class GebruikersRechtenManagerTest
     {
-
-
-        private TestContext testContextInstance;
-
         /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
-
-        /// <summary>
-        ///A test for ToekennenOfVerlengen
-        ///</summary>
+        /// Test wijzigen van een bestaand gebruikersrecht.
+        /// </summary>
         [TestMethod()]
-        public void ToekennenOfVerlengenTest()
+        public void WijzigenTest()
         {
             // ARRANGE
 
-            var gav = new Gav();
             var gelieerdePersoon = new GelieerdePersoon
             {
                 ID = 1,
                 Groep = new ChiroGroep { ID = 3 },
-                Persoon = new Persoon { ID = 2, Gav = new List<Gav> { gav } }
+                Persoon = new Persoon { ID = 2 }
             };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
-            gav.Persoon.Add(gelieerdePersoon.Persoon);
-            var gebruikersrecht = new GebruikersRecht
+
+            var gebruikersrecht = new GebruikersRechtV2
                                   {
-                                      Gav = gav,
+                                      Persoon = gelieerdePersoon.Persoon,
                                       Groep = gelieerdePersoon.Groep,
                                       VervalDatum = DateTime.Now.AddDays(-1)    // gisteren vervallen
                                   };
-            gav.GebruikersRecht.Add(gebruikersrecht);
+            gebruikersrecht.Persoon.GebruikersRechtV2.Add(gebruikersrecht);
 
             // ACT
 
             var target = new GebruikersRechtenManager();
-            var actual = target.ToekennenOfVerlengen(gav, gelieerdePersoon.Groep);
+            target.ToekennenOfWijzigen(gelieerdePersoon.Persoon, gelieerdePersoon.Groep, Permissies.Bewerken,
+                Permissies.Bewerken, Permissies.Bewerken, Permissies.Bewerken);
 
             // ASSERT
 
             Assert.IsTrue(gebruikersrecht.VervalDatum > DateTime.Now);
         }
+
+        /// <summary>
+        /// Test toekennen van een nieuw gebruikersrecht.
+        /// </summary>
+        [TestMethod()]
+        public void ToekennenTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Groep = new ChiroGroep { ID = 3 },
+                Persoon = new Persoon { ID = 2 }
+            };
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+
+            // ACT
+
+            var target = new GebruikersRechtenManager();
+            target.ToekennenOfWijzigen(gelieerdePersoon.Persoon, gelieerdePersoon.Groep, Permissies.Bewerken,
+                Permissies.Bewerken, Permissies.Bewerken, Permissies.Bewerken);
+            var result = gelieerdePersoon.Persoon.GebruikersRechtV2.FirstOrDefault();
+
+            // ASSERT
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(gelieerdePersoon.Groep, result.Groep);
+            Assert.AreEqual(Permissies.Bewerken, result.PersoonsPermissies);
+            Assert.AreEqual(Permissies.Bewerken, result.GroepsPermissies);
+            Assert.AreEqual(Permissies.Bewerken, result.AfdelingsPermissies);
+            Assert.AreEqual(Permissies.Bewerken, result.IedereenPermissies);
+        }
+
     }
 }

@@ -131,12 +131,17 @@
       <Project>{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}</Project>
       <Name>Chiro.Gap.WebApp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj">
+      <Project>{2d7b3c9f-1f19-41ea-9538-ae5d4b11388a}</Project>
+      <Name>Chiro.Gap.Dummies</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Test References\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

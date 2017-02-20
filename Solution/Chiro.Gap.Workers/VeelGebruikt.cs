@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +19,11 @@
 
 using System;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using System.Web.Caching;
+using Chiro.Ad.ServiceContracts;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -31,9 +35,26 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class VeelGebruikt : IVeelGebruikt
     {
-        private const string WerkJaarCacheKey = "wj_{0}";
+        private const string WerkJaarCacheKey = "{0}_wj";
+        private const string AdNrCacheKey = "{0}_ad";
+        private const string UserNameCacheKey = "{0}_user";
 
         private readonly Cache _cache = HttpRuntime.Cache;
+        private readonly ServiceHelper _serviceHelper;
+
+        protected ServiceHelper ServiceHelper
+        {
+            get { return _serviceHelper; }
+        }
+
+        /// <summary>
+        /// Constructor voor dependency injection.
+        /// </summary>
+        /// <param name="serviceHelper">Interface om webservices aan te roepen</param>
+        public VeelGebruikt(ServiceHelper serviceHelper)
+        {
+            _serviceHelper = serviceHelper;
+        }
 
         /// <summary>
         /// Haalt het beginjaar van het huidig werkjaar van de gegeven <paramref name="groep"/> op.
@@ -74,6 +95,59 @@ namespace Chiro.Gap.Workers
         public void WerkJaarInvalideren(Groep groep)
         {
             _cache.Remove(string.Format(WerkJaarCacheKey, groep.ID));
+        }
+
+        /// <summary>
+        /// Invalideert het gecachete AD-nummer voor de gebruiker met gegeven <paramref name="gebruikersNaam"/>.
+        /// </summary>
+        /// <param name="gebruikersNaam">Gebruikersnaam van gebruiker waarvan gecachete AD-nummer
+        /// geinvalideerd moet worden.</param>
+        public void AdNummerInvalideren(string gebruikersNaam)
+        {
+            _cache.Remove(string.Format(AdNrCacheKey, gebruikersNaam));
+        }
+
+        /// <summary>
+        /// Vraagt de gebruikersnaam op van de persoon met gegeven <paramref name="adNummer"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van persoon wiens gebruikersnaam gezocht is.</param>
+        /// <returns>De gebruikersnaam van de persoon met gegeven AD-nummer.</returns>
+        public string GebruikersNaamOphalen(int adNummer)
+        {
+            string gebruikersNaam = (string)_cache.Get(string.Format(UserNameCacheKey, adNummer));
+
+            if (String.IsNullOrEmpty(gebruikersNaam))
+            {
+                try
+                {
+                    gebruikersNaam =
+                        ServiceHelper.CallService<IAdService, string>(svc => svc.GebruikersNaamOphalen(adNummer));
+                }
+                catch (EndpointNotFoundException)
+                {
+                    gebruikersNaam = Properties.Resources.GebruikersServiceOnbeschikbaar;
+                }
+                catch (InvalidOperationException)
+                {
+                    gebruikersNaam = Properties.Resources.GebruikersServiceNietGeconfigureerd;
+                }
+
+                _cache.Add(
+                    string.Format(UserNameCacheKey, adNummer),
+                    gebruikersNaam,
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    new TimeSpan(4, 0, 0),
+                    CacheItemPriority.Normal,
+                    null);
+            }
+
+            return gebruikersNaam;
+        }
+
+        public void GebruikersNaamInvalideren(int? adNummer)
+        {
+            _cache.Remove(string.Format(UserNameCacheKey, adNummer));
         }
     }
 }

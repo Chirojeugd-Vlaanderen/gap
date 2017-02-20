@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="TestSecurityGroep" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CgUsers</Value>
+      <Value Profile="(Default)">GapServiceConsumers</Value>
     </Setting>
     <Setting Name="TestUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">tester</Value>

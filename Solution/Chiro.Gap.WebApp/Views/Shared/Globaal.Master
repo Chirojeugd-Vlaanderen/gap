@@ -1,4 +1,4 @@
-<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<Chiro.Gap.WebApp.Models.IMasterViewModel>" %>
 <%@ Import Namespace="System.Globalization" %>
 <!DOCTYPE html>
 <html>
@@ -84,7 +84,13 @@
 			</div>
 			<div id="settingsmenu">
 				<ul>
-					<li>Aangemeld als <% =HttpContext.Current.User.Identity.Name %></li>
+                    <%
+                        if (Model != null)
+                        {
+                         %>
+                    <li>Aangemeld als <%:Model.Ik.VoorNaam%> <%:Model.Ik.FamilieNaam %></li>
+                    <li><%:Model.Ik.AdNummer %> (<%=Html.ActionLink("Afmelden", "Logout", new {Controller = "Gav", groepID = 0}) %>)</li>
+                    <%  } %>
 					<li>[<a href="https://login.chiro.be/" title="Je wachtwoord veranderen">Wachtwoord wijzigen</a>]</li>
 					<asp:ContentPlaceHolder ID="settingsitems" runat="server" />
 				</ul>

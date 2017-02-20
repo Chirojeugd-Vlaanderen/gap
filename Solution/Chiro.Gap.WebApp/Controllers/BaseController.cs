@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -36,9 +37,11 @@ namespace Chiro.Gap.WebApp.Controllers
     {
         private readonly IVeelGebruikt _veelGebruikt;
         private readonly ServiceHelper _serviceHelper;
+        private readonly IAuthenticator _authenticator;
 
         protected IVeelGebruikt VeelGebruikt { get { return _veelGebruikt; } }
         protected ServiceHelper ServiceHelper { get { return _serviceHelper; } }
+        protected IAuthenticator Authenticator { get { return _authenticator; } }
 
         /// <summary>
         /// Standaardconstructor.
@@ -46,10 +49,12 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
         /// <param name="serviceHelper">Helper class voor service calls.</param>
-        protected BaseController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
+        /// <param name="authenticator">De authenticator authenticeert te aangelogde gebruiker.</param>
+        protected BaseController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
         {
             _veelGebruikt = veelGebruikt;
             _serviceHelper = serviceHelper;
+            _authenticator = authenticator;
         }
 
         /// <summary>
@@ -97,7 +102,12 @@ namespace Chiro.Gap.WebApp.Controllers
         protected void BaseModelInit(MasterViewModel model, int groepID)
         {
             // Werken we op test of live?
+            string login = User == null ? null : User.Identity.Name;
+
             model.IsLive = VeelGebruikt.IsLive();
+            model.DeveloperMode = Authenticator.WieBenIk().DeveloperMode;
+            int adnr = Authenticator.WieBenIk().AdNr;
+            model.Ik = VeelGebruikt.GebruikersDetail(adnr);
 
             if (groepID == 0)
             {
@@ -128,7 +138,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 // Als UniekeGroepGav een waarde heeft, is er maar één groep. Bij 0 zijn er meerdere.
 
-                model.MeerdereGroepen = (VeelGebruikt.UniekeGroepGav(User == null ? null : User.Identity.Name) == 0);
+                model.MeerdereGroepen = (VeelGebruikt.UniekeGroepGav(login) == 0);
 
                 #endregion
 

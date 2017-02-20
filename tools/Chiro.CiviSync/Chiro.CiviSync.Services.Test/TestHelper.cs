@@ -87,7 +87,14 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.WebsiteResult, opt => opt.Ignore())
                 .ForMember(dst => dst.ImResult, opt => opt.Ignore())
                 .ForMember(dst => dst.MembershipResult, opt => opt.Ignore())
-                .ForMember(dst => dst.RelationshipResult, opt => opt.Ignore());
+                .ForMember(dst => dst.RelationshipResult, opt => opt.Ignore())
+                // Onderstaande 3 velden zijn wel gemaakt in de results, omdat
+                // het intranet ze ophaalt, maar niet in de requests, omdat
+                // GAP er niets mee doet. Daarom ignoren we ze in deze mappings;
+                // het is toch maar om te testen.
+                .ForMember(dst => dst.StopgezetOp, opt => opt.Ignore())
+                .ForMember(dst => dst.Parochie, opt => opt.Ignore())
+                .ForMember(dst => dst.RedenStopzetting, opt => opt.Ignore());
             Mapper.CreateMap<RelationshipRequest, Relationship>()
                 .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
             Mapper.CreateMap<LocBlockRequest, LocBlock>()

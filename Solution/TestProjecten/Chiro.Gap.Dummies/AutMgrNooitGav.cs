@@ -1,7 +1,8 @@
-/*
+﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System.Collections.Generic;
-using Chiro.Gap.Poco.Model;
+using System.Collections.Generic;
+using Chiro.Gap.Domain;
+﻿using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Dummies
@@ -28,8 +30,6 @@ namespace Chiro.Gap.Dummies
 	/// </summary>
 	public class AutMgrNooitGav : IAutorisatieManager
 	{
-		#region IAutorisatieManager Members
-
 		public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
 		{
 			return new List<int>();
@@ -90,7 +90,7 @@ namespace Chiro.Gap.Dummies
             return false;
 	    }
 
-	    public bool IsGav(GebruikersRecht gelieerdePersoon)
+	    public bool IsGav(GebruikersRechtV2 gelieerdePersoon)
 	    {
             return false;
 	    }
@@ -145,6 +145,54 @@ namespace Chiro.Gap.Dummies
 	        return false;
 	    }
 
-	    #endregion
+        public bool IsGav(Persoon p)
+        {
+            return false;
+        }
+
+        public bool HeeftPermissies(Groep groep, Domain.Permissies permissies)
+        {
+            return false;
+        }
+
+	    public Permissies PermissiesOphalen(Lid lid)
+	    {
+	        return Permissies.Geen;
+	    }
+
+	    public Permissies PermissiesOphalen(Functie functie)
+	    {
+	        return functie.IsNationaal ? Permissies.Lezen : Permissies.Geen;
+	    }
+
+	    public bool MagLezen(Persoon ik, Persoon persoon2)
+        {
+            return false;
+        }
+
+	    public Permissies PermissiesOphalen(Groep groep, SecurityAspect aspecten)
+	    {
+	        return Permissies.Geen;
+	    }
+
+	    public bool MagZichzelfLezen(Persoon persoon)
+	    {
+	        return false;
+	    }
+
+	    public Permissies PermissiesOphalen(GelieerdePersoon gelieerdePersoon)
+	    {
+	        return Permissies.Geen;
+	    }
+
+	    public Permissies EigenPermissies(Persoon persoon)
+	    {
+	        return Permissies.Geen;
+	    }
+
+	    public GebruikersRechtV2 GebruikersRechtOpEigenGroep(GelieerdePersoon gp)
+	    {
+	        return null;
+	    }
 	}
 }

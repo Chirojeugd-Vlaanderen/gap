@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -22,6 +22,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -36,20 +37,25 @@ namespace Chiro.Gap.WebApp.Controllers
 	[HandleError]
 	public class CategorieenController : BaseController
 	{
-		/// <summary>
-		/// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
-		/// best toegewezen via inversion of control.
-		/// </summary>
-		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
-		/// service</param>
-        public CategorieenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
+	    /// <summary>
+	    /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
+	    /// best toegewezen via inversion of control.
+	    /// </summary>
+	    /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+	    /// service</param>
+	    /// <param name="serviceHelper"></param>
+	    /// <param name="authenticator"></param>
+	    public CategorieenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
+        {
+        }
 
-		/// <summary>
-		/// Genereert een view met de categorieën die de groep gebruikt
-		/// </summary>
-		/// <param name="groepID">ID van de gewenste groep</param>
-		/// <returns>View met categorieën van de groep</returns>
-		[HandleError]
+        /// <summary>
+        /// Genereert een view met de categorieën die de groep gebruikt
+        /// </summary>
+        /// <param name="groepID">ID van de gewenste groep</param>
+        /// <returns>View met categorieën van de groep</returns>
+        [HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			var model = new GroepsInstellingenModel

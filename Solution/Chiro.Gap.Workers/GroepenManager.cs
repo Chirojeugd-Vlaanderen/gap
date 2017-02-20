@@ -33,15 +33,11 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GroepenManager : IGroepenManager
     {
-        private readonly IVeelGebruikt _veelGebruikt;
         private readonly IAutorisatieManager _autorisatieMgr;
 
-        public GroepenManager(
-            IVeelGebruikt veelGebruikt, 
-            IAutorisatieManager autorisatieMgr)
+        public GroepenManager(IAutorisatieManager autorisatieMgr)
         {
             _autorisatieMgr = autorisatieMgr;
-            _veelGebruikt = veelGebruikt;
         }
 
 

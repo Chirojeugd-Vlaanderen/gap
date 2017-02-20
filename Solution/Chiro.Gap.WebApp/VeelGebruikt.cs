@@ -2,6 +2,7 @@
  * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +47,7 @@ namespace Chiro.Gap.WebApp
         private const string LEDENPROBLEMENAANTALCACHEKEY = "aantallidprob{0}";
         private const string BIVAKSTATUSCACHEKEY = "bivstat{0}";
         private const string BIVAKSTATUSAANTALCACHEKEY = "aantalbivstat{0}";
+        private const string GEBRUIKERCACHEKEY = "user{0}";
 
         #endregion
 
@@ -389,6 +391,47 @@ namespace Chiro.Gap.WebApp
         #region Allerlei
 
         /// <summary>
+        /// Indien <c>true</c> werken we in de liveomgeving, anders in de testomgeving.
+        /// </summary>
+        /// <returns><c>True</c> als we live bezig zijn</returns>
+        public bool IsLive()
+        {
+            bool? isLive = (bool?)_cache.Get(ISLIVECACHEKEY);
+            if (isLive == null)
+            {
+                isLive = ServiceHelper.CallService<IGroepenService, bool>(svc => svc.IsLive());
+                _cache.Add(
+                    ISLIVECACHEKEY,
+                    isLive,
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    new TimeSpan(2, 0, 0),
+                    CacheItemPriority.High, null);
+            }
+
+            return (bool)isLive;
+        }
+        #endregion
+
+        #region Gebruiker
+        /// <summary>
+        /// Levert de details van de gebruiker met de gegeven <paramref name="adnr"/>.
+        /// </summary>
+        /// <param name="adnr">login van de gebruiker</param>
+        /// <returns>De details van de gebruiker</returns>
+        public GebruikersDetail GebruikersDetail(int adnr)
+        {
+            GebruikersDetail detail = (GebruikersDetail)_cache.Get(String.Format(GEBRUIKERCACHEKEY, adnr));
+            if (detail == null)
+            {
+                detail = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.DetailsOphalen(adnr, true));
+                _cache.Add(String.Format(GEBRUIKERCACHEKEY, adnr),
+                    detail, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
+            }
+            return detail;
+        }
+
+        /// <summary>
         /// Als de gav met gegeven <paramref name="login"/> gav is van precies 1 groep, dan
         /// levert deze method het ID van die groep op.  Zo niet, is het resultaat
         /// <c>0</c>.
@@ -421,28 +464,6 @@ namespace Chiro.Gap.WebApp
             }
 
             return (int)id;
-        }
-
-        /// <summary>
-        /// Indien <c>true</c> werken we in de liveomgeving, anders in de testomgeving.
-        /// </summary>
-        /// <returns><c>True</c> als we live bezig zijn</returns>
-        public bool IsLive()
-        {
-            bool? isLive = (bool?)_cache.Get(ISLIVECACHEKEY);
-            if (isLive == null)
-            {
-                isLive = ServiceHelper.CallService<IGroepenService, bool>(svc => svc.IsLive());
-                _cache.Add(
-                    ISLIVECACHEKEY,
-                    isLive,
-                    null,
-                    Cache.NoAbsoluteExpiration,
-                    new TimeSpan(2, 0, 0),
-                    CacheItemPriority.High, null);
-            }
-
-            return (bool)isLive;
         }
         #endregion
     }

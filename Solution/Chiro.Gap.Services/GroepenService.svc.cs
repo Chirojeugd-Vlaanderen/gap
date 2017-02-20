@@ -2,6 +2,7 @@
  * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Permissions;
 using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
@@ -31,7 +33,6 @@ using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 #if KIPDORP
 using System.Transactions;
 #endif
@@ -67,8 +68,6 @@ namespace Chiro.Gap.Services
 		// Managers voor niet-triviale businesslogica
 
 		private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
-		private readonly IAuthenticatieManager _authenticatieMgr;
-		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IGroepenManager _groepenMgr;
 		private readonly IChiroGroepenManager _chiroGroepenMgr;
 		private readonly IAdressenManager _adressenMgr;
@@ -97,7 +96,7 @@ namespace Chiro.Gap.Services
 		/// <param name="functiesMgr">Businesslogica aangaande functies</param>
 		/// <param name="jaarOvergangMgr">Businesslogica aangaande de jaarovergang</param>
 		/// <param name="adressenMgr">Businesslogica wat betreft adressen</param>
-		/// <param name="ledenMgr">Businesslogica wat betreft leden.</param>
+        /// <param name="ledenMgr">Businesslogica m.b.t. de leden</param>
 		/// <param name="abonnementenMgr">Businesslogica wat betreft abonnementen.</param>
 		/// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
 		/// <param name="groepenSync">Synchronisatie met Kipadmin</param>
@@ -110,7 +109,7 @@ namespace Chiro.Gap.Services
 			IFunctiesManager functiesMgr, IAdressenManager adressenMgr, ILedenManager ledenMgr,
 			IAbonnementenManager abonnementenMgr,
 			IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IAbonnementenSync abonnementenSync,
-			IVeelGebruikt veelGebruikt) : base(ledenMgr, groepsWerkJarenMgr, abonnementenMgr)
+			IVeelGebruikt veelGebruikt) : base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr, abonnementenMgr)
 		{
 			_repositoryProvider = repositoryProvider;
 			_straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
@@ -137,8 +136,6 @@ namespace Chiro.Gap.Services
 			_functiesMgr = functiesMgr;
 			_afdelingsJaarMgr = afdelingsJaarMgr;
 			_adressenMgr = adressenMgr;
-			_authenticatieMgr = authenticatieMgr;
-			_autorisatieMgr = autorisatieMgr;
 			_groepenSync = groepenSync;
 
 		    _veelGebruikt = veelGebruikt;
@@ -179,29 +176,33 @@ namespace Chiro.Gap.Services
 			Dispose(false);
 		}
 
-		#endregion
+        #endregion
 
-		#region ophalen
+        #region ophalen
 
-		/// <summary>
-		/// Ophalen van Groepsinformatie
-		/// </summary>
-		/// <param name="groepId">groepID van groep waarvan we de informatie willen opvragen</param>
-		/// <returns>
-		/// De gevraagde informatie over de groep met id <paramref name="groepId"/>
-		/// </returns>
-		public GroepInfo InfoOphalen(int groepId)
+        /// <summary>
+        /// Ophalen van Groepsinformatie
+        /// </summary>
+        /// <param name="groepId">groepID van groep waarvan we de informatie willen opvragen</param>
+        /// <returns>
+        /// De gevraagde informatie over de groep met id <paramref name="groepId"/>
+        /// </returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public GroepInfo InfoOphalen(int groepId)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
 			return Mapper.Map<Groep, GroepInfo>(groep);
 		}
 
-		/// <summary>
-		/// Haalt info op, uitgaande van code (stamnummer)
-		/// </summary>
-		/// <param name="code">Stamnummer van de groep waarvoor info opgehaald moet worden</param>
-		/// <returns>Groepsinformatie voor groep met code <paramref name="code"/></returns>
-		public GroepInfo InfoOphalenCode(string code)
+        /// <summary>
+        /// Haalt info op, uitgaande van code (stamnummer)
+        /// </summary>
+        /// <param name="code">Stamnummer van de groep waarvoor info opgehaald moet worden</param>
+        /// <returns>Groepsinformatie voor groep met code <paramref name="code"/></returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public GroepInfo InfoOphalenCode(string code)
 		{
 			var groep = (from g in _groepenRepo.Select()
 						 where String.Compare(g.Code, code, StringComparison.OrdinalIgnoreCase) == 0
@@ -212,12 +213,14 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<Groep, GroepInfo>(groep);
 		}
 
-		/// <summary>
-		/// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepId"/>
-		/// </summary>
-		/// <param name="groepId">ID van de groep waarvoor de informatie opgehaald moet worden</param>
-		/// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
-		public GroepDetail DetailOphalen(int groepId)
+        /// <summary>
+        /// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepId"/>
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvoor de informatie opgehaald moet worden</param>
+        /// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public GroepDetail DetailOphalen(int groepId)
 		{
 			var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
 			if (!_autorisatieMgr.IsGav(groepsWerkJaar))
@@ -230,53 +233,44 @@ namespace Chiro.Gap.Services
 			return resultaat;
 		}
 
-		/// <summary>
-		/// Haalt de groepen op waarvoor de gebruiker (GAV-)rechten heeft
-		/// </summary>
-		/// <returns>De (informatie over de) groepen van de gebruiker</returns>
-		public IEnumerable<GroepInfo> MijnGroepenOphalen()
+        /// <summary>
+        /// Haalt de groepen op waarvoor de gebruiker (GAV-)rechten heeft
+        /// </summary>
+        /// <returns>De (informatie over de) groepen van de gebruiker</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<GroepInfo> MijnGroepenOphalen()
 		{
 			IEnumerable<Groep> groepen = new List<Groep>();
-			var mijnLogin = _authenticatieMgr.GebruikersNaamGet();
-			try
+            int? mijnAdNr = _authenticatieMgr.AdNummerGet();
+            if (mijnAdNr == null)
 			{
-				groepen = from g in _groepenRepo.Select()
-						  where
-							  g.GebruikersRecht.Any(
-								  gr =>
-								  String.Compare(gr.Gav.Login, mijnLogin, StringComparison.InvariantCultureIgnoreCase) ==
-								  0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
-						  select g;
+                throw FaultExceptionHelper.GeenGav();
+            }
+            groepen = from g in _groepenRepo.Select()
+                        where
+                            g.GebruikersRechtV2.Any(
+                                gr => gr.Persoon.AdNummer == mijnAdNr 
+                                    && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
+                        select g;
 
-				return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
+            return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
 
-				// ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
-				// Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
-				// Werk je op de algemene dev-db, check dan de connectie met devsrv1.
-				// Werk je op een eigen database, dan moeten je connectionstrings aangepast zijn.
-				// en uiteraard moet je database service gestart zijn :-P
-
-			}
-			catch (Exception ex)
-			{
-				// ******************************************************************************************
-				// **                                                                                      **
-				// ** Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.            **
-				// ** Check je databaseserver, je connection string in Web.Config, of indien nodig je VPN. **
-				// **                                                                                      **
-				// ******************************************************************************************
-
-				Console.WriteLine(ex.Message);
-				throw;
-			}
+            // ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
+            // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
+            // Werk je op de algemene dev-db, check dan de connectie met devsrv1.
+            // Werk je op een eigen database, dan moeten je connectionstrings aangepast zijn.
+            // en uiteraard moet je database service gestart zijn :-P
 		}
 
-		/// <summary>
-		/// Haalt informatie op over alle werkjaren waarin een groep actief was/is.
-		/// </summary>
-		/// <param name="groepId">ID van de groep</param>
-		/// <returns>Info over alle werkjaren waarin een groep actief was/is.</returns>
-		public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepId)
+        /// <summary>
+        /// Haalt informatie op over alle werkjaren waarin een groep actief was/is.
+        /// </summary>
+        /// <param name="groepId">ID van de groep</param>
+        /// <returns>Info over alle werkjaren waarin een groep actief was/is.</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepId)
 		{
 			var groepsWerkJaren = _groepsWerkJarenRepo.Select()
 								  .Where(gwj => gwj.Groep.ID == groepId)
@@ -289,13 +283,15 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(groepsWerkJaren);
 		}
 
-		/// <summary>
-		/// Haalt groepswerkjaarId van het recentst gemaakte groepswerkjaar
-		/// voor een gegeven groep op.
-		/// </summary>
-		/// <param name="groepId">groepID van groep</param>
-		/// <returns>ID van het recentste GroepsWerkJaar</returns>
-		public int RecentsteGroepsWerkJaarIDGet(int groepId)
+        /// <summary>
+        /// Haalt groepswerkjaarId van het recentst gemaakte groepswerkjaar
+        /// voor een gegeven groep op.
+        /// </summary>
+        /// <param name="groepId">groepID van groep</param>
+        /// <returns>ID van het recentste GroepsWerkJaar</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public int RecentsteGroepsWerkJaarIDGet(int groepId)
 		{
 			var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
 			if (!_autorisatieMgr.IsGav(groepsWerkJaar))
@@ -305,15 +301,17 @@ namespace Chiro.Gap.Services
 			return groepsWerkJaar.ID;
 		}
 
-		/// <summary>
-		/// Haalt gedetailleerde gegevens op van het recentst gemaakte groepswerkjaar
-		/// voor een gegeven groep op.
-		/// </summary>
-		/// <param name="groepId">groepID van groep</param>
-		/// <returns>
-		/// De details van het recentste groepswerkjaar
-		/// </returns>
-		public GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepId)
+        /// <summary>
+        /// Haalt gedetailleerde gegevens op van het recentst gemaakte groepswerkjaar
+        /// voor een gegeven groep op.
+        /// </summary>
+        /// <param name="groepId">groepID van groep</param>
+        /// <returns>
+        /// De details van het recentste groepswerkjaar
+        /// </returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepId)
 		{
 			var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
 			if (!_autorisatieMgr.IsGav(groepsWerkJaar))
@@ -326,12 +324,14 @@ namespace Chiro.Gap.Services
 			return result;
 		}
 
-	    /// <summary>
-		/// Controleert de verplicht in te vullen lidgegevens.
-		/// </summary>
-		/// <param name="groepId">ID van de groep waarvan de leden te controleren zijn</param>
-		/// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
-		public IEnumerable<LedenProbleemInfo> LedenControleren(int groepId)
+        /// <summary>
+        /// Controleert de verplicht in te vullen lidgegevens.
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvan de leden te controleren zijn</param>
+        /// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<LedenProbleemInfo> LedenControleren(int groepId)
 		{
 			var resultaat = new List<LedenProbleemInfo>();
 
@@ -404,48 +404,56 @@ namespace Chiro.Gap.Services
 		}
 
 
-		/// <summary>
-		/// Deze method geeft gewoon de gebruikersnaam weer waaronder je de service aanroept.  Vooral om de
-		/// authenticate te testen.
-		/// </summary>
-		/// <returns>Gebruikersnaam waarmee aangemeld</returns>
-		public string WieBenIk()
+        /// <summary>
+        /// Deze method geeft gewoon de gebruikersnaam weer waaronder je de service aanroept.  Vooral om de
+        /// authenticate te testen.
+        /// </summary>
+        /// <returns>Gebruikersnaam waarmee aangemeld</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public string WieBenIk()
 		{
 			return _authenticatieMgr.GebruikersNaamGet();
 		}
 
-		/// <summary>
-		/// Deze method geeft weer of we op een liveomgeving werken (<c>true</c>) of niet (<c>false</c>)
-		/// </summary>
-		/// <returns><c>True</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
-		public bool IsLive()
+        /// <summary>
+        /// Deze method geeft weer of we op een liveomgeving werken (<c>true</c>) of niet (<c>false</c>)
+        /// </summary>
+        /// <returns><c>True</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public bool IsLive()
 		{
 			return _groepenMgr.IsLive();
 		}
 
-		/// <summary>
-		/// Haalt informatie over alle gebruikersrechten van de gegeven groep op.
-		/// </summary>
-		/// <param name="groepId">ID van de groep waarvan de gebruikersrechten op te vragen zijn</param>
-		/// <returns>Lijstje met details van de gebruikersrechten</returns>
-		public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepId)
+        /// <summary>
+        /// Haalt informatie over alle gebruikersrechten van de gegeven groep op.
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvan de gebruikersrechten op te vragen zijn</param>
+        /// <returns>Lijstje met details van de gebruikersrechten</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepId)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
-			return Mapper.Map<IEnumerable<GebruikersRecht>, IEnumerable<GebruikersDetail>>(groep.GebruikersRecht);
+            return Mapper.Map<IEnumerable<GebruikersRechtV2>, IEnumerable<GebruikersDetail>>(groep.GebruikersRechtV2);
 		}
 
-		#endregion
+        #endregion
 
-		#region te syncen wijzigingen
+        #region te syncen wijzigingen
 
-		/// <summary>
-		/// Persisteert een groep in de database
-		/// Momenteel ondersteunen we enkel het wijzigen van groepsnaam
-		/// en stamnummer. (En dat stamnummer wijzigen, mag dan nog enkel
-		/// als we super-gav zijn.)
-		/// </summary>
-		/// <param name="groepInfo">Te persisteren groep</param>
-		public void Bewaren(GroepInfo groepInfo)
+        /// <summary>
+        /// Persisteert een groep in de database
+        /// Momenteel ondersteunen we enkel het wijzigen van groepsnaam
+        /// en stamnummer. (En dat stamnummer wijzigen, mag dan nog enkel
+        /// als we super-gav zijn.)
+        /// </summary>
+        /// <param name="groepInfo">Te persisteren groep</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void Bewaren(GroepInfo groepInfo)
 		{
 			var groep = GetGroepEnCheckGav(groepInfo.ID);
 
@@ -484,17 +492,19 @@ namespace Chiro.Gap.Services
 #endif
 		}
 
-		#endregion
+        #endregion
 
-		#region beheer afdelingen (wordt niet gesynct)
+        #region beheer afdelingen (wordt niet gesynct)
 
-		/// <summary>
-		/// Maakt een nieuwe afdeling voor een gegeven ChiroGroep
-		/// </summary>
-		/// <param name="chirogroepId">ID van de groep</param>
-		/// <param name="naam">Naam van de afdeling</param>
-		/// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
-		public void AfdelingAanmaken(int chirogroepId, string naam, string afkorting)
+        /// <summary>
+        /// Maakt een nieuwe afdeling voor een gegeven ChiroGroep
+        /// </summary>
+        /// <param name="chirogroepId">ID van de groep</param>
+        /// <param name="naam">Naam van de afdeling</param>
+        /// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void AfdelingAanmaken(int chirogroepId, string naam, string afkorting)
 		{
 			var g = GetGroepEnCheckGav(chirogroepId);
 			if (!(g is ChiroGroep))
@@ -513,11 +523,13 @@ namespace Chiro.Gap.Services
 			_groepenRepo.SaveChanges();
 		}
 
-		/// <summary>
-		/// Bewaart een afdeling met de nieuwe informatie.
-		/// </summary>
-		/// <param name="info">De afdelingsinfo die opgeslagen moet worden</param>
-		public void AfdelingBewaren(AfdelingInfo info)
+        /// <summary>
+        /// Bewaart een afdeling met de nieuwe informatie.
+        /// </summary>
+        /// <param name="info">De afdelingsinfo die opgeslagen moet worden</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void AfdelingBewaren(AfdelingInfo info)
 		{
 			var afdeling = _afdelingenRepo.ByID(info.ID);
 			Gav.Check(afdeling);
@@ -558,26 +570,30 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-		/// <summary>
-		/// Uitgebreide info ophalen over het afdelingsjaar met de opgegeven ID
-		/// </summary>
-		/// <param name="afdelingsJaarId">De ID van het afdelingsjaar in kwestie</param>
-		/// <returns>Uitgebreide info over het afdelingsjaar met de opgegeven ID</returns>
-		public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarId)
+        /// <summary>
+        /// Uitgebreide info ophalen over het afdelingsjaar met de opgegeven ID
+        /// </summary>
+        /// <param name="afdelingsJaarId">De ID van het afdelingsjaar in kwestie</param>
+        /// <returns>Uitgebreide info over het afdelingsjaar met de opgegeven ID</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarId)
 		{
 			var afd = _afdelingsJaarRepo.ByID(afdelingsJaarId);
 			Gav.Check(afd);
 			return Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afd);
 		}
 
-		/// <summary>
-		/// Maakt/bewerkt een AfdelingsJaar: 
-		/// andere OfficieleAfdeling en/of andere leeftijden
-		/// </summary>
-		/// <param name="detail">AfdelingsJaarDetail met de gegevens over het aan te maken of te wijzigen
-		/// afdelingsjaar.  <c>aj.AfdelingsJaarID</c> bepaat of het om een bestaand afdelingsjaar gaat
-		/// (ID > 0), of een bestaand (ID == 0)</param>
-		public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
+        /// <summary>
+        /// Maakt/bewerkt een AfdelingsJaar: 
+        /// andere OfficieleAfdeling en/of andere leeftijden
+        /// </summary>
+        /// <param name="detail">AfdelingsJaarDetail met de gegevens over het aan te maken of te wijzigen
+        /// afdelingsjaar.  <c>aj.AfdelingsJaarID</c> bepaat of het om een bestaand afdelingsjaar gaat
+        /// (ID > 0), of een bestaand (ID == 0)</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
 		{
 			var afdeling = _afdelingenRepo.ByID(detail.AfdelingID);
 			Gav.Check(afdeling); // throws als geen GAV van afdeling
@@ -635,12 +651,14 @@ namespace Chiro.Gap.Services
 			_afdelingenRepo.SaveChanges();
 		}
 
-		/// <summary>
-		/// Verwijdert een afdelingsjaar 
-		/// en controleert of er geen leden in zitten.
-		/// </summary>
-		/// <param name="afdelingsJaarId">ID van het afdelingsjaar waarover het gaat</param>
-		public void AfdelingsJaarVerwijderen(int afdelingsJaarId)
+        /// <summary>
+        /// Verwijdert een afdelingsjaar 
+        /// en controleert of er geen leden in zitten.
+        /// </summary>
+        /// <param name="afdelingsJaarId">ID van het afdelingsjaar waarover het gaat</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void AfdelingsJaarVerwijderen(int afdelingsJaarId)
 		{
 			var afdelingsJaar = _afdelingsJaarRepo.ByID(afdelingsJaarId);
 			Gav.Check(afdelingsJaar);
@@ -656,11 +674,13 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-		/// <summary>
-		/// Verwijdert een afdeling
-		/// </summary>
-		/// <param name="afdelingId">ID van de afdeling waarover het gaat</param>
-		public void AfdelingVerwijderen(int afdelingId)
+        /// <summary>
+        /// Verwijdert een afdeling
+        /// </summary>
+        /// <param name="afdelingId">ID van de afdeling waarover het gaat</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void AfdelingVerwijderen(int afdelingId)
 		{
 			var afdeling = _afdelingenRepo.ByID(afdelingId);
 			Gav.Check(afdeling);
@@ -673,34 +693,40 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-		/// <summary>
-		/// Haalt details over alle officiele afdelingen op.
-		/// </summary>
-		/// <returns>Rij met details over de officiele afdelingen</returns>
-		public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen()
+        /// <summary>
+        /// Haalt details over alle officiele afdelingen op.
+        /// </summary>
+        /// <returns>Rij met details over de officiele afdelingen</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen()
 		{
 			return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(_officieleAfdelingenRepo.GetAll());
 		}
 
-		/// <summary>
-		/// Haat een afdeling op, op basis van <paramref name="afdelingId"/>
-		/// </summary>
-		/// <param name="afdelingId">ID van op te halen afdeling</param>
-		/// <returns>Info van de gevraagde afdeling</returns>
-		public AfdelingInfo AfdelingOphalen(int afdelingId)
+        /// <summary>
+        /// Haat een afdeling op, op basis van <paramref name="afdelingId"/>
+        /// </summary>
+        /// <param name="afdelingId">ID van op te halen afdeling</param>
+        /// <returns>Info van de gevraagde afdeling</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public AfdelingInfo AfdelingOphalen(int afdelingId)
 		{
 			var afdeling = _afdelingenRepo.ByID(afdelingId);
 			Gav.Check(afdeling);
 			return Mapper.Map<Afdeling, AfdelingInfo>(afdeling);
 		}
 
-		/// <summary>
-		/// Haalt details op van een afdelingsjaar, gebaseerd op het <paramref name="afdelingsJaarId"/>
-		/// </summary>
-		/// <param name="afdelingsJaarId">ID van het AFDELINGSJAAR waarvoor de details opgehaald moeten 
-		/// worden.</param>
-		/// <returns>De details van de afdeling in het gegeven afdelingsjaar.</returns>
-		public AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarId)
+        /// <summary>
+        /// Haalt details op van een afdelingsjaar, gebaseerd op het <paramref name="afdelingsJaarId"/>
+        /// </summary>
+        /// <param name="afdelingsJaarId">ID van het AFDELINGSJAAR waarvoor de details opgehaald moeten 
+        /// worden.</param>
+        /// <returns>De details van de afdeling in het gegeven afdelingsjaar.</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarId)
 		{
 			var afdelingsJaar = _afdelingsJaarRepo.ByID(afdelingsJaarId);
 			Gav.Check(afdelingsJaar);
@@ -708,16 +734,18 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<AfdelingsJaar, AfdelingDetail>(afdelingsJaar);
 		}
 
-		/// <summary>
-		/// Haalt details op over alle actieve afdelingen in het groepswerkjaar met 
-		/// ID <paramref name="groepswerkjaarId"/>
-		/// </summary>
-		/// <param name="groepswerkjaarId">ID van het groepswerkjaar</param>
-		/// <returns>
-		/// Informatie over alle actieve afdelingen in het groepswerkjaar met 
-		/// ID <paramref name="groepswerkjaarId"/>
-		/// </returns>
-		public List<AfdelingDetail> ActieveAfdelingenOphalen(int groepswerkjaarId)
+        /// <summary>
+        /// Haalt details op over alle actieve afdelingen in het groepswerkjaar met 
+        /// ID <paramref name="groepswerkjaarId"/>
+        /// </summary>
+        /// <param name="groepswerkjaarId">ID van het groepswerkjaar</param>
+        /// <returns>
+        /// Informatie over alle actieve afdelingen in het groepswerkjaar met 
+        /// ID <paramref name="groepswerkjaarId"/>
+        /// </returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public List<AfdelingDetail> ActieveAfdelingenOphalen(int groepswerkjaarId)
 		{
 			var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
 			Gav.Check(gwj);
@@ -725,13 +753,15 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(gwj.AfdelingsJaar);
 		}
 
-		/// <summary>
-		/// Haalt beperkte informatie op over alle afdelingen van een groep
-		/// (zowel actief als inactief)
-		/// </summary>
-		/// <param name="groepId">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
-		/// <returns>Lijst met AfdelingInfo</returns>
-		public IList<AfdelingInfo> AlleAfdelingenOphalen(int groepId)
+        /// <summary>
+        /// Haalt beperkte informatie op over alle afdelingen van een groep
+        /// (zowel actief als inactief)
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
+        /// <returns>Lijst met AfdelingInfo</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IList<AfdelingInfo> AlleAfdelingenOphalen(int groepId)
 		{
 			var groep = _groepenRepo.ByID(groepId);
 			if (!_autorisatieMgr.IsGav(groep))
@@ -748,13 +778,15 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(((ChiroGroep)groep).Afdeling);
 		}
 
-		/// <summary>
-		/// Haalt informatie op over de beschikbare afdelingsjaren en hun gelinkte afdelingen van een groep in het huidige
-		/// groepswerkjaar.
-		/// </summary>
-		/// <param name="groepId">ID van de groep waarvoor de info gevraagd is</param>
-		/// <returns>Lijst van AfdelingInfo</returns>
-		public List<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepId)
+        /// <summary>
+        /// Haalt informatie op over de beschikbare afdelingsjaren en hun gelinkte afdelingen van een groep in het huidige
+        /// groepswerkjaar.
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvoor de info gevraagd is</param>
+        /// <returns>Lijst van AfdelingInfo</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public List<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepId)
 		{
 			var gwj = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
 			if (!_autorisatieMgr.IsGav(gwj))
@@ -766,14 +798,16 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IEnumerable<AfdelingsJaar>, List<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
 		}
 
-		/// <summary>
-		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
-		/// groepswerkjaar, op basis van een <paramref name="groepswerkjaarId"/> (die dus geen afdelingsjaar hebben in het huidige werkjaar)
-		/// </summary>
-		/// <param name="groepswerkjaarId">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
-		/// opgezocht moeten worden.</param>
-		/// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
-		public List<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarId)
+        /// <summary>
+        /// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
+        /// groepswerkjaar, op basis van een <paramref name="groepswerkjaarId"/> (die dus geen afdelingsjaar hebben in het huidige werkjaar)
+        /// </summary>
+        /// <param name="groepswerkjaarId">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+        /// opgezocht moeten worden.</param>
+        /// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public List<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarId)
 		{
 			var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
 			Gav.Check(gwj);
@@ -791,18 +825,20 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<List<Afdeling>, List<AfdelingInfo>>(ongebruikteAfdelingen);
 		}
 
-		#endregion
+        #endregion
 
-		#region beheer functies (wordt niet gesynct)
+        #region beheer functies (wordt niet gesynct)
 
-		/// <summary>
-		/// Haalt uit groepswerkjaar met ID <paramref name="groepswerkjaarId"/> alle beschikbare functies
-		/// op voor een lid van type <paramref name="lidType"/>.
-		/// </summary>
-		/// <param name="groepswerkjaarId">ID van het groepswerkjaar van de gevraagde functies</param>
-		/// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
-		/// <returns>De gevraagde lijst afdelingsinfo</returns>
-		public IEnumerable<FunctieDetail> FunctiesOphalen(int groepswerkjaarId, LidType lidType)
+        /// <summary>
+        /// Haalt uit groepswerkjaar met ID <paramref name="groepswerkjaarId"/> alle beschikbare functies
+        /// op voor een lid van type <paramref name="lidType"/>.
+        /// </summary>
+        /// <param name="groepswerkjaarId">ID van het groepswerkjaar van de gevraagde functies</param>
+        /// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
+        /// <returns>De gevraagde lijst afdelingsinfo</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<FunctieDetail> FunctiesOphalen(int groepswerkjaarId, LidType lidType)
 		{
 			var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
 			Gav.Check(gwj); // throwt als ik geen GAV ben voor dit groepswerkjaar.
@@ -827,15 +863,17 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IEnumerable<Functie>, IEnumerable<FunctieDetail>>(nationaleFuncties.Union(eigenRelevanteFuncties));
 		}
 
-		/// <summary>
-		/// Zoekt naar problemen ivm de maximum- en minimumaantallen van functies voor het
-		/// huidige werkJaar.
-		/// </summary>
-		/// <param name="groepId">ID van de groep waarvoor de functies gecontroleerd moeten worden.</param>
-		/// <returns>
-		/// Een rij FunctieProbleemInfo.  Als er geen problemen zijn, is deze leeg.
-		/// </returns>
-		public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepId)
+        /// <summary>
+        /// Zoekt naar problemen ivm de maximum- en minimumaantallen van functies voor het
+        /// huidige werkJaar.
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvoor de functies gecontroleerd moeten worden.</param>
+        /// <returns>
+        /// Een rij FunctieProbleemInfo.  Als er geen problemen zijn, is deze leeg.
+        /// </returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepId)
 		{
 			var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
 			if (!_autorisatieMgr.IsGav(groepsWerkJaar))
@@ -867,18 +905,20 @@ namespace Chiro.Gap.Services
 		}
 
 
-		/// <summary>
-		/// Voegt een functie toe aan de groep
-		/// </summary>
-		/// <param name="groepId">De groep waaraan het wordt toegevoegd</param>
-		/// <param name="naam">De naam van de nieuwe functie</param>
-		/// <param name="code">Code voor de nieuwe functie</param>
-		/// <param name="maxAantal">Eventueel het maximumaantal leden met die functie in een werkJaar</param>
-		/// <param name="minAantal">Het minimumaantal leden met die functie in een werkJaar</param>
-		/// <param name="lidType">Gaat het over een functie voor leden, leiding of beide?</param>
-		/// <param name="werkJaarVan">Eventueel het vroegste werkJaar waarvoor de functie beschikbaar moet zijn</param>
-		/// <returns>De ID van de aangemaakte Functie</returns>
-		public int FunctieToevoegen(int groepId, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan)
+        /// <summary>
+        /// Voegt een functie toe aan de groep
+        /// </summary>
+        /// <param name="groepId">De groep waaraan het wordt toegevoegd</param>
+        /// <param name="naam">De naam van de nieuwe functie</param>
+        /// <param name="code">Code voor de nieuwe functie</param>
+        /// <param name="maxAantal">Eventueel het maximumaantal leden met die functie in een werkJaar</param>
+        /// <param name="minAantal">Het minimumaantal leden met die functie in een werkJaar</param>
+        /// <param name="lidType">Gaat het over een functie voor leden, leiding of beide?</param>
+        /// <param name="werkJaarVan">Eventueel het vroegste werkJaar waarvoor de functie beschikbaar moet zijn</param>
+        /// <returns>De ID van de aangemaakte Functie</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public int FunctieToevoegen(int groepId, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
 
@@ -928,14 +968,16 @@ namespace Chiro.Gap.Services
 			return f.ID;
 		}
 
-		/// <summary>
-		/// Verwijdert de functie met gegeven <paramref name="functieId"/>
-		/// </summary>
-		/// <param name="functieId">ID van de te verwijderen functie</param>
-		/// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
-		/// te verwijderen functie eerst uit de functie weggehaald.  Indien
-		/// <c>false</c> krijg je een exception als de functie niet leeg is.</param>
-		public void FunctieVerwijderen(int functieId, bool forceren)
+        /// <summary>
+        /// Verwijdert de functie met gegeven <paramref name="functieId"/>
+        /// </summary>
+        /// <param name="functieId">ID van de te verwijderen functie</param>
+        /// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
+        /// te verwijderen functie eerst uit de functie weggehaald.  Indien
+        /// <c>false</c> krijg je een exception als de functie niet leeg is.</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void FunctieVerwijderen(int functieId, bool forceren)
 		{
 			var functie = _functiesRepo.ByID(functieId);
 			Gav.Check(functie);
@@ -965,13 +1007,15 @@ namespace Chiro.Gap.Services
 			_functiesRepo.SaveChanges();
 		}
 
-		/// <summary>
-		/// Overschrijft een functie, op basis van de informatie uit <paramref name="detail" />
-		/// </summary>
-		/// <param name="detail">Te bewaren functie-informatie.</param>
-		/// <remarks>Het veld <c>ID</c> van <paramref name="detail" /> bepaalt welke functie
-		/// overschreven zal worden.</remarks>
-		public void FunctieBewerken(FunctieDetail detail)
+        /// <summary>
+        /// Overschrijft een functie, op basis van de informatie uit <paramref name="detail" />
+        /// </summary>
+        /// <param name="detail">Te bewaren functie-informatie.</param>
+        /// <remarks>Het veld <c>ID</c> van <paramref name="detail" /> bepaalt welke functie
+        /// overschreven zal worden.</remarks>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void FunctieBewerken(FunctieDetail detail)
 		{
 			var functie = _functiesRepo.ByID(detail.ID);
 			Gav.Check(functie);
@@ -1017,29 +1061,33 @@ namespace Chiro.Gap.Services
 
 		}
 
-		/// <summary>
-		/// Haalt functie met gegeven <paramref name="functieId"/> op
-		/// </summary>
-		/// <param name="functieId"></param>
-		/// <returns></returns>
-		public FunctieDetail FunctieOphalen(int functieId)
+        /// <summary>
+        /// Haalt functie met gegeven <paramref name="functieId"/> op
+        /// </summary>
+        /// <param name="functieId"></param>
+        /// <returns></returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public FunctieDetail FunctieOphalen(int functieId)
 		{
 			var functie = _functiesRepo.ByID(functieId);
 			Gav.Check(functie);
 			return Mapper.Map<Functie, FunctieDetail>(functie);
 		}
-	    #endregion
+        #endregion
 
-		#region beheer categorieen (wordt niet gesynct)
+        #region beheer categorieen (wordt niet gesynct)
 
-		/// <summary>
-		/// Voegt een categorie toe aan de groep
-		/// </summary>
-		/// <param name="groepId">De groep waaraan het wordt toegevoegd</param>
-		/// <param name="naam">De naam van de nieuwe categorie</param>
-		/// <param name="code">Code voor de nieuwe categorie</param>
-		/// <returns>De ID van de aangemaakte categorie</returns>
-		public int CategorieToevoegen(int groepId, string naam, string code)
+        /// <summary>
+        /// Voegt een categorie toe aan de groep
+        /// </summary>
+        /// <param name="groepId">De groep waaraan het wordt toegevoegd</param>
+        /// <param name="naam">De naam van de nieuwe categorie</param>
+        /// <param name="code">Code voor de nieuwe categorie</param>
+        /// <returns>De ID van de aangemaakte categorie</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public int CategorieToevoegen(int groepId, string naam, string code)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
 
@@ -1060,14 +1108,16 @@ namespace Chiro.Gap.Services
 			return nieuweCategorie.ID;
 		}
 
-		/// <summary>
-		/// Verwijdert de gegeven categorie
-		/// </summary>
-		/// <param name="categorieId">De ID van de te verwijderen categorie</param>
-		/// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
-		/// te verwijderen categorie eerst uit de categorie weggehaald.  Indien
-		/// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
-		public void CategorieVerwijderen(int categorieId, bool forceren)
+        /// <summary>
+        /// Verwijdert de gegeven categorie
+        /// </summary>
+        /// <param name="categorieId">De ID van de te verwijderen categorie</param>
+        /// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
+        /// te verwijderen categorie eerst uit de categorie weggehaald.  Indien
+        /// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void CategorieVerwijderen(int categorieId, bool forceren)
 		{
 			var categorie = _categorieenRepo.ByID(categorieId);
 			Gav.Check(categorie);
@@ -1085,13 +1135,15 @@ namespace Chiro.Gap.Services
 			_categorieenRepo.SaveChanges();
 		}
 
-		/// <summary>
-		/// Het veranderen van de naam van een categorie
-		/// </summary>
-		/// <param name="categorieId">De ID van de categorie</param>
-		/// <param name="nieuwenaam">De nieuwe naam van de categorie</param>
-		/// <exception cref="FoutNummerException">Gegooid als de naam leeg is of null is</exception>
-		public void CategorieAanpassen(int categorieId, string nieuwenaam)
+        /// <summary>
+        /// Het veranderen van de naam van een categorie
+        /// </summary>
+        /// <param name="categorieId">De ID van de categorie</param>
+        /// <param name="nieuwenaam">De nieuwe naam van de categorie</param>
+        /// <exception cref="FoutNummerException">Gegooid als de naam leeg is of null is</exception>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void CategorieAanpassen(int categorieId, string nieuwenaam)
 		{
 			var categorie = _categorieenRepo.ByID(categorieId);
 			Gav.Check(categorie);
@@ -1113,15 +1165,17 @@ namespace Chiro.Gap.Services
 			_categorieenRepo.SaveChanges();
 		}
 
-		/// <summary>
-		/// Zoekt een categorie op, op basis van <paramref name="groepId"/> en
-		/// <paramref name="code"/>
-		/// </summary>
-		/// <param name="groepId">ID van de groep waaraan de categorie gekoppeld moet zijn.</param>
-		/// <param name="code">Code van de categorie</param>
-		/// <returns>De categorie met code <paramref name="code"/> die van toepassing is op
-		/// de groep met ID <paramref name="groepId"/>.</returns>
-		public CategorieInfo CategorieOpzoeken(int groepId, string code)
+        /// <summary>
+        /// Zoekt een categorie op, op basis van <paramref name="groepId"/> en
+        /// <paramref name="code"/>
+        /// </summary>
+        /// <param name="groepId">ID van de groep waaraan de categorie gekoppeld moet zijn.</param>
+        /// <param name="code">Code van de categorie</param>
+        /// <returns>De categorie met code <paramref name="code"/> die van toepassing is op
+        /// de groep met ID <paramref name="groepId"/>.</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public CategorieInfo CategorieOpzoeken(int groepId, string code)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
 			var categorie = groep.Categorie.FirstOrDefault(e => String.Compare(e.Code, code, StringComparison.InvariantCultureIgnoreCase) == 0);
@@ -1132,35 +1186,41 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<Categorie, CategorieInfo>(categorie);
 		}
 
-		/// <summary>
-		/// Haalt alle categorieeen op van de groep met ID <paramref name="groepId"/>
-		/// </summary>
-		/// <param name="groepId">ID van de groep waarvan de categorieen zijn gevraagd</param>
-		/// <returns>Lijst met categorie-info van de categorieen van de gevraagde groep</returns>
-		public IList<CategorieInfo> CategorieenOphalen(int groepId)
+        /// <summary>
+        /// Haalt alle categorieeen op van de groep met ID <paramref name="groepId"/>
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvan de categorieen zijn gevraagd</param>
+        /// <returns>Lijst met categorie-info van de categorieen van de gevraagde groep</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IList<CategorieInfo> CategorieenOphalen(int groepId)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
 			return Mapper.Map<IEnumerable<Categorie>, IList<CategorieInfo>>(groep.Categorie);
 		}
 
-		/// <summary>
-		/// Zoekt de categorieID op van de categorie bepaald door de gegeven 
-		/// <paramref name="groepId"/> en <paramref name="code"/>.
-		/// </summary>
-		/// <param name="groepId">ID van groep waaraan de gezochte categorie gekoppeld is</param>
-		/// <param name="code">Code van de te zoeken categorie</param>
-		/// <returns>Het categorieID als de categorie gevonden is, anders 0.</returns>
-		public int CategorieIDOphalen(int groepId, string code)
+        /// <summary>
+        /// Zoekt de categorieID op van de categorie bepaald door de gegeven 
+        /// <paramref name="groepId"/> en <paramref name="code"/>.
+        /// </summary>
+        /// <param name="groepId">ID van groep waaraan de gezochte categorie gekoppeld is</param>
+        /// <param name="code">Code van de te zoeken categorie</param>
+        /// <returns>Het categorieID als de categorie gevonden is, anders 0.</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public int CategorieIDOphalen(int groepId, string code)
 		{
 			return CategorieOpzoeken(groepId, code).ID;
 		}
 
-		/// <summary>
-		/// Stelt het groepsadres in.
-		/// </summary>
-		/// <param name="groepID">ID van groep waarvan adres in te stellen.</param>
-		/// <param name="adresInfo">Nieuw adres van de groep.</param>
-		public void AdresInstellen(int groepID, AdresInfo adresInfo)
+        /// <summary>
+        /// Stelt het groepsadres in.
+        /// </summary>
+        /// <param name="groepID">ID van groep waarvan adres in te stellen.</param>
+        /// <param name="adresInfo">Nieuw adres van de groep.</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void AdresInstellen(int groepID, AdresInfo adresInfo)
 		{
 			Adres adres;
 			var groep = _groepenRepo.ByID(groepID);
@@ -1198,38 +1258,44 @@ namespace Chiro.Gap.Services
 #endif
 		}
 
-		#endregion
+        #endregion
 
-		#region adresgegevens ophalen
+        #region adresgegevens ophalen
 
-		/// <summary>
-		/// Maakt een lijst met alle deelgemeentes uit de database; nuttig voor autocompletion
-		/// in de ui.
-		/// </summary>
-		/// <returns>Lijst met alle beschikbare deelgemeentes</returns>
-		public IEnumerable<WoonPlaatsInfo> GemeentesOphalen()
+        /// <summary>
+        /// Maakt een lijst met alle deelgemeentes uit de database; nuttig voor autocompletion
+        /// in de ui.
+        /// </summary>
+        /// <returns>Lijst met alle beschikbare deelgemeentes</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<WoonPlaatsInfo> GemeentesOphalen()
 		{
 			return Mapper.Map<IEnumerable<WoonPlaats>, IEnumerable<WoonPlaatsInfo>>(_woonplaatsRepo.GetAll());
 		}
 
-		/// <summary>
-		/// Maakt een lijst met alle landen uit de database.
-		/// </summary>
-		/// <returns>Lijst met alle beschikbare landen</returns>
-		public List<LandInfo> LandenOphalen()
+        /// <summary>
+        /// Maakt een lijst met alle landen uit de database.
+        /// </summary>
+        /// <returns>Lijst met alle beschikbare landen</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public List<LandInfo> LandenOphalen()
 		{
 			var alleLanden = _landRepo.GetAll();
 			return Mapper.Map<IEnumerable<Land>, List<LandInfo>>(alleLanden);
 		}
 
-		/// <summary>
-		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
-		/// met het gegeven <paramref name="straatStukje"/> en maximum 20 (dit is een setting) antwoorden
-		/// </summary>
-		/// <param name="straatStukje">Enkele letters van de te zoeken straatnamen</param>
-		/// <param name="postNr">Postnummer waarin we zoeken</param>
-		/// <returns>Gegevens van de gevonden straten</returns>
-		public IEnumerable<StraatInfo> StratenOphalen(string straatStukje, int postNr)
+        /// <summary>
+        /// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
+        /// met het gegeven <paramref name="straatStukje"/> en maximum 20 (dit is een setting) antwoorden
+        /// </summary>
+        /// <param name="straatStukje">Enkele letters van de te zoeken straatnamen</param>
+        /// <param name="postNr">Postnummer waarin we zoeken</param>
+        /// <returns>Gegevens van de gevonden straten</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<StraatInfo> StratenOphalen(string straatStukje, int postNr)
 		{
 			var straatNaams =
 				_straatRepo.Select().Where(e =>
@@ -1243,19 +1309,21 @@ namespace Chiro.Gap.Services
 			return straatInfos;
 		}
 
-		// IndexOf(string value,int startIndex,StringComparison comparisonType
+        // IndexOf(string value,int startIndex,StringComparison comparisonType
 
 
-		/// <summary>
-		/// Haalt alle straten op uit een gegeven rij <paramref name="postNrs"/>, waarvan de naam begint
-		/// met het gegeven <paramref name="straatBegin"/>.
-		/// </summary>
-		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
-		/// <param name="postNrs">Postnummers waarin te zoeken</param>
-		/// <returns>Gegevens van de gevonden straten</returns>
-		/// <remarks>Ik had deze functie ook graag StratenOphalen genoemd, maar je mag geen 2 
-		/// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
-		public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(string straatBegin, IEnumerable<int> postNrs)
+        /// <summary>
+        /// Haalt alle straten op uit een gegeven rij <paramref name="postNrs"/>, waarvan de naam begint
+        /// met het gegeven <paramref name="straatBegin"/>.
+        /// </summary>
+        /// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
+        /// <param name="postNrs">Postnummers waarin te zoeken</param>
+        /// <returns>Gegevens van de gevonden straten</returns>
+        /// <remarks>Ik had deze functie ook graag StratenOphalen genoemd, maar je mag geen 2 
+        /// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(string straatBegin, IEnumerable<int> postNrs)
 		{
 			var straatNaams =
 				_straatRepo.Select().Where(
@@ -1265,30 +1333,34 @@ namespace Chiro.Gap.Services
 			return straatInfos;
 		}
 
-		#endregion
+        #endregion
 
-		#region Jaarovergang (wordt niet gesynct; pas als leden worden ingeschreven)
+        #region Jaarovergang (wordt niet gesynct; pas als leden worden ingeschreven)
 
-		/// <summary>
-		/// Berekent wat het nieuwe werkJaar zal zijn als op deze moment de jaarovergang zou gebeuren.
-		/// </summary>
-		/// <returns>Een jaartal</returns>
-		public int NieuwWerkJaarOphalen(int groepId)
+        /// <summary>
+        /// Berekent wat het nieuwe werkJaar zal zijn als op deze moment de jaarovergang zou gebeuren.
+        /// </summary>
+        /// <returns>Een jaartal</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public int NieuwWerkJaarOphalen(int groepId)
 		{
 			GetGroepEnCheckGav(groepId);
 			return _groepsWerkJarenMgr.NieuweWerkJaar(groepId);
 		}
 
-		///  <summary>
-		///  Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
-		///  <para />
-		///  Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
-		/// 		AFDELINGID van de afdelingen die geactiveerd zullen worden
-		/// 		Geboortejaren, geslacht en officiele afdeling voor elk van die afdelingen
-		///  </summary>
-		/// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
-		/// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
-		public void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
+        ///  <summary>
+        ///  Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
+        ///  <para />
+        ///  Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
+        /// 		AFDELINGID van de afdelingen die geactiveerd zullen worden
+        /// 		Geboortejaren, geslacht en officiele afdeling voor elk van die afdelingen
+        ///  </summary>
+        /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
+        /// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
 		{
 			// LET OP: De IEnumerable hierboven kan niet zomaar vervangen worden door IList.
 			// Een IEnumerable<AfdelingsDetail> kan toegekend worden aan een 
@@ -1376,14 +1448,16 @@ namespace Chiro.Gap.Services
 			_veelGebruikt.WerkJaarInvalideren(groep);
 		}
 
-		/// <summary>
-		/// Stelt afdelingsjaren voor voor het volgende werkjaar, gegeven de <paramref name="afdelingsIDs"/> van de
-		/// afdelingen die je volgend werkjaar wilt hebben.
-		/// </summary>
-		/// <param name="afdelingsIDs">ID's van de afdelingen die je graag wilt activeren</param>
-		/// <param name="groepId">ID van je groep</param>
-		/// <returns>Een voorstel voor de afdelingsjaren, in de vorm van een lijstje AfdelingDetails.</returns>
-		public IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepId)
+        /// <summary>
+        /// Stelt afdelingsjaren voor voor het volgende werkjaar, gegeven de <paramref name="afdelingsIDs"/> van de
+        /// afdelingen die je volgend werkjaar wilt hebben.
+        /// </summary>
+        /// <param name="afdelingsIDs">ID's van de afdelingen die je graag wilt activeren</param>
+        /// <param name="groepId">ID van je groep</param>
+        /// <returns>Een voorstel voor de afdelingsjaren, in de vorm van een lijstje AfdelingDetails.</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
+        public IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepId)
 		{
 			var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
 			if (!_autorisatieMgr.IsGav(groepsWerkJaar))
@@ -1410,6 +1484,8 @@ namespace Chiro.Gap.Services
         /// herstelt de situatie zoals op het einde van vorig groepswerkjaar.
         /// </summary>
         /// <param name="groepsWerkJaarId">ID van groepswerkjaar.</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void JaarOvergangTerugDraaien(int groepsWerkJaarId)
         {
             var groepsWerkJaar = _groepsWerkJarenRepo.ByID(groepsWerkJaarId);

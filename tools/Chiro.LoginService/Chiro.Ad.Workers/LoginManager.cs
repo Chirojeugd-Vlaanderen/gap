@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
-﻿using System.Collections;
-﻿using System.Collections.Generic;
-﻿using System.Text;
-﻿using Chiro.Ad.DirectoryInterface;
-﻿using Chiro.Ad.Domain;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Chiro.Ad.DirectoryInterface;
+using Chiro.Ad.Domain;
 using Chiro.Cdf.Mailer;
+using System.Linq;
 
 namespace Chiro.Ad.Workers
 {
@@ -85,6 +85,35 @@ namespace Chiro.Ad.Workers
             boodschap = string.Format(Properties.Resources.GapAccountInfoMail, login.Naam, login.Login, wachtWoord, login.Mailadres);
 
             _mailer.Verzenden(login.Mailadres, "Je GAP-login", boodschap);
+        }
+
+        /// <summary>
+        /// Zoekt een login op, op basis van AD-nummer.
+        /// 
+        /// Kipdorplogins hebben voorrang op Chiro-wereld-logins.
+        /// </summary>
+        /// <param name="adNr">AD-nummer van te zoeken login.</param>
+        /// <returns>Login op basis van AD-nummer.</returns>
+        public Chirologin Zoeken(int adNr)
+        {
+            // Probeer eerst kipdorp. Als dat niet lukt wereld.
+            return _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapLokaalRoot, adNr)
+                ?? _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapWereldRoot, adNr);
+        }
+
+        /// <summary>
+        /// Zoekt een login op, op basis van username.
+        /// 
+        /// Kipdorplogins hebben voorrang op Chiro-wereld-logins.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public Chirologin Zoeken(string username)
+        {
+            var login = username.Split('\\').LastOrDefault();
+           
+            return _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapLokaalRoot, login)
+                ?? _directoryAccess.GebruikerZoeken(Properties.Settings.Default.LdapWereldRoot, login);
         }
 
         /// <summary>

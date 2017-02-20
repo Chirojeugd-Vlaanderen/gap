@@ -59,8 +59,7 @@
     <Compile Include="Exceptions\GeenGavException.cs" />
     <Compile Include="Exceptions\OngeldigObjectException.cs" />
     <Compile Include="Functie.cs" />
-    <Compile Include="Gav.cs" />
-    <Compile Include="GebruikersRecht.cs" />
+    <Compile Include="GebruikersRechtV2.cs" />
     <Compile Include="GelieerdePersoon.cs" />
     <Compile Include="Groep.cs" />
     <Compile Include="GroepsWerkJaar.cs" />

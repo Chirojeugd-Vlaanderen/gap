@@ -1,5 +1,8 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013 the GAP developers. 
+ * Nieuw systeem permissies Copyright 2014 Johan Vervloet
+ * 
+ * See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -15,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using Chiro.Gap.Poco.Model;
 namespace Chiro.Gap.WorkerInterfaces
 {
     /// <summary>
@@ -32,5 +36,27 @@ namespace Chiro.Gap.WorkerInterfaces
         /// indien geen gebruiker aangemeld.
         /// </returns>
         string GebruikersNaamGet();
+
+        /// <summary>
+        /// <c>true</c> als de gebruiker developer is, en bijv. rechten kan krijgen op
+        /// een willekeurige groep.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Dit zit qua architectuur niet helemaal juist. De authenticatiemanager
+        /// zou beter een lijstje met rollen opleveren.</remarks>
+        bool IsDeveloper();
+
+        /// <summary>
+        /// Opvragen AD-nummer huidige gebruiker
+        /// </summary>
+        /// <returns>Het AD-nummer van de momenteel aangemelde gebruiker.</returns>
+        int? AdNummerGet();
+
+        /// <summary>
+        /// Vraagt de gebruikersnaam op van de gegeven <paramref name="persoon"/>.
+        /// </summary>
+        /// <param name="persoon">Persoon wiens gebruikersnaam gezocht is.</param>
+        /// <returns>De gebruikersnaam van de persoon. <c>null</c> als die niet bestaat.</returns>
+        string GebruikersNaamGet(Persoon persoon);
     }
 }

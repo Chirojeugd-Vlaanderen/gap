@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -22,18 +22,21 @@ using Chiro.Gap.Domain;
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
     /// <summary>
-    /// Een gebruikersrecht is niet veel meer dan een combinatie van rollen voor een groep.
+    /// Een gebruikersrecht is niet veel meer dan een combinatie van rollen.
     /// </summary>
     [DataContract]
     public class GebruikersRecht
     {
-        /// <summary>
-        /// ID van een groep
-        /// </summary>
         [DataMember]
-        public int GroepID { get; set; }
+        public Permissies PersoonsPermissies { get; set; }
 
         [DataMember]
-        public Rol Rol { get; set; }
+        public Permissies GroepsPermissies { get; set; }
+
+        [DataMember]
+        public Permissies AfdelingsPermissies { get; set; }
+
+        [DataMember]
+        public Permissies IedereenPermissies { get; set; }
     }
 }

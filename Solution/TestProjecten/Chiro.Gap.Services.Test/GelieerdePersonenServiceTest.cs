@@ -3,6 +3,7 @@ using Chiro.Gap.Services;
  * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +21,6 @@ using Chiro.Gap.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
-using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using Chiro.Cdf.Ioc.Factory;
@@ -36,7 +36,7 @@ using Chiro.Gap.TestAttributes;
 using Chiro.Gap.WorkerInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+using System.Diagnostics;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -83,7 +83,7 @@ namespace Chiro.Gap.Services.Test
             // (Ik had hier ook alle nodige mocks kunnen maken, en dan
             // een voor een registreren.  Maar ContainerInit herleest gewoon
             // de configuratiefile.)
-
+            PermissionHelper.FixPermissions();
             Factory.ContainerInit();
 
 #pragma warning disable 168
@@ -656,6 +656,7 @@ namespace Chiro.Gap.Services.Test
             const int someGid = 5;
             const int someGpid = 3;
             const string someUsername = "UserName";
+            const int someAdNummer = 12345;
             DateTime someGeboorteDatum = new DateTime(1977, 03, 08);
             const int someWerkJaar = 2012;
 
@@ -668,16 +669,7 @@ namespace Chiro.Gap.Services.Test
                                                new Persoon
                                                    {
                                                        GeboorteDatum = someGeboorteDatum,
-                                                       Gav =
-                                                           new[]
-                                                               {
-                                                                   new Gav
-                                                                       {
-                                                                           Login
-                                                                               =
-                                                                               someUsername
-                                                                       }
-                                                               }
+                                                       AdNummer = someAdNummer
                                                    },
                                            Groep = new ChiroGroep
                                                        {
@@ -693,12 +685,16 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             var communicatieVormenManagerMock = new Mock<ICommunicatieVormenManager>();
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
 
             repositoryProviderMock.Setup(mck => mck.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            authenticatieManagerMock.Setup(mck => mck.GebruikersNaamGet(gelieerdePersoon.Persoon))
+                .Returns(someUsername);
 
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
             Factory.InstantieRegistreren(communicatieVormenManagerMock.Object);
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
 
 
             var target = Factory.Maak<GelieerdePersonenService>();
@@ -710,7 +706,7 @@ namespace Chiro.Gap.Services.Test
 
             // assert
 
-            Assert.AreEqual(someUsername, actual.GebruikersInfo.GavLogin);
+            Assert.AreEqual(someUsername, actual.GebruikersInfo.Login);
         }
 
         ///<summary>
@@ -1412,25 +1408,6 @@ namespace Chiro.Gap.Services.Test
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             groepsWerkJaar.Groep = gelieerdePersoon.Groep;
 
-            var gebruikersRecht = new GebruikersRecht
-                                      {
-                                          Groep = gelieerdePersoon.Groep,
-                                          VervalDatum =
-                                              DateTime.Today.AddMonths(1)
-                                      };
-            gelieerdePersoon.Groep.GebruikersRecht.Add(gebruikersRecht);
-            var gav = new Gav
-                          {
-                              GebruikersRecht =
-                                  new List<GebruikersRecht>
-                                      {
-                                          gebruikersRecht
-                                      }
-                          };
-            gav.Persoon.Add(gelieerdePersoon.Persoon);
-            gelieerdePersoon.Persoon.Gav.Add(gav);
-            gebruikersRecht.Gav = gav;
-
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
@@ -1443,7 +1420,9 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.AreEqual(actual.GebruikersInfo.VervalDatum, gebruikersRecht.VervalDatum);
+            // We gebruiken hier de AltijdGav-autorisatiemanager, dus we mogen verwachten dat we iedereen in onze
+            // groep mogen bewerken.
+            Assert.AreEqual(actual.GebruikersInfo.GebruikersRecht.IedereenPermissies, Permissies.Bewerken);
         }
 
         /// <summary>

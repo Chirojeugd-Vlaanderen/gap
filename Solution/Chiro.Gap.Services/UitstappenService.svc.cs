@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Permissions;
 using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
@@ -56,7 +57,6 @@ namespace Chiro.Gap.Services
 
         // Managers voor niet-triviale businesslogica
 
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IUitstappenManager _uitstappenMgr;
         private readonly IAdressenManager _adressenMgr;
 
@@ -77,6 +77,7 @@ namespace Chiro.Gap.Services
         /// <param name="adressenManager">Businesslogica m.b.t. adressen</param>
         /// <param name="ledenManager">Businesslogica m.b.t. leden</param>
         /// <param name="groepsWerkJarenManager">Businesslogica m.b.t. groepswerkjaren</param>
+        /// <param name="authenticatieManager">Businesslogica m.b.t. authenticatie</param>
         /// <param name="abonnementenManager">Businesslogica m.b.t. abonnementen</param>
         /// <param name="bivakSync"></param>
         public UitstappenService(IRepositoryProvider repositoryProvider,
@@ -85,8 +86,9 @@ namespace Chiro.Gap.Services
                                  IAdressenManager adressenManager,
                                  ILedenManager ledenManager,
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
+                                 IAuthenticatieManager authenticatieManager,
                                  IAbonnementenManager abonnementenManager,
-                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager, abonnementenManager)
+                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieManager, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
@@ -99,7 +101,6 @@ namespace Chiro.Gap.Services
             _woonPlaatsenRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
             _landenRepo = repositoryProvider.RepositoryGet<Land>();
 
-            _autorisatieMgr = autorisatieManager;
             _uitstappenMgr = uitstappenManager;
             _adressenMgr = adressenManager;
 
@@ -156,6 +157,8 @@ namespace Chiro.Gap.Services
         /// <returns>Details van uitstappen</returns>
         /// <remarks>We laten toe om inschrijvingen te doen voor uitstappen uit het verleden, om als dat
         /// nodig is achteraf fouten in de administratie recht te zetten.</remarks>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public IEnumerable<UitstapInfo> OphalenVanGroep(int groepId, bool inschrijvenMogelijk)
         {
             IEnumerable<Uitstap> resultaat;
@@ -194,6 +197,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="uitstapId">ID van de uitstap</param>
         /// <returns>Details over de uitstap</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public UitstapOverzicht DetailsOphalen(int uitstapId)
         {
             var uitstap = _uitstappenRepo.ByID(uitstapId);
@@ -206,6 +211,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="deelnemerId">ID van de relevante deelnemer</param>
         /// <returns>Informatie over de deelnemer met ID <paramref name="deelnemerId"/></returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public DeelnemerDetail DeelnemerOphalen(int deelnemerId)
         {
             var resultaat = _deelnemersRepo.Select().FirstOrDefault(dln => dln.ID == deelnemerId);
@@ -217,6 +224,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="uitstapId">ID van de relevante uitstap</param>
         /// <returns>Informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapId"/></returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapId)
         {
             var uitstap = _uitstappenRepo.ByID(uitstapId);
@@ -236,6 +245,8 @@ namespace Chiro.Gap.Services
         /// Een lijstje met de geregistreerde bivakken en feedback over wat er op dit moment moet gebeuren 
         /// voor de bivakaangifte
         /// </returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public BivakAangifteLijstInfo BivakStatusOphalen(int groepId)
         {
             var resultaat = new BivakAangifteLijstInfo();
@@ -295,6 +306,8 @@ namespace Chiro.Gap.Services
         /// <returns>ID van de uitstap</returns>
         /// <remark>De contactdeelnemer zit niet bij in <paramref name="info"/>, daar wordt dus
         /// niets mee gedaan.</remark>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public int Bewaren(int groepId, UitstapInfo info)
         {
             // Als de uitstap een ID heeft, moet een bestaande uitstap opgehaald worden.
@@ -360,6 +373,8 @@ namespace Chiro.Gap.Services
         /// <param name="uitstapId">ID van de uitstap</param>
         /// <param name="plaatsNaam">Naam van de plaats</param>
         /// <param name="adresInfo">Adres van de plaats</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void PlaatsBewaren(int uitstapId, string plaatsNaam, AdresInfo adresInfo)
         {
             var uitstap = _uitstappenRepo.ByID(uitstapId);
@@ -407,6 +422,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="uitstapId">ID van de te verwijderen uitstap</param>
         /// <returns>Verwijderd de uitstap en toont daarna het overzicht scherm</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void UitstapVerwijderen(int uitstapId)
         {
             var uitstap = _uitstappenRepo.ByID(uitstapId);
@@ -437,6 +454,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="deelnemerId">ID van de als contact in te stellen deelnemer</param>
         /// <returns>De ID van de uitstap, ter controle, en misschien handig voor feedback</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public int ContactInstellen(int deelnemerId)
         {
             var deelnemer = _deelnemersRepo.ByID(deelnemerId);
@@ -493,6 +512,8 @@ namespace Chiro.Gap.Services
         /// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
         /// logistieker</param>
         /// <returns>De basisgegevens van de uitstap, zodat die in de feedback gebruikt kan worden</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapId,
                                        bool logistiekDeelnemer)
         {
@@ -547,6 +568,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="deelnemerId">ID uit te schrijven deelnemer</param>
         /// <returns>ID van de uitstap, ter controle, en handig voor feedback</returns>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public int Uitschrijven(int deelnemerId)
         {
             var deelnemer = _deelnemersRepo.ByID(deelnemerId);
@@ -572,6 +595,8 @@ namespace Chiro.Gap.Services
         /// Updatet een deelnemer op basis van de info in <paramref name="info"/>
         /// </summary>
         /// <param name="info">Info nodig voor de update</param>
+        // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
+        [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
         public void DeelnemerBewaren(DeelnemerInfo info)
         {
             var deelnemer = _deelnemersRepo.ByID(info.DeelnemerID);
