@@ -9,6 +9,10 @@ GO
 EXEC sp_addrolemember N'GapRole', N'kipdorp\gapservice_tst'
 GO
 
+GRANT EXECUTE ON auth.spWillekeurigeGroepToekennenAd TO GapHackRole;
+GO
+
+
 -- LET OP: rechten voor devs vis sql server login: zie script X_dbUsers.sql
 
 
