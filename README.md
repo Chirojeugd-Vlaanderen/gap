@@ -12,11 +12,25 @@ Het GAP is het GroepsAdministratiePortaal van de Chiro.
 
 Experimenteel: GAP met Docker en Linux.
 
+### Container bouwen voor SQL Server
 ```
 sudo docker-compose build
 sudo docker-compose run mssql /opt/gap/mssqlsetup.sh
 sudo docker-compose up
 ```
+
+### Tools voor SQL server lokaal installeren
+
+Installeer de [SQL server tools](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools).
+
+### Database inlezen:
+```
+/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-tabellen.sql
+/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-testdata.sql
+/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-straten.sql
+/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-keys-indexes.sql
+```
+
 
 ## Documentatie
 
