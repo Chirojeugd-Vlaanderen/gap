@@ -24,26 +24,23 @@ herconfigureren in de source code.
 
 Nu moet je je database nog opvullen.
 
-[**Download
-devdbdump.zip**](https://develop.chiro.be/johan/devdbdump.zip).
+Tegenwoordig zitten de dumps bij in de [source code](database/sql).
+Je vindt in [database/sql](database/sql) deze bestanden:
 
 In dat zip-bestand zitten 3 files:
 
--   `gap_schema_en_testdata.sql`. Dit script genereert heel het
-    databaseschema, en vult het op met testdata.(Dit zijn random
-    gegevens, en niet de echte gegevens van Chiroleden.) Run het vanop
-    je nieuwe GAP-database. Je krijgt misschien nog een paar
-    foutmeldingen omdat er nog een aantal views worden gecreeerd die nog
-    verwijzen naar Kipadmin. Maar misschien ook niet. Als je dit
-    uitgetest hebt, pas je dat dan even aan in deze wiki aub? :-)
--   `gap.straten.sql`. De testdata bevat slechts een beperkt aantal
-    straten, en dat is wat vervelend als je adressen wil invoeren bij
-    het debuggen. Het script gap.straten.sql vult je stratenlijst aan
-    met een (verouderde) stratenlijst. Je krijgt een paar honderden
-    foutmeldingen over dubbels, maar dat is omdat het dumpbestand al een
-    aantal van de straten bevat; de foutmeldingen mag je weer negeren.
--   `gap_schema.sql` bevat enkel het databaseschema, zonder data. Voor
-    als je dat eens nodig zou hebben.
+-   [gap-tabellen.sql](database/sql/gap-tabellen.sql). Dit maakt de tabellen voor het GAP.
+-   [gap-testdata.sql](database/sql/gap-testdata.sql). Gerandomizede testadata.
+-   [gap-straten.sql](database/sql/gap-straten.sql). Namen van straten, gemeentes, landen.
+    Als je deze uitvoert, krijg je wat foutmeldingen omdat er al wat straten bij in de
+    testdata zitten. Die fouten mag je dan negeren.
+-   [gap-keys-indexes.sql](database/sql/gap-keys-indexes.sql). Deze maakt keys en indexes.
+
+Je voert de bestanden best in die volgorde uit. Dan zou je database
+in orde moeten zijn om het GAP (frontend en backend) te draaien.
+
+Voor de API heb je nog een extra database nodig: `gap_api_auth`. Die mag
+leeg zijn, de tabellen daarin worden automatisch aangemaakt.
 
 Zorg ervoor dat je met de user waaronder je werkt toegang hebt tot die
 database met windows authenticatie, dat maakt je leven straks wat
