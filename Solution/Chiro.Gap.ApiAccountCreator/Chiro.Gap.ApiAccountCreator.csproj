@@ -71,6 +71,7 @@
   </Target>
   <Target Name="AfterBuild">
   </Target>
+  -->
   <Target Name="PublishToFileSystem" DependsOnTargets="PipelinePreDeployCopyAllFilesToOneFolder">
     <Error Condition="'$(PublishDestination)'==''" Text="The PublishDestination property must be set to the intended publishing destination." />
     <MakeDir Condition="!Exists($(PublishDestination))" Directories="$(PublishDestination)" />
@@ -79,5 +80,4 @@
     </ItemGroup>
     <Copy SourceFiles="@(PublishFiles)" DestinationFiles="@(PublishFiles-&gt;'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="True" />
   </Target>
-  -->
 </Project>
