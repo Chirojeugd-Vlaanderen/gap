@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9F5ADA82-D5F0-455A-9B42-92AEBF3D8C3A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Chiro.Gap.HelloBackend</RootNamespace>
+    <AssemblyName>Chiro.Gap.HelloBackend</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005">
+      <HintPath>..\..\packages\AutoMapper.6.0.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
+      <Project>{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}</Project>
+      <Name>Chiro.Cdf.UnityWcfExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
+      <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
+      <Name>Chiro.Cdf.Ioc.Factory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
+      <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
+      <Name>Chiro.Gap.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
+      <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
+      <Name>Chiro.Cdf.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.Dev.csproj">
+      <Project>{80B76267-F691-4549-9811-E94E057104CD}</Project>
+      <Name>Chiro.Cdf.Authentication.Dev</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
+      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
+      <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.config" />
+    <Content Include="packages.config" />
+  </ItemGroup>
+</Project>
