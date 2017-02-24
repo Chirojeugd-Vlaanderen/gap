@@ -9,6 +9,8 @@
 * Tim (Chiro)
 * Janec (Chiro) gaat zaterdagavond naar huis
 * Willem (Chiro) komt zaterdagnamiddag of zaterdagavond
+* Tinus (Scouts) heel het weekend
+* Maarten (Scouts) zaterdagvoormiddag
 
 ## Komen niet
 
