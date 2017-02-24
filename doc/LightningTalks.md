@@ -21,7 +21,9 @@ maak eventueel een merge request voor deze file :-)
 
 De suggesties tot zover:
 
+- Mobile design (Tinus van de Scouts)
 - Waarom het GAP een cool project is (Johan van de Chiro)
+- De groepsadmin: een stand van zaken (Maarten van de Scouts)
 - Het grote masterplan Chiro-IT (Jo van de Chiro, onder voorbehoud)
 - ...
 
