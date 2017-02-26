@@ -5,9 +5,9 @@
 -- duidelijk is wie er los van de gebruikersrechten op live
 -- toegang krijgt tot de staging-omgeving.
 
-EXEC auth.spGebruikersRechtToekennenAd 'MG /0113', '260005';
+EXEC auth.spGebruikersRechtToekennenAd 'MG /0113', 260005;
 GO
 
-EXEC auth.spGebruikersRechtToekennenAd 'OJ /2511', '173010';
+EXEC auth.spGebruikersRechtToekennenAd 'OJ /2511', 173010;
 GO
 
