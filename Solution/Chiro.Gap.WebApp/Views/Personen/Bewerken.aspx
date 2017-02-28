@@ -199,25 +199,28 @@
                 </tr>
             
               <%
-               foreach (var commType in gegroepeerdeComm) {
-                int teller = 0;
-                foreach (var cv in commType)
-                {
-                    string ctTekst = String.Format(
-                        cv.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email ? "<a href='mailto:{0}'>{0}</a>" : "{0}",
-                        Html.Encode(cv.Nummer));
-                    teller++;
+                  foreach (var commType in gegroepeerdeComm) {
+                      int teller = 0;
+                      foreach (var cv in commType)
+                      {
+                          string ctTekst = String.Format(
+                              cv.CommunicatieTypeID == (int)CommunicatieTypeEnum.Email ? "<a href='mailto:{0}'>{0}</a>" : "{0}",
+                              Html.Encode(cv.Nummer));
+                          teller++;
 
-                    // FIXME: dit is gepruts
-                    
-                    string cvID = (cv.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email ? "email" : "tel") + cv.ID;
-                    string tag = cv.Voorkeur ? "strong" : "span";
+                          // FIXME: dit is gepruts
+
+                          string cvID = (cv.CommunicatieTypeID == (int)CommunicatieTypeEnum.Email ? "email" : "tel") + cv.ID;
+                          string tag = cv.Voorkeur ? "strong" : "span";
             %>
              <tr>
                  
                 <td><%= commType.Key.Omschrijving + " " + teller %> </td>
                 <td title="<%= Html.Encode(cv.Nota) %>">
-                    <<%:tag %> id="<%:cvID %>" class="contact"><%=ctTekst %></<%:tag %>>
+                    <<%:tag %> id="<%:cvID %>" class="contact"><%=ctTekst %></<%:tag %>> 
+                    <% if (cv.Nota != null && cv.Nota != string.Empty) { %>
+                        <br />(<%= Html.Encode(cv.Nota) %>)
+                    <% } %>
                 </td>
                 <td>
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
@@ -250,7 +253,7 @@
             <tr>
                 <td>Chiroleeftijd<%= Html.InfoLink("clInfo") %></td>
                 <td><a  id="chiroleeftijdInfo" data-type="select"><%= Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.ChiroLeefTijd) %></a></td>
-                <td><div class="ui-icon ui-icon-pencil" id="bewerkCl"title="Bewerken" style="cursor: pointer"></div></td>
+                <td><div class="ui-icon ui-icon-pencil" id="bewerkCl" title="Bewerken" style="cursor: pointer"></div></td>
             </tr>
         <% } %>
 
