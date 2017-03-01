@@ -44,7 +44,9 @@ namespace Chiro.Gap.Workers.Test
 		{
 			Factory.ContainerInit();
 
-		    Chiro.Gap.Services.Dev.AdServiceMock blablabla;
+#pragma warning disable CS0168 // Variable is declared but never used
+            Services.Dev.AdServiceMock blablabla;
+#pragma warning restore CS0168 // Variable is declared but never used
 		}
 		//
 		// Use ClassCleanup to run code after all tests in a class have run
