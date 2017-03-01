@@ -99,7 +99,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="model">Te initialiseren model</param>
         /// <param name="groepID">ID van de gewenste groep</param>
         [HandleError]
-        protected void BaseModelInit(MasterViewModel model, int groepID)
+        protected void BaseModelInit(MasterViewModel model, int? groepID)
         {
             // Werken we op test of live?
             string login = User == null ? null : User.Identity.Name;
@@ -109,7 +109,7 @@ namespace Chiro.Gap.WebApp.Controllers
             int adnr = Authenticator.WieBenIk().AdNr;
             model.Ik = VeelGebruikt.GebruikersDetail(adnr);
 
-            if (groepID == 0)
+            if (!groepID.HasValue)
             {
                 // De Gekozen groep is nog niet gekend, zet defaults
                 model.GroepsNaam = Properties.Resources.GroepsnaamDefault;
@@ -122,7 +122,7 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 #region gekozen groep en werkJaar
 
-                var gwjDetail = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
+                var gwjDetail = VeelGebruikt.GroepsWerkJaarOphalen((int)groepID);
 
                 model.GroepsNaam = gwjDetail.GroepNaam;
                 model.GroepsNiveau = gwjDetail.GroepNiveau;
@@ -160,7 +160,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     });
                 }
 
-                var bivakstatus = VeelGebruikt.BivakStatusHuidigWerkjaarOphalen(groepID);
+                var bivakstatus = VeelGebruikt.BivakStatusHuidigWerkjaarOphalen((int)groepID);
                 VoegBivakStatusMededelingenToe(bivakstatus, model.Mededelingen);
 
                 // Problemen opvragen
@@ -334,7 +334,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepID">ID van de gewenste groep</param>
         /// <param name="titel">Titel van de pagina</param>
         [HandleError]
-        protected void BaseModelInit(MasterViewModel model, int groepID, string titel)
+        protected void BaseModelInit(MasterViewModel model, int? groepID, string titel)
         {
             BaseModelInit(model, groepID);
             model.Titel = titel;

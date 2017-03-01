@@ -76,7 +76,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				else
 				{
 					var model = new GavModel();
-					BaseModelInit(model, 0);    // 0: nog geen groep gekozen
+					BaseModelInit(model, null);    // null: nog geen groep gekozen
 
 					model.Titel = "Kies je Chirogroep";
 
