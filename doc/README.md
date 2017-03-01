@@ -25,7 +25,7 @@ Mee programmeren aan het GAP
 ### Source Code
 
 De source code is publiek toegankelijk; je kunt een clone maken van de
-git-repository https://github.chiro.be/gap/gap.git. Je mag de source code downloaden en gebruiken
+git-repository https://gitlab.chiro.be/gap/gap.git. Je mag de source code downloaden en gebruiken
 onder de voorwaarden van de [Apache License, Version
 2](http://www.apache.org/licenses/LICENSE-2.0.html).
 
