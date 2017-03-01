@@ -7,11 +7,12 @@
 * Jo (Chiro) misschien zaterdag
 * Pieter (Chiro)
 * Tim (Chiro)
-* Janec (Chiro) gaat zaterdagavond naar huis
+* Janec (Chiro) gaat zaterdagmiddag over huis
 * Willem (Chiro) komt zaterdagnamiddag of zaterdagavond
 * Tinus (Scouts) heel het weekend
-* Tim (Scouts) heel het weekend
+* Tim (Scouts en Chiro) heel het weekend
 * Maarten (Scouts) zaterdagvoormiddag
+* Mattias (Chiro)
 
 ## Komen niet
 
