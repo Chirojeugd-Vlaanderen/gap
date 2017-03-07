@@ -12,6 +12,7 @@
 * Tinus (Scouts) heel het weekend
 * Tim (Scouts en Chiro) heel het weekend
 * Maarten (Scouts) zaterdagvoormiddag
+* Steven (Scouts) zaterdagvoormiddag
 * Mattias (Chiro)
 * Geert (Scouts) zeker zaterdagvoormiddag
 
