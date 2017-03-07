@@ -20,10 +20,10 @@ Laat het weten via de [maillijst](http://lists.maillijst.chiro.be/mailman/listin
 of geef het rechtstreeks door aan [Johan](https://twitter.com/vohanj).
 Je kunt ook een merge request maken voor deze file :-)
 
-- Mobile design (Tinus van de Scouts)
-- Waarom het GAP een cool project is (Johan van de Chiro)
-- De groepsadmin: een stand van zaken (Maarten van de Scouts)
-- Het grote masterplan Chiro-IT (Jo van de Chiro, onder voorbehoud)
+- 10:00 Mobile design (Tinus van de Scouts)
+- 10:30 Waarom het GAP een cool project is (Johan van de Chiro)
+- 11:00 De groepsadmin: een stand van zaken (Maarten van de Scouts)
+- 11:30 Het grote masterplan Chiro-IT (Jo van de Chiro, onder voorbehoud)
 
 Als je niet van vrijdagavond mee op GAPIP bent, maar je wilt wel de
 lightning talks bijwonen, dan kom je zaterdag best tegen 10:00 uur.
