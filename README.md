@@ -4,6 +4,7 @@ Het GAP is het GroepsAdministratiePortaal van de Chiro.
 
 ## Nieuws
 
+* 2017-03-07 [GAPIP komt eraan](doc/GAPIP.md)
 * 2017-02-15 [Een API In dev](doc/news/api.md)
 * 2017-02-02 [CAS-authenticatie in beta](doc/news/cas.md)
 
