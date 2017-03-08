@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
@@ -111,17 +112,18 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         [DataMember]
         [Verplicht]
         public int CommunicatieTypeID { get; set; }
-        
+
         /// <summary>
         /// Markering die aangeeft dat er redenen zijn om te denken dat deze info verouderd of fout is
         /// </summary>
         [DataMember]
-        public object IsVerdacht { get; private set; }
+        [DisplayName(@"Is verdacht")]
+        public bool IsVerdacht { get; set; }
 
         /// <summary>
         /// Geeft aan wanneer de info toegevoegd of nagekeken is. Nakijken gebeurt nadat we aangaven dat de info verdacht is.
         /// </summary>
         [DataMember]
-        public object LaatsteControle { get; private set; }
+        public DateTime LaatsteControle { get; set; }
     }
 }

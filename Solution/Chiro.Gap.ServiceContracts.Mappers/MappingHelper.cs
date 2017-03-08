@@ -132,6 +132,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))
                 .ForMember(dst => dst.Bus, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.Bus))
                 .ForMember(dst => dst.Email, opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.Email)))
+                .ForMember(dst => dst.VoorkeurmailadresIsVerdacht, opt => opt.MapFrom(src => VoorkeurmailadresIsVerdacht(src)))
                 .ForMember(dst => dst.NieuwsBrief, opt => opt.MapFrom(src => src.Persoon.NieuwsBrief))
                 .ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
                 .ForMember(dst => dst.SterfDatum, opt => opt.MapFrom(src => src.Persoon.SterfDatum))
@@ -156,6 +157,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.Email,
                     opt =>
                         opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.Email)))
+                .ForMember(dst => dst.VoorkeurmailadresIsVerdacht, opt => opt.MapFrom(src => VoorkeurmailadresIsVerdacht(src.GelieerdePersoon)))
                 .ForMember(dst => dst.NieuwsBrief, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.NieuwsBrief))
                 .ForMember(dst => dst.GeboorteDatum,
                     opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.GeboorteDatum))
@@ -202,6 +204,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                                     : src.GelieerdePersoon.PersoonsAdres.Adres.Bus))
                 .ForMember(dst => dst.Email,
                     opt => opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.Email)))
+                .ForMember(dst => dst.VoorkeurmailadresIsVerdacht, opt => opt.MapFrom(src => VoorkeurmailadresIsVerdacht(src.GelieerdePersoon)))
                 .ForMember(dst => dst.NieuwsBrief, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.NieuwsBrief))
                 .ForMember(dst => dst.GeboorteDatum,
                     opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.GeboorteDatum))
@@ -564,7 +567,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => false))
                 .ForMember(
                     dst => dst.AfdelingsJaarIDs,
-					opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.Select(e => e.ID).ToList()) : new List<int> { ((Kind)src).AfdelingsJaar.ID }))
+                    opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.Select(e => e.ID).ToList()) : new List<int> { ((Kind)src).AfdelingsJaar.ID }))
                 .ForMember(
                     dst => dst.LeidingMaken,
                     opt => opt.MapFrom(src => src is Leiding))
@@ -675,17 +678,34 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         }
 
         /// <summary>
-        /// Voorkeurtelefoonnr, voorkeure-maialdres,... van een gelieerde persoon
+        /// Voorkeurtelefoonnr, voorkeurmailadres, ... van een gelieerde persoon
         /// </summary>
         /// <param name="gp">Gelieerde persoon</param>
         /// <param name="type">Communicatietype waarvan voorkeur gevraagd wordt.</param>
-        /// <returns>Voorkeurtelefoonnr, -maiadres,... van de gelieerde persoon.  
+        /// <returns>Voorkeurtelefoonnr, -mailadres,... van de gelieerde persoon.  
         /// <c>null</c> indien onbestaand.</returns>
         private string VoorkeurCommunicatie(GelieerdePersoon gp, CommunicatieTypeEnum type)
         {
             var query = from c in gp.Communicatie
                         where (c.CommunicatieType.ID == (int)type) && c.Voorkeur
                         select c.Nummer;
+
+            return query.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Geeft aan of het voorkeurmailadres van een gelieerde persoon verdacht is
+        /// </summary>
+        /// <param name="gp">Gelieerde persoon</param>
+        /// <returns><c>True</c> als controle ervoor zorgde dat het adres gevlagd werd, 
+        /// <c>false</c> als dat niet het geval is</returns>
+        private bool VoorkeurmailadresIsVerdacht(GelieerdePersoon gp)
+        {
+            var typeID = CommunicatieTypeEnum.Email;
+
+            var query = from c in gp.Communicatie
+                        where (c.CommunicatieType.ID == (int)typeID) && c.Voorkeur
+                        select c.IsVerdacht;
 
             return query.FirstOrDefault();
         }

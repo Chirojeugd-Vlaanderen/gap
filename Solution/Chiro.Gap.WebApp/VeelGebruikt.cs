@@ -210,6 +210,7 @@ namespace Chiro.Gap.WebApp
         public IEnumerable<LedenProbleemInfo> LedenProblemenOphalen(int groepID)
         {
             int? telling = (int?)_cache.Get(String.Format(LEDENPROBLEMENAANTALCACHEKEY, groepID));
+
             var ledenProblemen = (IEnumerable<LedenProbleemInfo>)_cache.Get(
                 String.Format(LEDENPROBLEMENCACHEKEY, groepID));
 
@@ -243,6 +244,7 @@ namespace Chiro.Gap.WebApp
                            CacheItemPriority.NotRemovable,
                            null);
             }
+
             return ledenProblemen;
         }
 
@@ -278,6 +280,7 @@ namespace Chiro.Gap.WebApp
         public BivakAangifteLijstInfo BivakStatusHuidigWerkjaarOphalen(int groepID)
         {
             int? telling = (int?)_cache.Get(String.Format(BIVAKSTATUSAANTALCACHEKEY, groepID));
+
             var resultaat = (BivakAangifteLijstInfo)_cache.Get(String.Format(BIVAKSTATUSCACHEKEY, groepID));
 
             if (telling == null)
@@ -397,6 +400,7 @@ namespace Chiro.Gap.WebApp
         public bool IsLive()
         {
             bool? isLive = (bool?)_cache.Get(ISLIVECACHEKEY);
+
             if (isLive == null)
             {
                 isLive = ServiceHelper.CallService<IGroepenService, bool>(svc => svc.IsLive());
@@ -422,6 +426,7 @@ namespace Chiro.Gap.WebApp
         public GebruikersDetail GebruikersDetail(string login)
         {
             GebruikersDetail detail = (GebruikersDetail)_cache.Get(String.Format(GEBRUIKERCACHEKEY, login));
+
             if (detail == null)
             {
                 detail = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.DetailsOphalen());
@@ -441,6 +446,7 @@ namespace Chiro.Gap.WebApp
         public int UniekeGroepGav(string login)
         {
             int? id = (int?)_cache.Get(String.Format(UNIEKEGROEPCACHEKEY, login));
+
             if (id == null)
             {
                 // Als de toepassing hier crasht, dan is er mogelijk iets mis met de unity mappings
@@ -449,6 +455,7 @@ namespace Chiro.Gap.WebApp
                 // hoofdletter T is.
                 // Als dat allemaal OK is, stop dan alle cassini-instances (de dev webserver van
                 // Visual Studio)
+
                 var mijnGroepen = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
                     (g => g.MijnGroepenOphalen()).ToList();
 

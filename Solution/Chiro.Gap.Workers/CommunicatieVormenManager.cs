@@ -195,6 +195,8 @@ namespace Chiro.Gap.Workers
             communicatieVorm.Nota = communicatieInfo.Nota;
             communicatieVorm.Nummer = communicatieInfo.Nummer;
             communicatieVorm.VersieString = communicatieInfo.VersieString;
+            communicatieVorm.IsVerdacht = communicatieInfo.IsVerdacht;
+            communicatieVorm.LaatsteControle = communicatieInfo.LaatsteControle;
             
             if (communicatieInfo.Voorkeur)
             {
@@ -206,9 +208,9 @@ namespace Chiro.Gap.Workers
         /// Controleert of <paramref name="p"/> een geldige communicatievorm zou zijn
         /// voor het gegeven <paramref name="communicatieType"/>
         /// </summary>
-        /// <param name="p">telefoonnummer, e-mailadres,...</param>
-        /// <param name="communicatieType">een communicatietype</param>
-        /// <returns><c>true</c> als <paramref name="p"/> een geldige communicatievorm zou zijn
+        /// <param name="p">Telefoonnummer, e-mailadres,...</param>
+        /// <param name="communicatieType">Een communicatietype</param>
+        /// <returns><c>True</c> als <paramref name="p"/> een geldige communicatievorm zou zijn
         /// voor het gegeven <paramref name="communicatieType"/></returns>
         public bool IsGeldig(string p, CommunicatieType communicatieType)
         {

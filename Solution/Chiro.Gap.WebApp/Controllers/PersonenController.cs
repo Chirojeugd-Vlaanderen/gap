@@ -211,7 +211,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			if (model.GekozenGelieerdePersoonIDs == null || model.GekozenGelieerdePersoonIDs.Count == 0)
 			{
-				TempData["fout"] = Properties.Resources.NiemandGeselecteerdFout;
+				TempData["fout"] = Resources.NiemandGeselecteerdFout;
 				return TerugNaarVorigeLijst();
 			}
 
@@ -232,7 +232,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					r = RedirectToAction("InschrijvenVoorUitstap", new { groepID });
 					break;
 				default:
-					TempData["fout"] = Properties.Resources.OnbestaandeActieFeedback;
+					TempData["fout"] = Resources.OnbestaandeActieFeedback;
 					r = TerugNaarVorigeLijst();
 					break;
 			}
@@ -268,7 +268,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				ServiceHelper.CallService<IGroepenService, List<AfdelingDetail>>(svc => svc.ActieveAfdelingenOphalen(model.GroepsWerkJaarID));
 
 			model.NieuwePersoon = new PersoonDetail();
-			model.Land = Properties.Resources.Belgie;
+			model.Land = Resources.Belgie;
 			// CommunicatieInfos: standaard te kiezen uit telefoon en email
 			model.CommunicatieInfos = new List<CommunicatieInfo>
 			{
@@ -278,7 +278,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.BeschikbareWoonPlaatsen = new List<WoonPlaatsInfo>();
 			model.Forceer = false;
 
-			model.Titel = Properties.Resources.NieuwePersoonTitel;
+			model.Titel = Resources.NieuwePersoonTitel;
 
 			return View(model);
 		}
@@ -300,7 +300,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			IDPersEnGP ids = null;
 
 			BaseModelInit(model, groepID);
-			model.Titel = Properties.Resources.NieuwePersoonTitel;
+			model.Titel = Resources.NieuwePersoonTitel;
 
 			if (!ModelState.IsValid)
 			{
@@ -326,14 +326,16 @@ namespace Chiro.Gap.WebApp.Controllers
 										PostNr = model.PostNr,
 										PostCode = model.PostCode,
 										WoonPlaatsNaam =
-											model.Land == Properties.Resources.Belgie
+											model.Land == Resources.Belgie
 												? model.WoonPlaatsNaam
 												: model.WoonPlaatsBuitenLand,
 										LandNaam = model.Land
 									};
 				}
+
 				details.CommunicatieInfos = model.CommunicatieInfos.Where(c => !string.IsNullOrEmpty(c.Nummer)).ToList();
-				try
+
+                try
 				{
 					// (ivm forceer: 0: false, 1: true)
 					ids =
@@ -372,7 +374,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// er zou wel gemeld moeten worden dat het wijzigen
 			// gelukt is.
 			// TODO Wat als er een fout optreedt bij PersoonBewaren?
-			TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+			TempData["succes"] = Resources.WijzigingenOpgeslagenFeedback;
 
 			if (String.Compare(model.Button, "bewaren", StringComparison.OrdinalIgnoreCase) == 0)
 			{
@@ -429,7 +431,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.PostCode = broerzus.PostCode;
 			model.Land = broerzus.Land;
 
-			if (string.Compare(model.Land, Properties.Resources.Belgie, StringComparison.OrdinalIgnoreCase) == 0)
+			if (string.Compare(model.Land, Resources.Belgie, StringComparison.OrdinalIgnoreCase) == 0)
 			{
 				model.WoonPlaatsNaam = broerzus.WoonPlaats;
 				model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
@@ -449,7 +451,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				new CommunicatieInfo {Nummer = broerzus.Email, CommunicatieTypeID = (int) CommunicatieTypeEnum.Email}
 			};
 
-			model.Titel = Properties.Resources.NieuwePersoonTitel;
+			model.Titel = Resources.NieuwePersoonTitel;
 			return View("Nieuw", model);
 		}
 
@@ -525,7 +527,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// er zou wel gemeld moeten worden dat het wijzigen
 			// gelukt is.
 			// TODO Wat als er een fout optreedt bij PersoonBewaren?
-			TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+			TempData["succes"] = Resources.WijzigingenOpgeslagenFeedback;
 
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
@@ -726,11 +728,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// In het andere geval tonen we nog de probleemgevallen.
 
-				model.Titel = Properties.Resources.MultiInschrijvenMisluktFout;
+				model.Titel = Resources.MultiInschrijvenMisluktFout;
 			}
 			else
 			{
-				model.Titel = Properties.Resources.PersonenInschrijven;
+				model.Titel = Resources.PersonenInschrijven;
 
 				// Er werd niet gevraagd om in te schrijven. Genereer een inschrijvingsvoorstel.
 
@@ -769,7 +771,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				where ontbrekendeGegevensFouten.Contains(i.FoutNummer)
 				select i.FoutNummer).Any())
 			{
-				model.ExtraUitleg = Properties.Resources.WaaromWeLidgegevensVragen;
+				model.ExtraUitleg = Resources.WaaromWeLidgegevensVragen;
 			}
 
 			model.BeschikbareAfdelingen =
@@ -786,29 +788,29 @@ namespace Chiro.Gap.WebApp.Controllers
 				case null:
 					return String.Empty;
 				case FoutNummer.AfdelingKindVerplicht:
-					return Properties.Resources.AfdelingKindVerplicht;
+					return Resources.AfdelingKindVerplicht;
 				case FoutNummer.AfdelingNietBeschikbaar:
-					return Properties.Resources.AfdelingNietBeschikbaar;
+					return Resources.AfdelingNietBeschikbaar;
 				case FoutNummer.GeboorteDatumOntbreekt:
-					return Properties.Resources.GeboorteDatumOntbreekt;
+					return Resources.GeboorteDatumOntbreekt;
 				case FoutNummer.LidTeJong:
-					return Properties.Resources.MinimumLeeftijd;
+					return Resources.MinimumLeeftijd;
 				case FoutNummer.PersoonOverleden:
-					return Properties.Resources.PersoonOverleden;
+					return Resources.PersoonOverleden;
 				case FoutNummer.OnbekendGeslacht:
-					return Properties.Resources.OnbekendGeslacht;
+					return Resources.OnbekendGeslacht;
 				case FoutNummer.LidWasAlIngeschreven:
-					return Properties.Resources.LidWasAlIngeschreven;
+					return Resources.LidWasAlIngeschreven;
 				case FoutNummer.GroepInactief:
-					return Properties.Resources.GroepInactief;
+					return Resources.GroepInactief;
 				case FoutNummer.AdresOntbreekt:
-					return Properties.Resources.LidAdresOntbreekt;
+					return Resources.LidAdresOntbreekt;
 				case FoutNummer.TelefoonNummerOntbreekt:
-					return Properties.Resources.TelefoonNummerOntbreekt;
+					return Resources.TelefoonNummerOntbreekt;
 				case FoutNummer.EMailVerplicht:
-					return Properties.Resources.EmailVoorLeidingOntbreekt;
+					return Resources.EmailVoorLeidingOntbreekt;
 				default:
-					return Properties.Resources.OnverwachteFout;
+					return Resources.OnverwachteFout;
 			}
 		}
 
@@ -849,7 +851,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			catch (FaultException<FoutNummerFault>)
 			{
-				TempData["fout"] = Properties.Resources.VoorstelNieuweLedenMislukt;
+				TempData["fout"] = Resources.VoorstelNieuweLedenMislukt;
 				return RedirectToAction("Index", "Leden");
 			}
 
@@ -870,7 +872,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult Uitschrijven(int gelieerdepersoonID, int groepID)
 		{
-			GelieerdePersonenUitschrijven(new List<int> { gelieerdepersoonID }, groepID, Properties.Resources.LedenUitgeschreven);
+			GelieerdePersonenUitschrijven(new List<int> { gelieerdepersoonID }, groepID, Resources.LedenUitgeschreven);
 			return RedirectToAction("Bewerken", new { ID = gelieerdepersoonID, groepID });
 		}
 
@@ -911,7 +913,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// WoonPlaatsBuitenland.  Dat is nodig voor de AdresBewerkenControl, die een beetje
 			// raar ineen zit.
 
-			if (String.Compare(model.PersoonsAdresInfo.LandNaam, Properties.Resources.Belgie, true) != 0)
+			if (String.Compare(model.PersoonsAdresInfo.LandNaam, Resources.Belgie, true) != 0)
 			{
 				model.WoonPlaatsBuitenLand = model.PersoonsAdresInfo.WoonPlaatsNaam;
 			}
@@ -989,7 +991,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Als het adres buitenlands is, neem dan de woonplaats over uit het
 			// vrij in te vullen veld.
 
-			if (String.Compare(model.PersoonsAdresInfo.LandNaam, Properties.Resources.Belgie, true) != 0)
+			if (String.Compare(model.PersoonsAdresInfo.LandNaam, Resources.Belgie, true) != 0)
 			{
 				model.PersoonsAdresInfo.WoonPlaatsNaam = model.WoonPlaatsBuitenLand;
 			}
@@ -1113,7 +1115,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.AanvragerID = id;
 			model.AlleLanden = VeelGebruikt.LandenOphalen();
-			model.PersoonsAdresInfo.LandNaam = Properties.Resources.Belgie;
+			model.PersoonsAdresInfo.LandNaam = Resources.Belgie;
 
 			var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalenZelfdeGroep(id));
 
@@ -1290,8 +1292,11 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var communicatieDetail = model.NieuweCommVorm;
 
-			// Eerst een hoop gedoe om de CommunicatieInfo uit het model in een
-			// CommunicatieDetail te krijgen, zodat de validatie kan gebeuren.
+            // Eerst een hoop gedoe om de CommunicatieInfo uit het model in een
+            // CommunicatieDetail te krijgen, zodat de validatie kan gebeuren.
+
+            // Vermijden dat mensen niet begrijpen dat schijnbaar geldige info toch niet valideert doordat er een spatie voor of achter staat.
+            model.NieuweCommVorm.Nummer = model.NieuweCommVorm.Nummer.Trim();
 
 			var communicatieType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>
 				(svc => svc.CommunicatieTypeOphalen(model.NieuweCommVorm.CommunicatieTypeID));
@@ -1309,7 +1314,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				ModelState.AddModelError(
 					"Model.NieuweCommVorm.Nummer",
 					string.Format(
-						Properties.Resources.FormatValidatieFout,
+						Resources.FormatValidatieFout,
 						communicatieType.Omschrijving,
 						communicatieType.Voorbeeld));
 			}
@@ -1400,10 +1405,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			var validator = new CommunicatieVormValidator();
 			var commVorm = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
 
-			// communicatietype van de oorspronkelijke communicatievorm overnemen.
-			// (gedoe)
+            // Vermijden dat mensen niet begrijpen dat schijnbaar geldige info toch niet valideert doordat er een spatie voor of achter staat.
+            model.NieuweCommVorm.Nummer = model.NieuweCommVorm.Nummer.Trim();
 
-			model.NieuweCommVorm.CommunicatieTypeID = commVorm.CommunicatieTypeID;
+            // communicatietype van de oorspronkelijke communicatievorm overnemen.
+            // (gedoe)
+
+            model.NieuweCommVorm.CommunicatieTypeID = commVorm.CommunicatieTypeID;
 			model.NieuweCommVorm.CommunicatieTypeOmschrijving = commVorm.CommunicatieTypeOmschrijving;
 			model.NieuweCommVorm.CommunicatieTypeValidatie = commVorm.CommunicatieTypeValidatie;
 			model.NieuweCommVorm.CommunicatieTypeVoorbeeld = commVorm.CommunicatieTypeVoorbeeld;
@@ -1414,7 +1422,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				// voeg gevonden fout toe aan modelstate.
 				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(
-					Properties.Resources.FormatValidatieFout,
+					Resources.FormatValidatieFout,
 					model.NieuweCommVorm.CommunicatieTypeOmschrijving,
 					model.NieuweCommVorm.CommunicatieTypeVoorbeeld));
 			}
@@ -1441,6 +1449,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			Mapper.Map(model.NieuweCommVorm, commInfo);
 
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(commInfo));
+            VeelGebruikt.LedenProblemenResetten(groepID); // cache clearen
 			return RedirectToAction("Bewerken", new { id = gelieerdePersoonID });
 		}
 
@@ -1507,7 +1516,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				TempData["fout"] = Properties.Resources.GeenCategorieenFout;
+				TempData["fout"] = Resources.GeenCategorieenFout;
 				return TerugNaarVorigeLijst();
 			}
 		}
@@ -1632,7 +1641,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				}
 				BaseModelInit(model, groepID);
 
-				new ModelStateWrapper(ModelState).BerichtToevoegen("EmailAdres", Properties.Resources.OngeldigEmailAdres);
+				new ModelStateWrapper(ModelState).BerichtToevoegen("EmailAdres", Resources.OngeldigEmailAdres);
 				model.PersoonLidInfo =
 					ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(
 						svc => svc.AlleDetailsOphalen(id));
@@ -1658,14 +1667,14 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new UitstapInschrijfModel();
 			BaseModelInit(model, groepID);
-			model.Titel = String.Format(Properties.Resources.UitstapInschrijving);
+			model.Titel = String.Format(Resources.UitstapInschrijving);
 
 			model.Uitstappen =
 				ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, true));
 
 			if (model.Uitstappen.FirstOrDefault() == null)
 			{
-				TempData["fout"] = Properties.Resources.GeenUitstappenFout;
+				TempData["fout"] = Resources.GeenUitstappenFout;
 				return TerugNaarVorigeLijst();
 			}
 			else
@@ -1703,13 +1712,12 @@ namespace Chiro.Gap.WebApp.Controllers
 														 RouteTable.Routes, uitstap.Naam, null,
 														 "Bekijken", "Uitstappen", new RouteValueDictionary(new {groepID, uitstap.ID}), null);
 
-			TempData["succes"] = String.Format(Properties.Resources.DeelnemersToegevoegdFeedback, uitstapLink);
+			TempData["succes"] = String.Format(Resources.DeelnemersToegevoegdFeedback, uitstapLink);
 
 			return TerugNaarVorigeLijst();
 		}
 		#endregion
-
-
+        
 		#region Enkel nodig voor javascriptcalls van de client
 
 		/// <summary>

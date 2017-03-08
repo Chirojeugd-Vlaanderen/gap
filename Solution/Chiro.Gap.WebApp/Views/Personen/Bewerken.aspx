@@ -167,7 +167,7 @@
                         <% }%>
                         <% if (Model.PersoonLidGebruikersInfo.PersoonDetail.VoorkeursAdresID == pa.PersoonsAdresID)
                            { %>
-                             <div class="ui-icon ui-icon-mail-closed" id="vkAdres"title="Voorkeurs adres. Klik voor meer info"  style="cursor: pointer"></div>  
+                             <div class="ui-icon ui-icon-mail-closed" id="vkAdres" title="Voorkeursadres. Klik voor meer info."  style="cursor: pointer"></div>  
                         <% } %>
                     </td>
                     <td>
@@ -223,6 +223,10 @@
                     <% } %>
                 </td>
                 <td>
+                    <% if (cv.IsVerdacht)
+                        { %>
+                    <div class="uitlegIsVerdacht ui-icon ui-icon-alert" title="Mailadres ziet er verdacht uit" style="cursor: pointer"></div> &nbsp;
+                    <% } %>
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
                 </td>
                 <td>

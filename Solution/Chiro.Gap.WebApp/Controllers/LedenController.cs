@@ -151,7 +151,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (model == null) // Groep en gwj matchen niet
             {
-                TempData["fout"] = Properties.Resources.GroepNietBijGroepsWerKjaar;
+                TempData["fout"] = Resources.GroepNietBijGroepsWerKjaar;
                 return null;
             }
 
@@ -170,23 +170,25 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 model.SpecialeLijsten.Add(
                     LidInfoModel.SpecialeLedenLijst.Probeerleden,
-                    Properties.Resources.LijstProbeerLeden);
+                    Resources.LijstProbeerLeden);
             }
             model.SpecialeLijsten.Add(
                 LidInfoModel.SpecialeLedenLijst.VerjaardagsLijst,
-                Properties.Resources.LijstVerjaardagen);
+                Resources.LijstVerjaardagen);
             model.SpecialeLijsten.Add(
                 LidInfoModel.SpecialeLedenLijst.OntbrekendAdres,
-                Properties.Resources.LijstOntbrekendAdres);
+                Resources.LijstOntbrekendAdres);
             model.SpecialeLijsten.Add(
                 LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer,
-                Properties.Resources.LijstOntbrekendTelefoonNummer);
+                Resources.LijstOntbrekendTelefoonNummer);
             model.SpecialeLijsten.Add(
                 LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail,
-                Properties.Resources.LijstLeidingZonderEmail);
+                Resources.LijstLeidingZonderEmail);
+            model.SpecialeLijsten.Add(LidInfoModel.SpecialeLedenLijst.LedenMetVerdachteEmail,
+                Resources.LijstLedenMetVerdachteEmail);
             model.SpecialeLijsten.Add(
                 LidInfoModel.SpecialeLedenLijst.Alles,
-                Properties.Resources.LijstAlles);
+                Resources.LijstAlles);
 
             // Haal de op te lijsten leden op; de filter wordt bepaald uit de method parameters.
             model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
@@ -201,7 +203,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                    where fi.Key == functieID
                                    select fi).First().Value.Naam;
 
-                model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
+                model.Titel = String.Format(Resources.AfdelingsLijstTitel,
                                 functieNaam,
                                 model.JaartalGetoondGroepsWerkJaar,
                                 model.JaartalGetoondGroepsWerkJaar + 1);
@@ -215,13 +217,13 @@ namespace Chiro.Gap.WebApp.Controllers
                 if (af == null)
                 {
                     model.Titel = String.Format(
-                        Properties.Resources.AfdelingBestondNiet,
+                        Resources.AfdelingBestondNiet,
                         model.JaartalGetoondGroepsWerkJaar,
                         model.JaartalGetoondGroepsWerkJaar + 1);
                 }
                 else
                 {
-                    model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
+                    model.Titel = String.Format(Resources.AfdelingsLijstTitel,
                                     af.AfdelingNaam,
                                     model.JaartalGetoondGroepsWerkJaar,
                                     model.JaartalGetoondGroepsWerkJaar + 1);
@@ -229,7 +231,7 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             else
             {
-                model.Titel = String.Format(Properties.Resources.LedenOverzicht,
+                model.Titel = String.Format(Resources.LedenOverzicht,
                                 model.JaartalGetoondGroepsWerkJaar,
                                 model.JaartalGetoondGroepsWerkJaar + 1);
             }
@@ -250,6 +252,7 @@ namespace Chiro.Gap.WebApp.Controllers
                        HeeftTelefoonNummer =
                            (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer) ? (bool?)false : null,
                        HeeftEmailAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? (bool?)false : null,
+                       HeeftVerdachtEmailAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LedenMetVerdachteEmail ) ? (bool?)false : null,
                        LidType = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? LidType.Leiding : LidType.Alles
                    };
         }
@@ -426,7 +429,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (model.SelectieGelieerdePersoonIDs == null || !model.SelectieGelieerdePersoonIDs.Any())
             {
-                TempData["fout"] = Properties.Resources.NiemandGeselecteerdFout;
+                TempData["fout"] = Resources.NiemandGeselecteerdFout;
                 return TerugNaarVorigeLijst();
             }
 
@@ -440,7 +443,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     return RedirectToAction("InschrijvenTempData", "Personen",
                         new { groepID });
                 case 2:
-                    GelieerdePersonenUitschrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.LedenUitgeschreven);
+                    GelieerdePersonenUitschrijven(model.SelectieGelieerdePersoonIDs, groepID, Resources.LedenUitgeschreven);
                     return RedirectToAction("Index", new {groepID});
                 case 3:
                     return AfdelingenBewerken(model.SelectieGelieerdePersoonIDs, groepID);
@@ -448,7 +451,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     TempData["ids"] = model.SelectieGelieerdePersoonIDs;
                     return RedirectToAction("InschrijvenVoorUitstap", "Personen", new { groepID });
                 default:
-                    TempData["fout"] = Properties.Resources.OnbestaandeActieFeedback;
+                    TempData["fout"] = Resources.OnbestaandeActieFeedback;
                     return TerugNaarVorigeLijst();
             }
         }
@@ -554,7 +557,7 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             else
             {
-                model.Titel = String.Format(Properties.Resources.AfdelingenAanpassen, model.Info.VolledigeNaam);
+                model.Titel = String.Format(Resources.AfdelingenAanpassen, model.Info.VolledigeNaam);
                 return Json(model,JsonRequestBehavior.AllowGet);
             }
         }
@@ -600,14 +603,14 @@ namespace Chiro.Gap.WebApp.Controllers
                 // naar de afdelingsinstellingen.
 
                 TempData["fout"] = String.Format(
-                    Properties.Resources.GeenActieveAfdelingen,
+                    Resources.GeenActieveAfdelingen,
                     Url.Action("Afdelingen", "Groep", new { groepID }));
 
                 return TerugNaarVorigeLijst();
             }
             else
             {
-                model.Titel = String.Format(Properties.Resources.AfdelingenAanpassen);
+                model.Titel = String.Format(Resources.AfdelingenAanpassen);
                 return View("AfdelingenBewerken", model);
             }
         }
@@ -669,19 +672,19 @@ namespace Chiro.Gap.WebApp.Controllers
             try 
             {
                 ServiceHelper.CallService<ILedenService, int>(svc => svc.LoonVerliesVerzekeren(id));
-                TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;                
+                TempData["succes"] = Resources.WijzigingenOpgeslagenFeedback;                
             }
             catch (FaultException<FoutNummerFault> ex) 
             {
                 switch (ex.Detail.FoutNummer) 
                 {
                     case FoutNummer.GroepInactief:
-                        TempData["fout"] = String.Format(Properties.Resources.GroepInactief);
+                        TempData["fout"] = String.Format(Resources.GroepInactief);
                         break;
                     case FoutNummer.ChronologieFout:
                         var url = Url.Action("Index","JaarOvergang");
                         var werkJaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaar;
-                        TempData["fout"] = String.Format(Properties.Resources.WerkJaarInOvergang, werkJaar + 1, werkJaar + 2, url);
+                        TempData["fout"] = String.Format(Resources.WerkJaarInOvergang, werkJaar + 1, werkJaar + 2, url);
                         break;
                     default:
                         throw;
@@ -689,7 +692,7 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             catch (FaultException<BestaatAlFault<String>>) 
             {
-                TempData["fout"] = String.Format(Properties.Resources.VerzekeringBestaatAl);
+                TempData["fout"] = String.Format(Resources.VerzekeringBestaatAl);
             }
             // TODO (#1031): DetailsOphalen is eigenlijk overkill; we hebben enkel de volledige naam en het GelieerdePersoonID nodig.
             var info = ServiceHelper.CallService<ILedenService, PersoonInfo>(svc => svc.PersoonOphalen(id));
@@ -730,14 +733,14 @@ namespace Chiro.Gap.WebApp.Controllers
                 FunctiesOphalen(model);
 
                 model.Titel = String.Format(
-                    Properties.Resources.FunctiesVan,
+                    Resources.FunctiesVan,
                     String.Format("{0} {1}", model.Persoon.VoorNaam, model.Persoon.Naam));
 
                 return View("FunctiesToekennen", model);
             }
             else
             {
-                TempData["fout"] = Properties.Resources.GegevensOpvragenMisluktFout;
+                TempData["fout"] = Resources.GegevensOpvragenMisluktFout;
                 return RedirectToAction("Index", groepID);
             }
         }
@@ -760,7 +763,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 VeelGebruikt.FunctieProblemenResetten(groepID);
 
-                TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+                TempData["succes"] = Resources.WijzigingenOpgeslagenFeedback;
             }
             catch (FaultException<FoutNummerFault> ex)
             {
@@ -771,11 +774,11 @@ namespace Chiro.Gap.WebApp.Controllers
                 switch (ex.Detail.FoutNummer)
                 {
                     case FoutNummer.EMailVerplicht:
-                        TempData["fout"] = String.Format(Properties.Resources.EmailVoorContactOntbreekt, naam,
+                        TempData["fout"] = String.Format(Resources.EmailVoorContactOntbreekt, naam,
                             persoonlijk);
                         break;
                     case FoutNummer.ContactMoetNieuwsBriefKrijgen:
-                        TempData["fout"] = String.Format(Properties.Resources.ContactMoetNieuwsBriefKrijgen, naam, bezittelijk);
+                        TempData["fout"] = String.Format(Resources.ContactMoetNieuwsBriefKrijgen, naam, bezittelijk);
                         break;
                     default:
                         throw;
@@ -891,6 +894,16 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult LeidingZonderMail(int groepID)
         {
             return Lijst(0, 0, 0, LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail, LidEigenschap.Naam, groepID);
+        }
+
+        /// <summary>
+        /// Toont de leid(st)ers met een verdacht e-mailadres
+        /// </summary>
+        /// <param name="groepID">ID van de groep</param>
+        /// <returns>Een view met de leid(st)ers met een verdacht e-mailadres</returns>
+        public ActionResult LedenMetVerdachteEmail(int groepID)
+        {
+            return Lijst(0, 0, 0, LidInfoModel.SpecialeLedenLijst.LedenMetVerdachteEmail, LidEigenschap.Naam, groepID);
         }
 
         /// <summary>

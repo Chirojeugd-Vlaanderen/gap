@@ -44,5 +44,16 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.Titel = "Taken voor de groepsadministratieverantwoordelijke (GAV)";
 			return View(model);
 		}
-	}
+
+        /// <summary>
+        /// Cleart de ledenproblementelling en keert dan terug naar zichzelf
+        /// </summary>
+        /// <param name="groepID">ID van de actieve groep</param>
+        [HandleError]
+        public ActionResult LedenproblemenHertellen(int groepID)
+        {
+            VeelGebruikt.LedenProblemenResetten(groepID);
+            return RedirectToAction("Index", groepID);
+        }
+    }
 }

@@ -24,27 +24,28 @@
 
 <table style="width: 100%" id="ledenOverzichtsTabel" class="overzicht">
     <thead>
-            <tr>
-                <th><%=Html.CheckBox("checkall") %></th>
-                <th class="center">Type</th>
-                <th>Naam</th>
-                <th>Geb.</th>
-                <th>Vrjrdg</th>
-                <th>
-                    <%=Html.Geslacht(GeslachtsType.Man) %>
-                    <%=Html.Geslacht(GeslachtsType.Vrouw) %>
-                </th>
-                <th>Betaald</th>
-                <th>Afd.</th>
-                <th>Func.</th>
-                <th>Instap tot</th>
-                <th>Telefoon</th>
-                <th>E-mail</th>
+        <tr>
+            <th><%=Html.CheckBox("checkall") %></th>
+            <th class="center">Type</th>
+            <th>Naam</th>
+            <th>Geb.</th>
+            <th>Vrjrdg</th>
+            <th>
+                <%=Html.Geslacht(GeslachtsType.Man) %>
+                <%=Html.Geslacht(GeslachtsType.Vrouw) %>
+            </th>
+            <th>Betaald</th>
+            <th>Afd.</th>
+            <th>Func.</th>
+            <th>Instap tot</th>
+            <th>Telefoon</th>
+            <th>E-mail</th>
         </tr>
     </thead>
     <tbody>
-    <% foreach (LidOverzicht lidOverzicht in ViewData.Model.LidInfoLijst) { %>
-        <tr >
+        <% foreach (LidOverzicht lidOverzicht in ViewData.Model.LidInfoLijst)
+            { %>
+        <tr>
             <td>
                 <input type="checkbox" name="SelectieGelieerdePersoonIDs" value="<%=lidOverzicht.GelieerdePersoonID %>"
                     <%=Model.SelectieGelieerdePersoonIDs != null && Model.SelectieGelieerdePersoonIDs.Contains(lidOverzicht.GelieerdePersoonID) ? "checked=\"checked\"" : String.Empty%> />
@@ -67,13 +68,13 @@
             </td>
             <td>
                 <%= lidOverzicht.LidgeldBetaald?"Ja":"Nee"%>
-            </td>           
+            </td>
             <td>
-            <%=Html.AfdelingsLinks(lidOverzicht.Afdelingen, Model.IDGetoondGroepsWerkJaar, Model.GroepID)%>
+                <%=Html.AfdelingsLinks(lidOverzicht.Afdelingen, Model.IDGetoondGroepsWerkJaar, Model.GroepID)%>
             </td>
             <td>
                 <% foreach (var functieInfo in lidOverzicht.Functies)
-                   { %>
+                    { %>
                 <%=Html.ActionLink(
 					Html.Encode(functieInfo.Code), 
 					"Functie", 
@@ -86,14 +87,21 @@
             </td>
             <td>
                 <%if (!lidOverzicht.SterfDatum.HasValue)
-                  {%>
+                    {%>
                 <%=Html.Telefoon(lidOverzicht.TelefoonNummer)%>
                 <%
                     }%>
             </td>
             <td>
                 <%if (!lidOverzicht.SterfDatum.HasValue)
-                  {%>
+                    {%>
+
+                <% if (lidOverzicht.VoorkeurmailadresIsVerdacht)
+                    {  %>
+                <div class="uitlegIsVerdacht ui-icon ui-icon-alert" title="Mailadres ziet er verdacht uit" style="cursor: pointer"></div>
+                &nbsp;
+                <% } %>
+
                 <a href='mailto:<%=lidOverzicht.Email %>'>
                     <%=lidOverzicht.Email %></a>
                 <%
@@ -101,5 +109,5 @@
             </td>
         </tr>
         <% } %>
-        </tbody>
+    </tbody>
 </table>
