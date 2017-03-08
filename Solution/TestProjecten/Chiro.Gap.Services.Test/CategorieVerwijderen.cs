@@ -40,11 +40,6 @@ namespace Chiro.Gap.Services.Test
         [ClassInitialize]
         static public void InitialiseerTests(TestContext tc)
         {
-            // Dit gebeurt normaal gesproken bij het starten van de service,
-            // maar blijkbaar is het moeilijk de service te herstarten bij het testen.
-            // Vandaar op deze manier:
-
-            Factory.ContainerInit();
         }
 
         [ClassCleanup]
@@ -55,6 +50,11 @@ namespace Chiro.Gap.Services.Test
         [TestInitialize]
         public void SetUp()
         {
+            // Dit gebeurt normaal gesproken bij het starten van de service,
+            // maar blijkbaar is het moeilijk de service te herstarten bij het testen.
+            // Vandaar op deze manier:
+            PermissionHelper.FixPermissions();
+            Factory.ContainerInit();
         }
 
         /// <summary>

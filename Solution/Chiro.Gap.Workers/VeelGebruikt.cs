@@ -19,6 +19,7 @@
 
 using System;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using System.Web.Caching;
 using Chiro.Ad.ServiceContracts;
@@ -97,32 +98,6 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Haalt het AD-nummer op van de user met gegeven <paramref name="gebruikersNaam"/>.
-        /// </summary>
-        /// <param name="gebruikersNaam">Een gebruikersnaam.</param>
-        /// <returns>Het AD-nummer van de user met die gebruikersnaam.</returns>
-        public int? AdNummerOphalen(string gebruikersNaam)
-        {
-            int? adNummer = (int?)_cache.Get(string.Format(AdNrCacheKey, gebruikersNaam));
-
-            if (adNummer == null)
-            {
-                adNummer = ServiceHelper.CallService<IAdService, int?>(svc => svc.AdNummerOphalen(gebruikersNaam));
-
-                _cache.Add(
-                    string.Format(AdNrCacheKey, gebruikersNaam),
-                    adNummer,
-                    null,
-                    Cache.NoAbsoluteExpiration,
-                    new TimeSpan(8, 0, 0),
-                    CacheItemPriority.Normal,
-                    null);
-            }
-
-            return adNummer.Value;
-        }
-
-        /// <summary>
         /// Invalideert het gecachete AD-nummer voor de gebruiker met gegeven <paramref name="gebruikersNaam"/>.
         /// </summary>
         /// <param name="gebruikersNaam">Gebruikersnaam van gebruiker waarvan gecachete AD-nummer
@@ -143,7 +118,19 @@ namespace Chiro.Gap.Workers
 
             if (String.IsNullOrEmpty(gebruikersNaam))
             {
-                gebruikersNaam = ServiceHelper.CallService<IAdService, string>(svc => svc.GebruikersNaamOphalen(adNummer));
+                try
+                {
+                    gebruikersNaam =
+                        ServiceHelper.CallService<IAdService, string>(svc => svc.GebruikersNaamOphalen(adNummer));
+                }
+                catch (EndpointNotFoundException)
+                {
+                    gebruikersNaam = Properties.Resources.GebruikersServiceOnbeschikbaar;
+                }
+                catch (InvalidOperationException)
+                {
+                    gebruikersNaam = Properties.Resources.GebruikersServiceNietGeconfigureerd;
+                }
 
                 _cache.Add(
                     string.Format(UserNameCacheKey, adNummer),

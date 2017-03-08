@@ -82,6 +82,7 @@
     <Compile Include="GebruikersServiceTest.cs" />
     <Compile Include="GelieerdePersonenServiceTest.cs" />
     <Compile Include="LedenServiceTest.cs" />
+    <Compile Include="PermissionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GroepenServiceTest.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -99,6 +100,10 @@
     <ProjectReference Include="..\..\..\tools\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
       <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.Dev.csproj">
+      <Project>{80b76267-f691-4549-9811-e94e057104cd}</Project>
+      <Name>Chiro.Cdf.Authentication.DevDummy</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
       <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>

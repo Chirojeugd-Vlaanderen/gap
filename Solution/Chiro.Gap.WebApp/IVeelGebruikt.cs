@@ -120,10 +120,10 @@ namespace Chiro.Gap.WebApp
 		void AllesResetten(int groepID);
 
         /// <summary>
-        /// Levert de details van de gebruiker met de gegeven <paramref name="login"/>.
+        /// Levert de details van de gebruiker met de gegeven <paramref name="adnr"/>.
         /// </summary>
-        /// <param name="login">login van de gebruiker</param>
+        /// <param name="adnr">login van de gebruiker</param>
         /// <returns>De details van de gebruiker</returns>
-        GebruikersDetail GebruikersDetail(string login);
+        GebruikersDetail GebruikersDetail(int adnr);
     }
 }

@@ -71,14 +71,15 @@ namespace Chiro.Gap.ServiceContracts
         string VerzekeringsUrlGet(int groepID);
 
         /// <summary>
-        /// Levert de details van de gebruiker met gegeven <paramref name="login"/>.
+        /// Levert de details van de persoon met gegeven <paramref name="adNummer"/>, inclusief gebruikersnaam.
         /// </summary>
-        /// <param name="login">Login van een gebruiker.</param>
-        /// <returns>Details van de gebruiker met gegeven <paramref name="login"/>.</returns>
+        /// <param name="adNummer">AD-nummer van een persoon.</param>
+        /// <param name="aanMaken">Als deze <c>true</c> is, wordt een 'stub' aangemaakt als de persoon niet wordt gevonden.</param>
+        /// <returns>Details van de persoon met gegeven <paramref name="adNummer"/>.</returns>
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        GebruikersDetail DetailsOphalen();
+        GebruikersDetail DetailsOphalen(int adNummer, bool aanMaken);
 
         /// <summary>
         /// Indien de ingelogde gebruiker lid is voor gegeven groep in het recentste werkjaar, dan wordt de id van dat lid terug gegeven

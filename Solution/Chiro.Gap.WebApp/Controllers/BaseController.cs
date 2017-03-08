@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -37,9 +38,11 @@ namespace Chiro.Gap.WebApp.Controllers
     {
         private readonly IVeelGebruikt _veelGebruikt;
         private readonly ServiceHelper _serviceHelper;
+        private readonly IAuthenticator _authenticator;
 
         protected IVeelGebruikt VeelGebruikt { get { return _veelGebruikt; } }
         protected ServiceHelper ServiceHelper { get { return _serviceHelper; } }
+        protected IAuthenticator Authenticator { get { return _authenticator; } }
 
         /// <summary>
         /// Standaardconstructor.
@@ -47,10 +50,12 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
         /// <param name="serviceHelper">Helper class voor service calls.</param>
-        protected BaseController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
+        /// <param name="authenticator">De authenticator authenticeert te aangelogde gebruiker.</param>
+        protected BaseController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
         {
             _veelGebruikt = veelGebruikt;
             _serviceHelper = serviceHelper;
+            _authenticator = authenticator;
         }
 
         /// <summary>
@@ -95,15 +100,17 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="model">Te initialiseren model</param>
         /// <param name="groepID">ID van de gewenste groep</param>
         [HandleError]
-        protected void BaseModelInit(MasterViewModel model, int groepID)
+        protected void BaseModelInit(MasterViewModel model, int? groepID)
         {
             // Werken we op test of live?
             string login = User == null ? null : User.Identity.Name;
 
             model.IsLive = VeelGebruikt.IsLive();
-            model.Ik = VeelGebruikt.GebruikersDetail(login);
+            model.DeveloperMode = Authenticator.WieBenIk().DeveloperMode;
+            int adnr = Authenticator.WieBenIk().AdNr;
+            model.Ik = VeelGebruikt.GebruikersDetail(adnr);
 
-            if (groepID == 0)
+            if (!groepID.HasValue)
             {
                 // De Gekozen groep is nog niet gekend, zet defaults
                 model.GroepsNaam = Resources.GroepsnaamDefault;
@@ -116,7 +123,7 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 #region gekozen groep en werkJaar
 
-                var gwjDetail = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
+                var gwjDetail = VeelGebruikt.GroepsWerkJaarOphalen((int)groepID);
 
                 model.GroepsNaam = gwjDetail.GroepNaam;
                 model.GroepsNiveau = gwjDetail.GroepNiveau;
@@ -154,7 +161,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     });
                 }
 
-                var bivakstatus = VeelGebruikt.BivakStatusHuidigWerkjaarOphalen(groepID);
+                var bivakstatus = VeelGebruikt.BivakStatusHuidigWerkjaarOphalen((int)groepID);
                 VoegBivakStatusMededelingenToe(bivakstatus, model.Mededelingen);
 
                 // Problemen opvragen
@@ -332,7 +339,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepID">ID van de gewenste groep</param>
         /// <param name="titel">Titel van de pagina</param>
         [HandleError]
-        protected void BaseModelInit(MasterViewModel model, int groepID, string titel)
+        protected void BaseModelInit(MasterViewModel model, int? groepID, string titel)
         {
             BaseModelInit(model, groepID);
             model.Titel = titel;

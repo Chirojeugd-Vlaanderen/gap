@@ -2,7 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
- * Bijgewerkt gebruikersbeheer Copyright 2014 Johan Vervloet
+ * Bijgewerkt gebruikersbeheer Copyright 2014, 2017 Chirojeugd-Vlaanderen
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,10 @@
  * limitations under the License.
  */
 using System.Linq;
-
-using System.ServiceModel;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Poco.Model;
 using System;
+using Chiro.Cdf.Authentication;
 
 namespace Chiro.Gap.Workers
 {
@@ -31,14 +30,16 @@ namespace Chiro.Gap.Workers
     public class AuthenticatieManager : IAuthenticatieManager
     {
         private readonly IVeelGebruikt _veelGebruikt;
+        private readonly IAuthenticator _authenticator;
 
         /// <summary>
         /// Creeert een nieuwe authenticatiemanager.
         /// </summary>
         /// <param name="veelGebruikt">Gecachete veelgebruikte zaken</param>
-        public AuthenticatieManager(IVeelGebruikt veelGebruikt)
+        public AuthenticatieManager(IVeelGebruikt veelGebruikt, IAuthenticator authenticator)
         {
             _veelGebruikt = veelGebruikt;
+            _authenticator = authenticator;
         }
 
         /// <summary>
@@ -50,9 +51,19 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public string GebruikersNaamGet()
         {
-            return ServiceSecurityContext.Current == null
-                       ? string.Empty
-                       : ServiceSecurityContext.Current.WindowsIdentity.Name;
+            return AdNummerGet() == null ? String.Empty : _veelGebruikt.GebruikersNaamOphalen(AdNummerGet().Value);
+        }
+
+        /// <summary>
+        /// <c>true</c> als de gebruiker developer is, en bijv. rechten kan krijgen op
+        /// een willekeurige groep.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Dit zit qua architectuur niet helemaal juist. De authenticatiemanager
+        /// zou beter een lijstje met rollen opleveren.</remarks>
+        public bool IsDeveloper()
+        {
+            return _authenticator.WieBenIk().DeveloperMode;
         }
 
         /// <summary>
@@ -61,8 +72,8 @@ namespace Chiro.Gap.Workers
         /// <returns>Het AD-nummer van de momenteel aangemelde gebruiker.</returns>
         public int? AdNummerGet()
         {
-            string gebruikersNaam = GebruikersNaamGet();
-            return _veelGebruikt.AdNummerOphalen(gebruikersNaam);
+            var adnrHeader = _authenticator.WieBenIk();
+            return adnrHeader == null ? null : (int?)adnrHeader.AdNr;
         }
 
         /// <summary>

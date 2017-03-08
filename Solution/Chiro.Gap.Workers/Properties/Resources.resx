@@ -346,4 +346,12 @@ de helpdesk</value>
   <data name="KanWerkjaarNietTerugDraaien" xml:space="preserve">
     <value>Het werkjaar kan niet worden teruggedraaid; er zijn al aangesloten leden.</value>
   </data>
+  <data name="GebruikersServiceOnbeschikbaar" xml:space="preserve">
+    <value>(onbeschikbaar)</value>
+    <comment>User name als de loginservice niet beschikbaar is (bijv. in dev)</comment>
+  </data>
+  <data name="GebruikersServiceNietGeconfigureerd" xml:space="preserve">
+    <value>(not configured)</value>
+    <comment>Gebruikersnaam als loginservice niet geconfigureerd is, bijv. in staging.</comment>
+  </data>
 </root>

@@ -83,7 +83,7 @@ namespace Chiro.Gap.Services.Test
             // (Ik had hier ook alle nodige mocks kunnen maken, en dan
             // een voor een registreren.  Maar ContainerInit herleest gewoon
             // de configuratiefile.)
-
+            PermissionHelper.FixPermissions();
             Factory.ContainerInit();
 
 #pragma warning disable 168

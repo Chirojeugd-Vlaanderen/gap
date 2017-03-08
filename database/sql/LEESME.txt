@@ -1,0 +1,7 @@
+Voer achtereenvolgens uit:
+
+* gap-tabellen.sql
+* gap-testdata.sql
+* gap-keys-indexes.sql
+
+Dan zouden we al ergens moeten komen :-)

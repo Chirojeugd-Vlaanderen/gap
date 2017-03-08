@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -17,6 +17,7 @@
  */
 
 using System.Web.Mvc;
+using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.WebApp.Models;
 
@@ -34,7 +35,12 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        public HandleidingController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
+        /// <param name="serviceHelper"></param>
+        /// <param name="authenticator"></param>
+        public HandleidingController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper, IAuthenticator authenticator)
+            : base(veelGebruikt, serviceHelper, authenticator)
+        {
+        }
 
         [HandleError]
         public override ActionResult Index(int groepID)
@@ -49,14 +55,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             var model = new HandleidingModel { Titel = "Handleiding" };
 
-            if (groepID != null && groepID > 0)
-            {
-                BaseModelInit(model, (int)groepID);
-            }
-            else
-            {
-                model.GroepID = 0;
-            }
+            BaseModelInit(model, groepID);
             return View(helpBestand, "Handleiding", model);
         }
     }
