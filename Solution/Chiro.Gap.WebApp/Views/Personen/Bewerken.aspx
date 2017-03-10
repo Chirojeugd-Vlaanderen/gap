@@ -572,7 +572,7 @@
             <% } %>
         </table>
         <br />
-        <button id="toevoegenAanCat">Toevoegen aan categoriëen</button>
+        <button id="toevoegenAanCat">Toevoegen aan categorieën</button>
         <br />
 
         <h3>Opties</h3>
