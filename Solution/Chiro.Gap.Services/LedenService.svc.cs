@@ -1015,6 +1015,9 @@ namespace Chiro.Gap.Services
                       ld.GelieerdePersoon.Communicatie.Any(
                           e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email) ==
                       filter.HeeftEmailAdres) &&
+                      (filter.HeeftVerdachtEmailAdres == null || ld.GelieerdePersoon.Communicatie.Any(
+                          e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email 
+                               && e.IsVerdacht == filter.HeeftVerdachtEmailAdres)) &&
                      (filter.AfdelingID == null || filter.AfdelingID == ld.AfdelingsJaar.Afdeling.ID)
                  select ld).ToList();
 
@@ -1038,6 +1041,9 @@ namespace Chiro.Gap.Services
                                 ld.GelieerdePersoon.Communicatie.Any(
                                     e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email) ==
                                 filter.HeeftEmailAdres) &&
+                                 (filter.HeeftVerdachtEmailAdres == null || ld.GelieerdePersoon.Communicatie.Any(
+                                    e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email
+                                         && e.IsVerdacht == filter.HeeftVerdachtEmailAdres)) &&
                                (filter.AfdelingID == null ||
                                 ld.AfdelingsJaar.Any(aj => aj.Afdeling.ID == filter.AfdelingID))
                            select ld).ToList();

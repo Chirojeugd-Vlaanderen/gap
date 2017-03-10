@@ -625,6 +625,9 @@ namespace Chiro.Gap.Services
             string origineelNummer = communicatieVorm.Nummer;
             communicatieVorm.Nummer = waarde;
 
+            // Bijhouden dat er iets veranderd is
+            communicatieVorm.LaatsteControle = DateTime.Now;
+
             // Niet vergeten te bewaren en te syncen
 #if KIPDORP
             using (var tx = new TransactionScope())

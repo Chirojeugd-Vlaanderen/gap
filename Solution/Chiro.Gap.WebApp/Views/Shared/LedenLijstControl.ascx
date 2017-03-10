@@ -98,8 +98,8 @@
 
                 <% if (lidOverzicht.VoorkeurmailadresIsVerdacht)
                     {  %>
-                <div class="uitlegIsVerdacht ui-icon ui-icon-alert" title="Mailadres ziet er verdacht uit" style="cursor: pointer"></div>
-                &nbsp;
+                        <div class="uitlegIsVerdacht ui-icon ui-icon-alert" title="Mailadres ziet er verdacht uit. Pas het eventueel aan op de persoonlijke fiche." style="cursor: pointer"></div>
+                        &nbsp;
                 <% } %>
 
                 <a href='mailto:<%=lidOverzicht.Email %>'>

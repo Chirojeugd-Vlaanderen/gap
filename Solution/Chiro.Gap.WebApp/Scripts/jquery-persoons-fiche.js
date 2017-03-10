@@ -861,6 +861,8 @@ $(function () {
     function wijzigCommunicatieNr(cvid, nieuweWaarde) {
         url = link("Personen", "NummerWijzigen");
 
+        $('#controlestatus').hide();
+
         $.post(url,
                     {
                         "Waarde": nieuweWaarde,

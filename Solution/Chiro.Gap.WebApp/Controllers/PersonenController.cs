@@ -1408,7 +1408,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			var commVorm = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
 
             // Vermijden dat mensen niet begrijpen dat schijnbaar geldige info toch niet valideert doordat er een spatie voor of achter staat.
+            // Wordt normaal gezien in de UI wel gecontroleerd, maar er zijn toch gevallen waarbij er 'trailing spaces' in de databank zitten.
             model.NieuweCommVorm.Nummer = model.NieuweCommVorm.Nummer.Trim();
+
+            // Bijhouden dat er iets aangepast is
+            model.NieuweCommVorm.LaatsteControle = DateTime.Now;
 
             // communicatietype van de oorspronkelijke communicatievorm overnemen.
             // (gedoe)

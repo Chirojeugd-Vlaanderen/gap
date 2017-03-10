@@ -258,7 +258,7 @@ namespace Chiro.Gap.WebApp.Controllers
                        HeeftTelefoonNummer =
                            (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer) ? (bool?)false : null,
                        HeeftEmailAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? (bool?)false : null,
-                       HeeftVerdachtEmailAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LedenMetVerdachteEmail ) ? (bool?)false : null,
+                       HeeftVerdachtEmailAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LedenMetVerdachteEmail ) ? (bool?)true : null,
                        LidType = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? LidType.Leiding : LidType.Alles
                    };
         }
