@@ -97,3 +97,8 @@ fce8c1a Hier zat dev toen ik mijn feature branch maakte.
 
 Je pusht je branch nog eens met `--force`, want veranderde geschiedenis pushen
 doe je natuurlijk niet zomaar. En dan kun je je merge request maken.
+
+Moest het tijdens het rebasen ergens helemaal mislopen, dan kun je je rebase
+afbreken met
+
+    git rebase --abort
