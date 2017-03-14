@@ -25,7 +25,7 @@ Maar als je je geen heel weekend kunt vrijmaken, dan mag je ook later
 komen (bijv. zaterdagmorgen), of vroeger naar huis vertrekken (bijv.
 zaterdagavond). We moeten alleen weten wanneer je aankomt en vertrekt,
 zodat we voldoende eten en bedden kunnen voorzien. Zie je het niet
-zitten om tot in Overijse te komen, mag je ook van thuisuit meewerken;
+zitten om tot GAPIP te komen, mag je ook van thuisuit meewerken;
 we zetten een IRC-kanaal op om in contact te blijven :-)
 
 In tegenstelling tot met andere Chirocursussen, is het voor het GAPIP
