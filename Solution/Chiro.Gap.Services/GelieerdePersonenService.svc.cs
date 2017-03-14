@@ -717,7 +717,10 @@ namespace Chiro.Gap.Services
                     Nota = communicatieInfo.Nota,
                     Nummer = communicatieInfo.Nummer,
                     Voorkeur = communicatieInfo.Voorkeur,
+                    IsVerdacht = communicatieInfo.IsVerdacht,
+                    LaatsteControle = DateTime.Now
                 };
+
                 // Communicatie koppelen is een beetje een gedoe, omdat je die voorkeuren hebt, en het concept
                 // 'gezinsgebonden' dat eigenlijk niet helemaal klopt. Al die brol handelen we af in de manager.
                 try
