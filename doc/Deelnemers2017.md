@@ -15,6 +15,7 @@
 * Steven (Scouts) zaterdagvoormiddag
 * Mattias (Chiro)
 * Geert (Scouts) zeker zaterdagvoormiddag
+* Sam (Chiro) van vrijdagavond tot zaterdagmiddag
 
 ## Wie eet er mee?
 
