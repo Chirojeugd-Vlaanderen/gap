@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using AutoMapper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -71,8 +72,8 @@ namespace Chiro.Gap.Workers
 
             if (!cvValid.Valideer(nieuweCommunicatieVorm))
             {
-                throw new FoutNummerException(FoutNummer.ValidatieFout, string.Format(Resources.CommunicatieVormValidatieFeedback, 
-                                                           nieuweCommunicatieVorm.Nummer, 
+                throw new FoutNummerException(FoutNummer.ValidatieFout, string.Format(Resources.CommunicatieVormValidatieFeedback,
+                                                           nieuweCommunicatieVorm.Nummer,
                                                            nieuweCommunicatieVorm.CommunicatieType.Omschrijving));
             }
 
@@ -195,9 +196,10 @@ namespace Chiro.Gap.Workers
             communicatieVorm.Nota = communicatieInfo.Nota;
             communicatieVorm.Nummer = communicatieInfo.Nummer;
             communicatieVorm.VersieString = communicatieInfo.VersieString;
-            communicatieVorm.IsVerdacht = communicatieInfo.IsVerdacht;
-            communicatieVorm.LaatsteControle = communicatieInfo.LaatsteControle;
-            
+
+            communicatieVorm.IsVerdacht = IsVerdacht(communicatieVorm);
+            communicatieVorm.LaatsteControle = DateTime.Now;
+
             if (communicatieInfo.Voorkeur)
             {
                 VoorkeurZetten(communicatieVorm);
@@ -218,13 +220,54 @@ namespace Chiro.Gap.Workers
 
             return
                 validator.Valideer(new CommunicatieValidatieInfo
-                                       {
-                                           CommunicatieTypeValidatie = communicatieType.Validatie,
-                                           Nummer = p
-                                       });
+                {
+                    CommunicatieTypeValidatie = communicatieType.Validatie,
+                    Nummer = p
+                });
         }
 
-        private class CommunicatieValidatieInfo: ICommunicatie
+        /// <summary>
+        /// Controleert een aantal parameters en bepaalt op basis van de score of het adres verdacht is.
+        /// Verdacht betekent: de kans is groot dat het niet om een eigen adres gaat, en vanaf de keti's maakt dat iets uit.
+        /// </summary>
+        /// <param name="communicatieVorm">Het mailadres dat we gaan controleren</param>
+        /// <returns><c>True</c> als het waarschijnlijk niet om een eigen mailadres gaat, 
+        /// <c>false</c> als de kans groot is dat het wel in orde is.</returns>
+        public bool IsVerdacht(CommunicatieVorm communicatieVorm)
+        {
+            // Controleren of het adres (nog) verdacht is
+            if (communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.HasValue && (DateTime.Now.Year - communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year) > 15 && communicatieVorm.IsGezinsgebonden)
+            {
+                // Vanaf de keti's moet je een eigen mailadres als voorkeursadres hebben, en de groep heeft hun eigen gsm-nr nodig
+                return true;
+            }
+            else
+            {
+                if (communicatieVorm.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email)
+                {
+                    // Die service berekent een score om in te schatten hoe waarschijnlijk het is dat het adres van de persoon in kwestie zelf is. 
+                    // Hoger dan 2 is redelijk betrouwbaar.
+                    var ctrlservice = new MailcontroleService.Mailcontrole();
+                    ctrlservice.Credentials = CredentialCache.DefaultCredentials;
+
+                    if (communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.HasValue)
+                    {
+                        return !(ctrlservice.BetrouwbaarheidsscoreOphalenOpNaamEnGeboortejaar(communicatieVorm.GelieerdePersoon.Persoon.VoorNaam, communicatieVorm.GelieerdePersoon.Persoon.Naam, communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year, communicatieVorm.Nummer) >= 2);
+                    }
+                    else
+                    {
+                        return !(ctrlservice.BetrouwbaarheidsscoreOphalenOpNaam(communicatieVorm.GelieerdePersoon.Persoon.VoorNaam, communicatieVorm.GelieerdePersoon.Persoon.Naam, communicatieVorm.Nummer) >= 2);
+                    }
+                }
+                else
+                {
+                    // Geen e-mail, dus moeilijk te controleren. Dan geven we het voordeel van de twijfel.
+                    return false;
+                }
+            }
+        }
+
+        private class CommunicatieValidatieInfo : ICommunicatie
         {
             public string Nummer { get; set; }
             public string CommunicatieTypeValidatie { get; set; }

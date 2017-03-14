@@ -121,5 +121,15 @@ namespace Chiro.Gap.Workers.Properties {
                 return ((string)(this["LiveConnSubstring"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://extranet.chiro.be/datacontrole/mailcontrole.asmx")]
+        public string Chiro_Gap_Workers_MailcontroleService_Mailcontrole {
+            get {
+                return ((string)(this["Chiro_Gap_Workers_MailcontroleService_Mailcontrole"]));
+            }
+        }
     }
 }
