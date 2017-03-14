@@ -55,14 +55,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             var model = new HandleidingModel { Titel = "Handleiding" };
 
-            if (groepID != null && groepID > 0)
-            {
-                BaseModelInit(model, (int)groepID);
-            }
-            else
-            {
-                model.GroepID = 0;
-            }
+            BaseModelInit(model, groepID);
             return View(helpBestand, "Handleiding", model);
         }
     }

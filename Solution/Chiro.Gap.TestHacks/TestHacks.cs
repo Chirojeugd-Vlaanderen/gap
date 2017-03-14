@@ -16,9 +16,10 @@
  * limitations under the License.
  */
 
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using Chiro.Gap.TestHacks.Properties;
+using Chiro.Gap.Poco.Context;
 
 namespace Chiro.Gap.TestHacks
 {
@@ -31,16 +32,20 @@ namespace Chiro.Gap.TestHacks
         /// <param name="adNummer"> van de gebruiker die toegang moet krijgen</param>
         public static void TestGroepToevoegen(int adNummer)
         {
-            using (var connection = new SqlConnection(Settings.Default.ConnectionString))
+            using (var db = new ChiroGroepEntities())
             {
-                connection.Open();
-                var command = new SqlCommand("auth.spWillekeurigeGroepToekennenAd", connection)
+                string connectionString = db.Database.Connection.ConnectionString;
+                using (var connection = new SqlConnection(connectionString))
                 {
-                    CommandType = CommandType.StoredProcedure
-                };
-                command.Parameters.Add(new SqlParameter("@adNr", adNummer));
-                command.ExecuteNonQuery();
-                connection.Close();
+                    connection.Open();
+                    var command = new SqlCommand("auth.spWillekeurigeGroepToekennenAd", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    command.Parameters.Add(new SqlParameter("@adNr", adNummer));
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
             }
         }
     }
