@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015, 2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -19,8 +19,6 @@
 using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.Threading;
-
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 
@@ -37,6 +35,8 @@ namespace Chiro.Cdf.Ioc
         {
             _container = new UnityContainer();
         }
+
+        public IUnityContainer UnityContainer { get { return _container; } }
 
         public void Dispose()
         {

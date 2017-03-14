@@ -173,9 +173,10 @@ namespace Chiro.Gap.FixAnomalies
                     // Splits output van Civi in stamnummer en AD-nummer.
                     string[] components = civiLeden[civiCounter].Split(';');
 
-                    // Nationale ploegen zitten nog niet in GAP (#4055). We negeren hen op basis van de lengte van
-                    // hun stamnummer. (Oh dear.)
-                    if (components[0].Length == 8)
+                    // FIXME: Nationale ploegen zitten nog niet in GAP (#4055). We negeren hen op 
+					// basis van een hardgecodeerde onduidelijke conditie (oh dear). 
+					// Zie ook (#5644)
+					if (components[0].Length == 8 && components[0].Substring(0, 3).ToUpper() != "NAT")
                     {
                         // Construeer een fake lid, om dat zodatdelijk naar Civi te syncen.
                         // Ik gebruik niet het echte lid, want het is niet gezegd dat dat bestaat. En leden uit Civi

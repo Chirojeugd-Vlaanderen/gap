@@ -18,6 +18,3 @@
 
 -- Omdat dit script al 1 keer liep, en tegen het einde een fout gaf,
 -- is het quasi uitgevoerd. Vandaar dat ik het nu leegmaak.
-
-GRANT INSERT,UPDATE,DELETE ON auth.GebruikersRechtV2 TO GapRole;
-GO

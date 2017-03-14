@@ -182,7 +182,9 @@ namespace Chiro.Gap.ServiceContracts
         /// bepalen waarop gezocht moet worden</param>
         /// <returns>Lijst met PersoonLidInfo over gevonden leden</returns>
         /// <remarks>
-        /// Er worden enkel actieve leden opgehaald.
+        /// Er worden enkel niet-gestopte leden opgehaald. (Dat kunnen dus
+        /// ook leden uit vroegere werkjaren zijn, als ze niet gestopt waren
+        /// in de loop van het werkjaar.)
         /// Let er ook op dat je in de filter iets opgeeft als LidType
         /// (Kind, Leiding of Alles), want anders krijg je niets terug.
         /// </remarks>
@@ -190,6 +192,17 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
         List<PersoonLidInfo> LijstZoekenPersoonLidInfo(LidFilter filter);
+
+        /// <summary>
+        /// Haalt alle actieve leden op van de groep met gegeven GroepId. Dat
+        /// wil zeggen: leden van het recentste werkjaar, die niet uitgescheven zijn.
+        /// </summary>
+        /// <param name="GroepId"></param>
+        /// <returns></returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        List<PersoonLidInfo> ActieveLedenOphalen(int GroepId);
 
 		#endregion
 
