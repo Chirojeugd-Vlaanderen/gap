@@ -24,7 +24,9 @@ Je kunt ook een merge request maken voor deze file :-)
 - 10:30 Het grote masterplan Chiro-IT (Jo van de Chiro, onder voorbehoud)
 - 11:00 De groepsadmin: een stand van zaken (Maarten van de Scouts)
 - 11:30 Gratis spelen met de wolken (Steven van de Scouts)
-- 12:00 (als er tijd over is:) Waarom het GAP een cool project is (Johan van de Chiro)
+- 12:00 (als we niet over tijd gingen:) Waarom het GAP een cool project is (Johan van de Chiro)
+
+Om 12:30 uur wordt het middagmaal geserveerd.
 
 Als je niet van vrijdagavond mee op GAPIP bent, maar je wilt wel de
 lightning talks bijwonen, dan kom je zaterdag best tegen 10:00 uur.
