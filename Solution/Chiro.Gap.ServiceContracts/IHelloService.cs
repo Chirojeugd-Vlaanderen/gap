@@ -6,8 +6,7 @@ namespace Chiro.Gap.ServiceContracts
     public interface IHelloService
     {
         /// <summary>
-        /// Erg lelijke hack die direct in de database schrijft om de aangelogde gebruiker
-        /// toegang te geven tot een testgroep.
+        /// Eenvoudig serviceje om te testen.
         /// </summary>
         [OperationContract]
         string Hello();

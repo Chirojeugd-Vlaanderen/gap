@@ -34,6 +34,9 @@ namespace Chiro.Gap.ServiceContracts
     [ServiceKnownType(typeof(AfdelingDetail))]
 	public interface IGroepenService
 	{
+	    [OperationContract]
+	    string Hello();
+
 		/// <summary>
 		/// Ophalen van Groepsinformatie
 		/// </summary>
@@ -551,5 +554,12 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="groepsWerkJaarId">ID van groepswerkjaar.</param>
         [OperationContract]
 	    void JaarOvergangTerugDraaien(int groepsWerkJaarId);
+
+	    /// <summary>
+	    /// Dit levert gewoon een groepsnaam op, om te kijken of de DB werkt.
+	    /// </summary>
+	    /// <returns></returns>
+	    [OperationContract]
+	    string TestDatabase();
 	}
 }

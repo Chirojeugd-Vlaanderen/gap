@@ -26,8 +26,7 @@ namespace Chiro.Gap.Services
     public class HelloService : IHelloService
     {
         /// <summary>
-        /// Erg lelijke hack die direct in de database schrijft om de aangelogde gebruiker
-        /// toegang te geven tot een testgroep.
+        /// Hello world!
         /// </summary>
         public string Hello()
         {
