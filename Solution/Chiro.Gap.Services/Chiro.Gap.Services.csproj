@@ -76,6 +76,7 @@
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <Content Include="HelloService.svc" />
     <Content Include="DbHacksService.svc" />
     <Content Include="GebruikersService.svc" />
     <Content Include="GelieerdePersonenService.svc" />
@@ -89,6 +90,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseService.cs" />
+    <Compile Include="HelloService.svc.cs">
+      <DependentUpon>HelloService.svc</DependentUpon>
+    </Compile>
     <Compile Include="DbHacksService.svc.cs">
       <DependentUpon>DbHacksService.svc</DependentUpon>
     </Compile>

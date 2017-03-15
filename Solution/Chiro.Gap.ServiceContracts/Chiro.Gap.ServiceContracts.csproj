@@ -111,6 +111,7 @@
     <Compile Include="IGebruikersService.cs" />
     <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />
+    <Compile Include="IHelloService.cs" />
     <Compile Include="ILedenService.cs" />
     <Compile Include="IUitstappenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
