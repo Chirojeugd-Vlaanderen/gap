@@ -1,5 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<LidInfoModel>" %>
 
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -37,7 +38,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
 				<%
-                    // Eén groot form, want voor elk lid staat een checkbox
+                    // Eï¿½n groot form, want voor elk lid staat een checkbox
                     
 					using (Html.BeginForm("Lijst", "Leden"))
 					{

@@ -1,6 +1,7 @@
 ﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<MasterViewModel>"
     MasterPageFile="~/Views/Shared/Globaal.Master" %>
 
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ContentPlaceHolderID="HeaderTitleContent" runat="server">
     

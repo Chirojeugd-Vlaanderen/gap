@@ -1,5 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<GroepsInstellingenModel>" %>
 
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -44,7 +45,7 @@
         %>
         <li><%=Html.ActionLink("Afdelingen dit werkjaar", "Afdelingen")%></li>
         <%} %>
-        <li><%=Html.ActionLink("Categorieën", "Categorieen")%></li>
+        <li><%=Html.ActionLink("Categorieï¿½n", "Categorieen")%></li>
         <li><%=Html.ActionLink("Functies", "Functies")%></li>
     </ul>
     

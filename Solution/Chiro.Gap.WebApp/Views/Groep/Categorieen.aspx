@@ -1,5 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<GroepsInstellingenModel>" %>
 
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -44,12 +45,12 @@
         %>
         <li><%=Html.ActionLink("Afdelingen dit werkjaar", "Afdelingen")%></li>
         <%} %>
-        <li><%=Html.ActionLink("Categorieën", "Categorieen")%></li>
+        <li><%=Html.ActionLink("Categorieï¿½n", "Categorieen")%></li>
         <li><%=Html.ActionLink("Functies", "Functies")%></li>
     </ul>
     
-	<fieldset id="groep_categorieën">
-		<legend>Categorieën voor ingeschreven en niet-ingeschreven personen</legend>
+	<fieldset id="groep_categorieï¿½n">
+		<legend>Categorieï¿½n voor ingeschreven en niet-ingeschreven personen</legend>
 		<table>
 		    <thead>
 		        <th>Categorie</th>
@@ -66,6 +67,6 @@
 			<% } %>
             </tbody>
 		</table>
-        <button id="groep_categorieën_Toevoegen">Categorie toevoegen</button>
+        <button id="groep_categorieï¿½n_Toevoegen">Categorie toevoegen</button>
 	</fieldset>
 </asp:Content>
