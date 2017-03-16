@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Web;
 
 namespace Chiro.Cdf.Authentication.Dev
@@ -33,13 +34,26 @@ namespace Chiro.Cdf.Authentication.Dev
         {
             // Voor dev 'berekenen' we een dummy-AD-nummer.
             string userName;
-            userName = HttpContext.Current == null ? "Unknown user" : HttpContext.Current.User.Identity.Name;
+            userName = HttpContext.Current == null ? String.Empty : HttpContext.Current.User.Identity.Name;
+            if (String.IsNullOrEmpty(userName))
+            {
+                // Als we geen username vinden, geven we een dummy ad-nummer.
+                return new UserInfo()
+                {
+                    AdNr = 42,
+                    DeveloperMode = true
+                };
+            }
             int result = 0;
             foreach (char c in userName)
             {
                 result += (int)c;
             }
-            return new UserInfo {AdNr = result};
+            return new UserInfo
+            {
+                AdNr = result,
+                DeveloperMode = true
+            };
         }
     }
 }
