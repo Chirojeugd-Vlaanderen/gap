@@ -17,7 +17,6 @@
  */
 
 using System.Diagnostics;
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
@@ -57,7 +56,7 @@ namespace Chiro.Gap.Sync
             ServiceHelper.CallService<ISyncPersoonService>(
 		        svc =>
 		        svc.CommunicatieVerwijderen(
-		            Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
+		            MappingHelper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
 		            new CommunicatieMiddel
 		                {
 		                    Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
@@ -78,7 +77,7 @@ namespace Chiro.Gap.Sync
 		    ServiceHelper.CallService<ISyncPersoonService>(
 		        svc =>
 		        svc.CommunicatieToevoegen(
-		            Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
+		            MappingHelper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
 		                communicatieVorm.GelieerdePersoon.Persoon),
 		            new CommunicatieMiddel
 		                {
@@ -106,7 +105,7 @@ namespace Chiro.Gap.Sync
             ServiceHelper.CallService<ISyncPersoonService>(
                 svc =>
                 svc.CommunicatieBijwerken(
-                    Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
+                    MappingHelper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
                         communicatieVorm.GelieerdePersoon.Persoon),
                     origineelNummer,
                     new CommunicatieMiddel

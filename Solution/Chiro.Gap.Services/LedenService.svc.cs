@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -761,7 +760,7 @@ namespace Chiro.Gap.Services
             var lid = _ledenRepo.ByID(lidId);
             Gav.Check(lid); // throwt als je geen rechten hebt.
 
-            return Mapper.Map<Lid, LidAfdelingInfo>(lid);
+            return _mappingHelper.Map<Lid, LidAfdelingInfo>(lid);
         }
 
         /// <summary>
@@ -777,7 +776,7 @@ namespace Chiro.Gap.Services
             {
                 FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Resources.LidInactief);
             }
-            return Mapper.Map<Lid, PersoonLidInfo>(lid);
+            return _mappingHelper.Map<Lid, PersoonLidInfo>(lid);
         }
 
         /// <summary>
@@ -793,7 +792,7 @@ namespace Chiro.Gap.Services
             {
                 FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Resources.LidInactief);
             }
-            return Mapper.Map<GelieerdePersoon, PersoonInfo>(lid.GelieerdePersoon);
+            return _mappingHelper.Map<GelieerdePersoon, PersoonInfo>(lid.GelieerdePersoon);
         }
 
         /// <summary>
@@ -809,7 +808,7 @@ namespace Chiro.Gap.Services
             {
                 FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Resources.LidInactief);
             }
-            return Mapper.Map<Lid, LidInfo>(lid);
+            return _mappingHelper.Map<Lid, LidInfo>(lid);
         }
 
         /// <summary>
@@ -839,15 +838,15 @@ namespace Chiro.Gap.Services
             // mappen
             if (metAdressen)
             {
-                resultaat = Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden.ToList());
+                resultaat = _mappingHelper.Map<IList<Lid>, List<LidOverzicht>>(leden.ToList());
             }
             else
             {
                 // TODO: Waarom wordt er hier twee keer gemapt?
                 // Misschien om informatie expliciet niet mee te nemen?
 
-                var list = Mapper.Map<IList<Lid>, List<LidOverzichtZonderAdres>>(leden.ToList());
-                resultaat = Mapper.Map<IList<LidOverzichtZonderAdres>, List<LidOverzicht>>(list);
+                var list = _mappingHelper.Map<IList<Lid>, List<LidOverzichtZonderAdres>>(leden.ToList());
+                resultaat = _mappingHelper.Map<IList<LidOverzichtZonderAdres>, List<LidOverzicht>>(list);
             }
 
             return resultaat;
@@ -872,7 +871,7 @@ namespace Chiro.Gap.Services
 
             var leden = Zoeken(filter, true);
 
-            var resultaat = Mapper.Map<IList<Lid>, List<PersoonLidInfo>>(leden.ToList());
+            var resultaat = _mappingHelper.Map<IList<Lid>, List<PersoonLidInfo>>(leden.ToList());
 
             return resultaat;
         }

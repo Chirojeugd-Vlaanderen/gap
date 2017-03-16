@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -189,7 +188,7 @@ namespace Chiro.Gap.Services
 		public GroepInfo InfoOphalen(int groepId)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
-			return Mapper.Map<Groep, GroepInfo>(groep);
+			return _mappingHelper.Map<Groep, GroepInfo>(groep);
 		}
 
 		/// <summary>
@@ -205,7 +204,7 @@ namespace Chiro.Gap.Services
 			
 			Gav.Check(groep);
 
-			return Mapper.Map<Groep, GroepInfo>(groep);
+			return _mappingHelper.Map<Groep, GroepInfo>(groep);
 		}
 
 		/// <summary>
@@ -221,8 +220,8 @@ namespace Chiro.Gap.Services
 				throw FaultExceptionHelper.GeenGav();
 			}
 
-			var resultaat = Mapper.Map<Groep, GroepDetail>(groepsWerkJaar.Groep);
-			Mapper.Map(groepsWerkJaar.AfdelingsJaar, resultaat.Afdelingen);
+			var resultaat = _mappingHelper.Map<Groep, GroepDetail>(groepsWerkJaar.Groep);
+			_mappingHelper.Map(groepsWerkJaar.AfdelingsJaar, resultaat.Afdelingen);
 			return resultaat;
 		}
 
@@ -245,7 +244,7 @@ namespace Chiro.Gap.Services
                                     && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
                         select g;
 
-            return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
+            return _mappingHelper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
 
             // ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
             // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
@@ -269,7 +268,7 @@ namespace Chiro.Gap.Services
 				Gav.Check(groepsWerkJaren.First());
 			}
 
-			return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(groepsWerkJaren);
+			return _mappingHelper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(groepsWerkJaren);
 		}
 
 		/// <summary>
@@ -304,7 +303,7 @@ namespace Chiro.Gap.Services
 				throw FaultExceptionHelper.GeenGav();
 			}
 
-			var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
+			var result = _mappingHelper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
 		    result.Status = _groepsWerkJarenMgr.StatusBepalen(groepsWerkJaar);
 			return result;
 		}
@@ -414,7 +413,7 @@ namespace Chiro.Gap.Services
 		public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepId)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
-            return Mapper.Map<IEnumerable<GebruikersRechtV2>, IEnumerable<GebruikersDetail>>(groep.GebruikersRechtV2);
+            return _mappingHelper.Map<IEnumerable<GebruikersRechtV2>, IEnumerable<GebruikersDetail>>(groep.GebruikersRechtV2);
 		}
 
 		#endregion
@@ -490,7 +489,7 @@ namespace Chiro.Gap.Services
 			}
 			catch (BestaatAlException<Afdeling> ex)
 			{
-				throw FaultExceptionHelper.BestaatAl(Mapper.Map<Afdeling, AfdelingInfo>(ex.Bestaande));
+				throw FaultExceptionHelper.BestaatAl(_mappingHelper.Map<Afdeling, AfdelingInfo>(ex.Bestaande));
 			}
 
 			_groepenRepo.SaveChanges();
@@ -535,7 +534,7 @@ namespace Chiro.Gap.Services
 					throw;
 				}
 
-				var result = Mapper.Map<Afdeling, AfdelingInfo>(dubbel);
+				var result = _mappingHelper.Map<Afdeling, AfdelingInfo>(dubbel);
 
 				throw FaultExceptionHelper.BestaatAl(result);
 			}
@@ -550,7 +549,7 @@ namespace Chiro.Gap.Services
 		{
 			var afd = _afdelingsJaarRepo.ByID(afdelingsJaarId);
 			Gav.Check(afd);
-			return Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afd);
+			return _mappingHelper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afd);
 		}
 
 		/// <summary>
@@ -662,7 +661,7 @@ namespace Chiro.Gap.Services
 		/// <returns>Rij met details over de officiele afdelingen</returns>
 		public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen()
 		{
-			return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(_officieleAfdelingenRepo.GetAll());
+			return _mappingHelper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(_officieleAfdelingenRepo.GetAll());
 		}
 
 		/// <summary>
@@ -674,7 +673,7 @@ namespace Chiro.Gap.Services
 		{
 			var afdeling = _afdelingenRepo.ByID(afdelingId);
 			Gav.Check(afdeling);
-			return Mapper.Map<Afdeling, AfdelingInfo>(afdeling);
+			return _mappingHelper.Map<Afdeling, AfdelingInfo>(afdeling);
 		}
 
 		/// <summary>
@@ -688,7 +687,7 @@ namespace Chiro.Gap.Services
 			var afdelingsJaar = _afdelingsJaarRepo.ByID(afdelingsJaarId);
 			Gav.Check(afdelingsJaar);
 			Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
-			return Mapper.Map<AfdelingsJaar, AfdelingDetail>(afdelingsJaar);
+			return _mappingHelper.Map<AfdelingsJaar, AfdelingDetail>(afdelingsJaar);
 		}
 
 		/// <summary>
@@ -705,7 +704,7 @@ namespace Chiro.Gap.Services
 			var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
 			Gav.Check(gwj);
 			Debug.Assert(gwj != null, "gwj != null");
-			return Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(gwj.AfdelingsJaar);
+			return _mappingHelper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(gwj.AfdelingsJaar);
 		}
 
 		/// <summary>
@@ -728,7 +727,7 @@ namespace Chiro.Gap.Services
 				return new List<AfdelingInfo>();
 			}
 
-			return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(((ChiroGroep)groep).Afdeling);
+			return _mappingHelper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(((ChiroGroep)groep).Afdeling);
 		}
 
 		/// <summary>
@@ -746,7 +745,7 @@ namespace Chiro.Gap.Services
 			}
 
 			Debug.Assert(gwj != null, "gwj != null");
-			return Mapper.Map<IEnumerable<AfdelingsJaar>, List<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
+			return _mappingHelper.Map<IEnumerable<AfdelingsJaar>, List<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
 		}
 
 		/// <summary>
@@ -771,7 +770,7 @@ namespace Chiro.Gap.Services
 			var ongebruikteAfdelingen = (from afd in (chiroGroep).Afdeling
 										 where !afd.AfdelingsJaar.Any(aj => Equals(aj.GroepsWerkJaar, gwj))
 										 select afd).ToList();
-			return Mapper.Map<List<Afdeling>, List<AfdelingInfo>>(ongebruikteAfdelingen);
+			return _mappingHelper.Map<List<Afdeling>, List<AfdelingInfo>>(ongebruikteAfdelingen);
 		}
 
 		#endregion
@@ -807,7 +806,7 @@ namespace Chiro.Gap.Services
 											  ((f.NiveauInt & lidNiveau) != 0)
 										  select f).ToList();
 
-			return Mapper.Map<IEnumerable<Functie>, IEnumerable<FunctieDetail>>(nationaleFuncties.Union(eigenRelevanteFuncties));
+			return _mappingHelper.Map<IEnumerable<Functie>, IEnumerable<FunctieDetail>>(nationaleFuncties.Union(eigenRelevanteFuncties));
 		}
 
 		/// <summary>
@@ -872,7 +871,7 @@ namespace Chiro.Gap.Services
 			bestaandeFunctie = _groepenMgr.FunctieZoekenOpCode(groep, code, _functiesRepo);
 			if (bestaandeFunctie != null)
 			{
-				throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
+				throw FaultExceptionHelper.BestaatAl(_mappingHelper.Map<Functie, FunctieInfo>(
 					bestaandeFunctie));
 			}
 
@@ -880,7 +879,7 @@ namespace Chiro.Gap.Services
 			bestaandeFunctie = _groepenMgr.FunctieZoekenOpNaam(groep, naam, _functiesRepo);
 			if (bestaandeFunctie != null)
 			{
-				throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
+				throw FaultExceptionHelper.BestaatAl(_mappingHelper.Map<Functie, FunctieInfo>(
 					bestaandeFunctie));
 			}
 
@@ -943,7 +942,7 @@ namespace Chiro.Gap.Services
 				// TODO: PersoonLidInfo bevat wat te veel bloat voor deze stomme exceptie.
 				// een gelieerdepersoonID en een naam zou al genoeg zijn.
 
-				throw FaultExceptionHelper.Blokkerend(Mapper.Map<IList<Lid>, List<PersoonLidInfo>>(ex.Objecten), ex.Message);
+				throw FaultExceptionHelper.Blokkerend(_mappingHelper.Map<IList<Lid>, List<PersoonLidInfo>>(ex.Objecten), ex.Message);
 			}
 			_functiesRepo.SaveChanges();
 		}
@@ -971,7 +970,7 @@ namespace Chiro.Gap.Services
 				var bestaandeFunctie = _groepenMgr.FunctieZoekenOpCode(functie.Groep, detail.Code, _functiesRepo);
 				if (bestaandeFunctie != null)
 				{
-					throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
+					throw FaultExceptionHelper.BestaatAl(_mappingHelper.Map<Functie, FunctieInfo>(
 						bestaandeFunctie));
 				}
 			}
@@ -982,7 +981,7 @@ namespace Chiro.Gap.Services
 				var bestaandeFunctie = _groepenMgr.FunctieZoekenOpNaam(functie.Groep, detail.Naam, _functiesRepo);
 				if (bestaandeFunctie != null)
 				{
-					throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
+					throw FaultExceptionHelper.BestaatAl(_mappingHelper.Map<Functie, FunctieInfo>(
 						bestaandeFunctie));
 				}
 			}
@@ -1009,7 +1008,7 @@ namespace Chiro.Gap.Services
 		{
 			var functie = _functiesRepo.ByID(functieId);
 			Gav.Check(functie);
-			return Mapper.Map<Functie, FunctieDetail>(functie);
+			return _mappingHelper.Map<Functie, FunctieDetail>(functie);
 		}
 	    #endregion
 
@@ -1032,7 +1031,7 @@ namespace Chiro.Gap.Services
 
 			if (bestaandeCategorie != null)
 			{
-				var info = Mapper.Map<Categorie, CategorieInfo>(bestaandeCategorie);
+				var info = _mappingHelper.Map<Categorie, CategorieInfo>(bestaandeCategorie);
 				throw FaultExceptionHelper.BestaatAl(info);
 			}
 
@@ -1061,7 +1060,7 @@ namespace Chiro.Gap.Services
 			}
 			else if (categorie.GelieerdePersoon.Any())
 			{
-				throw FaultExceptionHelper.Blokkerend(Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(categorie.GelieerdePersoon),
+				throw FaultExceptionHelper.Blokkerend(_mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(categorie.GelieerdePersoon),
 													  Resources.CategorieNietLeeg);
 			}
 			_categorieenRepo.Delete(categorie);
@@ -1112,7 +1111,7 @@ namespace Chiro.Gap.Services
 			{
 				throw FaultExceptionHelper.GeenGav();
 			}
-			return Mapper.Map<Categorie, CategorieInfo>(categorie);
+			return _mappingHelper.Map<Categorie, CategorieInfo>(categorie);
 		}
 
 		/// <summary>
@@ -1123,7 +1122,7 @@ namespace Chiro.Gap.Services
 		public IList<CategorieInfo> CategorieenOphalen(int groepId)
 		{
 			var groep = GetGroepEnCheckGav(groepId);
-			return Mapper.Map<IEnumerable<Categorie>, IList<CategorieInfo>>(groep.Categorie);
+			return _mappingHelper.Map<IEnumerable<Categorie>, IList<CategorieInfo>>(groep.Categorie);
 		}
 
 		/// <summary>
@@ -1192,7 +1191,7 @@ namespace Chiro.Gap.Services
 		/// <returns>Lijst met alle beschikbare deelgemeentes</returns>
 		public IEnumerable<WoonPlaatsInfo> GemeentesOphalen()
 		{
-			return Mapper.Map<IEnumerable<WoonPlaats>, IEnumerable<WoonPlaatsInfo>>(_woonplaatsRepo.GetAll());
+			return _mappingHelper.Map<IEnumerable<WoonPlaats>, IEnumerable<WoonPlaatsInfo>>(_woonplaatsRepo.GetAll());
 		}
 
 		/// <summary>
@@ -1202,7 +1201,7 @@ namespace Chiro.Gap.Services
 		public List<LandInfo> LandenOphalen()
 		{
 			var alleLanden = _landRepo.GetAll();
-			return Mapper.Map<IEnumerable<Land>, List<LandInfo>>(alleLanden);
+			return _mappingHelper.Map<IEnumerable<Land>, List<LandInfo>>(alleLanden);
 		}
 
 		/// <summary>
@@ -1221,7 +1220,7 @@ namespace Chiro.Gap.Services
 						   .Take(Settings.Default.AantalStraatSuggesties)
 						   .ToList();
 
-			var straatInfos = Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(straatNaams);
+			var straatInfos = _mappingHelper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(straatNaams);
 
 			return straatInfos;
 		}
@@ -1244,7 +1243,7 @@ namespace Chiro.Gap.Services
 				_straatRepo.Select().Where(
 					e =>
 					postNrs.Contains(e.PostNummer) && e.Naam.StartsWith(straatBegin, StringComparison.OrdinalIgnoreCase));
-			var straatInfos = Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(straatNaams);
+			var straatInfos = _mappingHelper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(straatNaams);
 			return straatInfos;
 		}
 
@@ -1385,7 +1384,7 @@ namespace Chiro.Gap.Services
 
 			var afdelingsJaren = _groepsWerkJarenMgr.AfdelingsJarenVoorstellen(groep, afdelingen, nieuwWerkJaar, ribbels);
 
-			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(afdelingsJaren);
+			return _mappingHelper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(afdelingsJaren);
 		}
 
         /// <summary>

@@ -24,6 +24,7 @@ using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WebApp.Mappers;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -43,6 +44,8 @@ namespace Chiro.Gap.WebApp.Controllers
         protected ServiceHelper ServiceHelper { get { return _serviceHelper; } }
         protected IAuthenticator Authenticator { get { return _authenticator; } }
 
+        protected static MappingHelper MappingHelper { get; }
+
         /// <summary>
         /// Standaardconstructor.
         /// </summary>
@@ -55,6 +58,11 @@ namespace Chiro.Gap.WebApp.Controllers
             _veelGebruikt = veelGebruikt;
             _serviceHelper = serviceHelper;
             _authenticator = authenticator;
+        }
+
+        static BaseController()
+        {
+            MappingHelper = new MappingHelper();
         }
 
         /// <summary>

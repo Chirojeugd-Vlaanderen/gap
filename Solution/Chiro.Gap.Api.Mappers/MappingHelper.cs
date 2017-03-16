@@ -23,19 +23,31 @@ using Chiro.Gap.Api.Models;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
-namespace Chiro.Gap.Api
+namespace Chiro.Gap.Api.Mappers
 {
+    /// <summary>
+    /// Helperfunctie voor mappings.
+    /// 
+    /// Niet zeker of deze manier van werken ideaal is, maar wel handig voor de
+    /// migratie naar Automapper voorbij 3.3. (#5401)
+    /// </summary>
     public static class MappingHelper
     {
-        public static void CreateMappings()
+        private static readonly MapperConfiguration _configuration;
+
+        static MappingHelper()
+        {
+            _configuration = new MapperConfiguration(CreateMappings);
+        }
+        public static void CreateMappings(IProfileExpression cfg)
         {
             // TODO: Damn, nog steeds automapper 3. (zie #5401).
 
-            Mapper.CreateMap<GroepInfo, GroepModel>()
+            cfg.CreateMap<GroepInfo, GroepModel>()
                 .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.StamNummer.Trim()))
                 .ForMember(dst => dst.GroepId, opt => opt.MapFrom(src => src.ID));
 
-            Mapper.CreateMap<PersoonsAdresInfo, AdresModel>()
+            cfg.CreateMap<PersoonsAdresInfo, AdresModel>()
                 .ForMember(dst => dst.AdresId, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.Straat, opt => opt.MapFrom(src => src.StraatNaamNaam))
                 .ForMember(dst => dst.Huisnr, opt => opt.MapFrom(src => src.HuisNr))
@@ -45,12 +57,12 @@ namespace Chiro.Gap.Api
                 .ForMember(dst => dst.Adrestype, opt => opt.MapFrom(src => src.AdresType));
                 // Voorkeursadres moet achteraf nog gefixt worden.
 
-            Mapper.CreateMap<CommunicatieDetail, ContactinfoModel>()
+            cfg.CreateMap<CommunicatieDetail, ContactinfoModel>()
                 .ForMember(dst => dst.Info, opt => opt.MapFrom(src => src.Nummer))
                 .ForMember(dst => dst.IsVoorkeur, opt => opt.MapFrom(src => src.Voorkeur))
                 .ForMember(dst => dst.Opmerking, opt => opt.MapFrom(src => src.Nota));
 
-            Mapper.CreateMap<PersoonLidInfo, PersoonModel>()
+            cfg.CreateMap<PersoonLidInfo, PersoonModel>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.PersoonDetail.AdNummer))
                 .ForMember(dst => dst.PersoonId, opt => opt.MapFrom(src => src.PersoonDetail.PersoonID))
                 .ForMember(dst => dst.Voornaam, opt => opt.MapFrom(src => src.PersoonDetail.VoorNaam))

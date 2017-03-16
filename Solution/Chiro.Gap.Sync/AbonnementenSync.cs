@@ -16,13 +16,11 @@
  * limitations under the License.
  */
 
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -46,7 +44,7 @@ namespace Chiro.Gap.Sync
             }
             else
             {
-                var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(teSyncenAbonnement.GelieerdePersoon);
+                var details = MappingHelper.Map<GelieerdePersoon, PersoonDetails>(teSyncenAbonnement.GelieerdePersoon);
                 ServiceHelper.CallService<ISyncPersoonService>(
                     svc => svc.AbonnementNieuwePersoonBewaren(details, teSyncenAbonnement.GroepsWerkJaar.WerkJaar, type));
             }            
@@ -62,7 +60,7 @@ namespace Chiro.Gap.Sync
             }
             else
             {
-                var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon);
+                var details = MappingHelper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon);
                 ServiceHelper.CallService<ISyncPersoonService>(
                     svc => svc.AbonnementStopzettenNieuwePersoon(details));
             }

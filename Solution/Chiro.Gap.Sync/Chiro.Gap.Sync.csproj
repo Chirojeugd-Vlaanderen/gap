@@ -41,12 +41,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
-      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="AutoMapper.Net4">
-      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.Net4.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -60,7 +54,6 @@
     <Compile Include="CommunicatieSync.cs" />
     <Compile Include="GroepenSync.cs" />
     <Compile Include="LedenSync.cs" />
-    <Compile Include="MappingHelper.cs" />
     <Compile Include="OutOfCoffeeException.cs" />
     <Compile Include="PersonenSync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,6 +88,10 @@
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Sync.Mappers\Chiro.Gap.Sync.Mappers.csproj">
+      <Project>{98547985-C786-4637-8407-8EFD4A19F31B}</Project>
+      <Name>Chiro.Gap.Sync.Mappers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
       <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
       <Name>Chiro.Gap.SyncInterfaces</Name>
@@ -115,7 +112,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

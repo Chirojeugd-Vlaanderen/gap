@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -186,7 +185,7 @@ namespace Chiro.Gap.Services
                 resultaat = _uitstappenRepo.Select().Where(u => u.GroepsWerkJaar.Groep.ID == groepId).ToList();
             }
 
-            return Mapper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(resultaat);
+            return _mappingHelper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(resultaat);
         }
 
         /// <summary>
@@ -198,7 +197,7 @@ namespace Chiro.Gap.Services
         {
             var uitstap = _uitstappenRepo.ByID(uitstapId);
             Gav.Check(uitstap);
-            return Mapper.Map<Uitstap, UitstapOverzicht>(uitstap);
+            return _mappingHelper.Map<Uitstap, UitstapOverzicht>(uitstap);
         }
 
         /// <summary>
@@ -211,7 +210,7 @@ namespace Chiro.Gap.Services
             var resultaat = _deelnemersRepo.Select().FirstOrDefault(dln => dln.ID == deelnemerId);
             Gav.Check(resultaat.GelieerdePersoon);
 			      Gav.Check(resultaat.Uitstap);
-            return Mapper.Map<Deelnemer, DeelnemerDetail>(resultaat);
+            return _mappingHelper.Map<Deelnemer, DeelnemerDetail>(resultaat);
         }
 
         /// <summary>
@@ -224,7 +223,7 @@ namespace Chiro.Gap.Services
             var uitstap = _uitstappenRepo.ByID(uitstapId);
             Gav.Check(uitstap);
 
-            return Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<DeelnemerDetail>>(uitstap.Deelnemer);
+            return _mappingHelper.Map<IEnumerable<Deelnemer>, IEnumerable<DeelnemerDetail>>(uitstap.Deelnemer);
         }
 
         /// <summary>
@@ -318,7 +317,7 @@ namespace Chiro.Gap.Services
             if (info.ID == 0)
             {
                 // Nieuwe uitstap
-                uitstap = Mapper.Map<UitstapInfo, Uitstap>(info);
+                uitstap = _mappingHelper.Map<UitstapInfo, Uitstap>(info);
                 uitstap.GroepsWerkJaar = groepsWerkJaar;
                 groepsWerkJaar.Uitstap.Add(uitstap);
             }
@@ -331,7 +330,7 @@ namespace Chiro.Gap.Services
                 wasBivak = uitstap.IsBivak;
 
                 // overschrijf met gegevens uit 'info'
-                Mapper.Map(info, uitstap);
+                _mappingHelper.Map(info, uitstap);
             }
 
 #if KIPDORP
@@ -541,7 +540,7 @@ namespace Chiro.Gap.Services
             }
 
             _gelieerdePersonenRepo.SaveChanges();
-            return Mapper.Map<Uitstap, UitstapInfo>(uitstap);
+            return _mappingHelper.Map<Uitstap, UitstapInfo>(uitstap);
         }
 
         /// <summary>
@@ -583,7 +582,7 @@ namespace Chiro.Gap.Services
             deelnemer = _deelnemersRepo.Select().First(dln => dln.ID == info.DeelnemerID);
 
             // Nieuwe waarden invullen en opslaan
-            Mapper.Map(info, deelnemer);
+            _mappingHelper.Map(info, deelnemer);
             _deelnemersRepo.SaveChanges();
         }
         #endregion

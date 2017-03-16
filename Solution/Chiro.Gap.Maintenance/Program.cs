@@ -20,7 +20,6 @@ using System;
 using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Mailer;
 using Chiro.Gap.Maintenance.Properties;
-using Chiro.Gap.Sync;
 
 namespace Chiro.Gap.Maintenance
 {
@@ -29,7 +28,6 @@ namespace Chiro.Gap.Maintenance
         private static void Main(string[] args)
         {
             Factory.ContainerInit();
-            MappingHelper.MappingsDefinieren();
 
             var membershipMaintenance = Factory.Maak<MembershipMaintenance>();
             var relationshipMaintenance = Factory.Maak<RelationshipMaintenance>();

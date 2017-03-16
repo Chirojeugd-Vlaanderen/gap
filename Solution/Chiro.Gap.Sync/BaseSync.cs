@@ -17,6 +17,7 @@
  */
 
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Sync.Mappers;
 
 namespace Chiro.Gap.Sync
 {
@@ -25,8 +26,8 @@ namespace Chiro.Gap.Sync
     /// </summary>
     public class BaseSync
     {
-        private readonly ServiceHelper _serviceHelper;
-        protected ServiceHelper ServiceHelper { get { return _serviceHelper; } }
+        protected ServiceHelper ServiceHelper { get; }
+        protected static MappingHelper MappingHelper { get; }
 
         /// <summary>
         /// Constructor.
@@ -38,7 +39,11 @@ namespace Chiro.Gap.Sync
         /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
         public BaseSync(ServiceHelper serviceHelper)
         {
-            _serviceHelper = serviceHelper;
+            ServiceHelper = serviceHelper;
+        }
+        static BaseSync()
+        {
+            // TODO: kunnen we dit niet injecteren?
         }
     }
 }

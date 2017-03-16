@@ -48,7 +48,6 @@ namespace Chiro.Gap.Sync.Test
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
-            MappingHelper.MappingsDefinieren();
         }
         //
         //Use ClassCleanup to run code after all tests in a class have run

@@ -33,7 +33,6 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Services.Properties;
 using Chiro.Gap.WorkerInterfaces;
 using GebruikersRecht = Chiro.Gap.ServiceContracts.DataContracts.GebruikersRecht;
-using AutoMapper;
 #if KIPDORP
 using System.Transactions;
 #endif
@@ -363,7 +362,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            return Mapper.Map<Persoon, GebruikersDetail>(persoon);
+            return _mappingHelper.Map<Persoon, GebruikersDetail>(persoon);
         }
     }
 }
