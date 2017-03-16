@@ -44,6 +44,7 @@ namespace Chiro.Gap.Sync
         static BaseSync()
         {
             // TODO: kunnen we dit niet injecteren?
+            MappingHelper = new MappingHelper();
         }
     }
 }

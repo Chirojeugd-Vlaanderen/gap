@@ -37,7 +37,6 @@ namespace Chiro.Gap.Services
         protected void Application_Start(object sender, EventArgs e)
         {
             Factory.ContainerInit();
-            MappingHelper.MappingsDefinieren(); // mappings voor sync
 
             // De mappings voor de servicecontracts worden hier niet meer gedefinieerd,
             // maar expliciet in de constructor van de services. Op die manier konden

@@ -31,36 +31,13 @@ namespace Chiro.Gap.Sync.Mappers
     /// <summary>
     /// Klasse om mappings naar de datacontracts voor de SyncService te definieren.
     /// </summary>
-    public static class MappingHelper
+    public class MappingHelper
     {
-        private static string LandGet(this Adres adres)
-        {
-            if (adres is BelgischAdres)
-            {
-                return null;
-            }
-            Debug.Assert(adres is BuitenLandsAdres);
-            return ((BuitenLandsAdres)adres).Land.Naam;
-        }
+        private static readonly MapperConfiguration _configuration;
 
-        private static string LandCodeGet(this Adres adres)
+        static MappingHelper()
         {
-            if (adres is BelgischAdres)
-            {
-                return "BE";
-            }
-            Debug.Assert(adres is BuitenLandsAdres);
-            return ((BuitenLandsAdres)adres).Land.IsoCode;
-        }
-
-        private static string PostCodeGet(this Adres adres)
-        {
-            if (adres is BelgischAdres)
-            {
-                return null;
-            }
-            Debug.Assert(adres is BuitenLandsAdres);
-            return ((BuitenLandsAdres)adres).PostCode;
+            _configuration = new MapperConfiguration(CreateMappings);
         }
 
         /// <summary>

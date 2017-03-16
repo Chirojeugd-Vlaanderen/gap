@@ -722,13 +722,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             if (l is Kind)
             {
-                return new[] { Mapper.Map<AfdelingsJaar, AfdelingsJaarInfo>((l as Kind).AfdelingsJaar) };
+                return new[] { Map<AfdelingsJaar, AfdelingsJaarInfo>((l as Kind).AfdelingsJaar) };
             }
 
             if (l is Leiding)
             {
                 return
-                    Mapper.Map<IEnumerable<AfdelingsJaar>, IEnumerable<AfdelingsJaarInfo>>((l as Leiding).AfdelingsJaar);
+                    Map<IEnumerable<AfdelingsJaar>, IEnumerable<AfdelingsJaarInfo>>((l as Leiding).AfdelingsJaar);
             }
             // Enkel kinderen en leiding
             throw new NotSupportedException();
@@ -749,11 +749,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             if (l is Kind)
             {
-                return new[] { Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };
+                return new[] { Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };
             }
             else if (l is Leiding)
             {
-                return Mapper.Map<IEnumerable<Afdeling>, IEnumerable<AfdelingInfo>>((l as Leiding).AfdelingsJaar.Select(e => e.Afdeling));
+                return Map<IEnumerable<Afdeling>, IEnumerable<AfdelingInfo>>((l as Leiding).AfdelingsJaar.Select(e => e.Afdeling));
             }
             // Enkel kinderen en leiding
             throw new NotSupportedException();
