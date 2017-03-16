@@ -28,6 +28,7 @@ namespace Chiro.Gap.Sync
     {
         protected ServiceHelper ServiceHelper { get; }
         protected static MappingHelper MappingHelper { get; }
+        protected MappingHelper MappingHelper { get; set;  }
 
         /// <summary>
         /// Constructor.

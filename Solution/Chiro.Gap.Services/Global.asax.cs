@@ -20,7 +20,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Web;
 using Chiro.Cdf.Ioc.Factory;
-using Chiro.Gap.Sync;
 
 namespace Chiro.Gap.Services
 {
@@ -38,8 +37,11 @@ namespace Chiro.Gap.Services
         {
             Factory.ContainerInit();
 
-            // De mappings voor de servicecontracts worden hier niet meer gedefinieerd,
-            // maar expliciet in de constructor van de services. Op die manier konden
+            // Mappings voor de servicecontracts worden gedefinieerd in de constructor
+            // van BaseService. Mappings voor CiviSync worden gedefinieerd in
+            // BaseSync. In deze constructor blijven we van de mappings af.
+
+            // Op die manier kunnen
             // de mappers gebruik maken van geinjecteerde managers. (Zie #3150)
         }
 
