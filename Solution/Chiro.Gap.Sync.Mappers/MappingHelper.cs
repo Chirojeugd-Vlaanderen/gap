@@ -34,10 +34,13 @@ namespace Chiro.Gap.Sync.Mappers
     public class MappingHelper
     {
         private static readonly MapperConfiguration _configuration;
+
         static MappingHelper()
         {
             _configuration = new MapperConfiguration(CreateMappings);
+            _configuration.AssertConfigurationIsValid();
         }
+
         /// <summary>
         /// Regelt de mappings
         /// </summary>
