@@ -57,6 +57,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="TestAuthenticatieManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
