@@ -16,4 +16,4 @@ update dev:
   script:
     - cd /builds/gap/gap/Solution
     - nuget restore
-    - xbuild Solution/Cg2Solution.sln
+    - xbuild Cg2Solution.sln
