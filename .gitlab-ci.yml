@@ -8,6 +8,9 @@ stages:
 # geen idee wat dit is:
 cache:
   key: ${CI_BUILD_REF_NAME}
+  
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
 
 update dev:
   stage: build
@@ -15,7 +18,5 @@ update dev:
     - dev
   script:
     - cd /builds/gap/gap/Solution
-    - git submodule init
-    - git submodule update
     - nuget restore
     - xbuild Cg2Solution.sln
