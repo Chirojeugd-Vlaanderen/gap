@@ -38,6 +38,7 @@ namespace Chiro.Gap.Sync.Mappers
         static MappingHelper()
         {
             _configuration = new MapperConfiguration(CreateMappings);
+            _configuration.AssertConfigurationIsValid();
         }
 
         /// <summary>

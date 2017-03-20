@@ -12,6 +12,7 @@ obj
 *.rej
 .vs
 
+#Docker database
+db/
 
 packages/
-

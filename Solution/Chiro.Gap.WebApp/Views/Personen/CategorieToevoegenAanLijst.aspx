@@ -1,5 +1,7 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<CategorieModel>" %>
 
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
@@ -37,7 +39,7 @@
 	</ul>
     
 	<fieldset>
-		<legend>Aan welke categorieën wil je
+		<legend>Aan welke categorieï¿½n wil je
 			<%= Model.GelieerdePersoonIDs.Count == 1 ? "hem/haar" : "hen" %>
 			toevoegen?</legend>
 		

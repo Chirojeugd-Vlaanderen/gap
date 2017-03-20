@@ -1,0 +1,14 @@
+diff --git a/Solution/Chiro.Gap.Services/Web.config b/Solution/Chiro.Gap.Services/Web.config
+index 95f37cc..20e4171 100644
+--- a/Solution/Chiro.Gap.Services/Web.config
++++ b/Solution/Chiro.Gap.Services/Web.config
+@@ -131,7 +131,8 @@
+     </container>
+   </unity>
+   <connectionStrings>
+-    <add name="ChiroGroepEntities" connectionString="metadata=res://*/ChiroGroepModel.csdl|res://*/ChiroGroepModel.ssdl|res://*/ChiroGroepModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=gap_local;Integrated Security=SSPI;MultipleActiveResultSets=True;Application Name=gap&quot;" providerName="System.Data.EntityClient" />
++      <add name="ChiroGroepEntities" connectionString="metadata=res://*/Chiro.Gap.Poco.Context.edmxResources.ChiroGroepModel.csdl|res://*/Chiro.Gap.Poco.Context.edmxResources.ChiroGroepModel.ssdl|res://*/Chiro.Gap.Poco.Context.edmxResources.ChiroGroepModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;Data Source=127.0.0.1;Initial Catalog=gap_local;User ID=sa;Password=Db_Root_Pw;MultipleActiveResultSets=True;Application Name=gap&quot;" providerName="System.Data.EntityClient" /> -
++      <!-- <add name="ChiroGroepEntities" connectionString="metadata=res://*/ChiroGroepModel.csdl|res://*/ChiroGroepModel.ssdl|res://*/ChiroGroepModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=gap_local;Integrated Security=SSPI;MultipleActiveResultSets=True;Application Name=gap&quot;" providerName="System.Data.EntityClient" /> -->
+   </connectionStrings>
+   <!--
+     For a description of web.config changes see http://go.microsoft.com/fwlink/?LinkId=235367.

@@ -1,4 +1,6 @@
 <%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.AfdelingenBewerkenModel>" MasterPageFile="~/Views/Shared/Site.Master" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Linq" %>
 
 <asp:Content runat="server" ID="Head" ContentPlaceHolderID="head"></asp:Content>
 <asp:Content runat="server" ID="Main" ContentPlaceHolderID="MainContent">

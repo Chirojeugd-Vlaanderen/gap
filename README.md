@@ -8,6 +8,49 @@ Het GAP is het GroepsAdministratiePortaal van de Chiro.
 * 2017-02-15 [Een API In dev](doc/news/api.md)
 * 2017-02-02 [CAS-authenticatie in beta](doc/news/cas.md)
 
+## Docker
+
+Experimenteel: GAP met Docker en Linux.
+
+### Container bouwen voor SQL Server
+```
+sudo docker-compose build
+sudo docker-compose run mssql /opt/gap/mssqlsetup.sh
+sudo docker-compose up
+```
+
+### Tools voor SQL server lokaal installeren
+
+Installeer de [SQL server tools](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools).
+
+### Database inlezen:
+```
+/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-testdata.sql
+/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-procedures.sql
+```
+
+### Troubleshooting
+
+Krijg je een exception met deze boodschap:
+```
+Column 'InvariantName' is constrained to be unique.  Value 'System.Data.Odbc' is already present.
+```
+Comment dan in `/etc/mono/4.5/machine.config` deze lijnen uit:
+```
+            <add name="Odbc Data Provider"         invariant="System.Data.Odbc"
+                 description=".Net Framework Data Provider for Odbc"
+                 type="System.Data.Odbc.OdbcFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
+            <add name="OleDb Data Provider"        invariant="System.Data.OleDb"
+                 description=".Net Framework Data Provider for OleDb"
+                 type="System.Data.OleDb.OleDbFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
+```
+En deze ook:
+```
+            <add name="SqlClient Data Provider"    invariant="System.Data.SqlClient"
+                 description=".Net Framework Data Provider for SqlServer"
+                 type="System.Data.SqlClient.SqlClientFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
+```
+
 ## Documentatie
 
 De [documentatie voor ontwikkelaars](doc/README.md) was vroeger een

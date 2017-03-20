@@ -176,6 +176,14 @@ namespace Chiro.Gap.Services
 
 		#endregion
 
+	    /// <summary>
+	    /// Hello world!
+	    /// </summary>
+	    public string Hello()
+	    {
+	        return "Hello world.";
+	    }
+
 		#region ophalen
 
 		/// <summary>
@@ -395,6 +403,12 @@ namespace Chiro.Gap.Services
 		{
 			return _authenticatieMgr.GebruikersNaamGet();
 		}
+
+	    public string TestDatabase()
+	    {
+	        string naam = _groepenRepo.Select().FirstOrDefault().Naam;
+	        return naam;
+	    }
 
 		/// <summary>
 		/// Deze method geeft weer of we op een liveomgeving werken (<c>true</c>) of niet (<c>false</c>)

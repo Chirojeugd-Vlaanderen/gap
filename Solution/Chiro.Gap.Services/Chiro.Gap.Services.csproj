@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -50,32 +48,32 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <Content Include="HelloService.svc" />
     <Content Include="DbHacksService.svc" />
     <Content Include="GebruikersService.svc" />
     <Content Include="GelieerdePersonenService.svc" />
@@ -89,6 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseService.cs" />
+    <Compile Include="HelloService.svc.cs">
+      <DependentUpon>HelloService.svc</DependentUpon>
+    </Compile>
     <Compile Include="DbHacksService.svc.cs">
       <DependentUpon>DbHacksService.svc</DependentUpon>
     </Compile>
@@ -130,15 +131,15 @@
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.AdnrWcfExtension\Chiro.Cdf.AdnrWcfExtension.csproj">
-      <Project>{07954288-81a1-45b5-8d4a-349356fa8472}</Project>
+      <Project>{07954288-81A1-45B5-8D4A-349356FA8472}</Project>
       <Name>Chiro.Cdf.AdnrWcfExtension</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication.Backend\Chiro.Cdf.Authentication.Backend.csproj">
-      <Project>{33d20616-2d3b-4693-8702-f2fae1dbfbd5}</Project>
+      <Project>{33D20616-2D3B-4693-8702-F2FAE1DBFBD5}</Project>
       <Name>Chiro.Cdf.Authentication.Backend</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
-      <Project>{fb9a2752-d976-4d92-9974-0e9339d1fdd2}</Project>
+      <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
       <Name>Chiro.Cdf.Authentication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
@@ -154,7 +155,7 @@
       <Name>Chiro.Cdf.Poco</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Sso\Chiro.Cdf.Sso.csproj">
@@ -162,7 +163,7 @@
       <Name>Chiro.Cdf.Sso</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
-      <Project>{268708cb-f3e8-4afa-9e61-824cfa27be0e}</Project>
+      <Project>{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}</Project>
       <Name>Chiro.Cdf.UnityWcfExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
@@ -170,7 +171,7 @@
       <Name>Chiro.Gap.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Poco.Context\Chiro.Gap.Poco.Context.csproj">
-      <Project>{c83b2df6-4352-4fad-a09e-9c59dc335b05}</Project>
+      <Project>{C83B2DF6-4352-4FAD-A09E-9C59DC335B05}</Project>
       <Name>Chiro.Gap.Poco.Context</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
@@ -178,7 +179,7 @@
       <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
-      <Project>{4e9327ef-2d32-4e12-8d20-1ee8af68a1b0}</Project>
+      <Project>{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}</Project>
       <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
@@ -186,7 +187,7 @@
       <Name>Chiro.Gap.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Services.Dev\Chiro.Gap.Services.Dev.csproj">
-      <Project>{df253c73-7632-476e-b760-deba6d306e69}</Project>
+      <Project>{DF253C73-7632-476E-B760-DEBA6D306E69}</Project>
       <Name>Chiro.Gap.Services.Dev</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
@@ -210,7 +211,7 @@
       <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
-      <Project>{35e2aed7-7c0a-4b30-b7c8-24f9078ac32e}</Project>
+      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
       <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
   </ItemGroup>
@@ -262,5 +263,10 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="2734" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
   </ProjectExtensions>
 </Project>

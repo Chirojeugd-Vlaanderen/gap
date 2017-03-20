@@ -1,0 +1,13 @@
+version: '2'
+services:
+        mssql:
+                image: langdon/fedora-mssqlserver
+                ports:
+                        - "1433:1433"
+                volumes:
+                        - ./db/data:/var/opt/mssql/data:rw,z
+                        - ./db/log:/var/opt/mssql/log:rw,z
+                        - ./setup:/opt/gap:z
+                environment:
+                        - ACCEPT_EULA=YES
+                        - SA_PASSWORD=Db_Root_Pw

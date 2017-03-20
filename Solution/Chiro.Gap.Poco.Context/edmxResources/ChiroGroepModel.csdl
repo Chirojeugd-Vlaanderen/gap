@@ -1,0 +1,788 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ChiroGroepModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+  <EntityContainer Name="ChiroGroepEntities">
+    <EntitySet Name="Groep" EntityType="ChiroGroepModel.Groep" />
+    <EntitySet Name="Persoon" EntityType="ChiroGroepModel.Persoon" />
+    <EntitySet Name="CommunicatieVorm" EntityType="ChiroGroepModel.CommunicatieVorm" />
+    <EntitySet Name="GelieerdePersoon" EntityType="ChiroGroepModel.GelieerdePersoon" />
+    <AssociationSet Name="FK_GelieerdePersoon_Groep" Association="ChiroGroepModel.FK_GelieerdePersoon_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CommunicatieVorm_GelieerdePersoon" Association="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GelieerdePersoon_Persoon" Association="ChiroGroepModel.FK_GelieerdePersoon_Persoon">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+    </AssociationSet>
+    <EntitySet Name="Adres" EntityType="ChiroGroepModel.Adres" />
+    <EntitySet Name="PersoonsAdres" EntityType="ChiroGroepModel.PersoonsAdres" />
+    <AssociationSet Name="FK_PersoonsAdres_Adres" Association="ChiroGroepModel.FK_PersoonsAdres_Adres">
+      <End Role="Adres" EntitySet="Adres" />
+      <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PersoonsAdres_Persoon" Association="ChiroGroepModel.FK_PersoonsAdres_Persoon">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+    </AssociationSet>
+    <EntitySet Name="GroepsWerkJaar" EntityType="ChiroGroepModel.GroepsWerkJaar" />
+    <EntitySet Name="Lid" EntityType="ChiroGroepModel.Lid" />
+    <AssociationSet Name="FK_GroepsWerkjaar_Groep" Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lid_GroepsWerkjaar" Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar">
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+      <End Role="Lid" EntitySet="Lid" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lid_GelieerdePersoon" Association="ChiroGroepModel.FK_Lid_GelieerdePersoon">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="Lid" EntitySet="Lid" />
+    </AssociationSet>
+    <EntitySet Name="Afdeling" EntityType="ChiroGroepModel.Afdeling" />
+    <EntitySet Name="AfdelingsJaar" EntityType="ChiroGroepModel.AfdelingsJaar" />
+    <EntitySet Name="OfficieleAfdeling" EntityType="ChiroGroepModel.OfficieleAfdeling" />
+    <AssociationSet Name="FK_AfdelingsJaar_GroepsWerkjaar" Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar">
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AfdelingsJaar_Afdeling" Association="ChiroGroepModel.FK_AfdelingsJaar_Afdeling">
+      <End Role="Afdeling" EntitySet="Afdeling" />
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AfdelingsJaar_OfficieleAfdeling" Association="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling">
+      <End Role="OfficieleAfdeling" EntitySet="OfficieleAfdeling" />
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+    </AssociationSet>
+    <AssociationSet Name="LeidingInAfdelingsJaar" Association="ChiroGroepModel.LeidingInAfdelingsJaar">
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+      <End Role="Leiding" EntitySet="Lid" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Kind_AfdelingsJaar" Association="ChiroGroepModel.FK_Kind_AfdelingsJaar">
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+      <End Role="Kind" EntitySet="Lid" />
+    </AssociationSet>
+    <EntitySet Name="Categorie" EntityType="ChiroGroepModel.Categorie" />
+    <AssociationSet Name="FK_Categorie_Groep" Association="ChiroGroepModel.FK_Categorie_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="Categorie" EntitySet="Categorie" />
+    </AssociationSet>
+    <AssociationSet Name="PersoonsCategorie" Association="ChiroGroepModel.PersoonsCategorie">
+      <End Role="Categorie" EntitySet="Categorie" />
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+    </AssociationSet>
+    <EntitySet Name="CommunicatieType" EntityType="ChiroGroepModel.CommunicatieType" />
+    <AssociationSet Name="FK_CommunicatieVorm_CommunicatieType" Association="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType">
+      <End Role="CommunicatieType" EntitySet="CommunicatieType" />
+      <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
+    </AssociationSet>
+    <EntitySet Name="Functie" EntityType="ChiroGroepModel.Functie" />
+    <AssociationSet Name="FK_Functie_Groep" Association="ChiroGroepModel.FK_Functie_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="Functie" EntitySet="Functie" />
+    </AssociationSet>
+    <AssociationSet Name="LidFunctie" Association="ChiroGroepModel.LidFunctie">
+      <End Role="Functie" EntitySet="Functie" />
+      <End Role="Lid" EntitySet="Lid" />
+    </AssociationSet>
+    <EntitySet Name="StraatNaam" EntityType="ChiroGroepModel.StraatNaam" />
+    <EntitySet Name="WoonPlaats" EntityType="ChiroGroepModel.WoonPlaats" />
+    <AssociationSet Name="FK_GelieerdePersoon_PersoonsAdres" Association="ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres">
+      <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+    </AssociationSet>
+    <EntitySet Name="PersoonsVerzekering" EntityType="ChiroGroepModel.PersoonsVerzekering" />
+    <EntitySet Name="VerzekeringsType" EntityType="ChiroGroepModel.VerzekeringsType" />
+    <AssociationSet Name="FK_PersoonsVerzekering_Persoon" Association="ChiroGroepModel.FK_PersoonsVerzekering_Persoon">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="PersoonsVerzekering" EntitySet="PersoonsVerzekering" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PersoonsVerzekering_VerzekeringsType" Association="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType">
+      <End Role="VerzekeringsType" EntitySet="VerzekeringsType" />
+      <End Role="PersoonsVerzekering" EntitySet="PersoonsVerzekering" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ChiroGroep_KaderGroep" Association="ChiroGroepModel.FK_ChiroGroep_KaderGroep">
+      <End Role="KaderGroep" EntitySet="Groep" />
+      <End Role="ChiroGroep" EntitySet="Groep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_KaderGroep_KaderGroep" Association="ChiroGroepModel.FK_KaderGroep_KaderGroep">
+      <End Role="KaderGroep" EntitySet="Groep" />
+      <End Role="KaderGroep1" EntitySet="Groep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Afdeling_ChiroGroep" Association="ChiroGroepModel.FK_Afdeling_ChiroGroep">
+      <End Role="ChiroGroep" EntitySet="Groep" />
+      <End Role="Afdeling" EntitySet="Afdeling" />
+    </AssociationSet>
+    <EntitySet Name="Land" EntityType="ChiroGroepModel.Land" />
+    <AssociationSet Name="FK_BelgischAdres_StraatNaam" Association="ChiroGroepModel.FK_BelgischAdres_StraatNaam">
+      <End Role="StraatNaam" EntitySet="StraatNaam" />
+      <End Role="BelgischAdres" EntitySet="Adres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BelgischAdres_WoonPlaats" Association="ChiroGroepModel.FK_BelgischAdres_WoonPlaats">
+      <End Role="WoonPlaats" EntitySet="WoonPlaats" />
+      <End Role="BelgischAdres" EntitySet="Adres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BuitenlandsAdres_Land" Association="ChiroGroepModel.FK_BuitenlandsAdres_Land">
+      <End Role="Land" EntitySet="Land" />
+      <End Role="BuitenLandsAdres" EntitySet="Adres" />
+    </AssociationSet>
+    <EntitySet Name="Plaats" EntityType="ChiroGroepModel.Plaats" />
+    <EntitySet Name="Uitstap" EntityType="ChiroGroepModel.Uitstap" />
+    <AssociationSet Name="FK_Plaats_Adres" Association="ChiroGroepModel.FK_Plaats_Adres">
+      <End Role="Adres" EntitySet="Adres" />
+      <End Role="Plaats" EntitySet="Plaats" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Plaats_GelieerdePersoon_Contact" Association="ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="Plaats" EntitySet="Plaats" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Uitstap_Plaats" Association="ChiroGroepModel.FK_Uitstap_Plaats">
+      <End Role="Plaats" EntitySet="Plaats" />
+      <End Role="Uitstap" EntitySet="Uitstap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Uitstap_GroepsWerkJaar" Association="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar">
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+      <End Role="Uitstap" EntitySet="Uitstap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Plaats_Groep" Association="ChiroGroepModel.FK_Plaats_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="Plaats" EntitySet="Plaats" />
+    </AssociationSet>
+    <EntitySet Name="Deelnemer" EntityType="ChiroGroepModel.Deelnemer" />
+    <AssociationSet Name="FK_Deelnemer_GelieerdePersoon" Association="ChiroGroepModel.FK_Deelnemer_GelieerdePersoon">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="Deelnemer" EntitySet="Deelnemer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Deelnemer_Uitstap" Association="ChiroGroepModel.FK_Deelnemer_Uitstap">
+      <End Role="Uitstap" EntitySet="Uitstap" />
+      <End Role="Deelnemer" EntitySet="Deelnemer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Uitstap_Deelnemer_Contact" Association="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact">
+      <End Role="Deelnemer" EntitySet="Deelnemer" />
+      <End Role="Uitstap" EntitySet="Uitstap" />
+    </AssociationSet>
+    <EntitySet Name="Abonnement" EntityType="ChiroGroepModel.Abonnement" />
+    <EntitySet Name="Publicatie" EntityType="ChiroGroepModel.Publicatie" />
+    <AssociationSet Name="FK_Abonnement_GelieerdePersoon" Association="ChiroGroepModel.FK_Abonnement_GelieerdePersoon">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="Abonnement" EntitySet="Abonnement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Abonnement_GroepsWerkJaar" Association="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar">
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+      <End Role="Abonnement" EntitySet="Abonnement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Abonnement_Publicatie" Association="ChiroGroepModel.FK_Abonnement_Publicatie">
+      <End Role="Publicatie" EntitySet="Publicatie" />
+      <End Role="Abonnement" EntitySet="Abonnement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Groep_Adres" Association="ChiroGroepModel.FK_Groep_Adres">
+      <End Role="Adres" EntitySet="Adres" />
+      <End Role="Groep" EntitySet="Groep" />
+    </AssociationSet>
+    <EntitySet Name="GebruikersRechtv2" EntityType="ChiroGroepModel.GebruikersRechtV2" />
+    <AssociationSet Name="FK_GebruikersRechtV2_Groep" Association="ChiroGroepModel.FK_GebruikersRechtV2_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="GebruikersRechtv2" EntitySet="GebruikersRechtv2" />
+    </AssociationSet>
+    <EntitySet Name="Bericht" EntityType="ChiroGroepModel.Bericht" />
+    <AssociationSet Name="FK_Bericht_Gebruiker" Association="ChiroGroepModel.FK_Bericht_Gebruiker">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="Bericht" EntitySet="Bericht" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GebruikersRechtV2_Persoon" Association="ChiroGroepModel.FK_GebruikersRechtV2_Persoon">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="GebruikersRechtv2" EntitySet="GebruikersRechtv2" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bericht_Persoon_Id" Association="ChiroGroepModel.FK_Bericht_Persoon_Id">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="Bericht" EntitySet="Bericht" />
+    </AssociationSet>
+    <EntitySet Name="vActiefLid" EntityType="ChiroGroepModel.ActiefLid" />
+    <EntitySet Name="vActiefAbonnement" EntityType="ChiroGroepModel.ActiefAbonnement" />
+  </EntityContainer>
+  <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
+    <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" Unicode="false" />
+    <NavigationProperty Name="KaderGroep" Relationship="ChiroGroepModel.FK_ChiroGroep_KaderGroep" FromRole="ChiroGroep" ToRole="KaderGroep" />
+    <NavigationProperty Name="Afdeling" Relationship="ChiroGroepModel.FK_Afdeling_ChiroGroep" FromRole="ChiroGroep" ToRole="Afdeling" />
+  </EntityType>
+  <EntityType Name="Groep" Abstract="true">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Naam" Type="String" Nullable="false" MaxLength="160" Unicode="false" FixedLength="false" />
+    <Property Name="Code" Type="String" MaxLength="10" Unicode="false" FixedLength="true" />
+    <Property Name="OprichtingsJaar" Type="Int32" />
+    <Property Name="WebSite" Type="String" MaxLength="160" Unicode="false" FixedLength="false" />
+    <Property Name="Logo" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Groep" FromRole="Groep" ToRole="GelieerdePersoon" />
+    <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_GroepsWerkjaar_Groep" FromRole="Groep" ToRole="GroepsWerkJaar" />
+    <NavigationProperty Name="Categorie" Relationship="ChiroGroepModel.FK_Categorie_Groep" FromRole="Groep" ToRole="Categorie" />
+    <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.FK_Functie_Groep" FromRole="Groep" ToRole="Functie" />
+    <NavigationProperty Name="BivakPlaats" Relationship="ChiroGroepModel.FK_Plaats_Groep" FromRole="Groep" ToRole="Plaats" />
+    <Property Type="DateTime" Name="StopDatum" Precision="3" />
+    <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Groep_Adres" FromRole="Groep" ToRole="Adres" />
+    <NavigationProperty Name="GebruikersRechtV2" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Groep" FromRole="Groep" ToRole="GebruikersRechtv2" />
+  </EntityType>
+  <EntityType Name="Persoon">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="AdNummer" Type="Int32" ConcurrencyMode="Fixed" />
+    <Property Name="Naam" Type="String" Nullable="false" MaxLength="160" Unicode="false" FixedLength="false" />
+    <Property Name="VoorNaam" Type="String" MaxLength="60" Unicode="false" FixedLength="false" Nullable="false" />
+    <Property Name="GeboorteDatum" Type="DateTime" Precision="3" Nullable="true" />
+    <Property Name="GeslachtsInt" Type="Int32" Nullable="false" a:GetterAccess="Internal" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Name="SterfDatum" Type="DateTime" Precision="0" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" Nullable="true" />
+    <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Persoon" FromRole="Persoon" ToRole="GelieerdePersoon" />
+    <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="Persoon" ToRole="PersoonsAdres" />
+    <NavigationProperty Name="PersoonsVerzekering" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_Persoon" FromRole="Persoon" ToRole="PersoonsVerzekering" />
+    <Property Name="InSync" Type="Boolean" Nullable="false" />
+    <Property Type="String" Name="SeNaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Type="String" Name="SeVoornaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <NavigationProperty Name="GebruikersRechtV2" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" FromRole="Persoon" ToRole="GebruikersRechtv2" />
+    <NavigationProperty Name="BerichtGebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Persoon" ToRole="Bericht" />
+    <NavigationProperty Name="BerichtPersoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Persoon" ToRole="Bericht" />
+    <Property Name="NieuwsBrief" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CommunicatieVorm">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Nota" Type="String" Nullable="true" MaxLength="320" Unicode="false" FixedLength="false" />
+    <Property Name="Nummer" Type="String" Nullable="false" MaxLength="160" Unicode="false" FixedLength="false" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="IsGezinsgebonden" Type="Boolean" Nullable="false" />
+    <Property Name="Voorkeur" Type="Boolean" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="CommunicatieVorm" ToRole="GelieerdePersoon" />
+    <NavigationProperty Name="CommunicatieType" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieVorm" ToRole="CommunicatieType" />
+  </EntityType>
+  <EntityType Name="GelieerdePersoon">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="ChiroLeefTijd" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Groep" FromRole="GelieerdePersoon" ToRole="Groep" />
+    <NavigationProperty Name="Communicatie" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="CommunicatieVorm" />
+    <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Persoon" FromRole="GelieerdePersoon" ToRole="Persoon" />
+    <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.FK_Lid_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="Lid" />
+    <NavigationProperty Name="Categorie" Relationship="ChiroGroepModel.PersoonsCategorie" FromRole="GelieerdePersoon" ToRole="Categorie" />
+    <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres" FromRole="GelieerdePersoon" ToRole="PersoonsAdres" />
+    <NavigationProperty Name="Plaats" Relationship="ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact" FromRole="GelieerdePersoon" ToRole="Plaats" />
+    <NavigationProperty Name="Deelnemer" Relationship="ChiroGroepModel.FK_Deelnemer_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="Deelnemer" />
+    <NavigationProperty Name="Abonnement" Relationship="ChiroGroepModel.FK_Abonnement_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="Abonnement" />
+  </EntityType>
+  <Association Name="FK_GelieerdePersoon_Groep">
+    <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
+    <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_CommunicatieVorm_GelieerdePersoon">
+    <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.CommunicatieVorm" Role="CommunicatieVorm" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_GelieerdePersoon_Persoon">
+    <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="1" />
+    <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Adres" Abstract="true">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Bus" Type="String" Nullable="true" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="HuisNr" Type="Int32" Nullable="true" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="Adres" ToRole="PersoonsAdres" />
+    <NavigationProperty Name="BivakPlaats" Relationship="ChiroGroepModel.FK_Plaats_Adres" FromRole="Adres" ToRole="Plaats" />
+    <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Groep_Adres" FromRole="Adres" ToRole="Groep" />
+  </EntityType>
+  <EntityType Name="PersoonsAdres">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Opmerking" Type="String" Nullable="true" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <Property Name="AdresTypeInt" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="PersoonsAdres" ToRole="Adres" />
+    <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="PersoonsAdres" ToRole="Persoon" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres" FromRole="PersoonsAdres" ToRole="GelieerdePersoon" />
+  </EntityType>
+  <Association Name="FK_PersoonsAdres_Adres">
+    <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="1" />
+    <End Type="ChiroGroepModel.PersoonsAdres" Role="PersoonsAdres" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_PersoonsAdres_Persoon">
+    <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="1" />
+    <End Type="ChiroGroepModel.PersoonsAdres" Role="PersoonsAdres" Multiplicity="*" />
+  </Association>
+  <EntityType Name="GroepsWerkJaar">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="WerkJaar" Type="Int32" Nullable="false" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GroepsWerkjaar_Groep" FromRole="GroepsWerkJaar" ToRole="Groep" />
+    <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="Lid" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="AfdelingsJaar" />
+    <NavigationProperty Name="Uitstap" Relationship="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar" FromRole="GroepsWerkJaar" ToRole="Uitstap" />
+    <NavigationProperty Name="Abonnement" Relationship="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" FromRole="GroepsWerkJaar" ToRole="Abonnement" />
+    <Property Name="Datum" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Lid">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="LidgeldBetaald" Type="Boolean" Nullable="true" />
+    <Property Name="NonActief" Type="Boolean" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Name="Verwijderd" Type="Boolean" />
+    <Property Name="VolgendWerkjaarInt" Type="Int16" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="Lid" ToRole="GroepsWerkJaar" />
+    <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Lid_GelieerdePersoon" FromRole="Lid" ToRole="GelieerdePersoon" />
+    <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.LidFunctie" FromRole="Lid" ToRole="Functie" />
+    <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" Precision="0" />
+    <Property Type="DateTime" Name="UitschrijfDatum" Precision="3" />
+    <Property Name="IsAangesloten" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_GroepsWerkjaar_Groep">
+    <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
+    <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Lid_GroepsWerkjaar">
+    <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Lid" Role="Lid" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Lid_GelieerdePersoon">
+    <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Lid" Role="Lid" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Afdeling">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Naam" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Afkorting" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_Afdeling" FromRole="Afdeling" ToRole="AfdelingsJaar" />
+    <NavigationProperty Name="ChiroGroep" Relationship="ChiroGroepModel.FK_Afdeling_ChiroGroep" FromRole="Afdeling" ToRole="ChiroGroep" />
+  </EntityType>
+  <EntityType Name="AfdelingsJaar">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="GeboorteJaarTot" Type="Int32" Nullable="false" />
+    <Property Name="GeboorteJaarVan" Type="Int32" Nullable="false" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" FromRole="AfdelingsJaar" ToRole="GroepsWerkJaar" />
+    <NavigationProperty Name="Afdeling" Relationship="ChiroGroepModel.FK_AfdelingsJaar_Afdeling" FromRole="AfdelingsJaar" ToRole="Afdeling" />
+    <NavigationProperty Name="OfficieleAfdeling" Relationship="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" FromRole="AfdelingsJaar" ToRole="OfficieleAfdeling" />
+    <NavigationProperty Name="Leiding" Relationship="ChiroGroepModel.LeidingInAfdelingsJaar" FromRole="AfdelingsJaar" ToRole="Leiding" />
+    <NavigationProperty Name="Kind" Relationship="ChiroGroepModel.FK_Kind_AfdelingsJaar" FromRole="AfdelingsJaar" ToRole="Kind" />
+    <Property Name="GeslachtsInt" Type="Int32" Nullable="false" a:GetterAccess="Private" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+  </EntityType>
+  <EntityType Name="OfficieleAfdeling">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Naam" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" FromRole="OfficieleAfdeling" ToRole="AfdelingsJaar" />
+    <Property Name="LeefTijdVan" Type="Int32" Nullable="false" />
+    <Property Name="LeefTijdTot" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_AfdelingsJaar_GroepsWerkjaar">
+    <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="1" />
+    <End Type="ChiroGroepModel.AfdelingsJaar" Role="AfdelingsJaar" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_AfdelingsJaar_Afdeling">
+    <End Type="ChiroGroepModel.Afdeling" Role="Afdeling" Multiplicity="1" />
+    <End Type="ChiroGroepModel.AfdelingsJaar" Role="AfdelingsJaar" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_AfdelingsJaar_OfficieleAfdeling">
+    <End Type="ChiroGroepModel.OfficieleAfdeling" Role="OfficieleAfdeling" Multiplicity="1" />
+    <End Type="ChiroGroepModel.AfdelingsJaar" Role="AfdelingsJaar" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Leiding" BaseType="ChiroGroepModel.Lid">
+    <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.LeidingInAfdelingsJaar" FromRole="Leiding" ToRole="AfdelingsJaar" />
+  </EntityType>
+  <Association Name="LeidingInAfdelingsJaar">
+    <End Role="AfdelingsJaar" Type="ChiroGroepModel.AfdelingsJaar" Multiplicity="*" />
+    <End Role="Leiding" Type="ChiroGroepModel.Leiding" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Kind" BaseType="ChiroGroepModel.Lid">
+    <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_Kind_AfdelingsJaar" FromRole="Kind" ToRole="AfdelingsJaar" />
+  </EntityType>
+  <Association Name="FK_Kind_AfdelingsJaar">
+    <End Type="ChiroGroepModel.AfdelingsJaar" Role="AfdelingsJaar" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Kind" Role="Kind" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Categorie">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Naam" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Categorie_Groep" FromRole="Categorie" ToRole="Groep" />
+    <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.PersoonsCategorie" FromRole="Categorie" ToRole="GelieerdePersoon" />
+  </EntityType>
+  <Association Name="FK_Categorie_Groep">
+    <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="ChiroGroepModel.Categorie" Role="Categorie" Multiplicity="*" />
+  </Association>
+  <Association Name="PersoonsCategorie">
+    <End Type="ChiroGroepModel.Categorie" Role="Categorie" Multiplicity="*" />
+    <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" />
+  </Association>
+  <EntityType Name="CommunicatieType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Omschrijving" Type="String" Nullable="true" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="Validatie" Type="String" Nullable="true" MaxLength="160" Unicode="false" FixedLength="false" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="CommunicatieVorm" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieType" ToRole="CommunicatieVorm" />
+    <Property Name="Voorbeeld" Type="String" Nullable="true" MaxLength="160" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_CommunicatieVorm_CommunicatieType">
+    <End Type="ChiroGroepModel.CommunicatieType" Role="CommunicatieType" Multiplicity="1" />
+    <End Type="ChiroGroepModel.CommunicatieVorm" Role="CommunicatieVorm" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Functie">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Naam" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <Property Name="MaxAantal" Type="Int32" Nullable="true" />
+    <Property Name="MinAantal" Type="Int32" Nullable="false" />
+    <Property Name="WerkJaarVan" Type="Int32" Nullable="true" />
+    <Property Name="WerkJaarTot" Type="Int32" Nullable="true">
+      <Documentation>
+        <Summary>Laatste werkJaar waarin deze functie geldig was</Summary>
+        <LongDescription>'Werkjaar tot en met' zou een betere naam zijn</LongDescription>
+      </Documentation>
+    </Property>
+    <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Functie_Groep" FromRole="Functie" ToRole="Groep" />
+    <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.LidFunctie" FromRole="Functie" ToRole="Lid" />
+    <Property Name="IsNationaal" Type="Boolean" />
+    <Property Name="LidTypeInt" Type="Int32" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Name="NiveauInt" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Functie_Groep">
+    <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.Functie" Role="Functie" Multiplicity="*" />
+  </Association>
+  <Association Name="LidFunctie">
+    <End Type="ChiroGroepModel.Functie" Role="Functie" Multiplicity="*" />
+    <End Type="ChiroGroepModel.Lid" Role="Lid" Multiplicity="*" />
+  </Association>
+  <EntityType Name="StraatNaam">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="PostNummer" Type="Int32" Nullable="false" />
+    <Property Name="Naam" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="TaalID" Type="Int32" Nullable="false" />
+    <Property Name="CrabSubstraatID" Type="Int32" Nullable="true" />
+    <Property Name="Versie" Type="Binary" Nullable="false" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="BelgischAdres" Relationship="ChiroGroepModel.FK_BelgischAdres_StraatNaam" FromRole="StraatNaam" ToRole="BelgischAdres" />
+  </EntityType>
+  <EntityType Name="WoonPlaats">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="PostNummer" Type="Int32" Nullable="false" />
+    <Property Name="Naam" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="TaalID" Type="Int32" Nullable="false" />
+    <Property Name="CrabPostKantonID" Type="Int32" Nullable="true" />
+    <Property Name="Versie" Type="Binary" Nullable="false" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
+    <NavigationProperty Name="BelgischAdres" Relationship="ChiroGroepModel.FK_BelgischAdres_WoonPlaats" FromRole="WoonPlaats" ToRole="BelgischAdres" />
+  </EntityType>
+  <Association Name="FK_GelieerdePersoon_PersoonsAdres">
+    <End Type="ChiroGroepModel.PersoonsAdres" Role="PersoonsAdres" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" />
+  </Association>
+  <EntityType Name="PersoonsVerzekering">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Van" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Tot" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_Persoon" FromRole="PersoonsVerzekering" ToRole="Persoon" />
+    <NavigationProperty Name="VerzekeringsType" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" FromRole="PersoonsVerzekering" ToRole="VerzekeringsType" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="None" MaxLength="8" FixedLength="true" />
+  </EntityType>
+  <EntityType Name="VerzekeringsType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="Naam" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
+    <Property Name="Omschrijving" Type="String" Nullable="true" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="PersoonsVerzekering" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" FromRole="VerzekeringsType" ToRole="PersoonsVerzekering" />
+    <Property Name="EnkelLeden" Type="Boolean" Nullable="false" />
+    <Property Name="TotEindeWerkJaar" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_PersoonsVerzekering_Persoon">
+    <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="1" />
+    <End Type="ChiroGroepModel.PersoonsVerzekering" Role="PersoonsVerzekering" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_PersoonsVerzekering_VerzekeringsType">
+    <End Type="ChiroGroepModel.VerzekeringsType" Role="VerzekeringsType" Multiplicity="1" />
+    <End Type="ChiroGroepModel.PersoonsVerzekering" Role="PersoonsVerzekering" Multiplicity="*" />
+  </Association>
+  <EntityType Name="KaderGroep" BaseType="ChiroGroepModel.Groep">
+    <Property Name="NiveauInt" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ChiroGroep" Relationship="ChiroGroepModel.FK_ChiroGroep_KaderGroep" FromRole="KaderGroep" ToRole="ChiroGroep" />
+    <NavigationProperty Name="Children" Relationship="ChiroGroepModel.FK_KaderGroep_KaderGroep" FromRole="KaderGroep" ToRole="KaderGroep1" />
+    <NavigationProperty Name="Parent" Relationship="ChiroGroepModel.FK_KaderGroep_KaderGroep" FromRole="KaderGroep1" ToRole="KaderGroep" />
+  </EntityType>
+  <Association Name="FK_ChiroGroep_KaderGroep">
+    <End Type="ChiroGroepModel.KaderGroep" Role="KaderGroep" Multiplicity="1" />
+    <End Type="ChiroGroepModel.ChiroGroep" Role="ChiroGroep" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_KaderGroep_KaderGroep">
+    <End Type="ChiroGroepModel.KaderGroep" Role="KaderGroep" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.KaderGroep" Role="KaderGroep1" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Afdeling_ChiroGroep">
+    <End Type="ChiroGroepModel.ChiroGroep" Role="ChiroGroep" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Afdeling" Role="Afdeling" Multiplicity="*" />
+  </Association>
+  <EntityType Name="BelgischAdres" BaseType="ChiroGroepModel.Adres">
+    <NavigationProperty Name="StraatNaam" Relationship="ChiroGroepModel.FK_BelgischAdres_StraatNaam" FromRole="BelgischAdres" ToRole="StraatNaam" />
+    <NavigationProperty Name="WoonPlaats" Relationship="ChiroGroepModel.FK_BelgischAdres_WoonPlaats" FromRole="BelgischAdres" ToRole="WoonPlaats" />
+  </EntityType>
+  <EntityType Name="BuitenLandsAdres" BaseType="ChiroGroepModel.Adres">
+    <Property Type="String" Name="PostCode" MaxLength="16" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Straat" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="WoonPlaats" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Land" Relationship="ChiroGroepModel.FK_BuitenlandsAdres_Land" FromRole="BuitenLandsAdres" ToRole="Land" />
+  </EntityType>
+  <EntityType Name="Land">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Type="String" Name="Naam" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="IsoCode" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="BuitenLandsAdres" Relationship="ChiroGroepModel.FK_BuitenlandsAdres_Land" FromRole="Land" ToRole="BuitenLandsAdres" />
+  </EntityType>
+  <Association Name="FK_BelgischAdres_StraatNaam">
+    <End Type="ChiroGroepModel.StraatNaam" Role="StraatNaam" Multiplicity="1" />
+    <End Type="ChiroGroepModel.BelgischAdres" Role="BelgischAdres" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_BelgischAdres_WoonPlaats">
+    <End Type="ChiroGroepModel.WoonPlaats" Role="WoonPlaats" Multiplicity="1" />
+    <End Type="ChiroGroepModel.BelgischAdres" Role="BelgischAdres" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_BuitenlandsAdres_Land">
+    <End Type="ChiroGroepModel.Land" Role="Land" Multiplicity="1" />
+    <End Type="ChiroGroepModel.BuitenLandsAdres" Role="BuitenLandsAdres" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Plaats">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Type="String" Name="Naam" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Plaats_Adres" FromRole="Plaats" ToRole="Adres" />
+    <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact" FromRole="Plaats" ToRole="GelieerdePersoon" />
+    <NavigationProperty Name="Uitstap" Relationship="ChiroGroepModel.FK_Uitstap_Plaats" FromRole="Plaats" ToRole="Uitstap" />
+    <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Plaats_Groep" FromRole="Plaats" ToRole="Groep" />
+  </EntityType>
+  <EntityType Name="Uitstap">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Type="String" Name="Naam" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
+    <Property Type="Boolean" Name="IsBivak" Nullable="false" />
+    <Property Type="DateTime" Name="DatumVan" Nullable="false" Precision="3" />
+    <Property Type="DateTime" Name="DatumTot" Nullable="false" Precision="3" />
+    <Property Type="String" Name="Opmerkingen" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <NavigationProperty Name="Plaats" Relationship="ChiroGroepModel.FK_Uitstap_Plaats" FromRole="Uitstap" ToRole="Plaats" />
+    <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar" FromRole="Uitstap" ToRole="GroepsWerkJaar" />
+    <NavigationProperty Name="Deelnemer" Relationship="ChiroGroepModel.FK_Deelnemer_Uitstap" FromRole="Uitstap" ToRole="Deelnemer" />
+    <NavigationProperty Name="ContactDeelnemer" Relationship="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact" FromRole="Uitstap" ToRole="Deelnemer" />
+  </EntityType>
+  <Association Name="FK_Plaats_Adres">
+    <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Plaats" Role="Plaats" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Plaats_GelieerdePersoon_Contact">
+    <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.Plaats" Role="Plaats" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Uitstap_Plaats">
+    <End Type="ChiroGroepModel.Plaats" Role="Plaats" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.Uitstap" Role="Uitstap" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Uitstap_GroepsWerkJaar">
+    <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.Uitstap" Role="Uitstap" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Plaats_Groep">
+    <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Plaats" Role="Plaats" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Deelnemer">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Type="Boolean" Name="IsLogistieker" Nullable="false" />
+    <Property Type="Boolean" Name="HeeftBetaald" Nullable="false" />
+    <Property Type="Boolean" Name="MedischeFicheOk" Nullable="false" />
+    <Property Type="String" Name="Opmerkingen" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Deelnemer_GelieerdePersoon" FromRole="Deelnemer" ToRole="GelieerdePersoon" />
+    <NavigationProperty Name="Uitstap" Relationship="ChiroGroepModel.FK_Deelnemer_Uitstap" FromRole="Deelnemer" ToRole="Uitstap" />
+    <NavigationProperty Name="UitstapWaarvoorVerantwoordelijk" Relationship="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact" FromRole="Deelnemer" ToRole="Uitstap" a:GetterAccess="Public" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+  </EntityType>
+  <Association Name="FK_Deelnemer_GelieerdePersoon">
+    <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Deelnemer" Role="Deelnemer" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Deelnemer_Uitstap">
+    <End Type="ChiroGroepModel.Uitstap" Role="Uitstap" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Deelnemer" Role="Deelnemer" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Uitstap_Deelnemer_Contact">
+    <End Type="ChiroGroepModel.Deelnemer" Role="Deelnemer" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.Uitstap" Role="Uitstap" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Abonnement">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Type="DateTime" Name="AanvraagDatum" Nullable="false" Precision="3" />
+    <Property Type="Binary" Name="Versie" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Abonnement_GelieerdePersoon" FromRole="Abonnement" ToRole="GelieerdePersoon" />
+    <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" FromRole="Abonnement" ToRole="GroepsWerkJaar" />
+    <NavigationProperty Name="Publicatie" Relationship="ChiroGroepModel.FK_Abonnement_Publicatie" FromRole="Abonnement" ToRole="Publicatie" />
+    <Property Name="TypeInt" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Publicatie">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Type="String" Name="Naam" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Type="Binary" Name="Versie" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Type="Boolean" Name="Actief" Nullable="false" />
+    <NavigationProperty Name="Abonnement" Relationship="ChiroGroepModel.FK_Abonnement_Publicatie" FromRole="Publicatie" ToRole="Abonnement" />
+  </EntityType>
+  <Association Name="FK_Abonnement_GelieerdePersoon">
+    <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Abonnement" Role="Abonnement" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Abonnement_GroepsWerkJaar">
+    <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Abonnement" Role="Abonnement" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Abonnement_Publicatie">
+    <End Type="ChiroGroepModel.Publicatie" Role="Publicatie" Multiplicity="1" />
+    <End Type="ChiroGroepModel.Abonnement" Role="Abonnement" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Groep_Adres">
+    <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="*" />
+  </Association>
+  <EntityType Name="GebruikersRechtV2">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+    <Property Name="VervalDatum" Type="DateTime" Precision="3" />
+    <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Groep" FromRole="GebruikersRechtv2" ToRole="Groep" />
+    <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" FromRole="GebruikersRechtv2" ToRole="Persoon" />
+    <Property Name="PersoonsPermissiesInt" Type="Int32" Nullable="false" />
+    <Property Name="GroepsPermissiesInt" Type="Int32" Nullable="false" />
+    <Property Name="AfdelingsPermissiesInt" Type="Int32" Nullable="false" />
+    <Property Name="IedereenPermissiesInt" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_GebruikersRechtV2_Groep">
+    <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
+    <End Type="ChiroGroepModel.GebruikersRechtV2" Role="GebruikersRechtv2" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_GebruikersRechtV2_Persoon">
+    <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="1" />
+    <End Type="ChiroGroepModel.GebruikersRechtV2" Role="GebruikersRechtv2" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Bericht">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Tijd" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Niveau" Type="Int32" Nullable="false" />
+    <Property Name="Boodschap" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="StamNummer" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="AdNummer" Type="Int32" />
+    <NavigationProperty Name="Gebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Bericht" ToRole="Persoon" />
+    <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Bericht" ToRole="Persoon" />
+  </EntityType>
+  <Association Name="FK_Bericht_Gebruiker">
+    <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.Bericht" Role="Bericht" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_Bericht_Persoon_Id">
+    <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+    <End Type="ChiroGroepModel.Bericht" Role="Bericht" Multiplicity="*" />
+  </Association>
+  <EntityType Name="ActiefLid">
+    <Key>
+      <PropertyRef Name="LidID" />
+      <PropertyRef Name="PersoonID" />
+      <PropertyRef Name="GroepID" />
+    </Key>
+    <Property Name="LidID" Type="Int32" Nullable="false" />
+    <Property Name="PersoonID" Type="Int32" Nullable="false" />
+    <Property Name="GroepID" Type="Int32" Nullable="false" />
+    <Property Name="AdNummer" Type="Int32" />
+    <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="WerkJaar" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ActiefAbonnement">
+    <Key>
+      <PropertyRef Name="PersoonID" />
+      <PropertyRef Name="Type" />
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="PersoonID" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="Int32" Nullable="false" />
+    <Property Name="AdNummer" Type="Int32" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="WerkJaar" Type="Int32" />
+  </EntityType>
+</Schema>
