@@ -1,0 +1,18 @@
+image: mono:4.4.2
+
+stages:
+  - build
+  - test
+  - deploy
+
+# geen idee wat dit is:
+cache:
+  key: ${CI_BUILD_REF_NAME}
+
+update dev:
+  stage: build
+  only:
+    - dev
+  script:
+    - nuget restore
+    - xbuild Solution/Cg2Solution.sln
