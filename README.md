@@ -29,6 +29,13 @@ Installeer de [SQL server tools](https://docs.microsoft.com/en-us/sql/linux/sql-
 /opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-procedures.sql
 ```
 
+### Connection string
+
+Voor Mono is de connection string van de backend (met die entity-framework-hocus-pocus)
+anders. Pas setup/connectionstring-docker.patch toe.
+
+    patch -p 1 < setup/connectionstring-docker.patch
+
 ### Troubleshooting
 
 Krijg je een exception met deze boodschap:
