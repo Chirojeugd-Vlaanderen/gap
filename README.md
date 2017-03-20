@@ -25,10 +25,8 @@ Installeer de [SQL server tools](https://docs.microsoft.com/en-us/sql/linux/sql-
 
 ### Database inlezen:
 ```
-/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-tabellen.sql
 /opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-testdata.sql
-/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-straten.sql
-/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-keys-indexes.sql
+/opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-procedures.sql
 ```
 
 ### Troubleshooting
