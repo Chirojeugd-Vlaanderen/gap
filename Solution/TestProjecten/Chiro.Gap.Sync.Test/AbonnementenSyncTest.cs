@@ -29,12 +29,6 @@ namespace Chiro.Gap.Sync.Test
     [TestClass]
     public class AbonnementenSyncTest
     {
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            MappingHelper.MappingsDefinieren();
-        }
-
         [TestInitialize()]
         public void MyTestInitialize()
         {

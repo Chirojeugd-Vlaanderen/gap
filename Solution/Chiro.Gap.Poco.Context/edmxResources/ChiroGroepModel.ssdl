@@ -1,0 +1,1307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ChiroGroepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Abonnement">
+    <Key>
+      <PropertyRef Name="AbonnementID" />
+    </Key>
+    <Property Name="AbonnementID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
+    <Property Name="PublicatieID" Type="int" Nullable="false" />
+    <Property Name="GroepsWerkJaarID" Type="int" Nullable="false" />
+    <Property Name="AanvraagDatum" Type="datetime" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="Type" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Publicatie">
+    <Key>
+      <PropertyRef Name="PublicatieID" />
+    </Key>
+    <Property Name="PublicatieID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Naam" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="Actief" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Adres">
+    <Key>
+      <PropertyRef Name="AdresID" />
+    </Key>
+    <Property Name="Bus" Type="varchar" MaxLength="10" />
+    <Property Name="HuisNr" Type="int" />
+    <Property Name="PostCode" Type="varchar" MaxLength="10" />
+    <Property Name="AdresID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="BelgischAdres">
+    <Key>
+      <PropertyRef Name="BelgischAdresID" />
+    </Key>
+    <Property Name="BelgischAdresID" Type="int" Nullable="false" />
+    <Property Name="StraatNaamID" Type="int" Nullable="false" />
+    <Property Name="WoonPlaatsID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BuitenLandsAdres">
+    <Key>
+      <PropertyRef Name="BuitenlandsAdresID" />
+    </Key>
+    <Property Name="BuitenlandsAdresID" Type="int" Nullable="false" />
+    <Property Name="PostCode" Type="varchar" MaxLength="16" />
+    <Property Name="Straat" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="WoonPlaats" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="LandID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Land">
+    <Key>
+      <PropertyRef Name="LandID" />
+    </Key>
+    <Property Name="LandID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Naam" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="IsoCode" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StraatNaam">
+    <Key>
+      <PropertyRef Name="StraatNaamID" />
+    </Key>
+    <Property Name="StraatNaamID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PostNummer" Type="int" Nullable="false" />
+    <Property Name="Naam" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="TaalID" Type="int" Nullable="false" />
+    <Property Name="CrabSubstraatID" Type="int" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+  </EntityType>
+  <EntityType Name="WoonPlaats">
+    <Key>
+      <PropertyRef Name="WoonPlaatsID" />
+    </Key>
+    <Property Name="WoonPlaatsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PostNummer" Type="int" Nullable="false" />
+    <Property Name="Naam" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="TaalID" Type="int" Nullable="false" />
+    <Property Name="CrabPostKantonID" Type="int" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GebruikersRechtv2">
+    <Key>
+      <PropertyRef Name="GebruikersRechtV2ID" />
+    </Key>
+    <Property Name="GebruikersRechtV2ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PersoonID" Type="int" Nullable="false" />
+    <Property Name="GroepID" Type="int" Nullable="false" />
+    <Property Name="VervalDatum" Type="datetime" />
+    <Property Name="PersoonsPermissies" Type="int" Nullable="false" />
+    <Property Name="GroepsPermissies" Type="int" Nullable="false" />
+    <Property Name="AfdelingsPermissies" Type="int" Nullable="false" />
+    <Property Name="IedereenPermissies" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Deelnemer">
+    <Key>
+      <PropertyRef Name="DeelnemerID" />
+    </Key>
+    <Property Name="DeelnemerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UitstapID" Type="int" Nullable="false" />
+    <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
+    <Property Name="IsLogistieker" Type="bit" Nullable="false" />
+    <Property Name="HeeftBetaald" Type="bit" Nullable="false" />
+    <Property Name="MedischeFicheOk" Type="bit" Nullable="false" />
+    <Property Name="Opmerkingen" Type="text" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Plaats">
+    <Key>
+      <PropertyRef Name="PlaatsID" />
+    </Key>
+    <Property Name="PlaatsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Naam" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="AdresID" Type="int" Nullable="false" />
+    <Property Name="GelieerdePersoonID" Type="int" />
+    <Property Name="GroepID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Uitstap">
+    <Key>
+      <PropertyRef Name="UitstapID" />
+    </Key>
+    <Property Name="UitstapID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Naam" Type="varchar" MaxLength="120" Nullable="false" />
+    <Property Name="IsBivak" Type="bit" Nullable="false" />
+    <Property Name="DatumVan" Type="datetime" Nullable="false" />
+    <Property Name="DatumTot" Type="datetime" Nullable="false" />
+    <Property Name="Opmerkingen" Type="text" />
+    <Property Name="PlaatsID" Type="int" />
+    <Property Name="GroepsWerkJaarID" Type="int" />
+    <Property Name="ContactDeelnemerID" Type="int" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Categorie">
+    <Key>
+      <PropertyRef Name="CategorieID" />
+    </Key>
+    <Property Name="Naam" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="CategorieID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroepID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="ChiroGroep">
+    <Key>
+      <PropertyRef Name="ChiroGroepID" />
+    </Key>
+    <Property Name="ChiroGroepID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="Plaats" Type="varchar" MaxLength="60" />
+    <Property Name="KaderGroepID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Groep">
+    <Key>
+      <PropertyRef Name="GroepID" />
+    </Key>
+    <Property Name="Naam" Type="varchar" MaxLength="160" Nullable="false" />
+    <Property Name="Code" Type="char" MaxLength="10" />
+    <Property Name="OprichtingsJaar" Type="int" />
+    <Property Name="WebSite" Type="varchar" MaxLength="160" />
+    <Property Name="Logo" Type="image" />
+    <Property Name="GroepID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="StopDatum" Type="datetime" />
+    <Property Name="AdresID" Type="int" />
+  </EntityType>
+  <EntityType Name="GroepsWerkJaar">
+    <Key>
+      <PropertyRef Name="GroepsWerkJaarID" />
+    </Key>
+    <Property Name="WerkJaar" Type="int" Nullable="false" />
+    <Property Name="GroepsWerkJaarID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroepID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="Datum" Type="datetime" />
+  </EntityType>
+  <EntityType Name="KaderGroep">
+    <Key>
+      <PropertyRef Name="KaderGroepID" />
+    </Key>
+    <Property Name="KaderGroepID" Type="int" Nullable="false" />
+    <Property Name="Niveau" Type="int" Nullable="false" />
+    <Property Name="ParentID" Type="int" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Afdeling">
+    <Key>
+      <PropertyRef Name="AfdelingID" />
+    </Key>
+    <Property Name="AfdelingsNaam" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Afkorting" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="AfdelingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ChiroGroepID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="AfdelingsJaar">
+    <Key>
+      <PropertyRef Name="AfdelingsJaarID" />
+    </Key>
+    <Property Name="GeboorteJaarTot" Type="int" Nullable="false" />
+    <Property Name="GeboorteJaarVan" Type="int" Nullable="false" />
+    <Property Name="AfdelingsJaarID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AfdelingID" Type="int" Nullable="false" />
+    <Property Name="Geslacht" Type="int" Nullable="false" />
+    <Property Name="GroepsWerkJaarID" Type="int" Nullable="false" />
+    <Property Name="OfficieleAfdelingID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Functie">
+    <Key>
+      <PropertyRef Name="FunctieID" />
+    </Key>
+    <Property Name="Naam" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="FunctieID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroepID" Type="int" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="MaxAantal" Type="int" />
+    <Property Name="MinAantal" Type="int" Nullable="false" />
+    <Property Name="WerkJaarVan" Type="int" />
+    <Property Name="WerkJaarTot" Type="int" />
+    <Property Name="IsNationaal" Type="bit" StoreGeneratedPattern="Computed" />
+    <Property Name="Niveau" Type="int" Nullable="false" />
+    <Property Name="LidType" Type="int" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Kind">
+    <Key>
+      <PropertyRef Name="kindID" />
+    </Key>
+    <Property Name="kindID" Type="int" Nullable="false" />
+    <Property Name="afdelingsJaarID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Leiding">
+    <Key>
+      <PropertyRef Name="leidingID" />
+    </Key>
+    <Property Name="leidingID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="LeidingInAfdelingsJaar">
+    <Key>
+      <PropertyRef Name="AfdelingsJaarID" />
+      <PropertyRef Name="LeidingID" />
+    </Key>
+    <Property Name="AfdelingsJaarID" Type="int" Nullable="false" />
+    <Property Name="LeidingID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Lid">
+    <Key>
+      <PropertyRef Name="LidID" />
+    </Key>
+    <Property Name="LidgeldBetaald" Type="bit" />
+    <Property Name="Verwijderd" Type="bit" />
+    <Property Name="VolgendWerkjaar" Type="smallint" />
+    <Property Name="LidID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroepsWerkjaarID" Type="int" Nullable="false" />
+    <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="EindeInstapPeriode" Type="smalldatetime" />
+    <Property Name="UitschrijfDatum" Type="datetime" />
+    <Property Name="NonActief" Type="bit" StoreGeneratedPattern="Computed" />
+    <Property Name="IsAangesloten" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LidFunctie">
+    <Key>
+      <PropertyRef Name="LidID" />
+      <PropertyRef Name="FunctieID" />
+    </Key>
+    <Property Name="LidID" Type="int" Nullable="false" />
+    <Property Name="FunctieID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OfficieleAfdeling">
+    <Key>
+      <PropertyRef Name="OfficieleAfdelingID" />
+    </Key>
+    <Property Name="Naam" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="OfficieleAfdelingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LeefTijdVan" Type="int" Nullable="false" />
+    <Property Name="LeefTijdTot" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Bericht">
+    <Key>
+      <PropertyRef Name="BerichtID" />
+    </Key>
+    <Property Name="BerichtID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Tijd" Type="datetime" Nullable="false" />
+    <Property Name="Niveau" Type="int" Nullable="false" />
+    <Property Name="Boodschap" Type="varchar(max)" />
+    <Property Name="StamNummer" Type="char" MaxLength="10" />
+    <Property Name="AdNummer" Type="int" />
+    <Property Name="PersoonID" Type="int" />
+    <Property Name="GebruikerID" Type="int" />
+  </EntityType>
+  <EntityType Name="CommunicatieType">
+    <Key>
+      <PropertyRef Name="CommunicatieTypeID" />
+    </Key>
+    <Property Name="Omschrijving" Type="varchar" MaxLength="80" />
+    <Property Name="Validatie" Type="varchar" MaxLength="160" />
+    <Property Name="CommunicatieTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Voorbeeld" Type="varchar" MaxLength="160" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="CommunicatieVorm">
+    <Key>
+      <PropertyRef Name="CommunicatieVormID" />
+    </Key>
+    <Property Name="Nota" Type="varchar" MaxLength="320" />
+    <Property Name="Nummer" Type="varchar" MaxLength="160" Nullable="false" />
+    <Property Name="CommunicatieVormID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CommunicatieTypeID" Type="int" Nullable="false" />
+    <Property Name="IsGezinsgebonden" Type="bit" Nullable="false" />
+    <Property Name="Voorkeur" Type="bit" Nullable="false" />
+    <Property Name="GelieerdePersoonID" Type="int" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="GelieerdePersoon">
+    <Key>
+      <PropertyRef Name="GelieerdePersoonID" />
+    </Key>
+    <Property Name="GroepID" Type="int" Nullable="false" />
+    <Property Name="PersoonID" Type="int" Nullable="false" />
+    <Property Name="ChiroLeefTijd" Type="int" Nullable="false" />
+    <Property Name="GelieerdePersoonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="VoorkeursAdresID" Type="int" />
+  </EntityType>
+  <EntityType Name="Persoon">
+    <Key>
+      <PropertyRef Name="PersoonID" />
+    </Key>
+    <Property Name="AdNummer" Type="int" />
+    <Property Name="Naam" Type="varchar" MaxLength="160" Nullable="false" />
+    <Property Name="VoorNaam" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="GeboorteDatum" Type="datetime" />
+    <Property Name="Geslacht" Type="int" Nullable="false" />
+    <Property Name="SterfDatum" Type="smalldatetime" />
+    <Property Name="PersoonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="AdInAanvraag" Type="bit" Nullable="false" />
+    <Property Name="SeNaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
+    <Property Name="SeVoornaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
+    <Property Name="NieuwsBrief" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PersoonsAdres">
+    <Key>
+      <PropertyRef Name="PersoonsAdresID" />
+    </Key>
+    <Property Name="Opmerking" Type="text" />
+    <Property Name="AdresID" Type="int" Nullable="false" />
+    <Property Name="AdresTypeID" Type="int" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="PersoonsAdresID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PersoonID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PersoonsCategorie">
+    <Key>
+      <PropertyRef Name="GelieerdePersoonID" />
+      <PropertyRef Name="CategorieID" />
+    </Key>
+    <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
+    <Property Name="CategorieID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PersoonsVerzekering">
+    <Key>
+      <PropertyRef Name="PersoonsVerzekeringID" />
+    </Key>
+    <Property Name="PersoonsVerzekeringID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PersoonID" Type="int" Nullable="false" />
+    <Property Name="VerzekeringsTypeID" Type="int" Nullable="false" />
+    <Property Name="Van" Type="datetime" Nullable="false" />
+    <Property Name="Tot" Type="datetime" Nullable="false" />
+    <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="VerzekeringsType">
+    <Key>
+      <PropertyRef Name="VerzekeringsTypeID" />
+    </Key>
+    <Property Name="VerzekeringsTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Naam" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="Omschrijving" Type="text" />
+    <Property Name="EnkelLeden" Type="bit" Nullable="false" />
+    <Property Name="TotEindeWerkJaar" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'gap_local.diag.vActiefAbonnement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vActiefAbonnement">
+    <Key>
+      <PropertyRef Name="AbonnementID" />
+      <PropertyRef Name="PersoonID" />
+      <PropertyRef Name="Type" />
+    </Key>
+    <Property Name="AbonnementID" Type="int" Nullable="false" />
+    <Property Name="PersoonID" Type="int" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="AdNummer" Type="int" />
+    <Property Name="WerkJaar" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vActiefLid">
+    <Key>
+      <PropertyRef Name="LidID" />
+      <PropertyRef Name="PersoonID" />
+      <PropertyRef Name="GroepID" />
+    </Key>
+    <Property Name="LidID" Type="int" Nullable="false" />
+    <Property Name="PersoonID" Type="int" Nullable="false" />
+    <Property Name="GroepID" Type="int" Nullable="false" />
+    <Property Name="AdNummer" Type="int" />
+    <Property Name="Code" Type="char" MaxLength="10" />
+    <Property Name="WerkJaar" Type="int" />
+  </EntityType>
+  <Association Name="FK_Abonnement_GelieerdePersoon">
+    <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="1" />
+    <End Role="Abonnement" Type="Self.Abonnement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GelieerdePersoon">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Principal>
+      <Dependent Role="Abonnement">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Abonnement_GroepsWerkJaar">
+    <End Role="GroepsWerkJaar" Type="Self.GroepsWerkJaar" Multiplicity="1" />
+    <End Role="Abonnement" Type="Self.Abonnement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GroepsWerkJaar">
+        <PropertyRef Name="GroepsWerkJaarID" />
+      </Principal>
+      <Dependent Role="Abonnement">
+        <PropertyRef Name="GroepsWerkJaarID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Abonnement_Publicatie">
+    <End Role="Publicatie" Type="Self.Publicatie" Multiplicity="1" />
+    <End Role="Abonnement" Type="Self.Abonnement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Publicatie">
+        <PropertyRef Name="PublicatieID" />
+      </Principal>
+      <Dependent Role="Abonnement">
+        <PropertyRef Name="PublicatieID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Afdeling_ChiroGroep">
+    <End Role="ChiroGroep" Type="Self.ChiroGroep" Multiplicity="1" />
+    <End Role="Afdeling" Type="Self.Afdeling" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChiroGroep">
+        <PropertyRef Name="ChiroGroepID" />
+      </Principal>
+      <Dependent Role="Afdeling">
+        <PropertyRef Name="ChiroGroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AfdelingsJaar_Afdeling">
+    <End Role="Afdeling" Type="Self.Afdeling" Multiplicity="1" />
+    <End Role="AfdelingsJaar" Type="Self.AfdelingsJaar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Afdeling">
+        <PropertyRef Name="AfdelingID" />
+      </Principal>
+      <Dependent Role="AfdelingsJaar">
+        <PropertyRef Name="AfdelingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AfdelingsJaar_GroepsWerkjaar">
+    <End Role="GroepsWerkJaar" Type="Self.GroepsWerkJaar" Multiplicity="1" />
+    <End Role="AfdelingsJaar" Type="Self.AfdelingsJaar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GroepsWerkJaar">
+        <PropertyRef Name="GroepsWerkJaarID" />
+      </Principal>
+      <Dependent Role="AfdelingsJaar">
+        <PropertyRef Name="GroepsWerkJaarID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AfdelingsJaar_OfficieleAfdeling">
+    <End Role="OfficieleAfdeling" Type="Self.OfficieleAfdeling" Multiplicity="1" />
+    <End Role="AfdelingsJaar" Type="Self.AfdelingsJaar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OfficieleAfdeling">
+        <PropertyRef Name="OfficieleAfdelingID" />
+      </Principal>
+      <Dependent Role="AfdelingsJaar">
+        <PropertyRef Name="OfficieleAfdelingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BelgischAdres_Adres">
+    <End Role="Adres" Type="Self.Adres" Multiplicity="1" />
+    <End Role="BelgischAdres" Type="Self.BelgischAdres" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Adres">
+        <PropertyRef Name="AdresID" />
+      </Principal>
+      <Dependent Role="BelgischAdres">
+        <PropertyRef Name="BelgischAdresID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BelgischAdres_StraatNaam">
+    <End Role="StraatNaam" Type="Self.StraatNaam" Multiplicity="1" />
+    <End Role="BelgischAdres" Type="Self.BelgischAdres" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StraatNaam">
+        <PropertyRef Name="StraatNaamID" />
+      </Principal>
+      <Dependent Role="BelgischAdres">
+        <PropertyRef Name="StraatNaamID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BelgischAdres_WoonPlaats">
+    <End Role="WoonPlaats" Type="Self.WoonPlaats" Multiplicity="1" />
+    <End Role="BelgischAdres" Type="Self.BelgischAdres" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WoonPlaats">
+        <PropertyRef Name="WoonPlaatsID" />
+      </Principal>
+      <Dependent Role="BelgischAdres">
+        <PropertyRef Name="WoonPlaatsID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bericht_Gebruiker">
+    <End Role="Persoon" Type="Self.Persoon" Multiplicity="0..1" />
+    <End Role="Bericht" Type="Self.Bericht" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persoon">
+        <PropertyRef Name="PersoonID" />
+      </Principal>
+      <Dependent Role="Bericht">
+        <PropertyRef Name="GebruikerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bericht_Persoon_Id">
+    <End Role="Persoon" Type="Self.Persoon" Multiplicity="0..1" />
+    <End Role="Bericht" Type="Self.Bericht" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persoon">
+        <PropertyRef Name="PersoonID" />
+      </Principal>
+      <Dependent Role="Bericht">
+        <PropertyRef Name="PersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BuitenlandsAdres_Adres">
+    <End Role="Adres" Type="Self.Adres" Multiplicity="1" />
+    <End Role="BuitenLandsAdres" Type="Self.BuitenLandsAdres" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Adres">
+        <PropertyRef Name="AdresID" />
+      </Principal>
+      <Dependent Role="BuitenLandsAdres">
+        <PropertyRef Name="BuitenlandsAdresID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BuitenlandsAdres_Land">
+    <End Role="Land" Type="Self.Land" Multiplicity="1" />
+    <End Role="BuitenLandsAdres" Type="Self.BuitenLandsAdres" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Land">
+        <PropertyRef Name="LandID" />
+      </Principal>
+      <Dependent Role="BuitenLandsAdres">
+        <PropertyRef Name="LandID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Categorie_Groep">
+    <End Role="Groep" Type="Self.Groep" Multiplicity="1" />
+    <End Role="Categorie" Type="Self.Categorie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groep">
+        <PropertyRef Name="GroepID" />
+      </Principal>
+      <Dependent Role="Categorie">
+        <PropertyRef Name="GroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ChiroGroep_Groep">
+    <End Role="Groep" Type="Self.Groep" Multiplicity="1" />
+    <End Role="ChiroGroep" Type="Self.ChiroGroep" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Groep">
+        <PropertyRef Name="GroepID" />
+      </Principal>
+      <Dependent Role="ChiroGroep">
+        <PropertyRef Name="ChiroGroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ChiroGroep_KaderGroep">
+    <End Role="KaderGroep" Type="Self.KaderGroep" Multiplicity="1" />
+    <End Role="ChiroGroep" Type="Self.ChiroGroep" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="KaderGroep">
+        <PropertyRef Name="KaderGroepID" />
+      </Principal>
+      <Dependent Role="ChiroGroep">
+        <PropertyRef Name="KaderGroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CommunicatieVorm_CommunicatieType">
+    <End Role="CommunicatieType" Type="Self.CommunicatieType" Multiplicity="1" />
+    <End Role="CommunicatieVorm" Type="Self.CommunicatieVorm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CommunicatieType">
+        <PropertyRef Name="CommunicatieTypeID" />
+      </Principal>
+      <Dependent Role="CommunicatieVorm">
+        <PropertyRef Name="CommunicatieTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CommunicatieVorm_GelieerdePersoon">
+    <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="0..1" />
+    <End Role="CommunicatieVorm" Type="Self.CommunicatieVorm" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GelieerdePersoon">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Principal>
+      <Dependent Role="CommunicatieVorm">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Deelnemer_GelieerdePersoon">
+    <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="1" />
+    <End Role="Deelnemer" Type="Self.Deelnemer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GelieerdePersoon">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Principal>
+      <Dependent Role="Deelnemer">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Deelnemer_Uitstap">
+    <End Role="Uitstap" Type="Self.Uitstap" Multiplicity="1" />
+    <End Role="Deelnemer" Type="Self.Deelnemer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uitstap">
+        <PropertyRef Name="UitstapID" />
+      </Principal>
+      <Dependent Role="Deelnemer">
+        <PropertyRef Name="UitstapID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Functie_Groep">
+    <End Role="Groep" Type="Self.Groep" Multiplicity="0..1" />
+    <End Role="Functie" Type="Self.Functie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groep">
+        <PropertyRef Name="GroepID" />
+      </Principal>
+      <Dependent Role="Functie">
+        <PropertyRef Name="GroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GebruikersRechtV2_Groep">
+    <End Role="Groep" Type="Self.Groep" Multiplicity="1" />
+    <End Role="GebruikersRechtv2" Type="Self.GebruikersRechtv2" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groep">
+        <PropertyRef Name="GroepID" />
+      </Principal>
+      <Dependent Role="GebruikersRechtv2">
+        <PropertyRef Name="GroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GebruikersRechtV2_Persoon">
+    <End Role="Persoon" Type="Self.Persoon" Multiplicity="1" />
+    <End Role="GebruikersRechtv2" Type="Self.GebruikersRechtv2" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persoon">
+        <PropertyRef Name="PersoonID" />
+      </Principal>
+      <Dependent Role="GebruikersRechtv2">
+        <PropertyRef Name="PersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GelieerdePersoon_Groep">
+    <End Role="Groep" Type="Self.Groep" Multiplicity="1" />
+    <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groep">
+        <PropertyRef Name="GroepID" />
+      </Principal>
+      <Dependent Role="GelieerdePersoon">
+        <PropertyRef Name="GroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GelieerdePersoon_Persoon">
+    <End Role="Persoon" Type="Self.Persoon" Multiplicity="1" />
+    <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persoon">
+        <PropertyRef Name="PersoonID" />
+      </Principal>
+      <Dependent Role="GelieerdePersoon">
+        <PropertyRef Name="PersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GelieerdePersoon_PersoonsAdres">
+    <End Role="PersoonsAdres" Type="Self.PersoonsAdres" Multiplicity="0..1" />
+    <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PersoonsAdres">
+        <PropertyRef Name="PersoonsAdresID" />
+      </Principal>
+      <Dependent Role="GelieerdePersoon">
+        <PropertyRef Name="VoorkeursAdresID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Groep_Adres">
+    <End Role="Adres" Type="Self.Adres" Multiplicity="0..1" />
+    <End Role="Groep" Type="Self.Groep" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Adres">
+        <PropertyRef Name="AdresID" />
+      </Principal>
+      <Dependent Role="Groep">
+        <PropertyRef Name="AdresID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroepsWerkjaar_Groep">
+    <End Role="Groep" Type="Self.Groep" Multiplicity="1" />
+    <End Role="GroepsWerkJaar" Type="Self.GroepsWerkJaar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groep">
+        <PropertyRef Name="GroepID" />
+      </Principal>
+      <Dependent Role="GroepsWerkJaar">
+        <PropertyRef Name="GroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_KaderGroep_Groep">
+    <End Role="Groep" Type="Self.Groep" Multiplicity="1" />
+    <End Role="KaderGroep" Type="Self.KaderGroep" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Groep">
+        <PropertyRef Name="GroepID" />
+      </Principal>
+      <Dependent Role="KaderGroep">
+        <PropertyRef Name="KaderGroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_KaderGroep_KaderGroep">
+    <End Role="KaderGroep" Type="Self.KaderGroep" Multiplicity="0..1" />
+    <End Role="KaderGroep1" Type="Self.KaderGroep" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="KaderGroep">
+        <PropertyRef Name="KaderGroepID" />
+      </Principal>
+      <Dependent Role="KaderGroep1">
+        <PropertyRef Name="ParentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Kind_AfdelingsJaar">
+    <End Role="AfdelingsJaar" Type="Self.AfdelingsJaar" Multiplicity="1" />
+    <End Role="Kind" Type="Self.Kind" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AfdelingsJaar">
+        <PropertyRef Name="AfdelingsJaarID" />
+      </Principal>
+      <Dependent Role="Kind">
+        <PropertyRef Name="afdelingsJaarID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Kind_Lid">
+    <End Role="Lid" Type="Self.Lid" Multiplicity="1" />
+    <End Role="Kind" Type="Self.Kind" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Lid">
+        <PropertyRef Name="LidID" />
+      </Principal>
+      <Dependent Role="Kind">
+        <PropertyRef Name="kindID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Leiding_Lid">
+    <End Role="Lid" Type="Self.Lid" Multiplicity="1" />
+    <End Role="Leiding" Type="Self.Leiding" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Lid">
+        <PropertyRef Name="LidID" />
+      </Principal>
+      <Dependent Role="Leiding">
+        <PropertyRef Name="leidingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LeidingInAfdelingsJaar_AfdelingsJaar">
+    <End Role="AfdelingsJaar" Type="Self.AfdelingsJaar" Multiplicity="1" />
+    <End Role="LeidingInAfdelingsJaar" Type="Self.LeidingInAfdelingsJaar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AfdelingsJaar">
+        <PropertyRef Name="AfdelingsJaarID" />
+      </Principal>
+      <Dependent Role="LeidingInAfdelingsJaar">
+        <PropertyRef Name="AfdelingsJaarID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LeidingInAfdelingsJaar_Leiding">
+    <End Role="Leiding" Type="Self.Leiding" Multiplicity="1" />
+    <End Role="LeidingInAfdelingsJaar" Type="Self.LeidingInAfdelingsJaar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Leiding">
+        <PropertyRef Name="leidingID" />
+      </Principal>
+      <Dependent Role="LeidingInAfdelingsJaar">
+        <PropertyRef Name="LeidingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lid_GelieerdePersoon">
+    <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="1" />
+    <End Role="Lid" Type="Self.Lid" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GelieerdePersoon">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Principal>
+      <Dependent Role="Lid">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lid_GroepsWerkjaar">
+    <End Role="GroepsWerkJaar" Type="Self.GroepsWerkJaar" Multiplicity="1" />
+    <End Role="Lid" Type="Self.Lid" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GroepsWerkJaar">
+        <PropertyRef Name="GroepsWerkJaarID" />
+      </Principal>
+      <Dependent Role="Lid">
+        <PropertyRef Name="GroepsWerkjaarID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LidFunctie_Functie">
+    <End Role="Functie" Type="Self.Functie" Multiplicity="1" />
+    <End Role="LidFunctie" Type="Self.LidFunctie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Functie">
+        <PropertyRef Name="FunctieID" />
+      </Principal>
+      <Dependent Role="LidFunctie">
+        <PropertyRef Name="FunctieID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LidFunctie_Lid">
+    <End Role="Lid" Type="Self.Lid" Multiplicity="1" />
+    <End Role="LidFunctie" Type="Self.LidFunctie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lid">
+        <PropertyRef Name="LidID" />
+      </Principal>
+      <Dependent Role="LidFunctie">
+        <PropertyRef Name="LidID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PersoonsAdres_Adres">
+    <End Role="Adres" Type="Self.Adres" Multiplicity="1" />
+    <End Role="PersoonsAdres" Type="Self.PersoonsAdres" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Adres">
+        <PropertyRef Name="AdresID" />
+      </Principal>
+      <Dependent Role="PersoonsAdres">
+        <PropertyRef Name="AdresID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PersoonsAdres_Persoon">
+    <End Role="Persoon" Type="Self.Persoon" Multiplicity="1" />
+    <End Role="PersoonsAdres" Type="Self.PersoonsAdres" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persoon">
+        <PropertyRef Name="PersoonID" />
+      </Principal>
+      <Dependent Role="PersoonsAdres">
+        <PropertyRef Name="PersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PersoonsCategorie_Categorie">
+    <End Role="Categorie" Type="Self.Categorie" Multiplicity="1" />
+    <End Role="PersoonsCategorie" Type="Self.PersoonsCategorie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categorie">
+        <PropertyRef Name="CategorieID" />
+      </Principal>
+      <Dependent Role="PersoonsCategorie">
+        <PropertyRef Name="CategorieID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PersoonsCategorie_GelieerdePersoon">
+    <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="1" />
+    <End Role="PersoonsCategorie" Type="Self.PersoonsCategorie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GelieerdePersoon">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Principal>
+      <Dependent Role="PersoonsCategorie">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PersoonsVerzekering_Persoon">
+    <End Role="Persoon" Type="Self.Persoon" Multiplicity="1" />
+    <End Role="PersoonsVerzekering" Type="Self.PersoonsVerzekering" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persoon">
+        <PropertyRef Name="PersoonID" />
+      </Principal>
+      <Dependent Role="PersoonsVerzekering">
+        <PropertyRef Name="PersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PersoonsVerzekering_VerzekeringsType">
+    <End Role="VerzekeringsType" Type="Self.VerzekeringsType" Multiplicity="1" />
+    <End Role="PersoonsVerzekering" Type="Self.PersoonsVerzekering" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VerzekeringsType">
+        <PropertyRef Name="VerzekeringsTypeID" />
+      </Principal>
+      <Dependent Role="PersoonsVerzekering">
+        <PropertyRef Name="VerzekeringsTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Plaats_Adres">
+    <End Role="Adres" Type="Self.Adres" Multiplicity="1" />
+    <End Role="Plaats" Type="Self.Plaats" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Adres">
+        <PropertyRef Name="AdresID" />
+      </Principal>
+      <Dependent Role="Plaats">
+        <PropertyRef Name="AdresID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Plaats_GelieerdePersoon_Contact">
+    <End Role="GelieerdePersoon" Type="Self.GelieerdePersoon" Multiplicity="0..1" />
+    <End Role="Plaats" Type="Self.Plaats" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GelieerdePersoon">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Principal>
+      <Dependent Role="Plaats">
+        <PropertyRef Name="GelieerdePersoonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Plaats_Groep">
+    <End Role="Groep" Type="Self.Groep" Multiplicity="1" />
+    <End Role="Plaats" Type="Self.Plaats" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groep">
+        <PropertyRef Name="GroepID" />
+      </Principal>
+      <Dependent Role="Plaats">
+        <PropertyRef Name="GroepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Uitstap_Deelnemer_Contact">
+    <End Role="Deelnemer" Type="Self.Deelnemer" Multiplicity="0..1" />
+    <End Role="Uitstap" Type="Self.Uitstap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Deelnemer">
+        <PropertyRef Name="DeelnemerID" />
+      </Principal>
+      <Dependent Role="Uitstap">
+        <PropertyRef Name="ContactDeelnemerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Uitstap_GroepsWerkJaar">
+    <End Role="GroepsWerkJaar" Type="Self.GroepsWerkJaar" Multiplicity="0..1" />
+    <End Role="Uitstap" Type="Self.Uitstap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GroepsWerkJaar">
+        <PropertyRef Name="GroepsWerkJaarID" />
+      </Principal>
+      <Dependent Role="Uitstap">
+        <PropertyRef Name="GroepsWerkJaarID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Uitstap_Plaats">
+    <End Role="Plaats" Type="Self.Plaats" Multiplicity="0..1" />
+    <End Role="Uitstap" Type="Self.Uitstap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Plaats">
+        <PropertyRef Name="PlaatsID" />
+      </Principal>
+      <Dependent Role="Uitstap">
+        <PropertyRef Name="PlaatsID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ChiroGroepModelStoreContainer">
+    <EntitySet Name="Abonnement" EntityType="Self.Abonnement" Schema="abo" store:Type="Tables" />
+    <EntitySet Name="Publicatie" EntityType="Self.Publicatie" Schema="abo" store:Type="Tables" />
+    <EntitySet Name="Adres" EntityType="Self.Adres" Schema="adr" store:Type="Tables" />
+    <EntitySet Name="BelgischAdres" EntityType="Self.BelgischAdres" Schema="adr" store:Type="Tables" />
+    <EntitySet Name="BuitenLandsAdres" EntityType="Self.BuitenLandsAdres" Schema="adr" store:Type="Tables" />
+    <EntitySet Name="Land" EntityType="Self.Land" Schema="adr" store:Type="Tables" />
+    <EntitySet Name="StraatNaam" EntityType="Self.StraatNaam" Schema="adr" store:Type="Tables" />
+    <EntitySet Name="WoonPlaats" EntityType="Self.WoonPlaats" Schema="adr" store:Type="Tables" />
+    <EntitySet Name="GebruikersRechtv2" EntityType="Self.GebruikersRechtv2" Schema="auth" store:Type="Tables" />
+    <EntitySet Name="Deelnemer" EntityType="Self.Deelnemer" Schema="biv" store:Type="Tables" />
+    <EntitySet Name="Plaats" EntityType="Self.Plaats" Schema="biv" store:Type="Tables" />
+    <EntitySet Name="Uitstap" EntityType="Self.Uitstap" Schema="biv" store:Type="Tables" />
+    <EntitySet Name="Categorie" EntityType="Self.Categorie" Schema="core" store:Type="Tables" />
+    <EntitySet Name="ChiroGroep" EntityType="Self.ChiroGroep" Schema="grp" store:Type="Tables" />
+    <EntitySet Name="Groep" EntityType="Self.Groep" Schema="grp" store:Type="Tables" />
+    <EntitySet Name="GroepsWerkJaar" EntityType="Self.GroepsWerkJaar" Schema="grp" store:Type="Tables" />
+    <EntitySet Name="KaderGroep" EntityType="Self.KaderGroep" Schema="grp" store:Type="Tables" />
+    <EntitySet Name="Afdeling" EntityType="Self.Afdeling" Schema="lid" store:Type="Tables" />
+    <EntitySet Name="AfdelingsJaar" EntityType="Self.AfdelingsJaar" Schema="lid" store:Type="Tables" />
+    <EntitySet Name="Functie" EntityType="Self.Functie" Schema="lid" store:Type="Tables" />
+    <EntitySet Name="Kind" EntityType="Self.Kind" Schema="lid" store:Type="Tables" />
+    <EntitySet Name="Leiding" EntityType="Self.Leiding" Schema="lid" store:Type="Tables" />
+    <EntitySet Name="LeidingInAfdelingsJaar" EntityType="Self.LeidingInAfdelingsJaar" Schema="lid" store:Type="Tables" />
+    <EntitySet Name="Lid" EntityType="Self.Lid" Schema="lid" store:Type="Tables" />
+    <EntitySet Name="LidFunctie" EntityType="Self.LidFunctie" Schema="lid" store:Type="Tables" />
+    <EntitySet Name="OfficieleAfdeling" EntityType="Self.OfficieleAfdeling" Schema="lid" store:Type="Tables" />
+    <EntitySet Name="CommunicatieType" EntityType="Self.CommunicatieType" Schema="pers" store:Type="Tables" />
+    <EntitySet Name="CommunicatieVorm" EntityType="Self.CommunicatieVorm" Schema="pers" store:Type="Tables" />
+    <EntitySet Name="GelieerdePersoon" EntityType="Self.GelieerdePersoon" Schema="pers" store:Type="Tables" />
+    <EntitySet Name="Persoon" EntityType="Self.Persoon" Schema="pers" store:Type="Tables" />
+    <EntitySet Name="PersoonsAdres" EntityType="Self.PersoonsAdres" Schema="pers" store:Type="Tables" />
+    <EntitySet Name="PersoonsCategorie" EntityType="Self.PersoonsCategorie" Schema="pers" store:Type="Tables" />
+    <EntitySet Name="PersoonsVerzekering" EntityType="Self.PersoonsVerzekering" Schema="verz" store:Type="Tables" />
+    <EntitySet Name="VerzekeringsType" EntityType="Self.VerzekeringsType" Schema="verz" store:Type="Tables" />
+    <EntitySet Name="Bericht" EntityType="Self.Bericht" Schema="logging" store:Type="Tables" />
+    <EntitySet Name="vActiefAbonnement" EntityType="Self.vActiefAbonnement" store:Type="Views" store:Schema="diag">
+      <DefiningQuery>SELECT 
+    [vActiefAbonnement].[AbonnementID] AS [AbonnementID], 
+    [vActiefAbonnement].[PersoonID] AS [PersoonID], 
+    [vActiefAbonnement].[Type] AS [Type], 
+    [vActiefAbonnement].[AdNummer] AS [AdNummer], 
+    [vActiefAbonnement].[WerkJaar] AS [WerkJaar]
+    FROM [diag].[vActiefAbonnement] AS [vActiefAbonnement]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vActiefLid" EntityType="Self.vActiefLid" store:Type="Views" store:Schema="diag">
+      <DefiningQuery>SELECT 
+    [vActiefLid].[LidID] AS [LidID], 
+    [vActiefLid].[PersoonID] AS [PersoonID], 
+    [vActiefLid].[GroepID] AS [GroepID], 
+    [vActiefLid].[AdNummer] AS [AdNummer], 
+    [vActiefLid].[Code] AS [Code], 
+    [vActiefLid].[WerkJaar] AS [WerkJaar]
+    FROM [diag].[vActiefLid] AS [vActiefLid]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Abonnement_GelieerdePersoon" Association="Self.FK_Abonnement_GelieerdePersoon">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="Abonnement" EntitySet="Abonnement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Abonnement_GroepsWerkJaar" Association="Self.FK_Abonnement_GroepsWerkJaar">
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+      <End Role="Abonnement" EntitySet="Abonnement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Abonnement_Publicatie" Association="Self.FK_Abonnement_Publicatie">
+      <End Role="Publicatie" EntitySet="Publicatie" />
+      <End Role="Abonnement" EntitySet="Abonnement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Afdeling_ChiroGroep" Association="Self.FK_Afdeling_ChiroGroep">
+      <End Role="ChiroGroep" EntitySet="ChiroGroep" />
+      <End Role="Afdeling" EntitySet="Afdeling" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AfdelingsJaar_Afdeling" Association="Self.FK_AfdelingsJaar_Afdeling">
+      <End Role="Afdeling" EntitySet="Afdeling" />
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AfdelingsJaar_GroepsWerkjaar" Association="Self.FK_AfdelingsJaar_GroepsWerkjaar">
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AfdelingsJaar_OfficieleAfdeling" Association="Self.FK_AfdelingsJaar_OfficieleAfdeling">
+      <End Role="OfficieleAfdeling" EntitySet="OfficieleAfdeling" />
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BelgischAdres_Adres" Association="Self.FK_BelgischAdres_Adres">
+      <End Role="Adres" EntitySet="Adres" />
+      <End Role="BelgischAdres" EntitySet="BelgischAdres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BelgischAdres_StraatNaam" Association="Self.FK_BelgischAdres_StraatNaam">
+      <End Role="StraatNaam" EntitySet="StraatNaam" />
+      <End Role="BelgischAdres" EntitySet="BelgischAdres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BelgischAdres_WoonPlaats" Association="Self.FK_BelgischAdres_WoonPlaats">
+      <End Role="WoonPlaats" EntitySet="WoonPlaats" />
+      <End Role="BelgischAdres" EntitySet="BelgischAdres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bericht_Gebruiker" Association="Self.FK_Bericht_Gebruiker">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="Bericht" EntitySet="Bericht" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bericht_Persoon_Id" Association="Self.FK_Bericht_Persoon_Id">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="Bericht" EntitySet="Bericht" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BuitenlandsAdres_Adres" Association="Self.FK_BuitenlandsAdres_Adres">
+      <End Role="Adres" EntitySet="Adres" />
+      <End Role="BuitenLandsAdres" EntitySet="BuitenLandsAdres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BuitenlandsAdres_Land" Association="Self.FK_BuitenlandsAdres_Land">
+      <End Role="Land" EntitySet="Land" />
+      <End Role="BuitenLandsAdres" EntitySet="BuitenLandsAdres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Categorie_Groep" Association="Self.FK_Categorie_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="Categorie" EntitySet="Categorie" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ChiroGroep_Groep" Association="Self.FK_ChiroGroep_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="ChiroGroep" EntitySet="ChiroGroep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ChiroGroep_KaderGroep" Association="Self.FK_ChiroGroep_KaderGroep">
+      <End Role="KaderGroep" EntitySet="KaderGroep" />
+      <End Role="ChiroGroep" EntitySet="ChiroGroep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CommunicatieVorm_CommunicatieType" Association="Self.FK_CommunicatieVorm_CommunicatieType">
+      <End Role="CommunicatieType" EntitySet="CommunicatieType" />
+      <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CommunicatieVorm_GelieerdePersoon" Association="Self.FK_CommunicatieVorm_GelieerdePersoon">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Deelnemer_GelieerdePersoon" Association="Self.FK_Deelnemer_GelieerdePersoon">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="Deelnemer" EntitySet="Deelnemer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Deelnemer_Uitstap" Association="Self.FK_Deelnemer_Uitstap">
+      <End Role="Uitstap" EntitySet="Uitstap" />
+      <End Role="Deelnemer" EntitySet="Deelnemer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Functie_Groep" Association="Self.FK_Functie_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="Functie" EntitySet="Functie" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GebruikersRechtV2_Groep" Association="Self.FK_GebruikersRechtV2_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="GebruikersRechtv2" EntitySet="GebruikersRechtv2" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GebruikersRechtV2_Persoon" Association="Self.FK_GebruikersRechtV2_Persoon">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="GebruikersRechtv2" EntitySet="GebruikersRechtv2" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GelieerdePersoon_Groep" Association="Self.FK_GelieerdePersoon_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GelieerdePersoon_Persoon" Association="Self.FK_GelieerdePersoon_Persoon">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GelieerdePersoon_PersoonsAdres" Association="Self.FK_GelieerdePersoon_PersoonsAdres">
+      <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Groep_Adres" Association="Self.FK_Groep_Adres">
+      <End Role="Adres" EntitySet="Adres" />
+      <End Role="Groep" EntitySet="Groep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroepsWerkjaar_Groep" Association="Self.FK_GroepsWerkjaar_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_KaderGroep_Groep" Association="Self.FK_KaderGroep_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="KaderGroep" EntitySet="KaderGroep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_KaderGroep_KaderGroep" Association="Self.FK_KaderGroep_KaderGroep">
+      <End Role="KaderGroep" EntitySet="KaderGroep" />
+      <End Role="KaderGroep1" EntitySet="KaderGroep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Kind_AfdelingsJaar" Association="Self.FK_Kind_AfdelingsJaar">
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+      <End Role="Kind" EntitySet="Kind" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Kind_Lid" Association="Self.FK_Kind_Lid">
+      <End Role="Lid" EntitySet="Lid" />
+      <End Role="Kind" EntitySet="Kind" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Leiding_Lid" Association="Self.FK_Leiding_Lid">
+      <End Role="Lid" EntitySet="Lid" />
+      <End Role="Leiding" EntitySet="Leiding" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LeidingInAfdelingsJaar_AfdelingsJaar" Association="Self.FK_LeidingInAfdelingsJaar_AfdelingsJaar">
+      <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" />
+      <End Role="LeidingInAfdelingsJaar" EntitySet="LeidingInAfdelingsJaar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LeidingInAfdelingsJaar_Leiding" Association="Self.FK_LeidingInAfdelingsJaar_Leiding">
+      <End Role="Leiding" EntitySet="Leiding" />
+      <End Role="LeidingInAfdelingsJaar" EntitySet="LeidingInAfdelingsJaar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lid_GelieerdePersoon" Association="Self.FK_Lid_GelieerdePersoon">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="Lid" EntitySet="Lid" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lid_GroepsWerkjaar" Association="Self.FK_Lid_GroepsWerkjaar">
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+      <End Role="Lid" EntitySet="Lid" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LidFunctie_Functie" Association="Self.FK_LidFunctie_Functie">
+      <End Role="Functie" EntitySet="Functie" />
+      <End Role="LidFunctie" EntitySet="LidFunctie" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LidFunctie_Lid" Association="Self.FK_LidFunctie_Lid">
+      <End Role="Lid" EntitySet="Lid" />
+      <End Role="LidFunctie" EntitySet="LidFunctie" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PersoonsAdres_Adres" Association="Self.FK_PersoonsAdres_Adres">
+      <End Role="Adres" EntitySet="Adres" />
+      <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PersoonsAdres_Persoon" Association="Self.FK_PersoonsAdres_Persoon">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PersoonsCategorie_Categorie" Association="Self.FK_PersoonsCategorie_Categorie">
+      <End Role="Categorie" EntitySet="Categorie" />
+      <End Role="PersoonsCategorie" EntitySet="PersoonsCategorie" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PersoonsCategorie_GelieerdePersoon" Association="Self.FK_PersoonsCategorie_GelieerdePersoon">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="PersoonsCategorie" EntitySet="PersoonsCategorie" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PersoonsVerzekering_Persoon" Association="Self.FK_PersoonsVerzekering_Persoon">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="PersoonsVerzekering" EntitySet="PersoonsVerzekering" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PersoonsVerzekering_VerzekeringsType" Association="Self.FK_PersoonsVerzekering_VerzekeringsType">
+      <End Role="VerzekeringsType" EntitySet="VerzekeringsType" />
+      <End Role="PersoonsVerzekering" EntitySet="PersoonsVerzekering" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Plaats_Adres" Association="Self.FK_Plaats_Adres">
+      <End Role="Adres" EntitySet="Adres" />
+      <End Role="Plaats" EntitySet="Plaats" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Plaats_GelieerdePersoon_Contact" Association="Self.FK_Plaats_GelieerdePersoon_Contact">
+      <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+      <End Role="Plaats" EntitySet="Plaats" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Plaats_Groep" Association="Self.FK_Plaats_Groep">
+      <End Role="Groep" EntitySet="Groep" />
+      <End Role="Plaats" EntitySet="Plaats" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Uitstap_Deelnemer_Contact" Association="Self.FK_Uitstap_Deelnemer_Contact">
+      <End Role="Deelnemer" EntitySet="Deelnemer" />
+      <End Role="Uitstap" EntitySet="Uitstap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Uitstap_GroepsWerkJaar" Association="Self.FK_Uitstap_GroepsWerkJaar">
+      <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
+      <End Role="Uitstap" EntitySet="Uitstap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Uitstap_Plaats" Association="Self.FK_Uitstap_Plaats">
+      <End Role="Plaats" EntitySet="Plaats" />
+      <End Role="Uitstap" EntitySet="Uitstap" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

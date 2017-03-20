@@ -60,11 +60,6 @@ namespace Chiro.Gap.FixAnomalies
 
             var helper = new Chiro.Gap.ServiceContracts.Mappers.MappingHelper(ledenManager, groepsWerkJarenManager, abonnementenManager, authenticatieManager, autorisatieManager);
 
-            // Mappings naar civi
-            helper.MappingsDefinieren();
-            // Mappings naar 'kipsync' (nu civisync)
-            Chiro.Gap.Sync.MappingHelper.MappingsDefinieren();
-
             // TODO: via command line opties verbositeit van dit script bepalen.
 
             if ((tefixen & TeFixen.Bivakken) != 0) BivakAangiftesFixen(serviceHelper, apiKey, siteKey);

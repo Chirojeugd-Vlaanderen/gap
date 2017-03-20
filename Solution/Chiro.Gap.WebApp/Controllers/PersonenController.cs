@@ -23,7 +23,6 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 using System.Web.Routing;
-using AutoMapper;
 using Chiro.Cdf.Authentication;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
@@ -903,12 +902,8 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			// Onderstaande mapping mapt het gezin naar PersoonsAdresInfo, waarin enkel
 			// informatie van het adres zit.  (De andere gezinsleden worden nu nog genegeerd.)
-			Mapper.CreateMap<GezinInfo, PersoonsAdresInfo>()
-				.ForMember(
-					dst => dst.AdresType,
-					opt => opt.Ignore());  // voorlopig negeren we adrestype; dat nemen we direct nog over.
-
-			model.PersoonsAdresInfo = Mapper.Map<GezinInfo, PersoonsAdresInfo>(a);
+            // Ze negeert het adrestype van het gezin.
+			model.PersoonsAdresInfo = MappingHelper.Map<GezinInfo, PersoonsAdresInfo>(a);
 
 			// Als het adres buitenlands is, dan moeten we de woonplaats nog eens overnemen in
 			// WoonPlaatsBuitenland.  Dat is nodig voor de AdresBewerkenControl, die een beetje
@@ -1337,8 +1332,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// we eerst naar het (beperktere) CommunicatieInfo
 
 				var commInfo = new CommunicatieInfo();
-				Mapper.CreateMap<CommunicatieDetail, CommunicatieInfo>();
-				Mapper.Map(model.NieuweCommVorm, commInfo);
+				MappingHelper.Map(model.NieuweCommVorm, commInfo);
 
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(id, commInfo));
 				VeelGebruikt.LedenProblemenResetten(groepID);
@@ -1439,8 +1433,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Om bloat over de lijn te vermijden: downgraden naar minimale info
 
 			var commInfo = new CommunicatieInfo();
-			Mapper.CreateMap<CommunicatieDetail, CommunicatieInfo>();
-			Mapper.Map(model.NieuweCommVorm, commInfo);
+			MappingHelper.Map(model.NieuweCommVorm, commInfo);
 
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(commInfo));
 			return RedirectToAction("Bewerken", new { id = gelieerdePersoonID });

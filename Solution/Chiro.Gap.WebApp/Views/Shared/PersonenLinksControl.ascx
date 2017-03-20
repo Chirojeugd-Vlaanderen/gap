@@ -1,4 +1,5 @@
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.PersonenLinksModel>" %>
+<%@ Import Namespace="System.Linq" %>
 <%
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 

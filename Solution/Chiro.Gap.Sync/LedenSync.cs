@@ -19,7 +19,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -151,7 +150,7 @@ namespace Chiro.Gap.Sync
             }
             else
             {
-                var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon);
+                var details = MappingHelper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon);
 
                 // kijk na of de persoon al bewaard is in GAP:
                 Debug.Assert(l.GelieerdePersoon.Persoon.ID != 0);
@@ -178,7 +177,7 @@ namespace Chiro.Gap.Sync
                                  select _functieVertaling[(NationaleFunctie)f.ID]).ToArray();
 
             ServiceHelper.CallService<ISyncPersoonService>(
-                svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
+                svc => svc.FunctiesUpdaten(MappingHelper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
                     lid.GelieerdePersoon.Persoon),
                                            lid.GroepsWerkJaar.Groep.Code,
                                            kipFunctieIDs));
@@ -220,7 +219,7 @@ namespace Chiro.Gap.Sync
             ServiceHelper.CallService<ISyncPersoonService>(
                 svc =>
                 svc.AfdelingenUpdaten(
-                    Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
+                    MappingHelper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
                     chiroGroep.Code, kipAfdelingen));
         }
 
@@ -231,7 +230,7 @@ namespace Chiro.Gap.Sync
         public void TypeUpdaten(Lid lid)
         {
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidTypeUpdaten(
-                Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
+                MappingHelper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
                 lid.GroepsWerkJaar.Groep.Code,
                 _lidTypeVertaling[lid.Type]));
         }
@@ -262,7 +261,7 @@ namespace Chiro.Gap.Sync
             else
             {
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidVerwijderen(
-                    Mapper.Map<GelieerdePersoon, PersoonDetails>(lid.GelieerdePersoon),
+                    MappingHelper.Map<GelieerdePersoon, PersoonDetails>(lid.GelieerdePersoon),
                     groep.Code,
                     lid.UitschrijfDatum.Value));
             }

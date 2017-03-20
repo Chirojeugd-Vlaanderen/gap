@@ -1,4 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<PersoonEnLidModel>" %>
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
@@ -531,7 +532,7 @@
             <%} %>     
         </table>
          <br />
-        <button id="toevoegenAanCat">Toevoegen aan categoriëen</button>
+        <button id="toevoegenAanCat">Toevoegen aan categoriï¿½en</button>
         <br />
         
         <h3>Opties</h3>

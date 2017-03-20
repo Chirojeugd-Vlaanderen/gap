@@ -19,7 +19,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
@@ -62,11 +61,11 @@ namespace Chiro.Gap.Sync
 
             foreach (var persoonsAdressenVoorAdres in gegroepeerdOpAdres)
             {
-                var adres = Mapper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(persoonsAdressenVoorAdres.Key);
+                var adres = MappingHelper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(persoonsAdressenVoorAdres.Key);
                 var bewoners = from pa in persoonsAdressenVoorAdres
                                select new Bewoner
                                {
-                                   Persoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(pa.Persoon),
+                                   Persoon = MappingHelper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(pa.Persoon),
                                    AdresType = (AdresTypeEnum)pa.AdresType
                                };
 

@@ -18,7 +18,6 @@
 
 using System.Collections.Generic;
 using System.Web.Http;
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Api.Models;
 using Chiro.Gap.ServiceContracts;
@@ -38,7 +37,7 @@ namespace Chiro.Gap.Api.Controllers
         public IHttpActionResult Get()
         {
             var svcResult = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>(svc => svc.MijnGroepenOphalen());
-            var result = Mapper.Map<IEnumerable<GroepInfo>, GroepModel[]>(svcResult);
+            var result = MappingHelper.Map<IEnumerable<GroepInfo>, GroepModel[]>(svcResult);
             return Ok(result);
         }
     }

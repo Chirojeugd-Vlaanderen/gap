@@ -1,7 +1,7 @@
 Voer achtereenvolgens uit:
 
-* gap-tabellen.sql
 * gap-testdata.sql
-* gap-keys-indexes.sql
+* gap-straten.sql
+* gap-procedures.sql
 
 Dan zouden we al ergens moeten komen :-)

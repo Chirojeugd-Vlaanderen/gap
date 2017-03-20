@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2016, 2017 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -18,17 +18,23 @@
 
 using System.Web.Http;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.WebApp.Mappers;
 
 namespace Chiro.Gap.Api.Controllers
 {
     public class BaseController : ApiController
     {
-        private readonly ServiceHelper _serviceHelper;
-        protected ServiceHelper ServiceHelper { get { return _serviceHelper; } }
+        protected ServiceHelper ServiceHelper { get; }
+        protected static MappingHelper MappingHelper { get; private set; }
 
         public BaseController(ServiceHelper serviceHelper)
         {
-            _serviceHelper = serviceHelper;
+            ServiceHelper = serviceHelper;
+            if (MappingHelper == null)
+            {
+                // TODO: Kunnen we dit niet injecteren?
+                MappingHelper = new MappingHelper();
+            }
         }
     }
 }

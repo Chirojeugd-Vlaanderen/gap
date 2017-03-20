@@ -18,7 +18,6 @@
 
 using System.Diagnostics;
 using System.Linq;
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
@@ -85,7 +84,7 @@ namespace Chiro.Gap.Sync
 
                 ServiceHelper.CallService<ISyncPersoonService>(
                     svc =>
-                    svc.LoonVerliesVerzekerenAdOnbekend(Mapper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon),
+                    svc.LoonVerliesVerzekerenAdOnbekend(MappingHelper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon),
                                                         gwj.Groep.Code, gwj.WerkJaar, gratis));
             }
         }

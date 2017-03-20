@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Permissions;
-using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -199,7 +198,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
 
             return result;
         }
@@ -225,7 +224,7 @@ namespace Chiro.Gap.Services
                                     select gp;
             // Als we hier crashen, controleer dan of Persoon de kolommen SeNaam en SeVoornaam heeft.
             
-            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
 
             return result;
         }
@@ -251,7 +250,7 @@ namespace Chiro.Gap.Services
             var gelieerdePersonen = from gp in categorie.GelieerdePersoon
                                     select gp;
 
-            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
             aantalTotaal = categorie.GelieerdePersoon.Count;
 
             return result;
@@ -273,7 +272,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(p);
+            return _mappingHelper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(p);
         }
 
         /// <summary>
@@ -352,7 +351,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            return Mapper.Map<GelieerdePersoon, PersoonDetail>(p);
+            return _mappingHelper.Map<GelieerdePersoon, PersoonDetail>(p);
         }
 
         /// <summary>
@@ -377,7 +376,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            return Mapper.Map<GelieerdePersoon, PersoonLidGebruikersInfo>(gelieerdePersoon);
+            return _mappingHelper.Map<GelieerdePersoon, PersoonLidGebruikersInfo>(gelieerdePersoon);
         }
 
         /// <summary>
@@ -400,7 +399,7 @@ namespace Chiro.Gap.Services
             var gelieerdePersonen = from gp in categorie.GelieerdePersoon
                                     select gp;
 
-            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidInfo>>(gelieerdePersonen);
+            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidInfo>>(gelieerdePersonen);
 
             return result;
         }
@@ -424,7 +423,7 @@ namespace Chiro.Gap.Services
             var gelieerdePersonen = from gp in groep.GelieerdePersoon
                                     select gp;
 
-            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidInfo>>(gelieerdePersonen);
+            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidInfo>>(gelieerdePersonen);
 
             return result;
         }
@@ -445,7 +444,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonOverzicht>>(p);
+            return _mappingHelper.Map<IList<GelieerdePersoon>, List<PersoonOverzicht>>(p);
         }
 
         // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
@@ -462,7 +461,7 @@ namespace Chiro.Gap.Services
             var gelieerdePersonen = (from gp in groep.GelieerdePersoon
                                      select gp).Skip((page - 1)*pageSize).Take(pageSize);
 
-            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
 
             return result;
         }
@@ -516,7 +515,7 @@ namespace Chiro.Gap.Services
                             || String.Format("{1} {0}", gp.Persoon.Naam, gp.Persoon.VoorNaam).StartsWith(teZoeken, StringComparison.InvariantCultureIgnoreCase)
                             select gp).ToList();
 
-            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(personen);
+            return _mappingHelper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(personen);
         }
 
         /// <summary>
@@ -549,8 +548,8 @@ namespace Chiro.Gap.Services
 
             var resultaat = new GezinInfo();
 
-            Mapper.Map(adres, resultaat);
-            resultaat.Bewoners = Mapper.Map<IList<GelieerdePersoon>, IList<BewonersInfo>>(gelieerdePersonen);
+            _mappingHelper.Map(adres, resultaat);
+            resultaat.Bewoners = _mappingHelper.Map<IList<GelieerdePersoon>, IList<BewonersInfo>>(gelieerdePersonen);
 
             return resultaat;
         }
@@ -591,7 +590,7 @@ namespace Chiro.Gap.Services
                 huisGenoten = new List<GelieerdePersoon> { gelieerdePersoon };
             }
 
-            return Mapper.Map<IList<GelieerdePersoon>, List<BewonersInfo>>(huisGenoten);
+            return _mappingHelper.Map<IList<GelieerdePersoon>, List<BewonersInfo>>(huisGenoten);
         }
 
         /// <summary>
@@ -606,7 +605,7 @@ namespace Chiro.Gap.Services
             // Communicatietypes zijn voor iedereen leesbaar
             // (het gaat hier om 'e-mail','telefoonnr',...
             var communicatietype = _communicatieTypesRepo.ByID(commTypeID);
-            return Mapper.Map<CommunicatieType, CommunicatieTypeInfo>(communicatietype);
+            return _mappingHelper.Map<CommunicatieType, CommunicatieTypeInfo>(communicatietype);
 
         }
 
@@ -619,7 +618,7 @@ namespace Chiro.Gap.Services
         public IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen()
         {
             var communicatietypes = _communicatieTypesRepo.GetAll();
-            return Mapper.Map<IEnumerable<CommunicatieType>, List<CommunicatieTypeInfo>>(communicatietypes);
+            return _mappingHelper.Map<IEnumerable<CommunicatieType>, List<CommunicatieTypeInfo>>(communicatietypes);
         }
 
         /// <summary>
@@ -636,7 +635,7 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.GeenGav();
             }
-            return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(communicatieVorm);
+            return _mappingHelper.Map<CommunicatieVorm, CommunicatieDetail>(communicatieVorm);
         }
 
         /// <summary>
@@ -744,7 +743,7 @@ namespace Chiro.Gap.Services
                 // als er een gelijkaardige persoon bestaat, en we forceren niet, dan throwen we deze
 
                 throw FaultExceptionHelper.Blokkerend(
-                    Mapper.Map<IList<GelieerdePersoon>, List<PersoonDetail>>(ex.Objecten), ex.Message);
+                    _mappingHelper.Map<IList<GelieerdePersoon>, List<PersoonDetail>>(ex.Objecten), ex.Message);
             }
 
             // CommunicatieVormen (Telefoonnummer en e-mailadres,..) koppelen
@@ -970,7 +969,7 @@ namespace Chiro.Gap.Services
             catch (BlokkerendeObjectenException<GelieerdePersoon> ex)
             {
                 throw FaultExceptionHelper.Blokkerend(
-                    Mapper.Map<IList<GelieerdePersoon>, List<PersoonDetail>>(ex.Objecten), ex.Message);
+                    _mappingHelper.Map<IList<GelieerdePersoon>, List<PersoonDetail>>(ex.Objecten), ex.Message);
             }
 
             _groepenRepo.SaveChanges();
@@ -1237,7 +1236,7 @@ namespace Chiro.Gap.Services
                 {
                     // Het feit dat we telkens terug moeten mappen naar een
                     // datacontract, maakt het rommelig en omslachtig.
-                    var info = Mapper.Map<CommunicatieVorm, CommunicatieInfo>(email);
+                    var info = _mappingHelper.Map<CommunicatieVorm, CommunicatieInfo>(email);
                     info.Voorkeur = true;
                     CommunicatieVormAanpassen(info);
                 }
@@ -1437,7 +1436,7 @@ namespace Chiro.Gap.Services
             catch (BlokkerendeObjectenException<PersoonsAdres> ex)
             {
                 throw FaultExceptionHelper.Blokkerend(
-                    Mapper.Map<IList<PersoonsAdres>, List<PersoonsAdresInfo2>>(ex.Objecten),
+                    _mappingHelper.Map<IList<PersoonsAdres>, List<PersoonsAdresInfo2>>(ex.Objecten),
                     Resources.WoontDaarAl);
 
                 // Dit kan nog wel wat verfijnd worden.
@@ -1503,7 +1502,7 @@ namespace Chiro.Gap.Services
             {
                 // persoon blabla woont al op dat adres
                 throw FaultExceptionHelper.Blokkerend(
-                    Mapper.Map<IList<PersoonsAdres>, List<PersoonsAdresInfo2>>(ex.Objecten), ex.Message);
+                    _mappingHelper.Map<IList<PersoonsAdres>, List<PersoonsAdresInfo2>>(ex.Objecten), ex.Message);
             }
 
             var teSyncen = (from pa in nieuwePersoonsAdressen
@@ -1654,7 +1653,7 @@ namespace Chiro.Gap.Services
 
             var communicatieVorm = new CommunicatieVorm();
 
-            Mapper.Map(commInfo, communicatieVorm);
+            _mappingHelper.Map(commInfo, communicatieVorm);
             communicatieVorm.ID = 0;    // zodat die zeker als nieuw wordt beschouwd
             communicatieVorm.CommunicatieType = _communicatieTypesRepo.ByID(commInfo.CommunicatieTypeID);
 

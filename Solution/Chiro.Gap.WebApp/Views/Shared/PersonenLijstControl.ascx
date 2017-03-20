@@ -18,9 +18,11 @@
  * limitations under the License.
  */
 %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
-<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%
     List<CheckBoxListInfo> info
        = (from pa in Model.PersoonInfos

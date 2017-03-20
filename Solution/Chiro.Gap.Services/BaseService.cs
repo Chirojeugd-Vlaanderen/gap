@@ -3,6 +3,7 @@
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * Verfijnen gebruikersrechten Copyright 2015, 2017 Chirojeugd-Vlaanderen vzw
+ * Upgrade automapper Copyright 2017 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +38,7 @@ namespace Chiro.Gap.Services
         protected readonly IAuthenticatieManager _authenticatieMgr;
         protected readonly IAbonnementenManager _abonnementenMgr;
         protected readonly IAutorisatieManager _autorisatieMgr;
+        protected readonly MappingHelper _mappingHelper;
 
         /// <summary>
         /// Constructor.
@@ -58,17 +60,9 @@ namespace Chiro.Gap.Services
             _abonnementenMgr = abonnementenManager;
             _authenticatieMgr = authenticatieManager;
             _autorisatieMgr = autorisatieManager;
-            MappingsDefinieren();
-        }
 
-        /// <summary>
-        /// Definieert meteen alle nodige mappings.
-        /// </summary>
-        private void MappingsDefinieren()
-        {
-            var helper = new MappingHelper(_ledenMgr, _groepsWerkJarenMgr, _abonnementenMgr, _authenticatieMgr, _autorisatieMgr);
-            helper.MappingsDefinieren();
+            // TODO: kunnen we dit niet injecteren?
+            _mappingHelper = new MappingHelper(_ledenMgr, _groepsWerkJarenMgr, _abonnementenMgr, _authenticatieMgr, _autorisatieMgr);
         }
-
     }
 }
