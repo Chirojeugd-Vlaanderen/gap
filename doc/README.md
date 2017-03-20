@@ -29,6 +29,15 @@ git-repository https://gitlab.chiro.be/gap/gap.git. Clone ze meteen met
 submodules, want anders gaat de CAS-authenticatie niet werken:
 
     git clone --recursive https://gitlab.chiro.be/gap/gap.git
+    
+Moest je toch geclonet hebben zonder `--recursive`, dan kun je de code
+van de submodules als volgt nog goed krijgen:
+
+```
+# dit is enkel nodig als je geclonet hebt zonder --recursive:
+git submodule init
+git submodule update
+```
 
 Je mag de source code downloaden en gebruiken
 onder de voorwaarden van de [Apache License, Version
