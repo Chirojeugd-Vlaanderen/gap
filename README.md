@@ -26,6 +26,18 @@ Als je in de issue tracker wilt werken, moet je in gitlab aanloggen
 met je Chiro-account. Hiervoor klik je op de
 [aanmeldpagina](https://gitlab.chiro.be/users/sign_in) op de link 'CAS'.
 
+### Submodules
+
+GAP gebruikt 2 git-submodules, namelijk [tools/Chiro.CiviCrm.Wcf](tools/Chiro.CiviCrm.Wcf)
+en [tools/DotNetCasClient](tools/DotNetCasClient). Als je de git-repostirory 'gewoon'
+clonet met `git clone`, dan komt de code van die submodules niet mee, en krijg je
+compilatieproblemen. Zit je in dat geval, probeer dan eens:
+
+```
+git submodule init
+git submodule update
+```
+
 ## Chiro-account?
 
 Als je geen Chiro-account hebt, contacteer dan
