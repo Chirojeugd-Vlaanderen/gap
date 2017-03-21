@@ -19,14 +19,14 @@
 using System;
 using System.Collections.Generic;
 using Chiro.Ad.ServiceContracts;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Test;
 using Chiro.Gap.WorkerInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 
 namespace Chiro.Gap.Services.Test
@@ -37,66 +37,24 @@ namespace Chiro.Gap.Services.Test
     ///This is a test class for GebruikersServiceTest and is intended
     ///to contain all GebruikersServiceTest Unit Tests
     ///</summary>
-    [TestClass()]
-    public class GebruikersServiceTest
+    [TestFixture]
+    public class GebruikersServiceTest: ChiroTest
     {
-
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
+        public GebruikersServiceTest(): base()
         {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
         }
 
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        [TestInitialize()]
-        public void MyTestInitialize()
+        [SetUp]
+        public void Setup()
         {
             PermissionHelper.FixPermissions();
-            Factory.ContainerInit();
+            Factory.TypeRegistreren<IAutorisatieManager>(typeof(AutMgrAltijdGav));
         }
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
 
         ///<summary>
         ///Test voor gebruiker zonder rechten maken.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void GebruikerMakenTest()
         {
             // ARRANGE
@@ -160,7 +118,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///A test for RechtenAfnemen
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void RechtenAfnemenTest()
         {
             // ARRANGE
@@ -198,7 +156,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///A test for RechtenAfnemen
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void RechtenAfnemenPermissiesTest()
         {
             // ARRANGE

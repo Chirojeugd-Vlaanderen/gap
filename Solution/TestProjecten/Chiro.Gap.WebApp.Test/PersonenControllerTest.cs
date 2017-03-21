@@ -20,37 +20,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Test;
 using Chiro.Gap.WebApp.Controllers;
 using Chiro.Gap.WebApp.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 
 namespace Chiro.Gap.WebApp.Test
 {
-    [TestClass]
-    public class PersonenControllerTest
+    [TestFixture]
+    public class PersonenControllerTest: ChiroTest
     {
-        /// <summary>
-        /// Initialize IOC container.
-        /// </summary>
-        /// <param name="testContext"></param>
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            Factory.ContainerInit();
-        }
-
         /// <summary>
         /// Als je bij het aanvragen van de nieuwsbrief een ongeldig e-mailadres ingeeft,
         /// dan moet je opnieuw de view krijgen waarin je het adres kunt ingeven.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NieuwsbriefOngeldigAdresTest()
         {
             const int groepid = 426;            // arbitrair
@@ -108,7 +98,7 @@ namespace Chiro.Gap.WebApp.Test
 
             // assert
 
-            Assert.IsInstanceOfType(result, typeof (ViewResult));
+            Assert.IsInstanceOf<ViewResult>(result);
             Assert.AreEqual(((ViewResult)result).ViewName, "NieuwsBrief");
         }
 
@@ -117,7 +107,7 @@ namespace Chiro.Gap.WebApp.Test
         /// formulier dat je krijgt, nieuwsbrief krijgen is aangevinkt als dat nog niet
         /// het geval was, en uitgevinkt als dat wel het geval was.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NieuwsbriefWijzigenVinkjeOpVoorhandGewijzigdTest()
         {
             const int groepid = 426;            // arbitrair
@@ -164,15 +154,15 @@ namespace Chiro.Gap.WebApp.Test
 
             // assert
 
-            Assert.IsInstanceOfType(result, typeof(ViewResult));
-            Assert.IsInstanceOfType(((ViewResult) result).Model, typeof (VoorkeursMailModel));
+            Assert.IsInstanceOf<ViewResult>(result);
+            Assert.IsInstanceOf<VoorkeursMailModel>(((ViewResult) result).Model);
             Assert.IsTrue(((VoorkeursMailModel)((ViewResult)result).Model).PersoonLidInfo.PersoonDetail.NieuwsBrief);
         }
 
         ///<summary>
         ///Test of je met de webinterface leiding kunt maken zonder afdeling
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void LedenMakenTest()
         {
             // Het inschrijven van leden en leiding via de webinterface is nogal vreemd

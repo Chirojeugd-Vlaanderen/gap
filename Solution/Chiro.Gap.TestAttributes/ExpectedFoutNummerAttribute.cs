@@ -3,7 +3,7 @@ using System.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Chiro.Gap.TestAttributes
 {
@@ -17,7 +17,7 @@ namespace Chiro.Gap.TestAttributes
     /// http://www.cookcomputing.com/blog/archives/unit-testing-with-expectedexception
     /// </remarks>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public sealed class ExpectedFoutNummerAttribute : ExpectedExceptionBaseAttribute
+    public sealed class ExpectedFoutNummerAttribute : ExpectedBaseExceptionAttribute
     {
         public Type ExpectedException { get; set; }
         public FoutNummer ExpectedFoutNummer { get; set; }

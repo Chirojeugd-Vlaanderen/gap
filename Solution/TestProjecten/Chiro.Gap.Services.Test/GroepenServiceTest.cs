@@ -19,10 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Principal;
 using System.ServiceModel;
-using System.Threading;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
@@ -30,10 +27,10 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.Services.Test.Properties;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.Test;
 using Chiro.Gap.WorkerInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 namespace Chiro.Gap.Services.Test
 {
@@ -42,29 +39,25 @@ namespace Chiro.Gap.Services.Test
     /// </summary>
     /// <remarks>Blijkbaar heeft iemand mijn mocks voor de DAO weggehaald.  Dan testen we maar
     /// heel de flow.</remarks>
-    [TestClass]
-    public class GroepenServiceTest
+    [TestFixture]
+    public class GroepenServiceTest: ChiroTest
     {
         /// <summary>
         /// Deze functie zorgt ervoor dat de PrincipalPermissionAttributes op de service methods
         /// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
         /// security.
-        /// 
-        /// Bovendien herinitialiseren we iedere keer de IOC-container, want daar wordt in
-        /// verschillende tests deftig mee geprutst.
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void VoorElkeTest()
         {
             PermissionHelper.FixPermissions();
-            Factory.ContainerInit();
         }
 
 
         /// <summary>
         /// Ophalen groepsinfo (zonder categorieën of afdelingen)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GroepOphalen()
         {
             // Flauwe test die groep met gegeven ID opvraagt, en dan gewoon
@@ -99,7 +92,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Ophalen groepsinfo; controleert of categorieën en afdelingen meekomen.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GroepDetailOphalen()
         {
             #region Arrange
@@ -151,8 +144,7 @@ namespace Chiro.Gap.Services.Test
         /// Kijkt na of er een foutmelding komt als een gebruiker probeert een functie bij te maken met een code
         /// die al bestaat voor een nationale functie (in dit geval 'CP')
         ///</summary>
-        [TestMethod()]
-        [ExpectedException(typeof (FaultException<BestaatAlFault<FunctieInfo>>))]
+        [Test]
         public void FunctieToevoegenNationaleCode()
         {
             // Arrange.
@@ -203,18 +195,16 @@ namespace Chiro.Gap.Services.Test
             LidType lidType = LidType.Alles; // lidtype irrelevant voor deze functie
             Nullable<int> werkJaarVan = 2012; // in gebruik vanaf 2012-2013
 
-            target.FunctieToevoegen(groepID, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
-
             // Assert
-
-            Assert.Fail(); // De bedoeling is dat we hier niet komen, maar dat een exception werd gethrowd.
+            Assert.Throws<FaultException<BestaatAlFault<FunctieInfo>>>(() => target.FunctieToevoegen(groepID, naam,
+                code, maxAantal, minAantal, lidType, werkJaarVan));
         }
 
 
         /// <summary>
         ///Kijkt na of 'functiesOphalen' al minstens de nationale functies ophaalt.
         ///</summary>
-        [TestMethod]
+        [Test]
         public void FunctiesOphalenTest()
         {
             // groepswerkjaar
@@ -258,7 +248,7 @@ namespace Chiro.Gap.Services.Test
         ///<summary>
         ///Controleert of een groepsnaam die begint met 'chiro ' bijgewerkt wordt bij het saven.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void BewarenGroepsNaamChiroTest()
         {
             // (Dit is een referentie-implementatie van een eenvoudige unit test voor de services)
@@ -283,14 +273,14 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.AreEqual(groep.Naam, "Blibli", true);
+            Assert.AreEqual(groep.Naam, "Blibli");
         }
 
         ///<summary>
         /// Controleert of een groepsnaam die begint met 'chiro' (zonder spatie daarna)
         /// correct wordt gesaved
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void BewarenGroepsNaamChiroTest2()
         {
             // (Dit is een referentie-implementatie van een eenvoudige unit test voor de services)
@@ -315,14 +305,14 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.AreEqual(groep.Naam, "Chirokidoki", true);
+            Assert.AreEqual(groep.Naam, "Chirokidoki");
         }
 
 
         /// <summary>
         ///Test of FunctieToevoegen wel echt een functie toevoegt. (Flauw)
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void FunctieToevoegenTest()
         {
             // ARRANGE
@@ -354,14 +344,13 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.AreEqual(groep.Functie.Count, 1);
-            Assert.AreEqual(groep.Functie.First().Code, "mfn", true);
+            Assert.AreEqual(groep.Functie.First().Code, "mfn");
         }
 
         /// <summary>
         ///Verwacht faultexception bij verwijderen van functie dit jaar in gebruik.
         ///</summary>
-        [TestMethod()]
-        [ExpectedException(typeof (FaultException<BlokkerendeObjectenFault<PersoonLidInfo>>))]
+        [Test]
         public void FunctieVerwijderenInGebruikTest()
         {
             // ARRANGE
@@ -396,18 +385,16 @@ namespace Chiro.Gap.Services.Test
 
             var target = Factory.Maak<GroepenService>();
 
-            // ACT
-
-            target.FunctieVerwijderen(functie.ID, false);
-
             // ASSERT
-            Assert.Fail(); // we moeten een faultexception gekregen hebben.
+
+            Assert.Throws<FaultException<BlokkerendeObjectenFault<PersoonLidInfo>>>(
+                () => target.FunctieVerwijderen(functie.ID, false));
         }
 
         /// <summary>
         ///Als een functie vroeger gebruikt werd, moet verwijderen enkel het 'werkjaar-tot' zetten.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void FunctieVerwijderenOoitGebruiktTest()
         {
             // ARRANGE
@@ -458,7 +445,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///Controleert of 'MijnGroepenOphalen' rekening houdt met vervallen gebruikresrecht.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void MijnGroepenOphalenTest()
         {
             // ARRANGE
@@ -502,7 +489,7 @@ namespace Chiro.Gap.Services.Test
         ///<summary>
         ///Controleert of de service verhindert dat een stamnummer wordt gewijzigd.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void BewarenStamNrTest()
         {
             // ARRANGE
@@ -545,7 +532,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///A test for JaarOvergangUitvoeren
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void JaarovergangUitvoerenTest()
         {
             // ARRANGE
@@ -626,7 +613,7 @@ namespace Chiro.Gap.Services.Test
         ///Controleert of JaarOvergangUitvoeren rekening houdt met de minimumleeftijd
         /// bij de afdelingsindeling.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void JaarovergangUitvoerenMinimumLeeftijdTest()
         {
             // ARRANGE
@@ -715,7 +702,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleer dat lidrelaties einddatum hebben in het vorige werkjaar (#5367)
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void JaarOvergangTerugDraaienTest()
         {
             // ARRANGE
@@ -762,7 +749,7 @@ namespace Chiro.Gap.Services.Test
         ///<summary>
         /// Controleert of AfdelingsJaarBewaren rekening houdt met de minimumleeftijd.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AfdelingsJaarBewarenMinimumLeeftijdTest()
         {
             // ARRANGE
@@ -829,7 +816,7 @@ namespace Chiro.Gap.Services.Test
         ///OngebruikteAfdelingenOphalen mag enkel de afdelingen ophalen die in het
         /// gevraagde werkjaar ongebruikt zijn.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void OngebruikteAfdelingenOphalenTest()
         {
             // ARRANGE
@@ -870,7 +857,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///Controleer of AlleAfdelingenOphalen ook inactieve afdelingen ophaalt.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AlleAfdelingenOphalenTest()
         {
             // ARRANGE
@@ -902,7 +889,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///Kijkt na of uitgeschreven leden zonder adres niet als fout worden aangegeven
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void LedenControlerenZonderAdresEnUitgeschrevenTest()
         {
             // ARRANGE
@@ -945,7 +932,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///Kijkt na of uitgeschreven leden zonder telefoonnummer niet als fout worden aangegeven
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void LedenControlerenZonderTelNrEnUitgeschrevenTest()
         {
             // ARRANGE
@@ -988,7 +975,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///Kijkt na of uitgeschreven leden zonder e-mailadres niet als fout worden aangegeven
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void LeidingControlerenZonderEmailEnUitgeschrevenTest()
         {
             // ARRANGE
@@ -1034,7 +1021,7 @@ namespace Chiro.Gap.Services.Test
         /// moet die helemaal verdwijnen (i.e. niet enkel een stopdatum krijgen)
         /// (test ter vervanging van Workers.Test.FunctieEnkelDitJaarInGebruikGeforceerdVerwijderenTest
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void FunctieEnkelDitJaarInGebruikGeforceerdVerwijderenTest()
         {
             // ARRANGE
@@ -1070,7 +1057,7 @@ namespace Chiro.Gap.Services.Test
         ///<summary>
         /// Controleer of de groepswerkjaarcache wordt gecleard na een jaarovergang.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void JaarOvergangUitvoerenCacheClearTest()
         {
             // ARRANGE
@@ -1104,7 +1091,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleert of het bewaren van een groep die gegevens synct met kipadmin.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void BewarenTest()
         {
             // ARRANGE
@@ -1138,7 +1125,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Een test op het verwijderen van een eigen functie zonder speciallekes
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void FunctieVerwijderenGewoonTest()
         {
             // ARRANGE
@@ -1174,7 +1161,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// A test for FunctiesControleren
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void FunctiesControlerenTest()
         {
             // ARRANGE
@@ -1206,7 +1193,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleert of het niveau van een functie goed bewaard wordt door FunctieBewerken.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void FunctieBewerkenNiveauTest()
         {
             // ARRANGE
@@ -1243,8 +1230,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test of GroepenService.FunctiesBewerken controleert op dubbele codes
         /// </summary>
-        [TestMethod()]
-        [ExpectedException(typeof(FaultException<BestaatAlFault<FunctieInfo>>))]
+        [Test]
         public void FunctieBewerkenCheckDubbeleCodeTest()
         {
             // ARRANGE
@@ -1278,28 +1264,22 @@ namespace Chiro.Gap.Services.Test
             repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>())
                                   .Returns(new DummyRepo<Functie>(alleFuncties));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
-
-            // ACT
-
             var target = Factory.Maak<GroepenService>();
-            target.FunctieBewerken(new FunctieDetail
-                                       {
-                                           ID = functie.ID,
-                                           IsNationaal = functie.IsNationaal,
-                                           Type = LidType.Leiding,
-                                           Code = nationaleFunctie.Code
-                                       });
 
             // ASSERT
-
-            // niks te assert. Hopelijk hebben we een exception gecatcht.
+            Assert.Throws<FaultException<BestaatAlFault<FunctieInfo>>>(() => target.FunctieBewerken(new FunctieDetail
+            {
+                ID = functie.ID,
+                IsNationaal = functie.IsNationaal,
+                Type = LidType.Leiding,
+                Code = nationaleFunctie.Code
+            }));
         }
 
         /// <summary>
         /// Test of GroepenService.FunctiesBewerken controleert op dubbele naam
         /// </summary>
-        [TestMethod()]
-        [ExpectedException(typeof(FaultException<BestaatAlFault<FunctieInfo>>))]
+        [Test]
         public void FunctieBewerkenCheckDubbeleNaamTest()
         {
             // ARRANGE
@@ -1333,28 +1313,23 @@ namespace Chiro.Gap.Services.Test
             repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>())
                                   .Returns(new DummyRepo<Functie>(alleFuncties));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
-
-            // ACT
-
             var target = Factory.Maak<GroepenService>();
-            target.FunctieBewerken(new FunctieDetail
+
+            // ASSERT
+            Assert.Throws<FaultException<BestaatAlFault<FunctieInfo>>>(() => target.FunctieBewerken(new FunctieDetail
             {
                 ID = functie.ID,
                 IsNationaal = functie.IsNationaal,
                 Type = LidType.Leiding,
                 Code = functie.Code,
-                Naam = nationaleFunctie.Naam    // dubbele naam
-            });
-
-            // ASSERT
-
-            // niks te assert. Hopelijk hebben we een exception gecatcht.
+                Naam = nationaleFunctie.Naam // dubbele naam
+            }));
         }
 
         /// <summary>
         /// OngebruikteAfdelingenOphalen moet een lege lijst opleveren voor een kadergroep.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void OngebruikteAfdelingenOphalenKaderGroepTest()
         {
             // ARRANGE
