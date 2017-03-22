@@ -17,7 +17,6 @@
 using System;
 using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.ServiceModel;
-using Chiro.CiviSync.Mapping;
 using Chiro.CiviSync.Services;
 
 namespace Chiro.CiviSync.ConsoleServiceHost
@@ -30,8 +29,6 @@ namespace Chiro.CiviSync.ConsoleServiceHost
     {
         static void Main(string[] args)
         {
-            // Initialiseer dependency injection en automapper
-            MappingHelper.MappingsDefinieren();
             Factory.ContainerInit();
 
             // Creeer en open service host.

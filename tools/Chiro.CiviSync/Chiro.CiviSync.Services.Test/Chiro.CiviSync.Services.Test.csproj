@@ -38,12 +38,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
-      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -53,13 +53,7 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </Otherwise>
+    <Otherwise />
   </Choose>
   <ItemGroup>
     <Compile Include="PersonenBewarenTest.cs" />
@@ -67,7 +61,6 @@
     <Compile Include="LidBewarenTest.cs" />
     <Compile Include="StandaardAdresBewarenTest.cs" />
     <Compile Include="SyncServiceTests.cs" />
-    <Compile Include="TestHelper.cs" />
     <Compile Include="LidVerwijderenTest.cs" />
     <Compile Include="MembershipBewarenTest.cs" />
     <Compile Include="BivakBewarenTest.cs" />
@@ -79,6 +72,7 @@
     <Compile Include="AbonnementBewarenTest.cs" />
     <Compile Include="AbonnementStopzettenTest.cs" />
     <Compile Include="LidUitschrijvenTest.cs" />
+    <Compile Include="SyncTest.cs" />
     <Compile Include="WerkjaarAfsluitenTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +95,10 @@
     <ProjectReference Include="..\Chiro.CiviSync.Services\Chiro.CiviSync.Services.csproj">
       <Project>{30215f07-a682-4e89-8ff9-d33f705e9842}</Project>
       <Name>Chiro.CiviSync.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Test.Mapping\Chiro.CiviSync.Test.Mapping.csproj">
+      <Project>{AAAC96BB-CB77-48CC-AE7C-D104AD560054}</Project>
+      <Name>Chiro.CiviSync.Test.Mapping</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>

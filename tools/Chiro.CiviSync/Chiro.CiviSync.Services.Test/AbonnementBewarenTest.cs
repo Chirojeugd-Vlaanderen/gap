@@ -15,102 +15,100 @@
  */
 
 using System;
-using AutoMapper;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Mapping;
+using Chiro.CiviSync.Test.Mapping;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace Chiro.CiviSync.Services.Test
 {
-    [TestClass]
-    public class AbonnementBewarenTest
+    [TestFixture]
+    public class AbonnementBewarenTest: SyncTest
     {
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 8, 6);
         private const int HuidigWerkJaar = 2014;
-
-        [ClassInitialize]
-        public static void InitialilzeTestClass(TestContext c)
-        {
-            TestHelper.MappingsCreeren();
-        }
 
         /// <summary>
         /// Nakijken data als je een abonnement vraagt voor werkjaar X terwijl je er al
         /// een hebt voor werkjaar X+1.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void AbonnementBewarenOuderDanHuidige()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            const int adNummer = 2;
-            const int contactId = 4;
-            DateTime beginBestaandAbonnement = new DateTime(HuidigWerkJaar + 1, 9, 1);
-            DateTime eindeBestaandAbonnement = new DateTime(HuidigWerkJaar + 2, 9, 1);
-
-            var bestaandAbonnement = new Membership
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
             {
-                ContactId = contactId,
-                MembershipTypeId = (int)MembershipType.DubbelpuntAbonnement,
-                StartDate = beginBestaandAbonnement,
-                EndDate = eindeBestaandAbonnement,
-                JoinDate = beginBestaandAbonnement
-            };
 
-            var persoon = new Contact
-            {
-                Id = contactId,
-                ExternalIdentifier = adNummer.ToString(),
-                FirstName = "Kees",
-                LastName = "Flodder",
-                GapId = 3,
-                MembershipResult =
-                    new ApiResultValues<Membership> { Count = 1, IsError = 0, Values = new[] { bestaandAbonnement } }
-            };
+                const int adNummer = 2;
+                const int contactId = 4;
+                DateTime beginBestaandAbonnement = new DateTime(HuidigWerkJaar + 1, 9, 1);
+                DateTime eindeBestaandAbonnement = new DateTime(HuidigWerkJaar + 2, 9, 1);
 
-            civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(new ApiResultValues<Contact>(persoon));
+                var bestaandAbonnement = new Membership
+                {
+                    ContactId = contactId,
+                    MembershipTypeId = (int) MembershipType.DubbelpuntAbonnement,
+                    StartDate = beginBestaandAbonnement,
+                    EndDate = eindeBestaandAbonnement,
+                    JoinDate = beginBestaandAbonnement
+                };
 
-            // Neem meteen mee dat IsOverride niet gezet mag zijn (zie #4960).
-            civiApiMock.Setup(
-                src =>
-                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<MembershipRequest>(
-                            r =>
-                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeBestaandAbonnement &&
-                                r.JoinDate == _vandaagZogezegd && r.IsOverride != true &&
-                                r.MembershipTypeId == (int)MembershipType.DubbelpuntAbonnement)))
-                .Returns(
-                    (string key1, string key2, MembershipRequest r) =>
-                        Mapper.Map<MembershipRequest, ApiResultValues<Membership>>(r)).Verifiable();
+                var persoon = new Contact
+                {
+                    Id = contactId,
+                    ExternalIdentifier = adNummer.ToString(),
+                    FirstName = "Kees",
+                    LastName = "Flodder",
+                    GapId = 3,
+                    MembershipResult =
+                        new ApiResultValues<Membership> {Count = 1, IsError = 0, Values = new[] {bestaandAbonnement}}
+                };
 
-            var service = factory.Maak<SyncService>();
+                civiApiMock.Setup(
+                        src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                    .Returns(new ApiResultValues<Contact>(persoon));
 
-            // ACT
+                // Neem meteen mee dat IsOverride niet gezet mag zijn (zie #4960).
+                civiApiMock.Setup(
+                        src =>
+                            src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<MembershipRequest>(
+                                    r =>
+                                        r.StartDate == _vandaagZogezegd && r.EndDate == eindeBestaandAbonnement &&
+                                        r.JoinDate == _vandaagZogezegd && r.IsOverride != true &&
+                                        r.MembershipTypeId == (int) MembershipType.DubbelpuntAbonnement)))
+                    .Returns(
+                        (string key1, string key2, MembershipRequest r) =>
+                            TestHelper.Map<MembershipRequest, ApiResultValues<Membership>>(r))
+                    .Verifiable();
 
-            service.AbonnementBewaren(adNummer, HuidigWerkJaar, AbonnementTypeEnum.Digitaal);
+                var service = factory.Maak<SyncService>();
 
-            // ASSERT
+                // ACT
 
-            civiApiMock.Verify(
-                src =>
-                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<MembershipRequest>(
-                            r => r.StartDate == _vandaagZogezegd && r.EndDate == eindeBestaandAbonnement &&
-                                 r.JoinDate == _vandaagZogezegd && r.IsOverride != true &&
-                                 r.MembershipTypeId == (int) MembershipType.DubbelpuntAbonnement)), Times.AtLeastOnce);
+                service.AbonnementBewaren(adNummer, HuidigWerkJaar, AbonnementTypeEnum.Digitaal);
+
+                // ASSERT
+
+                civiApiMock.Verify(
+                    src =>
+                        src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                            It.Is<MembershipRequest>(
+                                r => r.StartDate == _vandaagZogezegd && r.EndDate == eindeBestaandAbonnement &&
+                                     r.JoinDate == _vandaagZogezegd && r.IsOverride != true &&
+                                     r.MembershipTypeId == (int) MembershipType.DubbelpuntAbonnement)),
+                    Times.AtLeastOnce);
+            }
         }
     }
 }

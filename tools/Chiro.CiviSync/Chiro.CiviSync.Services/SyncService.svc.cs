@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2013-2016 Chirojeugd-Vlaanderen vzw
+   Copyright 2013-2017 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ using System;
 using System.Diagnostics;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviSync.Logic;
+using Chiro.CiviSync.Mapping;
 using Chiro.CiviSync.Services.Properties;
 using Chiro.CiviSync.Workers;
 using Chiro.Gap.Log;
@@ -48,6 +49,14 @@ namespace Chiro.CiviSync.Services
         private readonly IGapUpdateClient _gapUpdateClient;
 
         protected ServiceHelper ServiceHelper { get; }
+
+        protected static MappingHelper MappingHelper { get; }
+
+        static SyncService()
+        {
+            // Het zou cool zijn moesten we dit kunnen injecteren.
+            MappingHelper = new MappingHelper();
+        }
 
         /// <summary>
         /// Creates a new service instance.

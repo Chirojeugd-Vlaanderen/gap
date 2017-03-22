@@ -15,107 +15,101 @@
  */
 
 using System;
-using AutoMapper;
-using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.UpdateApi.Client;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace Chiro.CiviSync.Services.Test
 {
-    [TestClass]
-    public class LoonVerliesVerzerkerenTest
+    [TestFixture]
+    public class LoonVerliesVerzerkerenTest: SyncTest
     {
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
-
-        [ClassInitialize]
-        public static void InitialilzeTestClass(TestContext c)
-        {
-            // creer mappings voor de tests
-            TestHelper.MappingsCreeren();
-        }
 
         /// <summary>
         /// Stel dat een persoon al member is in civi, en dat dat membership al is gefactureerd.
         /// Als loonverlies verzekerd moet worden, dan wordt het membership bijgewerkt, en dan moet de status van het
         /// bijgewerkte membership 'gedeeltelijk gefactureerd' worden.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GefactureerdMembershipUpgradenMetLoonverlies()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            const int adNummer = 2;
-            const int contactId = 4;
-            DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
-            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
-
-            var bestaandMembership = new Membership
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
             {
-                ContactId = contactId,
-                MembershipTypeId = (int)MembershipType.Aansluiting,
-                StartDate = beginDitWerkJaar,
-                EndDate = eindeDitWerkJaar,
-                JoinDate = beginDitWerkJaar.AddMonths(1),
-                VerzekeringLoonverlies = false,
-                FactuurStatus = FactuurStatus.FactuurOk,
-                MembershipPaymentResult = new ApiResultValues<MembershipPayment>(new MembershipPayment())
-            };
 
-            var persoon = new Contact
-            {
-                Id = contactId,
-                ExternalIdentifier = adNummer.ToString(),
-                FirstName = "Kees",
-                LastName = "Flodder",
-                GapId = 3,
-                MembershipResult =
-                    new ApiResultValues<Membership> { Count = 1, IsError = 0, Values = new[] { bestaandMembership } }
-            };
-            var groep = new Contact { ExternalIdentifier = "BLA/0000", Id = 5 };
+                const int adNummer = 2;
+                const int contactId = 4;
+                DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
+                DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
 
-            civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                        new ApiResultValues<Contact>(r.ExternalIdentifier == groep.ExternalIdentifier ||
-                                                     r.Id == groep.Id
-                            ? groep
-                            : persoon));
+                var bestaandMembership = new Membership
+                {
+                    ContactId = contactId,
+                    MembershipTypeId = (int) MembershipType.Aansluiting,
+                    StartDate = beginDitWerkJaar,
+                    EndDate = eindeDitWerkJaar,
+                    JoinDate = beginDitWerkJaar.AddMonths(1),
+                    VerzekeringLoonverlies = false,
+                    FactuurStatus = FactuurStatus.FactuurOk,
+                    MembershipPaymentResult = new ApiResultValues<MembershipPayment>(new MembershipPayment())
+                };
 
-            civiApiMock.Setup(
-                src =>
-                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<MembershipRequest>(r => r.FactuurStatus == FactuurStatus.ExtraVerzekeringTeFactureren)))
-                .Returns(
-                    (string key1, string key2, MembershipRequest r) =>
-                        Mapper.Map<MembershipRequest, ApiResultValues<Membership>>(r))
-                .Verifiable();
+                var persoon = new Contact
+                {
+                    Id = contactId,
+                    ExternalIdentifier = adNummer.ToString(),
+                    FirstName = "Kees",
+                    LastName = "Flodder",
+                    GapId = 3,
+                    MembershipResult =
+                        new ApiResultValues<Membership> {Count = 1, IsError = 0, Values = new[] {bestaandMembership}}
+                };
+                var groep = new Contact {ExternalIdentifier = "BLA/0000", Id = 5};
 
-            var service = factory.Maak<SyncService>();
+                civiApiMock.Setup(
+                        src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                    .Returns(
+                        (string key1, string key2, ContactRequest r) =>
+                            new ApiResultValues<Contact>(r.ExternalIdentifier == groep.ExternalIdentifier ||
+                                                         r.Id == groep.Id
+                                ? groep
+                                : persoon));
 
-            // ACT
+                civiApiMock.Setup(
+                        src =>
+                            src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<MembershipRequest>(
+                                    r => r.FactuurStatus == FactuurStatus.ExtraVerzekeringTeFactureren)))
+                    .Returns(
+                        (string key1, string key2, MembershipRequest r) =>
+                            TestHelper.Map<MembershipRequest, ApiResultValues<Membership>>(r))
+                    .Verifiable();
 
-            // loonverlies verzekeren.
-            service.LoonVerliesVerzekeren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
+                var service = factory.Maak<SyncService>();
 
-            // ASSERT
+                // ACT
 
-            civiApiMock.Verify(
-                src =>
-                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<MembershipRequest>(r => r.FactuurStatus == FactuurStatus.ExtraVerzekeringTeFactureren)),
-                Times.AtLeastOnce);
+                // loonverlies verzekeren.
+                service.LoonVerliesVerzekeren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
+
+                // ASSERT
+
+                civiApiMock.Verify(
+                    src =>
+                        src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                            It.Is<MembershipRequest>(r => r.FactuurStatus ==
+                                                          FactuurStatus.ExtraVerzekeringTeFactureren)),
+                    Times.AtLeastOnce);
+            }
         }
 
         /// <summary>
@@ -123,76 +117,77 @@ namespace Chiro.CiviSync.Services.Test
         /// tegen loonverlies, dan mag dat nog niets doen. Die verzekering zal dan mee
         /// afgehandeld worden als het membership wordt gemaakt.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void LoonverliesNegerenAlsNogGeenMemberDitWerkjaar()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            const int adNummer = 2;
-            const int contactId = 4;
-            DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
-            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
-
-            var oudMembership = new Membership
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
             {
-                ContactId = contactId,
-                MembershipTypeId = (int)MembershipType.Aansluiting,
-                StartDate = beginDitWerkJaar.AddYears(-1),
-                EndDate = eindeDitWerkJaar.AddYears(-1),
-                JoinDate = beginDitWerkJaar.AddMonths(-10),
-                VerzekeringLoonverlies = false,
-                FactuurStatus = FactuurStatus.FactuurOk
-            };
 
-            var persoon = new Contact
-            {
-                Id = contactId,
-                ExternalIdentifier = adNummer.ToString(),
-                FirstName = "Kees",
-                LastName = "Flodder",
-                GapId = 3,
-                MembershipResult =
-                    new ApiResultValues<Membership> { Count = 1, IsError = 0, Values = new[] { oudMembership } }
-            };
-            var groep = new Contact { ExternalIdentifier = "BLA/0000", Id = 5 };
+                const int adNummer = 2;
+                const int contactId = 4;
+                DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
+                DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
 
-            civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                        new ApiResultValues<Contact>(r.ExternalIdentifier == groep.ExternalIdentifier ||
-                                                     r.Id == groep.Id
-                            ? groep
-                            : persoon));
+                var oudMembership = new Membership
+                {
+                    ContactId = contactId,
+                    MembershipTypeId = (int) MembershipType.Aansluiting,
+                    StartDate = beginDitWerkJaar.AddYears(-1),
+                    EndDate = eindeDitWerkJaar.AddYears(-1),
+                    JoinDate = beginDitWerkJaar.AddMonths(-10),
+                    VerzekeringLoonverlies = false,
+                    FactuurStatus = FactuurStatus.FactuurOk
+                };
 
-            civiApiMock.Setup(
-                src =>
-                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.IsAny<MembershipRequest>()))
-                .Returns(
-                    (string key1, string key2, MembershipRequest r) =>
-                        Mapper.Map<MembershipRequest, ApiResultValues<Membership>>(r))
-                .Verifiable();
+                var persoon = new Contact
+                {
+                    Id = contactId,
+                    ExternalIdentifier = adNummer.ToString(),
+                    FirstName = "Kees",
+                    LastName = "Flodder",
+                    GapId = 3,
+                    MembershipResult =
+                        new ApiResultValues<Membership> {Count = 1, IsError = 0, Values = new[] {oudMembership}}
+                };
+                var groep = new Contact {ExternalIdentifier = "BLA/0000", Id = 5};
 
-            var service = factory.Maak<SyncService>();
+                civiApiMock.Setup(
+                        src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                    .Returns(
+                        (string key1, string key2, ContactRequest r) =>
+                            new ApiResultValues<Contact>(r.ExternalIdentifier == groep.ExternalIdentifier ||
+                                                         r.Id == groep.Id
+                                ? groep
+                                : persoon));
 
-            // ACT
+                civiApiMock.Setup(
+                        src =>
+                            src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                                It.IsAny<MembershipRequest>()))
+                    .Returns(
+                        (string key1, string key2, MembershipRequest r) =>
+                            TestHelper.Map<MembershipRequest, ApiResultValues<Membership>>(r))
+                    .Verifiable();
 
-            // loonverlies verzekeren.
-            service.LoonVerliesVerzekeren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
+                var service = factory.Maak<SyncService>();
 
-            // ASSERT
+                // ACT
 
-            civiApiMock.Verify(
-                src =>
-                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.IsAny<MembershipRequest>()),
-                Times.Never);
+                // loonverlies verzekeren.
+                service.LoonVerliesVerzekeren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
+
+                // ASSERT
+
+                civiApiMock.Verify(
+                    src =>
+                        src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                            It.IsAny<MembershipRequest>()),
+                    Times.Never);
+            }
         }
     }
 }

@@ -22,13 +22,13 @@ using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Test;
 using Chiro.Gap.UpdateApi.Client;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace Chiro.CiviSync.Workers.Test
 {
-    [TestClass]
-    public class ContactWorkerTest
+    [TestFixture]
+    public class ContactWorkerTest: SyncTest
     {
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
 
@@ -36,67 +36,70 @@ namespace Chiro.CiviSync.Workers.Test
         /// Persoon met recentste lid mag niet crashen als de API geen persoon
         /// oplevert.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void PersoonMetRecentsteLidOngeldigAd()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
-            civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(new ApiResultValues<Contact>());
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
+            {
 
-            // ContactHelper vraagt de API-keys bij constructie. Dat is misschien niet
-            // zo'n goed idee. Maar voorlopig doe ik het zo dus ook in deze test.
+                civiApiMock.Setup(
+                        src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                    .Returns(new ApiResultValues<Contact>());
 
-            var contactWorker = factory.Maak<ContactWorker>();
+                // ContactHelper vraagt de API-keys bij constructie. Dat is misschien niet
+                // zo'n goed idee. Maar voorlopig doe ik het zo dus ook in deze test.
 
-            // ACT
+                var contactWorker = factory.Maak<ContactWorker>();
 
-            var result = contactWorker.PersoonMetRecentsteLid(2, 3);
+                // ACT
 
-            // ASSERT
+                var result = contactWorker.PersoonMetRecentsteLid(2, 3);
 
-            Assert.IsNull(result);
+                // ASSERT
+
+                Assert.IsNull(result);
+            }
         }
 
         /// <summary>
         /// Persoon met recentste membership mag niet crashen als de API geen persoon
         /// oplevert.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void PersoonMetRecentsteMembershipOngeldigAd()
         {
             // ARRANGE
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
+            {
 
-            civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(new ApiResultValues<Contact>());
+                civiApiMock.Setup(
+                        src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                    .Returns(new ApiResultValues<Contact>());
 
-            // ContactHelper vraagt de API-keys bij constructie. Dat is misschien niet
-            // zo'n goed idee. Maar voorlopig doe ik het zo dus ook in deze test.
-            var contactWorker = factory.Maak<ContactWorker>();
+                // ContactHelper vraagt de API-keys bij constructie. Dat is misschien niet
+                // zo'n goed idee. Maar voorlopig doe ik het zo dus ook in deze test.
+                var contactWorker = factory.Maak<ContactWorker>();
 
-            // ACT
-            var result = contactWorker.PersoonMetRecentsteMembership(2, MembershipType.Aansluiting);
+                // ACT
+                var result = contactWorker.PersoonMetRecentsteMembership(2, MembershipType.Aansluiting);
 
-            // ASSERT
-            Assert.IsNull(result);
+                // ASSERT
+                Assert.IsNull(result);
+            }
         }
 
         /// <summary>
         /// Workers worden per call opnieuw geinstantieerd. Als er een nieuwe ContactWorker
         /// wordt gemaakt, dan is het de bedoeling dat dezelfde cache blijft gebruiken.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void AdNrCiviIdCacheTest()
         {
             // In principe is deze unit test niet helemaal juist, omdat het 2 dingen door elkaar
@@ -107,40 +110,43 @@ namespace Chiro.CiviSync.Workers.Test
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            // Vervang de gemockte cache (uit IocOpzetten) opnieuw door de echte cache.
-            factory.InstantieRegistreren<ICiviCache>(new CiviCache());
-
-            var myContact = new Contact
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
             {
-                Id = 1,
-                FirstName = "Johan",
-                LastName = "Vervloet",
-                ExternalIdentifier = "2"
-            };
 
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(myContact)).Verifiable();
+                // Vervang de gemockte cache (uit IocOpzetten) opnieuw door de echte cache.
+                factory.InstantieRegistreren<ICiviCache>(new CiviCache());
 
-            var contactWorker1 = factory.Maak<ContactWorker>(); 
-            var contactWorker2 = factory.Maak<ContactWorker>();
+                var myContact = new Contact
+                {
+                    Id = 1,
+                    FirstName = "Johan",
+                    LastName = "Vervloet",
+                    ExternalIdentifier = "2"
+                };
 
-            // ACT
+                civiApiMock.Setup(
+                        src =>
+                            src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)))
+                    .Returns(new ApiResultValues<Contact>(myContact))
+                    .Verifiable();
 
-            // vraag twee keer op, via aparte worker
-            int? civiId1 = contactWorker1.ContactIdGet(myContact.ExternalIdentifier);
-            int? civiId2 = contactWorker2.ContactIdGet(myContact.ExternalIdentifier);
+                var contactWorker1 = factory.Maak<ContactWorker>();
+                var contactWorker2 = factory.Maak<ContactWorker>();
 
-            // ASSERT
+                // ACT
 
-            civiApiMock.Verify(src =>
-                src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                    It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)), Times.Exactly(1));
+                // vraag twee keer op, via aparte worker
+                int? civiId1 = contactWorker1.ContactIdGet(myContact.ExternalIdentifier);
+                int? civiId2 = contactWorker2.ContactIdGet(myContact.ExternalIdentifier);
+
+                // ASSERT
+
+                civiApiMock.Verify(src =>
+                        src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                            It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)),
+                    Times.Exactly(1));
+            }
         }
     }
 }
