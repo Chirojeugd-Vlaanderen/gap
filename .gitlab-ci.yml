@@ -11,7 +11,7 @@ stages:
 # wat die cache is, weet ik niet precies. Ik hoop dat daarmee de gebuilde DLL's
 # van de build stage ook beschikbaar zouden zijn voor de test stage.
 cache:
-  key: ${CI_BUILD_REF}
+  key: ${CI_BUILD_REF_NAME}
   paths:
     - Solution
     - tools
