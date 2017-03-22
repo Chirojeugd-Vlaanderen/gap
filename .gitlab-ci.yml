@@ -12,7 +12,7 @@ cache:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
-update:
+build:
   stage: build
   only:
     - dev
@@ -25,6 +25,8 @@ update:
 
 unit tests:
   stage: test
+  dependencies:
+    - build
   only:
     - dev
     - staging
