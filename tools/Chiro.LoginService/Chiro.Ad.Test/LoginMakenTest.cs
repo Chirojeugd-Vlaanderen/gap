@@ -16,30 +16,33 @@
  * limitations under the License.
  */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ServiceModel;
 
 using Chiro.Ad.ServiceContracts;
 using Chiro.Cdf.ServiceHelper;
+using NUnit.Framework;
 
 namespace Chiro.Ad.Test
 {
     // Makkelijkste is om de loginservice te runnen vanuit 1 Visual Studio instance, en deze tests vanuit
     // een andere.
 
-    [TestClass]
+    [TestFixture]
     public class LoginMakenTest
     {
         /// <summary>
         /// Een zeer domme test om te kijken of de LoginService iets doet.
         /// Probeer een account aan te maken met een ongeldig adres, en verwacht een exception.
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(FaultException))]
+        /// <remarks>
+        /// Deze test zal meestal failen, tenzij op devsrv1 onder Jenkins.
+        /// </remarks>
+        [Test]
         public void ServiceAanroepTest()
         {
             var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
-            serviceHelper.CallService<IAdService, string>(client => client.GapLoginAanvragen(39198, "Johan", "Vervloet", "johan.vervloet_chiro"));
+            Assert.Throws<FaultException>(() => serviceHelper.CallService<IAdService, string>(
+                client => client.GapLoginAanvragen(39198, "Johan", "Vervloet", "johan.vervloet_chiro")));
         }
     }
 }

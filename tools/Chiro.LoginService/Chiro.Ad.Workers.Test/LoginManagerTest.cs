@@ -16,26 +16,19 @@
  * limitations under the License.
  */
 
-using System;
 using Chiro.Ad.DirectoryInterface;
 using Chiro.Ad.Domain;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Mailer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Gap.Test;
 using Moq;
+using NUnit.Framework;
 
 namespace Chiro.Ad.Workers.Test
 {
-    [TestClass]
-    public class LoginManagerTest
+    [TestFixture]
+    public class LoginManagerTest: ChiroTest
     {
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            Factory.ContainerInit();
-        }
-
-        [TestMethod]
+        [Test]
         public void ZoekenOfMakenTest()
         {
             // ARRANGE
