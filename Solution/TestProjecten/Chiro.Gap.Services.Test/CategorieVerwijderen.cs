@@ -18,13 +18,13 @@
 
 using System.Collections.Generic;
 using System.ServiceModel;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Gap.Test;
+using NUnit.Framework;
 using Moq;
 
 namespace Chiro.Gap.Services.Test
@@ -32,37 +32,18 @@ namespace Chiro.Gap.Services.Test
     /// <summary>
     /// Summary description for CategorieToevoegen
     /// </summary>
-    [TestClass]
-    public class CategorieVerwijderen
+    [TestFixture]
+    public class CategorieVerwijderen: ChiroTest
     {
         #region initialisatie en afronding
 
-        [ClassInitialize]
-        static public void InitialiseerTests(TestContext tc)
-        {
-        }
-
-        [ClassCleanup]
-        static public void TestsAfsluiten()
-        {
-        }
-
-        [TestInitialize]
+        [SetUp]
         public void SetUp()
         {
             // Dit gebeurt normaal gesproken bij het starten van de service,
             // maar blijkbaar is het moeilijk de service te herstarten bij het testen.
             // Vandaar op deze manier:
             PermissionHelper.FixPermissions();
-            Factory.ContainerInit();
-        }
-
-        /// <summary>
-        /// Verwijder eventuele overblijvende categorieën
-        /// </summary>
-        [TestCleanup]
-        public void TearDown()
-        {
         }
 
         #endregion
@@ -70,7 +51,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Verwijderen van een lege categorie
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CategorieVerwijderenNormaal()
         {
             // ARRANGE
@@ -114,8 +95,7 @@ namespace Chiro.Gap.Services.Test
         /// Probeert een categorie te verwijderen waaraan een persoon gekoppeld is.  
         /// Er wordt een exception verwacht.
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<PersoonDetail>>))]
+        [Test]
         public void CategorieVerwijderenMetPersoon()
         {
             // ARRANGE
@@ -136,23 +116,18 @@ namespace Chiro.Gap.Services.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
             #endregion
 
-            // ACT
+            // ASSERT
 
             var groepenService = Factory.Maak<GroepenService>();
             // Verwijder categorie zonder te forceren
-            groepenService.CategorieVerwijderen(categorie.ID, false);
-
-            // ASSERT
-
-            // Als we hier geraken, liep er iets mis.
-            Assert.IsTrue(false);
-
+            Assert.Throws<FaultException<BlokkerendeObjectenFault<PersoonDetail>>>(
+                () => groepenService.CategorieVerwijderen(categorie.ID, false));
         }
 
         /// <summary>
         /// Geforceerd een categorie met personen verwijderen
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CategorieVerwijderenMetPersoonForceer()
         {
             // ARRANGE

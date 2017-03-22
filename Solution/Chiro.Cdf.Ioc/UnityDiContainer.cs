@@ -30,6 +30,16 @@ namespace Chiro.Cdf.Ioc
 	public class UnityDiContainer: IDiContainer
     {
 		private readonly IUnityContainer _container;
+        private static readonly UnityConfigurationSection _configurationSection;
+
+        static UnityDiContainer()
+        {
+            // We lezen de configurationsection 1 keer in. Want ik heb de indruk dat die telkens leeg is
+            // als ik ze opnieuw probeer te lezen voor de volgende configuratie.
+            // Normaal gezien is er ook maar 1 unity configuratie per toepassing, en verandert die niet
+            // terwijl de toepassing loopt.
+            _configurationSection = (UnityConfigurationSection) ConfigurationManager.GetSection("unity");
+        }
 
         public UnityDiContainer()
         {
@@ -48,12 +58,10 @@ namespace Chiro.Cdf.Ioc
         /// </summary>
         public void InitVolgensConfigFile()
         {
-            var section = (UnityConfigurationSection) ConfigurationManager.GetSection("unity");
-
             // Als section null is, is er geen unity-configuratie in app.config of web.config.
             // Op zich geen probleem, want de configuratie kan ook at runtime
 
-            if (section != null)
+            if (_configurationSection != null)
             {
                 // Als de toepassing hierop crasht, kijk dan je config file na:
                 // * Heb je bij je types ook de assembly's vermeld waarin ze gedefinieerd zijn?
@@ -64,7 +72,7 @@ namespace Chiro.Cdf.Ioc
                 // alsook de referenties nodig voor dependency injection, en die dan allemaal
                 // terugleggen.
 
-                section.Configure(_container);
+                _configurationSection.Configure(_container);
             }
         }
 

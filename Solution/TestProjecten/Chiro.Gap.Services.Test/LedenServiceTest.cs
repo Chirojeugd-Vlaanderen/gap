@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
@@ -29,10 +28,10 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.SyncInterfaces;
-using Chiro.Gap.TestAttributes;
+using Chiro.Gap.Test;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 namespace Chiro.Gap.Services.Test
 {
@@ -41,58 +40,19 @@ namespace Chiro.Gap.Services.Test
     /// Dit is een testclass voor Unit Tests van LedenServiceTest,
     /// to contain all LedenServiceTest Unit Tests
     /// </summary>
-    [TestClass]
-    public class LedenServiceTest
+    [TestFixture]
+    public class LedenServiceTest: ChiroTest
     {
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        /// </summary>
-        public TestContext TestContext
-        {
-            get { return testContextInstance; }
-            set { testContextInstance = value; }
-        }
-
-        #region Additional test attributes
-
-        // Use ClassInitialize to run static code before running the first test in the class
-        //[ClassInitialize]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-
-        //Use TestInitialize to run code before running each test
-        [TestInitialize]
+        [SetUp]
         public void MyTestInitialize()
         {
             PermissionHelper.FixPermissions();
-            // Reset de IOC-container voor iedere test.
-            Factory.ContainerInit();
         }
-
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-
-        #endregion
-
 
         /// <summary>
         /// Kijkt na of opgehaalde functies goed gemapt worden.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void OphalenTest()
         {
             // Dit is eigenlijk niet zo'n interessante unit test.
@@ -133,138 +93,143 @@ namespace Chiro.Gap.Services.Test
         ///<summary>
         /// A test for FunctiesVervangen
         /// </summary>
-        [TestMethod]
+        [Test]
         public void FunctiesVervangenTest()
         {
             #region arrange
 
-            // testdata genereren
-
-            var ik = new Persoon {AdNummer = 12345};
-            var gwj = new GroepsWerkJaar();
-            var groep = new ChiroGroep
-                            {
-                                ID = 5,
-                                GroepsWerkJaar = new List<GroepsWerkJaar> {gwj}
-                            };
-            gwj.Groep = groep;
-
-            var gebruikersrRecht = new GebruikersRechtV2
+            // Hier gebruiken we onze private container, want als we met de gedeelde container aan de autorisatie
+            // foefelen, heeft dat effect op de andere tests.
+            using (var container = ContainerCreate())
             {
-                Groep = groep,
-                Persoon = ik,
-                VervalDatum = DateTime.Now.AddDays(1),
-                IedereenPermissies = Permissies.Bewerken,
-                GroepsPermissies = Permissies.Lezen
-            };
-            ik.GebruikersRechtV2.Add(gebruikersrRecht);
-            groep.GebruikersRechtV2.Add(gebruikersrRecht);
 
-            var contactPersoon = new Functie
-                                     {
-                                         ID = 1,
-                                         IsNationaal = true,
-                                         Niveau = Niveau.Alles,
-                                         Naam = "Contactpersoon",
-                                         Type = LidType.Leiding
-                                     };
-            var finVer = new Functie
-                             {
-                                 ID = 2,
-                                 IsNationaal = true,
-                                 Niveau = Niveau.Alles,
-                                 Naam = "FinancieelVerantwoordelijke",
-                                 Type = LidType.Leiding
-                             };
-            var vb = new Functie
-                         {
-                             ID = 3,
-                             IsNationaal = true,
-                             Niveau = Niveau.Alles,
-                             Naam = "VB",
-                             Type = LidType.Leiding
-                         };
-            var redactie = new Functie
-                               {
-                                   ID = 4,
-                                   IsNationaal = false,
-                                   Niveau = Niveau.Groep,
-                                   Naam = "RED",
-                                   Type = LidType.Leiding,
-                                   Groep = groep
-                               };
-            var leiding = new Leiding
-            {
-                ID = 100,
-                GroepsWerkJaar = gwj,
-                Functie = new List<Functie> {contactPersoon, redactie},
-                GelieerdePersoon = new GelieerdePersoon {Groep = groep, Persoon = new Persoon()}
-            };
+                // testdata genereren
 
-            groep.GelieerdePersoon.Add(leiding.GelieerdePersoon);
-            groep.GelieerdePersoon.Add(new GelieerdePersoon {Groep = groep, Persoon = ik});
+                var ik = new Persoon {AdNummer = 12345};
+                var gwj = new GroepsWerkJaar();
+                var groep = new ChiroGroep
+                {
+                    ID = 5,
+                    GroepsWerkJaar = new List<GroepsWerkJaar> {gwj}
+                };
+                gwj.Groep = groep;
 
-            // repositories maken die de testdata opleveren
+                var gebruikersrRecht = new GebruikersRechtV2
+                {
+                    Groep = groep,
+                    Persoon = ik,
+                    VervalDatum = DateTime.Now.AddDays(1),
+                    IedereenPermissies = Permissies.Bewerken,
+                    GroepsPermissies = Permissies.Lezen
+                };
+                ik.GebruikersRechtV2.Add(gebruikersrRecht);
+                groep.GebruikersRechtV2.Add(gebruikersrRecht);
 
-            var ledenRepo = new DummyRepo<Lid>(new[] {leiding});
-            var functieRepo = new DummyRepo<Functie>(new[] {contactPersoon, finVer, vb, redactie});
+                var contactPersoon = new Functie
+                {
+                    ID = 1,
+                    IsNationaal = true,
+                    Niveau = Niveau.Alles,
+                    Naam = "Contactpersoon",
+                    Type = LidType.Leiding
+                };
+                var finVer = new Functie
+                {
+                    ID = 2,
+                    IsNationaal = true,
+                    Niveau = Niveau.Alles,
+                    Naam = "FinancieelVerantwoordelijke",
+                    Type = LidType.Leiding
+                };
+                var vb = new Functie
+                {
+                    ID = 3,
+                    IsNationaal = true,
+                    Niveau = Niveau.Alles,
+                    Naam = "VB",
+                    Type = LidType.Leiding
+                };
+                var redactie = new Functie
+                {
+                    ID = 4,
+                    IsNationaal = false,
+                    Niveau = Niveau.Groep,
+                    Naam = "RED",
+                    Type = LidType.Leiding,
+                    Groep = groep
+                };
+                var leiding = new Leiding
+                {
+                    ID = 100,
+                    GroepsWerkJaar = gwj,
+                    Functie = new List<Functie> {contactPersoon, redactie},
+                    GelieerdePersoon = new GelieerdePersoon {Groep = groep, Persoon = new Persoon()}
+                };
 
-            // repositoryprovider opzetten
-            var repoProviderMock = new Mock<IRepositoryProvider>();
-            repoProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenRepo);
-            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(functieRepo);
-            Factory.InstantieRegistreren(repoProviderMock.Object);
+                groep.GelieerdePersoon.Add(leiding.GelieerdePersoon);
+                groep.GelieerdePersoon.Add(new GelieerdePersoon {Groep = groep, Persoon = ik});
 
-            // om #1413 te detecteren, moeten we de echte authorisatiemanager
-            // gebruiken. Dat wil dan weer zeggen dat we met de authenticatiemanager
-            // moeten foefelen, en gebruikersrechten moeten simuleren.
+                // repositories maken die de testdata opleveren
 
-            var authenticatieMgrMock = new Mock<IAuthenticatieManager>();
-            authenticatieMgrMock.Setup(src => src.GebruikersNaamGet()).Returns("testGebruiker");
-            authenticatieMgrMock.Setup(src => src.AdNummerGet()).Returns(12345);
+                var ledenRepo = new DummyRepo<Lid>(new[] {leiding});
+                var functieRepo = new DummyRepo<Functie>(new[] {contactPersoon, finVer, vb, redactie});
 
-            Factory.InstantieRegistreren<IAutorisatieManager>(new AutorisatieManager(authenticatieMgrMock.Object));
+                // repositoryprovider opzetten
+                var repoProviderMock = new Mock<IRepositoryProvider>();
+                repoProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenRepo);
+                repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(functieRepo);
+                container.InstantieRegistreren(repoProviderMock.Object);
 
-            // Hier maken we uiteindelijk de ledenservice
+                // om #1413 te detecteren, moeten we de echte authorisatiemanager
+                // gebruiken. Dat wil dan weer zeggen dat we met de authenticatiemanager
+                // moeten foefelen, en gebruikersrechten moeten simuleren.
 
-            var ledenService = Factory.Maak<LedenService>();
-            #endregion
+                var authenticatieMgrMock = new Mock<IAuthenticatieManager>();
+                authenticatieMgrMock.Setup(src => src.GebruikersNaamGet()).Returns("testGebruiker");
+                authenticatieMgrMock.Setup(src => src.AdNummerGet()).Returns(12345);
 
-            #region act
+                container.InstantieRegistreren<IAutorisatieManager>(new AutorisatieManager(authenticatieMgrMock.Object));
 
-            var leidingsFuncties = leiding.Functie;
+                // Hier maken we uiteindelijk de ledenservice
 
-            IEnumerable<int> functieIDs = new int[]
-                                              {
-                                                  finVer.ID,
-                                                  vb.ID,
-                                                  redactie.ID
-                                              };
+                var ledenService = container.Maak<LedenService>();
 
-            ledenService.FunctiesVervangen(leiding.ID, functieIDs);
+                #endregion
 
-            #endregion
+                #region act
 
-            #region Assert
+                var leidingsFuncties = leiding.Functie;
 
-            Assert.AreEqual(leiding.Functie.Count(), 3);
-            Assert.IsTrue(leiding.Functie.Contains(finVer));
-            Assert.IsTrue(leiding.Functie.Contains(vb));
-            Assert.IsTrue(leiding.Functie.Contains(redactie));
+                IEnumerable<int> functieIDs = new int[]
+                {
+                    finVer.ID,
+                    vb.ID,
+                    redactie.ID
+                };
 
-            // om problemen te vermijden met entity framework, mag je bestaande collecties niet zomaar vervangen;
-            // je moet entiteiten toevoegen aan/verwijderen uit bestaande collecties.
-            Assert.AreEqual(leiding.Functie, leidingsFuncties);
+                ledenService.FunctiesVervangen(leiding.ID, functieIDs);
 
-            #endregion
+                #endregion
 
+                #region Assert
 
+                Assert.AreEqual(leiding.Functie.Count(), 3);
+                Assert.IsTrue(leiding.Functie.Contains(finVer));
+                Assert.IsTrue(leiding.Functie.Contains(vb));
+                Assert.IsTrue(leiding.Functie.Contains(redactie));
+
+                // om problemen te vermijden met entity framework, mag je bestaande collecties niet zomaar vervangen;
+                // je moet entiteiten toevoegen aan/verwijderen uit bestaande collecties.
+                Assert.AreEqual(leiding.Functie, leidingsFuncties);
+
+                #endregion
+            }
         }
 
         /// <summary>
         /// Test voor lid maken, met andere afdeling dan de  voorgestelde.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestLidMakenBuitenVoorstel()
         {
             #region Arrange
@@ -364,7 +329,7 @@ namespace Chiro.Gap.Services.Test
         /// helemaal sorteren.  Zie ticket #1391.  (Als er iets is aangepast waardoor deze test
         /// wel moet failen, moet ticket #1391 mogelijk opnieuw geopend worden.)
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void VoorstelTotInschrijvenGenererenSorteringTest()
         {
             // ARRANGE
@@ -469,7 +434,7 @@ namespace Chiro.Gap.Services.Test
         ///<summary>
         ///Controleert of het vervangen van functies gesynct wordt naar Kipadmin.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void FunctiesVervangenSyncTest()
         {
             #region arrange
@@ -536,7 +501,7 @@ namespace Chiro.Gap.Services.Test
         /// Controleert of de uitschrijving van kadermedewerkers wordt gesynct naar kipadmin.
         /// (Voor kadermedewerkers is er geen probeerperiode, want kaderinschrijvingen zijn gratis)
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void UitschrijvenKaderSyncTest()
         {
             // arrange
@@ -587,7 +552,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///A test for Uitschrijven
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void UitschrijvenTest()
         {
             // ARRANGE
@@ -642,7 +607,7 @@ namespace Chiro.Gap.Services.Test
         /// Test of leiding waarvan de probeerperiode voor bij is, daadwerkelijk NIET gesynct
         /// wordt met Kipadmin.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void UitschrijvenLeidingSyncTest()
         {
             // arrange
@@ -695,7 +660,7 @@ namespace Chiro.Gap.Services.Test
         ///<summary>
         ///Controleert of zoeken op leden geen uitgeschreven leden oplevert.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void ZoekenIngeschrevenTest()
         {
             // ARRANGE
@@ -738,7 +703,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///Controleert of een uitgeschreven lid opnieuw ingeschreven kan worden.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void HerinschrijvenTest()
         {
             // ARRANGE
@@ -785,7 +750,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleert of TypeToggle een kind omzet naar een leid(st)er
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void TypeToggleTest()
         {
             // ARRANGE
@@ -869,14 +834,14 @@ namespace Chiro.Gap.Services.Test
                                  select l).ToList();
 
             Assert.AreEqual(gevondenLeden.Count, 1);
-            Assert.IsInstanceOfType(gevondenLeden.First(), typeof(Leiding));
+            Assert.IsInstanceOf<Leiding>(gevondenLeden.First());
         }
 
         /// <summary>
         /// Als een functie van toepassing is op leden en leiding,
         /// mag 'typetoggle' die behouden. Anders niet.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void TypeToggleTestFunctieBewaren()
         {
             // ARRANGE
@@ -976,7 +941,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///Flauwe test voor AfdelingenVervangenBulk
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AfdelingenVervangenBulkTest()
         {
             // ARRANGE
@@ -1027,7 +992,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///Een test voor het zoeken naar leden zonder adressen
         ///</summary>
-        [TestMethod]
+        [Test]
         public void ZoekenLedenZonderAdressenTest()
         {
             // ARRANGE
@@ -1070,7 +1035,7 @@ namespace Chiro.Gap.Services.Test
         /// Kijkt na of leden zonder telefoonnummer maar met e-mail toch gevonden worden als leden zonder
         /// telefoonnummer
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void ZoekenZonderTelefoonNr()
         {
             // ARRANGE
@@ -1131,7 +1096,7 @@ namespace Chiro.Gap.Services.Test
         /// Kijkt na of leden zonder e-mail maar mettelefoonnummer toch gevonden worden als leden zonder
         /// telefoonnummer
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void ZoekenZonderEmail()
         {
             // ARRANGE
@@ -1190,7 +1155,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Kijkt na of ingeschreven personen gesynct worden naar kipadmin.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void InschrijvenSyncTest()
         {
             // ARRANGE
@@ -1272,7 +1237,7 @@ namespace Chiro.Gap.Services.Test
         /// Kijkt na of na het inschrijven van een persoon, het AD-nummer gemarkeerd wordt
         /// als zijnde 'in aanvraag'.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void InschrijvenAdNrAanvraagTest()
         {
             // ARRANGE
@@ -1350,7 +1315,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleert of AfdelingenVervangenBulk wel synchroniseert met Kipadmin
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void AfdelingenVervangenBulkTestSync()
         {
             // ARRANGE
@@ -1398,7 +1363,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Kijkt na of LoonVerliesVerzekeren synct met Kipadmin
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void LoonVerliesVerzekerenSyncTest()
         {
             // ARRANGE
@@ -1441,7 +1406,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleert of het togglen kind/leiding synct naar Kipadmin
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void TypeToggleSyncTest()
         {
             // ARRANGE
@@ -1534,77 +1499,79 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Kijkt na of leden zoeken rekening houdt met gebruikersrechten
         /// </summary>
-        [TestMethod()]
-        [ExpectedException(typeof(FaultException<FoutNummerFault>))]
+        [Test]
         public void ZoekenAutorisatieGroepTest()
         {
-            // ARRANGE
+            using (var container = ContainerCreate())
+            {
+                // ARRANGE
 
-            var groep = new ChiroGroep {ID = 1};
+                var groep = new ChiroGroep {ID = 1};
 
-            // we gaan de 'gewone' autorisatiemanager gebruiken voor autorisatie. Dan
-            // hebben we meer controle over waar we toegang toe hebben, en waar niet.
-            
-            var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
-                                  .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
-                                  .Returns(new DummyRepo<Kind>(new List<Kind>()));
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
-                      .Returns(new DummyRepo<Leiding>(new List<Leiding>()));
+                // we gaan de 'gewone' autorisatiemanager gebruiken voor autorisatie. Dan
+                // hebben we meer controle over waar we toegang toe hebben, en waar niet.
+
+                var repositoryProviderMock = new Mock<IRepositoryProvider>();
+                repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                    .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+                repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
+                    .Returns(new DummyRepo<Kind>(new List<Kind>()));
+                repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
+                    .Returns(new DummyRepo<Leiding>(new List<Leiding>()));
 
 
-            Factory.InstantieRegistreren(repositoryProviderMock.Object);
-            var auMgr = Factory.Maak<AutorisatieManager>();
-            Factory.InstantieRegistreren<IAutorisatieManager>(auMgr);
+                container.InstantieRegistreren(repositoryProviderMock.Object);
+                var auMgr = container.Maak<AutorisatieManager>();
+                container.InstantieRegistreren<IAutorisatieManager>(auMgr);
+                var target = container.Maak<LedenService>();
 
-            // ACT
+                // ASSERT
+                Assert.Throws<FaultException<FoutNummerFault>>(
+                    () => target.LijstZoekenLidOverzicht(new LidFilter {GroepID = groep.ID}, false));
 
-            var target = Factory.Maak<LedenService>();
-            target.LijstZoekenLidOverzicht(new LidFilter {GroepID = groep.ID}, false);
-
-            // verwacht exception
+            }
         }
 
         /// <summary>
         /// Kijkt na of leden zoeken rekening houdt met gebruikersrechten
         /// </summary>
-        [TestMethod()]
-        [ExpectedException(typeof(FaultException<FoutNummerFault>))]
+        [Test]
         public void ZoekenAutorisatieGroepsWerkjaarTest()
         {
-            // ARRANGE
+            using (var container = ContainerCreate())
+            {
+                // ARRANGE
 
-            var groepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep {ID = 1}};
+                var groepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep {ID = 1}};
 
-            // we gaan de 'gewone' autorisatiemanager gebruiken voor autorisatie. Dan
-            // hebben we meer controle over waar we toegang toe hebben, en waar niet.
+                // we gaan de 'gewone' autorisatiemanager gebruiken voor autorisatie. Dan
+                // hebben we meer controle over waar we toegang toe hebben, en waar niet.
 
-            var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
-                                  .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar> { groepsWerkJaar }));
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
-                                  .Returns(new DummyRepo<Kind>(new List<Kind>()));
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
-                      .Returns(new DummyRepo<Leiding>(new List<Leiding>()));
+                var repositoryProviderMock = new Mock<IRepositoryProvider>();
+                repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                    .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar> {groepsWerkJaar}));
+                repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
+                    .Returns(new DummyRepo<Kind>(new List<Kind>()));
+                repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
+                    .Returns(new DummyRepo<Leiding>(new List<Leiding>()));
 
 
-            Factory.InstantieRegistreren(repositoryProviderMock.Object);
-            var auMgr = Factory.Maak<AutorisatieManager>();
-            Factory.InstantieRegistreren<IAutorisatieManager>(auMgr);
+                container.InstantieRegistreren(repositoryProviderMock.Object);
+                var auMgr = container.Maak<AutorisatieManager>();
+                container.InstantieRegistreren<IAutorisatieManager>(auMgr);
+                var target = container.Maak<LedenService>();
 
-            // ACT
+                // ASSERT
 
-            var target = Factory.Maak<LedenService>();
-            target.LijstZoekenLidOverzicht(new LidFilter { GroepsWerkJaarID = groepsWerkJaar.ID }, false);
-
-            // verwacht exception
+                Assert.Throws<FaultException<FoutNummerFault>>(
+                    () => target.LijstZoekenLidOverzicht(new LidFilter {GroepsWerkJaarID = groepsWerkJaar.ID}, false));
+            }
         }
 
         /// <summary>
         /// Probeer iemand die uitgeschreven is als leiding terug in te schrijven als lid
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void LeidingHerinschrijvenAlsLidTest()
         {
             // ARRANGE
@@ -1694,7 +1661,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test op inschrijving voorstellen voor leiding (illustreert #1593)
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void VoorstelTotInschrijvenGenererenLeidingTest()
         {
             // ARRANGE
@@ -1766,7 +1733,7 @@ namespace Chiro.Gap.Services.Test
         /// Verwacht dat een lid gesynct wordt, en geen leiding. 
         /// (Bug nog te rapporteren. Stash voor fix staat klaar)
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void InschrijvenOudLeidingAlsLidSyncTest()
         {
             // ARRANGE
@@ -1884,7 +1851,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test op een foutnummer als je probeert iemand in te schrijven bij een inactieve groep.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void InschrijvenGestoptTest()
         {
             // ARRANGE
@@ -1933,8 +1900,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Gestopte groepen kunnen geen leden uitschrijven.
         /// </summary>
-        [TestMethod()]
-        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.GroepInactief)]
+        [Test]
         public void UitschrijvenGestoptTest()
         {
             // ARRANGE
@@ -1972,10 +1938,13 @@ namespace Chiro.Gap.Services.Test
 
             var target = Factory.Maak<LedenService>();
 
-            // ACT
+            // ASSERT
 
             string foutBerichten = string.Empty;
-            target.Uitschrijven(new[] { gelieerdePersoon1.ID }, out foutBerichten);
+            var ex =
+                Assert.Throws<FaultException<FoutNummerFault>>(
+                    () => target.Uitschrijven(new[] {gelieerdePersoon1.ID}, out foutBerichten));
+            Assert.AreEqual(FoutNummer.GroepInactief, ex.Detail.FoutNummer);
         }
 
         /// <summary>
@@ -1986,8 +1955,7 @@ namespace Chiro.Gap.Services.Test
         /// maar verzekeren als je lid bent. Leden van een gestopte groep zijn per definitie oude leden 
         /// (van vroeger). Dus kun je geen uitbreiding op de verzekering nemen.
         /// </remarks>
-        [TestMethod()]
-        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.GroepInactief)]
+        [Test]
         public void LoonVerliesVerzekerenGestoptTest()
         {
             // ARRANGE
@@ -2012,19 +1980,18 @@ namespace Chiro.Gap.Services.Test
             repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
                                   .Returns(new DummyRepo<Lid>(new List<Lid> { lid }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
-
-            // ACT
-
             var target = Factory.Maak<LedenService>();
-            target.LoonVerliesVerzekeren(lid.ID);
 
-            // Verwacht een exception.
+            // ASSERT
+
+            var ex = Assert.Throws<FaultException<FoutNummerFault>>(() => target.LoonVerliesVerzekeren(lid.ID));
+            Assert.AreEqual(FoutNummer.GroepInactief, ex.Detail.FoutNummer);
         }
 
         /// <summary>
         /// Een inschrijvingsvoorstel voor een kadergroep moet altijd suggereren om als leiding in te schrijven.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void VoorstelTotInschrijvenGenererenKaderTest()
         {
             // ARRANGE
@@ -2080,7 +2047,6 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Ook kaderleden moeten aan de minimum(leidings)leeftijd voldoen
         /// </summary>
-        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.LidTeJong)]
         public void VoorstelTotInschrijvenGenererenKaderTeJongTest()
         {
             // ARRANGE
@@ -2121,19 +2087,20 @@ namespace Chiro.Gap.Services.Test
                                                                               gelieerdePersoon,
                                                                           }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
-
-            // ACT
-
             var target = Factory.Maak<LedenService>();
-            var actual = target.InschrijvingVoorstellen(new[] { gelieerdePersoon.ID });
 
-            // Normaal trad er een exception op.
+            // ASSERT
+
+            var ex =
+                Assert.Throws<FaultException<FoutNummerFault>>(() => target.InschrijvingVoorstellen(new[]
+                    {gelieerdePersoon.ID}));
+            Assert.Equals(FoutNummer.LidTeJong, ex.Detail.FoutNummer);
         }
 
         /// <summary>
         ///Als je probeert een kindlid aan te sluiten bij een kaderploeg, verwachten we een foutmelding.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void InschrijvenKindBijKaderTest()
         {
             // ARRANGE
@@ -2195,7 +2162,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         ///A test for Zoeken op functie
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void ZoekenOpFunctieTest()
         {
             // ARRANGE

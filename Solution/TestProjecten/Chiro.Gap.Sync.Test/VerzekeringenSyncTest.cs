@@ -1,78 +1,25 @@
-﻿using Chiro.Cdf.Ioc.Factory;
-using Chiro.Gap.Poco.Model;
+﻿using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Test;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync.Test
 {
-    
-    
     /// <summary>
     ///This is a test class for VerzekeringenSyncTest and is intended
     ///to contain all VerzekeringenSyncTest Unit Tests
     ///</summary>
-    [TestClass()]
-    public class VerzekeringenSyncTest
+    [TestFixture]
+    public class VerzekeringenSyncTest: ChiroTest
     {
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-        }
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        [TestInitialize()]
-        public void MyTestInitialize()
-        {
-            Factory.ContainerInit();
-        }
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
-
         /// <summary>
         /// Kijkt na of verzekeringen loonverlies ook gesynct worden voor personen zonder AD-nummer
         /// (dat AD-nummer is dan waarschijnlijk in aanvraag.)
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void BewarenTest()
         {
             // ARRANGE

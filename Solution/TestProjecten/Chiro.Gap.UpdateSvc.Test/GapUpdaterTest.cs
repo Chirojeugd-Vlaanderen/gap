@@ -18,82 +18,29 @@
 
 using System;
 using System.Collections.Generic;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.UpdateApi.Workers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.Test;
 using Chiro.Gap.UpdateApi.Models;
 
 namespace Chiro.Gap.UpdateSvc.Test
 {
-
-
     /// <summary>
     ///This is a test class for UpdateServiceTest and is intended
     ///to contain all UpdateServiceTest Unit Tests
     ///</summary>
-    [TestClass()]
-    public class GapUpdaterTest
+    [TestFixture]
+    public class GapUpdaterTest: ChiroTest
     {
-
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        [TestInitialize()]
-        public void MyTestInitialize()
-        {
-            Factory.ContainerInit();
-        }
-
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
         /// <summary>
         /// AansluitingBijwerken mag niet crashen als het lid niet wordt gevonden. #4526.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void AansluitingBijwerkenOnbekendLid()
         {
             // In principe kun je discussiëren over het geval dat de groep en de persoon wel
@@ -134,7 +81,7 @@ namespace Chiro.Gap.UpdateSvc.Test
         /// <summary>
         ///A test for GroepDesactiveren
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void GroepDesactiverenTest()
         {
             // ARRANGE
@@ -160,8 +107,7 @@ namespace Chiro.Gap.UpdateSvc.Test
         /// 
         /// Verwacht een FoutNummerException als de groep niet wordt gevonden.
         /// </summary>
-        [TestMethod()]
-        [ExpectedException(typeof(FoutNummerException))]
+        [Test]
         public void OnbestaandeGroepDesactiverenTest()
         {
             // ARRANGE
@@ -174,13 +120,14 @@ namespace Chiro.Gap.UpdateSvc.Test
             // ACT
 
             var target = Factory.Maak<GapUpdater>();
-            target.GroepDesactiveren("EENDERWAT", DateTime.Now);
+            Assert.That(() => target.GroepDesactiveren("EENDERWAT", DateTime.Now),
+                Throws.Exception.TypeOf<FoutNummerException>());
         }
 
         /// <summary>
         ///A test for DubbelVerwijderen. Is de dubbele inderdaad weg?
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void DubbelVerwijderenTest()
         {
             // ARRANGE
@@ -208,7 +155,7 @@ namespace Chiro.Gap.UpdateSvc.Test
         /// <summary>
         /// Test op dubbel verwijderen waar de 2 personen een adres delen.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void DubbelVerwijderenGedeeldAdresTest()
         {
             // ARRANGE
@@ -256,7 +203,7 @@ namespace Chiro.Gap.UpdateSvc.Test
         /// A test for DubbelVerwijderen. Concrete situatie dat dubbel en origineel lid zijn, maar origineel lid
         /// is inactief.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void DubbelVerwijderenTestOrigineelLidInactief()
         {
             // ARRANGE

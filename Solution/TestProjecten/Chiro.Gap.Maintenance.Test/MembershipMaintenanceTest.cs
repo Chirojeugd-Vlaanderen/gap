@@ -18,41 +18,25 @@
 
 using System;
 using System.Collections.Generic;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.Test;
 using Chiro.Gap.WorkerInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 
 namespace Chiro.Gap.Maintenance.Test
 {
-    [TestClass]
-    public class MembershipMaintenanceTest
+    [TestFixture]
+    public class MembershipMaintenanceTest: ChiroTest
     {
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-            // Raar. Asl ik onderstaande lijn er niet zet, dan
-            // doet de IOC-container lastig omdat hij de ledenmanager
-            // niet kan vinden.
-#pragma warning disable CS0168 // Variable is declared but never used
-            Chiro.Gap.Workers.LedenManager dummy;
-#pragma warning restore CS0168 // Variable is declared but never used
-
-            // Hercreeeer de IOC-container voor iedere test.
-            // Dan hebben we geen mocks meer van vorige tests die mogelijk
-            // rare dingen doen.
-            Factory.ContainerInit();
-        }
-
         /// <summary>
         /// Als iemand in zijn probeerperiode zit, mag de membershipmaintenance
         /// hem nog niet naar de Civi sturen.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void LedenInProbeerPeriodeNietSyncen()
         {
             // ARRANGE
@@ -119,7 +103,7 @@ namespace Chiro.Gap.Maintenance.Test
         /// <summary>
         /// Er mogen geen aansluitingen naar Civi gaan voor members van gestopte groepen.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GeenAansluitingenVoorGestopteGroepen()
         {
             // ARRANGE
@@ -192,7 +176,7 @@ namespace Chiro.Gap.Maintenance.Test
         /// Als de property 'LaatsteMembership' van een persoon <c>null</c> is, mag dat niet
         /// verhinderen dat er memberships worden gemaakt.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NooitGesyncteLedenSyncen()
         {
             // ARRANGE
@@ -261,7 +245,7 @@ namespace Chiro.Gap.Maintenance.Test
         /// Als iemand al een gratris membership heeft via een kaderploeg, maar nu ook lid is van
         /// een plaatselijke groep, moet het bestaande membership betalend worden. (#4519)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void VanGratisNaarBetalendMembership()
         {
             // ARRANGE

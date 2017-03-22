@@ -21,23 +21,21 @@ using System;
 using System.Linq;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Chiro.Gap.Workers.Test
 {
-    
-    
     /// <summary>
     ///This is a test class for GebruikersRechtenManagerTest and is intended
     ///to contain all GebruikersRechtenManagerTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture]
     public class GebruikersRechtenManagerTest
     {
         /// <summary>
         /// Test wijzigen van een bestaand gebruikersrecht.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void WijzigenTest()
         {
             // ARRANGE
@@ -72,7 +70,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Test toekennen van een nieuw gebruikersrecht.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void ToekennenTest()
         {
             // ARRANGE

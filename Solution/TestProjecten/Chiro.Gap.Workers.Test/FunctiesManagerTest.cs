@@ -18,12 +18,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.TestAttributes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Gap.Test;
+using NUnit.Framework;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -31,46 +30,13 @@ namespace Chiro.Gap.Workers.Test
 	/// Dit is een testclass voor Unit Tests van FunctiesManagerTest,
 	/// to contain all FunctiesManagerTest Unit Tests
 	/// </summary>
-	[TestClass]
-	public class FunctiesManagerTest
+	[TestFixture]
+	public class FunctiesManagerTest: ChiroTest
 	{
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		[ClassInitialize]
-		public static void MyClassInitialize(TestContext testContext)
-		{
-			Factory.ContainerInit();
-
-		    Chiro.Gap.Services.Dev.AdServiceMock blablabla;
-		}
-		//
-		// Use ClassCleanup to run code after all tests in a class have run
-		// [ClassCleanup()]
-		// public static void MyClassCleanup()
-		// { 
-		// }
-		//
-		// Use TestInitialize to run code before running each test
-		// [TestInitialize]
-		// public void MyTestInitialize()
-		// {
-		// }
-		//
-		// Use TestCleanup to run code after each test has run
-		// [TestCleanup()]
-		// public void MyTestCleanup()
-		// {
-		// }
-		//
-		#endregion
-
         /// <summary>
         /// Opsporen functie met te veel aantal members
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TweeKeerUniekeFunctieToekennenTestVerschillendLid()
         {
             // ARRANGE
@@ -112,7 +78,7 @@ namespace Chiro.Gap.Workers.Test
         /// Als een functie maar 1 keer mag voorkomen, maar ze wordt 2 keer toegekend aan dezelfde
         /// persoon, dan moet dat zonder problemen kunnen.  
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TweeKeerUniekeFunctieToekennenTestZelfdeLid()
         {
             // Arrange
@@ -150,8 +116,7 @@ namespace Chiro.Gap.Workers.Test
         /// Het toekennen van een functie die niet geldig is in het huidige werkjaar, moet
         /// een exception opleveren
         /// </summary>
-        [ExpectedException(typeof(FoutNummerException))]
-        [TestMethod]
+        [Test]
         public void ToekennenFunctieOngeldigWerkJaar()
         {
             // ARRANGE
@@ -172,12 +137,11 @@ namespace Chiro.Gap.Workers.Test
                 Niveau = Niveau.Groep
             };
 
-            // ACT
-
             var functiesManager = Factory.Maak<FunctiesManager>();
-            functiesManager.Toekennen(lid, new List<Functie>{vervallenFunctie});
 
             // ASSERT
+
+            Assert.Throws<FoutNummerException>(() => functiesManager.Toekennen(lid, new List<Functie>{vervallenFunctie}));
 
             // Als er geen exception gethrowd worden, zal de test failen.
         }
@@ -185,8 +149,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Functies voor leiding mogen niet aan een kind toegewezen worden.
         /// </summary>
-        [ExpectedException(typeof(FoutNummerException))]
-        [TestMethod]
+        [Test]
         public void ToekennenLidFunctieAanLeiding()
         {
             // Arrange
@@ -213,18 +176,15 @@ namespace Chiro.Gap.Workers.Test
                              };
             groep.GroepsWerkJaar.Add(leider.GroepsWerkJaar);
 
-            // Act
-
-            fm.Toekennen(leider, new List<Functie>{functie});
-
             // Assert
-            // We hebben geen assertions, want we verwachten dat er een exception optrad.
+
+            Assert.Throws<FoutNummerException>(() => fm.Toekennen(leider, new List<Functie> {functie}));
         }
 
         /// <summary>
         /// Verplichte functie die niet toegekend wordt
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NietToegekendeVerplichteFunctie()
         {
             // ARRANGE
@@ -264,7 +224,7 @@ namespace Chiro.Gap.Workers.Test
         /// Kijkt na of de verplichte aantallen genegeerd worden voor functies die niet geldig zijn
         /// in het gegeven groepswerkjaar.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void IrrelevanteVerplichteFunctie()
         {
             // ARRANGE
@@ -289,8 +249,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Kijkt na of er een exception opgeworpen wordt als iemand zonder e-mailadres contactpersoon wil worden.
         /// </summary>
-        [TestMethod]
-        [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.EMailVerplicht)]
+        [Test]
         public void ContactZonderEmail()
         {
             // ARRANGE
@@ -311,15 +270,12 @@ namespace Chiro.Gap.Workers.Test
                 GelieerdePersoon = new GelieerdePersoon()
             };
 
-            // ACT
-
             var functiesManager = Factory.Maak<FunctiesManager>();
-            functiesManager.Toekennen(lid, new List<Functie> { contactPersoonFunctie });
-
             // ASSERT
 
-            // Normaal gezien hebben we hier al lang een exception op ons dak.
-            Assert.IsFalse(true);
+            var ex = Assert.Throws<FoutNummerException>(
+                () => functiesManager.Toekennen(lid, new List<Functie> {contactPersoonFunctie}));
+            Assert.AreEqual(FoutNummer.EMailVerplicht, ex.FoutNummer);
         }
 
 
@@ -327,7 +283,7 @@ namespace Chiro.Gap.Workers.Test
         /// Standaard 'AantallenControleren'.  Nakijken of rekening wordt gehouden
         /// met nationaal bepaalde functies.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void OntbrekendeNationaalBepaaldeFuncties()
         {
             // ARRANGE
@@ -362,7 +318,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Testfuncties vervangen
         /// </summary>
-        [TestMethod]
+        [Test]
         public void FunctiesVervangen()
         {
             // Arrange
@@ -438,8 +394,7 @@ namespace Chiro.Gap.Workers.Test
 		/// <summary>
 		/// probeert een functie die dit jaar in gebruik is te verwijderen.  We verwachten een exception.
 		/// </summary>
-		[TestMethod]
-		[ExpectedException(typeof(BlokkerendeObjectenException<Lid>))]
+		[Test]
 		public void FunctieDitJaarInGebruikVerwijderenTest()
 		{
             // arrange
@@ -463,14 +418,9 @@ namespace Chiro.Gap.Workers.Test
 
 			var mgr = Factory.Maak<FunctiesManager>();
 
-			// act
-
-			var result = mgr.Verwijderen(functie, false);
-
 			// assert
 
-			// Als we hier toekomen zonder exception, dan ging er iets mis.
-			Assert.IsTrue(false);
+		    Assert.Throws<BlokkerendeObjectenException<Lid>>(() => mgr.Verwijderen(functie, false));
 		}
 
 		/// <summary>
@@ -478,7 +428,7 @@ namespace Chiro.Gap.Workers.Test
 		/// geforceerd te verwijderen.  We verwachten dat het 'werkJaar tot'  wordt
 		/// ingevuld.
 		/// </summary>
-		[TestMethod]
+		[Test]
 		public void FunctieLangerInGebruikGeforceerdVerwijderenTest()
 		{
             // ARRANGE
@@ -525,7 +475,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Bekijkt AantallenControleren wel degelijk enkel de angeleverde functies?
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void AantallenControlerenBeperkTest()
         {
             // ARRANGE
@@ -552,7 +502,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Test op het controleren van maximum aantal leden met gegeven functie.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AantallenControlerenBovengrensTest()
         {
             // ARRANGE

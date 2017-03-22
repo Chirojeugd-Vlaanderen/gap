@@ -18,7 +18,7 @@
 
 using System.Web;
 using System.Web.Routing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 
 namespace Chiro.Gap.WebApp.Test
@@ -27,10 +27,10 @@ namespace Chiro.Gap.WebApp.Test
 	/// Bevat tests of routering goed gebeurt. Heeft dus niets te maken met de interne werking 
 	/// van controllers en hun actions.
 	/// </summary>
-	[TestClass]
+	[TestFixture]
 	public class RoutingTest
 	{
-		[TestMethod]
+		[Test]
 		public void Slash_Gaat_Naar_Gav_Index()
 		{
 			TestRoute("~/", new
@@ -40,7 +40,7 @@ namespace Chiro.Gap.WebApp.Test
 			});
 		}
 
-		[TestMethod]
+		[Test]
 		public void Enkel_GroepID_Gaat_Naar_Default()
 		{
 			TestRoute("~/15000",				// willekeurige groepID, hoeft niet te bestaan
@@ -52,7 +52,7 @@ namespace Chiro.Gap.WebApp.Test
 				});
 		}
 
-		[TestMethod]
+		[Test]
 		public void Controller_Zonder_GroepID_Geeft_Error()
 		{
 			TestRoute("~/Leden",
@@ -63,7 +63,7 @@ namespace Chiro.Gap.WebApp.Test
 					});
 		}
 
-		[TestMethod]
+		[Test]
 		public void HandleidingController_Zonder_GroepID_Geeft_Handleiding()
 		{
 			TestRoute("~/Handleiding",
@@ -75,7 +75,7 @@ namespace Chiro.Gap.WebApp.Test
 				});
 		}
 
-		[TestMethod]
+		[Test]
 		public void HandleidingController_Met_Helpbestand_Zonder_GroepID_Geeft_Handleiding()
 		{
 			TestRoute("~/Handleiding/Jaarovergang",
@@ -88,7 +88,7 @@ namespace Chiro.Gap.WebApp.Test
 
 		}
 
-		[TestMethod]
+		[Test]
 		public void HandleidingController_Met_Helpbestand_Geeft_Handleiding()
 		{
 			TestRoute("~/16000/Handleiding/Jaarovergang",
@@ -101,7 +101,7 @@ namespace Chiro.Gap.WebApp.Test
 
 		}
 
-		[TestMethod]
+		[Test]
 		public void Afdeling_Maken_In_Jaarovergang()
 		{
 			TestRoute("~/15000/JaarOvergang/AfdelingMaken",
@@ -113,7 +113,7 @@ namespace Chiro.Gap.WebApp.Test
 					});
 		}
 
-		[TestMethod]
+		[Test]
 		public void Afdeling_Bewerken_In_Jaarovergang()
 		{
 			// Ik vermoed dat deze test failt omdat de jaarovergang nog niet
@@ -129,7 +129,7 @@ namespace Chiro.Gap.WebApp.Test
 					});
 		}
 
-		[TestMethod]
+		[Test]
 		public void Foutcontroller_Wordt_Juist_Opgeroepen()
 		{
 			TestRoute("~/Error/NietGevonden",

@@ -38,6 +38,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -46,23 +49,15 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
+    <Otherwise />
   </Choose>
   <ItemGroup>
     <Compile Include="DevChannelProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
-      <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
-      <Name>Chiro.Cdf.Ioc.Factory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
-      <Project>{c100e957-cee2-4707-bf13-c64553c28c7b}</Project>
+      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
@@ -73,9 +68,16 @@
       <Project>{df253c73-7632-476e-b760-deba6d306e69}</Project>
       <Name>Chiro.Gap.Services.Dev</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Test\Chiro.Gap.Test.csproj">
+      <Project>{CB755016-1D15-4619-96F7-0057F8EAC526}</Project>
+      <Name>Chiro.Gap.Test</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
