@@ -41,7 +41,7 @@ build loginservice:
 unit tests:
   stage: test
   dependencies:
-    - build
+    - build gap
   only:
     - dev
     - staging
