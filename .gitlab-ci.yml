@@ -39,7 +39,7 @@ build civisync:
   script:
     - cd /builds/gap/gap/tools/Chiro.CiviSync
     - nuget restore
-    - xbuild CiviSync.sln
+    - xbuild Chiro.CiviSync.sln
 
 build gap:
   stage: build gap
