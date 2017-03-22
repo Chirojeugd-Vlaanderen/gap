@@ -15,13 +15,10 @@
  */
 
 using System;
-using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Mapping;
-using Chiro.CiviSync.Test.Mapping;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Moq;

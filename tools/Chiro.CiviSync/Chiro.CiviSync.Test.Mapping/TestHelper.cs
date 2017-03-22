@@ -119,7 +119,9 @@ namespace Chiro.CiviSync.Test.Mapping
                 .ForMember(dst => dst.StartDate, opt => opt.MapFrom(src => src.StartDate.Values.FirstOrDefault()))
                 .ForMember(dst => dst.EndDate, opt => opt.MapFrom(src => src.EndDate.Values.FirstOrDefault()))
                 .ForMember(dst => dst.LocBlockResult, opt => opt.Ignore())
-                .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
+                .ForMember(dst => dst.ContactResult, opt => opt.Ignore())
+                .ForMember(dst => dst.CourseResponsableId,
+                    opt => opt.MapFrom(src => src.CourseResponsableId.Values.FirstOrDefault()));
             cfg.CreateMap<ContactRequest, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))

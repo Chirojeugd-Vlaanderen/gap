@@ -15,16 +15,14 @@
  */
 
 using System;
-using AutoMapper;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Services.Test;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using NUnit.Framework;
 
 namespace Chiro.CiviSync.Mapping.Test
 {
     [TestFixture]
-    public class MappingHelperTest: SyncTest
+    public class MappingHelperTest
     {
         /// <summary>
         /// Eens nakijken of GAP-Uitstap-ID wel goed wordt gemapt.
@@ -33,6 +31,8 @@ namespace Chiro.CiviSync.Mapping.Test
         public void BivakNaarEventRequest()
         {
             // arrange
+
+            var helper = new MappingHelper();
 
             var bivak = new Bivak
             {
@@ -47,7 +47,7 @@ namespace Chiro.CiviSync.Mapping.Test
 
             // act
 
-            var result = TestHelper.Map<Bivak, EventRequest>(bivak);
+            var result = helper.Map<Bivak, EventRequest>(bivak);
 
             // assert
 

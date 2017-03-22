@@ -127,6 +127,7 @@ namespace Chiro.CiviSync.Services.Test
             Mock<IGapUpdateClient> updateHelperMock;
             using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
             {
+                var mappingHelper = new MappingHelper();
 
                 var ploeg = new Contact
                 {
@@ -147,10 +148,11 @@ namespace Chiro.CiviSync.Services.Test
                 };
 
                 // Er zijn per ongeluk meerdere events gemaakt van dat bivak.
-                var event1 = TestHelper.Map<EventRequest, Event>(TestHelper.Map<Bivak, EventRequest>(bivak1));
+                // (De manier van klonen, heen en weer mappen, is tamelijk louche, en vooral verwarrend.)
+                var event1 = TestHelper.Map<EventRequest, Event>(mappingHelper.Map<Bivak, EventRequest>(bivak1));
                 event1.Id = 3;
                 event1.OrganiserendePloeg1Id = ploeg.Id;
-                var event2 = TestHelper.Map<EventRequest, Event>(TestHelper.Map<Bivak, EventRequest>(bivak1));
+                var event2 = TestHelper.Map<EventRequest, Event>(mappingHelper.Map<Bivak, EventRequest>(bivak1));
                 event2.Id = 4;
                 event1.OrganiserendePloeg2Id = ploeg.Id;
 
