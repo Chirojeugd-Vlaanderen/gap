@@ -37,6 +37,9 @@ build civisync:
     - staging
     - master
   script:
+    # restore ook packages in Chiro.CiviCrm.Wcf.
+    - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
+    - nuget restore
     - cd /builds/gap/gap/tools/Chiro.CiviSync
     - nuget restore
     - xbuild Chiro.CiviSync.sln
