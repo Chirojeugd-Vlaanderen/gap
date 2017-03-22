@@ -16,7 +16,7 @@ cache:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
-build:
+build gap:
   stage: build
   only:
     - dev
@@ -26,6 +26,17 @@ build:
     - cd /builds/gap/gap/Solution
     - nuget restore
     - xbuild Cg2Solution.sln
+
+build loginservice:
+  stage: build
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    - cd /builds/gap/gap/tools/Chiro.LoginService
+    - nuget restore
+    - xbuild LoginService.sln
 
 unit tests:
   stage: test
