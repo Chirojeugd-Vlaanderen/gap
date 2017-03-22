@@ -12,11 +12,40 @@ cache:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
-update dev:
+update:
   stage: build
   only:
     - dev
+    - staging
+    - master
   script:
     - cd /builds/gap/gap/Solution
     - nuget restore
     - xbuild Cg2Solution.sln
+
+unit tests:
+  stage: test
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    # in principe zou nunit-console Solution/Cg2Solution.sln moeten gaan,
+    # maar dat werkt op dit moment nog niet, omdat in de solution files
+    # paden met backslashes geseparated zijn, en daar kan nunit-console
+    # onder Linux (docker) niet aan uit.
+    - nunit-console Solution/TestProjecten/Chiro.Gap.Algemeen.Test/bin/Debug/Chiro.Gap.Algemeen.Test.dll \
+      Solution/TestProjecten/Chiro.Gap.Maintenance.Test/bin/Debug/Chiro.Gap.Maintenance.Test.dll \
+      Solution/TestProjecten/Chiro.Gap.Services.Dev.Test/bin/Debug/Chiro.Gap.Services.Dev.Test.dll \
+      Solution/TestProjecten/Chiro.Gap.Services.Test/bin/Debug/Chiro.Gap.Services.Test.dll \
+      Solution/TestProjecten/Chiro.Gap.Sync.Test/bin/Debug/Chiro.Gap.Sync.Test.dll \
+      Solution/TestProjecten/Chiro.Gap.UpdateSvc.Test/bin/Debug/Chiro.Gap.UpdateSvc.Test.dll \
+      Solution/TestProjecten/Chiro.Gap.WebApp.Test/bin/Debug/Chiro.Gap.WebApp.Test.dll \
+      Solution/TestProjecten/Chiro.Gap.Workers.Test/bin/Debug/Chiro.Gap.Workers.Test.dll
+      
+# Deze tests zijn nog TODO:
+#tools/Chiro.CiviSync/Chiro.CiviSync.Logic.Test/bin/Debug/Chiro.CiviSync.Logic.Test.dll
+#tools/Chiro.CiviSync/Chiro.CiviSync.Mapping.Test/bin/Debug/Chiro.CiviSync.Mapping.Test.dll
+#tools/Chiro.CiviSync/Chiro.CiviSync.Services.Test/bin/Debug/Chiro.CiviSync.Services.Test.dll
+#tools/Chiro.CiviSync/Chiro.CiviSync.Workers.Test/bin/Debug/Chiro.CiviSync.Workers.Test.dll
+#tools/Chiro.LoginService/Chiro.Ad.Workers.Test/bin/Debug/Chiro.Ad.Workers.Test.dll
