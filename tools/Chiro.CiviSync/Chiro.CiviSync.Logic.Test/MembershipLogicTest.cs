@@ -17,12 +17,12 @@
 using System;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api.DataContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace Chiro.CiviSync.Logic.Test
 {
-    [TestClass]
+    [TestFixture]
     public class MembershipLogicTest
     {
         private static readonly DateTime VandaagZogezegd = new DateTime(2015, 04, 20);
@@ -38,7 +38,7 @@ namespace Chiro.CiviSync.Logic.Test
         /// <summary>
         /// Controleert de begindatum van een membership. (Zie #3417)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void MembershipVanWerkjaarBeginDatum()
         {
             var factory = new UnityDiContainer();
@@ -54,7 +54,7 @@ namespace Chiro.CiviSync.Logic.Test
         /// <summary>
         /// Controleert de begindatum van een membership van een werkjaar dat al voorbij is. (Zie #3417)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void MembershipVanVorigWerkjaarBeginDatum()
         {
             var factory = new UnityDiContainer();

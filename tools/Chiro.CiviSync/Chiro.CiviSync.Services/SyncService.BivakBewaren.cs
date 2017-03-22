@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
-using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -80,7 +79,7 @@ namespace Chiro.CiviSync.Services
                 OrganiserendePloeg1Id = _contactWorker.ContactIdGet(bivak.StamNummer)
             };
 
-            Mapper.Map(bivak, eventRequest);
+            MappingHelper.Map(bivak, eventRequest);
 
             if (oudEvent != null && oudEvent.Id != 0)
             {

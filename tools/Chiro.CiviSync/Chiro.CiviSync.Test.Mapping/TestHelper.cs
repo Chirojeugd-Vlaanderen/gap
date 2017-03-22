@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016, 2017 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -29,14 +29,22 @@ using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Moq;
 
-namespace Chiro.CiviSync.Services.Test
+namespace Chiro.CiviSync.Test.Mapping
 {
-    public static class TestHelper
+    public class TestHelper
     {
-        public static void MappingsCreeren()
+        private static readonly MapperConfiguration _configuration;
+
+        static TestHelper()
+        {
+            _configuration = new MapperConfiguration(MappingsCreeren);
+            _configuration.AssertConfigurationIsValid();
+        }
+
+        public static void MappingsCreeren(IProfileExpression cfg)
         {
             // Een paar mappings die goed van pas komen bij het opzetten van mocks:
-            Mapper.CreateMap<ContactRequest, Contact>()
+            cfg.CreateMap<ContactRequest, Contact>()
                 .ForMember(dst => dst.ContactSubType, opt => opt.Ignore())
                 .ForMember(dst => dst.SortName, opt => opt.Ignore())
                 .ForMember(dst => dst.DisplayName, opt => opt.Ignore())
@@ -95,52 +103,54 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.StopgezetOp, opt => opt.Ignore())
                 .ForMember(dst => dst.Parochie, opt => opt.Ignore())
                 .ForMember(dst => dst.RedenStopzetting, opt => opt.Ignore());
-            Mapper.CreateMap<RelationshipRequest, Relationship>()
+            cfg.CreateMap<RelationshipRequest, Relationship>()
                 .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
-            Mapper.CreateMap<LocBlockRequest, LocBlock>()
+            cfg.CreateMap<LocBlockRequest, LocBlock>()
                 .ForMember(dst => dst.AddressResult, opt => opt.Ignore())
                 .ForMember(dst => dst.EventResult, opt => opt.Ignore());
-            Mapper.CreateMap<MembershipRequest, Membership>()
+            cfg.CreateMap<MembershipRequest, Membership>()
                 .ForMember(dst => dst.MembershipPaymentResult, opt => opt.Ignore())
                 .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
 
             // Onderstaande mapping wordt in de tests gebruikt om een resultaat op
             // te leveren als er een event gecreerd wordt. We gaan er dan van uit dat
             // er geen filtering op de start- of einddatum staat.
-            Mapper.CreateMap<EventRequest, Event>()
+            cfg.CreateMap<EventRequest, Event>()
                 .ForMember(dst => dst.StartDate, opt => opt.MapFrom(src => src.StartDate.Values.FirstOrDefault()))
                 .ForMember(dst => dst.EndDate, opt => opt.MapFrom(src => src.EndDate.Values.FirstOrDefault()))
                 .ForMember(dst => dst.LocBlockResult, opt => opt.Ignore())
-                .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
-            Mapper.CreateMap<ContactRequest, ApiResultValues<Contact>>()
+                .ForMember(dst => dst.ContactResult, opt => opt.Ignore())
+                .ForMember(dst => dst.CourseResponsableId,
+                    opt => opt.MapFrom(src => src.CourseResponsableId.Values.FirstOrDefault()));
+            cfg.CreateMap<ContactRequest, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
                 .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));
-            Mapper.CreateMap<RelationshipRequest, ApiResultValues<Relationship>>()
+            cfg.CreateMap<RelationshipRequest, ApiResultValues<Relationship>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
                 .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));
-            Mapper.CreateMap<EventRequest, ApiResultValues<Event>>()
+            cfg.CreateMap<EventRequest, ApiResultValues<Event>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
                 .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
-            Mapper.CreateMap<LocBlockRequest, ApiResultValues<LocBlock>>()
+            cfg.CreateMap<LocBlockRequest, ApiResultValues<LocBlock>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
                 .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));
-            Mapper.CreateMap<MembershipRequest, ApiResultValues<Membership>>()
+            cfg.CreateMap<MembershipRequest, ApiResultValues<Membership>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
                 .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
@@ -150,22 +160,20 @@ namespace Chiro.CiviSync.Services.Test
 
             // Hierboven requests, hieronder entities. :-)
 
-            Mapper.CreateMap<Contact, ApiResultValues<Contact>>()
+            cfg.CreateMap<Contact, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
                 .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
-            Mapper.CreateMap<Event, ApiResultValues<Event>>()
+            cfg.CreateMap<Event, ApiResultValues<Event>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
                 .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
-
-            Mapper.AssertConfigurationIsValid();
         }
 
         /// <summary>
@@ -178,15 +186,15 @@ namespace Chiro.CiviSync.Services.Test
         /// </summary>
         /// <param name="zogezegdeDatum">De datum die gebruikt moet worden als
         ///     zijnde de huidige datum.</param>
-        /// <param name="container">De dependency injection container.</param>
         /// <param name="civiApiMock">Mock-object voor de CiviCRM-API</param>
         /// <param name="updateHelperMock">Mock-object voor UpdateApi</param>
-        public static void IocOpzetten(DateTime zogezegdeDatum, out IDiContainer container, out Mock<ICiviCrmApi> civiApiMock, out Mock<IGapUpdateClient> updateHelperMock)
+        /// <returns>De dependency injection container.</returns>
+        public IDiContainer IocOpzetten(DateTime zogezegdeDatum, out Mock<ICiviCrmApi> civiApiMock, out Mock<IGapUpdateClient> updateHelperMock)
         {
             // Dependency injection opzetten om geen echte CiviCRM te moeten
             // aanroepen. (De binding CiviCRM-.NET heeft aparte unit tests)
 
-            container = new UnityDiContainer();
+            var container = new UnityDiContainer();
 
             container.InitVolgensConfigFile();
 
@@ -212,6 +220,22 @@ namespace Chiro.CiviSync.Services.Test
             // Cachen evenmin.
             var cacheMock = new Mock<ICiviCache>();
             container.InstantieRegistreren(cacheMock.Object);
+
+            return container;
+        }
+
+        /// <summary>
+        /// Map object of type <typeparamref name="T1"/> to object of type
+        /// <typeparamref name="T2"/>.
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="src"></param>
+        /// <returns></returns>
+        public T2 Map<T1, T2>(T1 src)
+        {
+            var mapper = _configuration.CreateMapper();
+            return mapper.Map<T1, T2>(src);
         }
     }
 }

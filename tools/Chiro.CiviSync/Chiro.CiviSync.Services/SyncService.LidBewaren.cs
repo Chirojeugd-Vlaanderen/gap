@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -104,9 +103,9 @@ namespace Chiro.CiviSync.Services
 
             // We vervangen functies en afdelingen.
             relationshipRequest.Afdeling = gedoe.LidType == LidTypeEnum.Kind
-                ? Mapper.Map<AfdelingEnum, Afdeling>(gedoe.OfficieleAfdelingen.First()) : Afdeling.Leiding;
+                ? MappingHelper.Map<AfdelingEnum, Afdeling>(gedoe.OfficieleAfdelingen.First()) : Afdeling.Leiding;
             relationshipRequest.LeidingVan = gedoe.LidType == LidTypeEnum.Leiding
-                ? Mapper.Map<IEnumerable<AfdelingEnum>, Afdeling[]>(gedoe.OfficieleAfdelingen)
+                ? MappingHelper.Map<IEnumerable<AfdelingEnum>, Afdeling[]>(gedoe.OfficieleAfdelingen)
                 : null;
             relationshipRequest.Functies = FunctieLogic.KipCodes(gedoe.NationaleFuncties);
 
