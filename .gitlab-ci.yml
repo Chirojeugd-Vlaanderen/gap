@@ -1,7 +1,10 @@
 image: gitlab.chiro.be:5443/overig/containers:gap
 
 stages:
-  - build
+# We bouwen eerst alles uit 'tools', en dan Cg2Solution. Want dat
+# kan niet parallel, zie #5668.
+  - build tools
+  - build gap
   - test
   - deploy
 
@@ -16,10 +19,8 @@ cache:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
-# We bouwen eerst alles uit 'tools', en dan Cg2Solution. Want dat
-# kan niet parallel, zie #5668.
 build loginservice:
-  stage: build
+  stage: build tools
   only:
     - dev
     - staging
@@ -30,7 +31,7 @@ build loginservice:
     - xbuild LoginService.sln
 
 build civisync:
-  stage: build
+  stage: build tools
   only:
     - dev
     - staging
@@ -41,7 +42,7 @@ build civisync:
     - xbuild CiviSync.sln
 
 build gap:
-  stage: build
+  stage: build gap
   dependencies:
     - build loginservice
     - build civisync
@@ -69,7 +70,6 @@ unit tests loginservice:
     # paden met backslashes geseparated zijn, en daar kan nunit-console
     # onder Linux (docker) niet aan uit.
     - nunit-console tools/Chiro.LoginService/Chiro.Ad.Workers.Test/bin/Debug/Chiro.Ad.Workers.Test.dll
-
 
 unit tests civisync:
   stage: test
