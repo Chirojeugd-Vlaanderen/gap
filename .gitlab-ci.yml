@@ -1,4 +1,4 @@
-image: mono:4.4.2
+image: gitlab.chiro.be:5443/overig/containers:gap
 
 stages:
   - build
