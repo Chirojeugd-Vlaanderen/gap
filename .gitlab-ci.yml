@@ -5,9 +5,13 @@ stages:
   - test
   - deploy
 
-# geen idee wat dit is:
+# ik ben nog op zoek naar een manier om de gebuilde dll's
+# door te geven van de build stage naar de test stage.
 cache:
   key: ${CI_BUILD_REF_NAME}
+  paths:
+    - Solution
+    - tools
   
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
