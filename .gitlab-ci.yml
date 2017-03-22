@@ -5,11 +5,13 @@ stages:
   - test
   - deploy
 
-# wat die cache is, weet ik niet precies. Ik had gehoopt dat daarmee de gebuilde DLL's
-# van de build stage ook beschikbaar zouden zijn voor de test stage, maar blijkbaar is dat
-# niet zo.
+# wat die cache is, weet ik niet precies. Ik hoop dat daarmee de gebuilde DLL's
+# van de build stage ook beschikbaar zouden zijn voor de test stage.
 cache:
   key: ${CI_BUILD_REF_NAME}
+  paths:
+    - Solution
+    - tools
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
@@ -34,19 +36,13 @@ unit tests:
     - staging
     - master
   script:
-    - cd /builds/gap/gap/Solution
+    - cd /builds/gap/gap
     # in principe zou nunit-console Solution/Cg2Solution.sln moeten gaan,
     # maar dat werkt op dit moment nog niet, omdat in de solution files
     # paden met backslashes geseparated zijn, en daar kan nunit-console
     # onder Linux (docker) niet aan uit.
-    - nunit-console Solution/TestProjecten/Chiro.Gap.Algemeen.Test/bin/Debug/Chiro.Gap.Algemeen.Test.dll \
-      Solution/TestProjecten/Chiro.Gap.Maintenance.Test/bin/Debug/Chiro.Gap.Maintenance.Test.dll \
-      Solution/TestProjecten/Chiro.Gap.Services.Dev.Test/bin/Debug/Chiro.Gap.Services.Dev.Test.dll \
-      Solution/TestProjecten/Chiro.Gap.Services.Test/bin/Debug/Chiro.Gap.Services.Test.dll \
-      Solution/TestProjecten/Chiro.Gap.Sync.Test/bin/Debug/Chiro.Gap.Sync.Test.dll \
-      Solution/TestProjecten/Chiro.Gap.UpdateSvc.Test/bin/Debug/Chiro.Gap.UpdateSvc.Test.dll \
-      Solution/TestProjecten/Chiro.Gap.WebApp.Test/bin/Debug/Chiro.Gap.WebApp.Test.dll \
-      Solution/TestProjecten/Chiro.Gap.Workers.Test/bin/Debug/Chiro.Gap.Workers.Test.dll
+    # (Alles op 1 lijn, want met newlines kreeg ik het niet goed.)
+    - nunit-console Solution/TestProjecten/Chiro.Gap.Algemeen.Test/bin/Debug/Chiro.Gap.Algemeen.Test.dll Solution/TestProjecten/Chiro.Gap.Maintenance.Test/bin/Debug/Chiro.Gap.Maintenance.Test.dll Solution/TestProjecten/Chiro.Gap.Services.Dev.Test/bin/Debug/Chiro.Gap.Services.Dev.Test.dll Solution/TestProjecten/Chiro.Gap.Services.Test/bin/Debug/Chiro.Gap.Services.Test.dll Solution/TestProjecten/Chiro.Gap.Sync.Test/bin/Debug/Chiro.Gap.Sync.Test.dll Solution/TestProjecten/Chiro.Gap.UpdateSvc.Test/bin/Debug/Chiro.Gap.UpdateSvc.Test.dll Solution/TestProjecten/Chiro.Gap.WebApp.Test/bin/Debug/Chiro.Gap.WebApp.Test.dll Solution/TestProjecten/Chiro.Gap.Workers.Test/bin/Debug/Chiro.Gap.Workers.Test.dll
       
 # Deze tests zijn nog TODO:
 #tools/Chiro.CiviSync/Chiro.CiviSync.Logic.Test/bin/Debug/Chiro.CiviSync.Logic.Test.dll
