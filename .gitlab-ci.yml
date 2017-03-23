@@ -49,20 +49,16 @@ build civisync:
     - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
     - nuget restore
     - xbuild Chiro.CiviCrm.Wcf.sln
-    - cd /builds/gap/gap/tools/Chiro.CiviSync
-    - nuget restore
-    - xbuild Chiro.CiviSync.sln
-
-build gaphacks:
-  stage: build
-  only:
-    - dev
-    - staging
-    - master
-  script:
+    # Een gelijkaardig verhaal voor FixAnomalies. Ik vermoed dat
+    # als de build jobs parallel lopen, de 'nuget restore' taken
+    # elkaars wijzigingen ongedaan maken (want de niet-getrackte files
+    # worden gedeeld tussen de jobs door). (Zie #5668)
     - cd /builds/gap/gap/tools/Chiro.Gap.FixAnomalies
     - nuget restore
     - xbuild Chiro.Gap.FixAnomalies.sln
+    - cd /builds/gap/gap/tools/Chiro.CiviSync
+    - nuget restore
+    - xbuild Chiro.CiviSync.sln
 
 unit tests gap:
   stage: test
