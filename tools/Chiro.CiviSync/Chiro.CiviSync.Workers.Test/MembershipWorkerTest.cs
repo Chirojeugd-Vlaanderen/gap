@@ -15,21 +15,20 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Chiro.CiviSync.Services.Test;
 using Chiro.Gap.UpdateApi.Client;
-using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviSync.Services.Test;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using NUnit.Framework;
 
 namespace Chiro.CiviSync.Workers.Test
 {
-    [TestClass]
-    public class MembershipWorkerTest
+    [TestFixture]
+    public class MembershipWorkerTest: SyncTest
     {
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 11, 6);
 
@@ -37,144 +36,150 @@ namespace Chiro.CiviSync.Workers.Test
         /// Als een membership bijgewerkt wordt, is het niet de bedoeling dat er
         /// plots een verzekering loonverlies bijkomt. (Zie #4413)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void BestaandeBijwerkenTest()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            var myCiviContact = new Contact
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
             {
-                Id = 1,
-                FirstName = "Joe",
-                LastName = "Schmoe",
-                ExternalIdentifier = "2"
-            };
 
-            var myPloeg = new Contact
-            {
-                Id = 2,
-                ExternalIdentifier = "TST/0000"
-            };
-
-            civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(new ApiResultValues<Contact>(new[] {myCiviContact, myPloeg}));
-            civiApiMock.Setup(
-                src =>
-                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<MembershipRequest>(r => r.VerzekeringLoonverlies.Value == false)))
-                .Returns(new ApiResultValues<Membership>()).Verifiable();
-
-            var membership = new Membership
-            {
-                ContactId = myCiviContact.Id,
-                VerzekeringLoonverlies = false,
-                StartDate = new DateTime(2015, 10, 15),
-                EndDate = new DateTime(2016, 8, 31),
-                MembershipPaymentResult = new ApiResultValues<MembershipPayment>(new MembershipPayment())
-            };
-
-            // Dit nam ik over van ContactWorkerTest:
-            var membershipWorker = factory.Maak<MembershipWorker>();
-
-            // ACT
-            membershipWorker.BestaandeBijwerken(membership,
-                new MembershipGedoe
+                var myCiviContact = new Contact
                 {
-                    MetLoonVerlies = false,
-                    StamNummer = myPloeg.ExternalIdentifier
-                });
+                    Id = 1,
+                    FirstName = "Joe",
+                    LastName = "Schmoe",
+                    ExternalIdentifier = "2"
+                };
 
-            // ASSERT
-            civiApiMock.Verify(src =>
-                src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                    It.Is<MembershipRequest>(r => r.VerzekeringLoonverlies.Value == false)), Times.AtLeastOnce);
+                var myPloeg = new Contact
+                {
+                    Id = 2,
+                    ExternalIdentifier = "TST/0000"
+                };
+
+                civiApiMock.Setup(
+                        src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                    .Returns(new ApiResultValues<Contact>(new[] {myCiviContact, myPloeg}));
+                civiApiMock.Setup(
+                        src =>
+                            src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<MembershipRequest>(r => r.VerzekeringLoonverlies.Value == false)))
+                    .Returns(new ApiResultValues<Membership>())
+                    .Verifiable();
+
+                var membership = new Membership
+                {
+                    ContactId = myCiviContact.Id,
+                    VerzekeringLoonverlies = false,
+                    StartDate = new DateTime(2015, 10, 15),
+                    EndDate = new DateTime(2016, 8, 31),
+                    MembershipPaymentResult = new ApiResultValues<MembershipPayment>(new MembershipPayment())
+                };
+
+                // Dit nam ik over van ContactWorkerTest:
+                var membershipWorker = factory.Maak<MembershipWorker>();
+
+                // ACT
+                membershipWorker.BestaandeBijwerken(membership,
+                    new MembershipGedoe
+                    {
+                        MetLoonVerlies = false,
+                        StamNummer = myPloeg.ExternalIdentifier
+                    });
+
+                // ASSERT
+                civiApiMock.Verify(src =>
+                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<MembershipRequest>(r => r.VerzekeringLoonverlies.Value == false)), Times.AtLeastOnce);
+            }
         }
 
         /// <summary>
         /// Als je al een gratis membership hebt (kaderploeg), maar je nieuwe membership is betalend,
         /// dan moet het membership bijgewerkt worden.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void UpdateNaarBetalendTest()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            var myCiviContact = new Contact
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
             {
-                Id = 1,
-                FirstName = "Joe",
-                LastName = "Schmoe",
-                ExternalIdentifier = "2"
-            };
 
-            var myPloeg = new Contact
-            {
-                Id = 2,
-                ExternalIdentifier = "TST/0101",
-                KaderNiveau = KaderNiveau.PlaatselijkeGroep
-            };
-
-            var myGewest = new Contact
-            {
-                Id = 3,
-                ExternalIdentifier = "TST/0100",
-                KaderNiveau = KaderNiveau.Gewest
-            };
-
-            // Kaderniveau hierboven is in principe niet relevant, want het al dan
-            // niet gratis zijn van een membership wordt bepaald aan de hand van
-            // factuurstatus en betalingen.
-            // Het staat er enkel voor de duidelijkheid.
-
-            civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(new ApiResultValues<Contact>(new[] { myCiviContact, myPloeg }));
-            civiApiMock.Setup(
-                src =>
-                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<MembershipRequest>(r => r.VerzekeringLoonverlies.Value == false && r.FactuurStatus == FactuurStatus.VolledigTeFactureren)))
-                .Returns(new ApiResultValues<Membership>()).Verifiable();
-
-            var membership = new Membership
-            {
-                ContactId = myGewest.Id,
-                VerzekeringLoonverlies = false,
-                FactuurStatus = FactuurStatus.FactuurOk,
-                // Vandaag is het zogezegd _vandaagzogezegd, en dat valt dan in het onderstaande interval.
-                StartDate = new DateTime(2015, 10, 15),
-                EndDate = new DateTime(2016, 8, 31),
-                MembershipPaymentResult = new ApiResultValues<MembershipPayment> (),
-            };
-
-            // Dit nam ik over van ContactWorkerTest:
-            var membershipWorker = factory.Maak<MembershipWorker>();
-
-            // ACT
-
-            // Als we onderweg een invalid api-result hebben, zou het kunnen dat de condities niet voldaan zijn
-            // om de juiste mocking te triggeren.
-            membershipWorker.BestaandeBijwerken(membership,
-                new MembershipGedoe
+                var myCiviContact = new Contact
                 {
-                    MetLoonVerlies = false,
-                    StamNummer = myPloeg.ExternalIdentifier
-                });
+                    Id = 1,
+                    FirstName = "Joe",
+                    LastName = "Schmoe",
+                    ExternalIdentifier = "2"
+                };
 
-            // ASSERT
-            civiApiMock.Verify(src =>
-                src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
-                    It.Is<MembershipRequest>(r => r.VerzekeringLoonverlies.Value == false)), Times.AtLeastOnce);
+                var myPloeg = new Contact
+                {
+                    Id = 2,
+                    ExternalIdentifier = "TST/0101",
+                    KaderNiveau = KaderNiveau.PlaatselijkeGroep
+                };
+
+                var myGewest = new Contact
+                {
+                    Id = 3,
+                    ExternalIdentifier = "TST/0100",
+                    KaderNiveau = KaderNiveau.Gewest
+                };
+
+                // Kaderniveau hierboven is in principe niet relevant, want het al dan
+                // niet gratis zijn van een membership wordt bepaald aan de hand van
+                // factuurstatus en betalingen.
+                // Het staat er enkel voor de duidelijkheid.
+
+                civiApiMock.Setup(
+                        src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                    .Returns(new ApiResultValues<Contact>(new[] {myCiviContact, myPloeg}));
+                civiApiMock.Setup(
+                        src =>
+                            src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<MembershipRequest>(
+                                    r => r.VerzekeringLoonverlies.Value == false &&
+                                         r.FactuurStatus == FactuurStatus.VolledigTeFactureren)))
+                    .Returns(new ApiResultValues<Membership>())
+                    .Verifiable();
+
+                var membership = new Membership
+                {
+                    ContactId = myGewest.Id,
+                    VerzekeringLoonverlies = false,
+                    FactuurStatus = FactuurStatus.FactuurOk,
+                    // Vandaag is het zogezegd _vandaagzogezegd, en dat valt dan in het onderstaande interval.
+                    StartDate = new DateTime(2015, 10, 15),
+                    EndDate = new DateTime(2016, 8, 31),
+                    MembershipPaymentResult = new ApiResultValues<MembershipPayment>(),
+                };
+
+                // Dit nam ik over van ContactWorkerTest:
+                var membershipWorker = factory.Maak<MembershipWorker>();
+
+                // ACT
+
+                // Als we onderweg een invalid api-result hebben, zou het kunnen dat de condities niet voldaan zijn
+                // om de juiste mocking te triggeren.
+                membershipWorker.BestaandeBijwerken(membership,
+                    new MembershipGedoe
+                    {
+                        MetLoonVerlies = false,
+                        StamNummer = myPloeg.ExternalIdentifier
+                    });
+
+                // ASSERT
+                civiApiMock.Verify(src =>
+                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<MembershipRequest>(r => r.VerzekeringLoonverlies.Value == false)), Times.AtLeastOnce);
+            }
         }
     }
 }

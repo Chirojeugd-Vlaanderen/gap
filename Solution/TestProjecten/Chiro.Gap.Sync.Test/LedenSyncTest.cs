@@ -15,12 +15,12 @@
  */
 
 using System;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Test;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 
@@ -32,64 +32,13 @@ namespace Chiro.Gap.Sync.Test
     ///This is a test class for LedenSyncTest and is intended
     ///to contain all LedenSyncTest Unit Tests
     ///</summary>
-    [TestClass()]
-    public class LedenSyncTest
+    [TestFixture]
+    public class LedenSyncTest: ChiroTest
     {
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            MappingHelper.MappingsDefinieren();
-        }
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        [TestInitialize()]
-        public void MyTestInitialize()
-        {
-            Factory.ContainerInit();
-        }
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
-
         /// <summary>
         ///A test for AfdelingenUpdaten
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AfdelingenUpdatenTest()
         {
             // ARRANGE
@@ -118,7 +67,7 @@ namespace Chiro.Gap.Sync.Test
         /// <summary>
         /// Bewaren moet bewaren, en niet verwijderen. Als het lid inactief is, moet de stopdatum naar Civi.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void BewarenNietGebruikenOmTeVerwijderenTest()
         {
             // ARRANGE
@@ -160,7 +109,7 @@ namespace Chiro.Gap.Sync.Test
         /// <summary>
         /// Test voor bewaren persoon met geslacht x.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void BewarenPersoonGeslachtXTest()
         {
             // ARRANGE

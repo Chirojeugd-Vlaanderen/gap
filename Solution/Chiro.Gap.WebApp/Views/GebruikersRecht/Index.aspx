@@ -1,4 +1,5 @@
 <%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GavOverzichtModel>" MasterPageFile="~/Views/Shared/Site.Master" %>
+<%@ Import Namespace="System.Linq" %>
 <asp:Content runat="server" ID="Head" ContentPlaceHolderID="head" >
 <%
 /*

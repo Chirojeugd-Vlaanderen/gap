@@ -20,9 +20,10 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Test.Mapping;
 using Chiro.Gap.UpdateApi.Client;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace Chiro.CiviSync.Services.Test
 {
@@ -30,55 +31,56 @@ namespace Chiro.CiviSync.Services.Test
     // testklasse zitten. Ik denk dat ik beter een soort van base clas maak,
     // waarvan ik dan iedere keer kan erven.
 
-    [TestClass]
-    public class WerkjaarAfsluitenTest
+    [TestFixture]
+    public class WerkjaarAfsluitenTest: SyncTest
     {
         private readonly DateTime _vandaagZogezegd = new DateTime(2016, 8, 13);
         private readonly int _huidigWerkjaar = 2015;
 
-        [ClassInitialize]
-        public static void InitializeTestClass(TestContext c)
-        {
-            TestHelper.MappingsCreeren();
-        }
-
-        [TestMethod]
+        [Test]
         public void RelatieTypeBijWerkjaarAfsluiten()
         {
             // ARRANGE 
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
+            {
 
-            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
+                var ploeg = new Contact
+                {
+                    ExternalIdentifier = "TST/0001",
+                    Id = 1,
+                    ContactType = ContactType.Organization
+                };
 
-            // Mocking opzetten.
-            // De ploeg bij het stamnummer zal opgezocht worden.
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(ploeg));
-            // We hebben nu een API action in ChiroCivi om het werkjaar af te sluiten.
-            civiApiMock.Setup(
-                src => src.ChiroWerkjaarAfsluiten(It.IsAny<String>(), It.IsAny<string>(),
-                    It.Is<ChiroWerkjaarRequest>(
-                        r =>
-                            r.StamNummer == ploeg.ExternalIdentifier && r.Werkjaar == _huidigWerkjaar)))
-                .Returns(new ApiResultValues<Relationship>());
+                // Mocking opzetten.
+                // De ploeg bij het stamnummer zal opgezocht worden.
+                civiApiMock.Setup(
+                        src =>
+                            src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                    .Returns(new ApiResultValues<Contact>(ploeg));
+                // We hebben nu een API action in ChiroCivi om het werkjaar af te sluiten.
+                civiApiMock.Setup(
+                        src => src.ChiroWerkjaarAfsluiten(It.IsAny<String>(), It.IsAny<string>(),
+                            It.Is<ChiroWerkjaarRequest>(
+                                r =>
+                                    r.StamNummer == ploeg.ExternalIdentifier && r.Werkjaar == _huidigWerkjaar)))
+                    .Returns(new ApiResultValues<Relationship>());
 
-            // ACT
-            var service = factory.Maak<SyncService>();
-            service.GroepsWerkjaarAfsluiten(ploeg.ExternalIdentifier, _huidigWerkjaar);
+                // ACT
+                var service = factory.Maak<SyncService>();
+                service.GroepsWerkjaarAfsluiten(ploeg.ExternalIdentifier, _huidigWerkjaar);
 
-            // ASSERT
+                // ASSERT
 
-            civiApiMock.Verify(src => src.ChiroWerkjaarAfsluiten(It.IsAny<String>(), It.IsAny<string>(),
-                It.Is<ChiroWerkjaarRequest>(
-                    r =>
-                        r.StamNummer == ploeg.ExternalIdentifier && r.Werkjaar == _huidigWerkjaar)), Times.AtLeastOnce);
+                civiApiMock.Verify(src => src.ChiroWerkjaarAfsluiten(It.IsAny<String>(), It.IsAny<string>(),
+                        It.Is<ChiroWerkjaarRequest>(
+                            r =>
+                                r.StamNummer == ploeg.ExternalIdentifier && r.Werkjaar == _huidigWerkjaar)),
+                    Times.AtLeastOnce);
+            }
         }
     }
 }

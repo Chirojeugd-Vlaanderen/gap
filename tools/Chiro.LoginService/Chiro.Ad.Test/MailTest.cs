@@ -17,9 +17,9 @@
  */
 
 using System;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Mailer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Gap.Test;
+using NUnit.Framework;
 
 // Unit tests zonder veel structuur.  Achteraf op te kuisen.
 // Makkelijkste is om de loginservice te runnen vanuit 1 Visual Studio instance, en deze tests vanuit
@@ -27,14 +27,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Ad.Test
 {
-    [TestClass]
-    public class MailTest
+    [TestFixture]
+    public class MailTest: ChiroTest
     {
-        [TestMethod]
+        [Test]
         public void MailNaarGmail()
         {
-            Factory.ContainerInit(); // TODO: bij begin van tests, niet in test
-
             IMailer mailer = Factory.Maak<IMailer>();
 
             mailer.Verzenden("johan.vervloet@chiro.be", "unit test " + DateTime.Now, "unit test");
@@ -42,11 +40,9 @@ namespace Chiro.Ad.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
+        [Test]
         public void MailNaarChiro()
         {
-            Factory.ContainerInit(); // TODO: bij begin van tests, niet in test
-
             IMailer mailer = Factory.Maak<IMailer>();
 
             mailer.Verzenden("johan.vervloet@gmail.com", "unit test " + DateTime.Now, "unit test");

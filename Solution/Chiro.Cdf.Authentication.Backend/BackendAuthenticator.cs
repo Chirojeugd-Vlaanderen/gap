@@ -30,7 +30,31 @@ namespace Chiro.Cdf.Authentication.Backend
     {
         public UserInfo WieBenIk()
         {
-            return OperationContext.Current.IncomingMessageProperties.FirstOrDefault(f => f.Key == "UserInfo").Value as UserInfo;
+            var userInfo = OperationContext.Current.IncomingMessageProperties.FirstOrDefault(f => f.Key == "UserInfo").Value as UserInfo;
+
+            if (userInfo != null)
+            {
+                return userInfo;
+            }
+
+            // Onder windows kom je hier normaal gesproken nooit.
+
+            // Maar met Linux en Mono krijg ik de servicebehaviour met de IDispatchMessageInspector (nog?) niet aan de
+            // praat. Dus voorlopig probeer ik de UserInfo nog eens rechtstreeks uit de http-request te halen,
+            // maar op termijn moet dit zeker weg.
+
+            var headers = OperationContext.Current.IncomingMessageHeaders;
+
+            try
+            {
+                userInfo = headers.GetHeader<UserInfo>("adnr-header", "s");
+            }
+            catch (MessageHeaderException)
+            {
+                return null;
+            }
+
+            return userInfo;
         }
     }
 }

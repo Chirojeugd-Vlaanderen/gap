@@ -18,7 +18,6 @@
 
 using System;
 using System.Diagnostics;
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
@@ -46,7 +45,7 @@ namespace Chiro.Gap.Sync
         public void Bewaren(Groep g)
         {
             Kip.ServiceContracts.DataContracts.Groep syncGroep =
-                Mapper.Map<Groep, Kip.ServiceContracts.DataContracts.Groep>(g);
+                MappingHelper.Map<Groep, Kip.ServiceContracts.DataContracts.Groep>(g);
 
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.GroepUpdaten(syncGroep));
         }

@@ -17,65 +17,27 @@
  */
 
 using System.Web.Mvc;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.Test;
 using Chiro.Gap.WebApp.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 
 namespace Chiro.Gap.WebApp.Test
 {
-    
-    
     /// <summary>
     /// Dit is een testclass voor Unit Tests van GroepControllerTest,
     /// to contain all GroepControllerTest Unit Tests
     /// </summary>
-	[TestClass]
-	public class GroepControllerTest
+	[TestFixture]
+	public class GroepControllerTest: ChiroTest
 	{
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            Factory.ContainerInit();
-        }
-
-    	#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//[ClassInitialize]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//[TestInitialize]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
-		#endregion
-
 		/// <summary>
 		/// Controleert of de action Groep/CategorieVerwijderen de categorieenservice aanroept,
 		/// en of achteraf terug de view met categorieen getoond wordt.
 		/// </summary>
-		[TestMethod]
+		[Test]
 		public void CategorieVerwijderenTest()
 		{
 			const int DUMMYCATID = 9;

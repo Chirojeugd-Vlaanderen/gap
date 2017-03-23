@@ -1,5 +1,6 @@
 <%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.UitstapDeelnemersModel>"
 	MasterPageFile="~/Views/Shared/Site.Master" %>
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 <%
@@ -61,7 +62,7 @@
 		{
 	%>
 	<p>
-		Je hebt nog geen deelnemers opgegeven voor deze uitstap. Je moet minstens één
+		Je hebt nog geen deelnemers opgegeven voor deze uitstap. Je moet minstens ï¿½ï¿½n
 		iemand inschrijven, want je moet een contactpersoon aanduiden. Dat is een onderdeel
 		van je bivakaangifte
 		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>,

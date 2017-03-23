@@ -23,81 +23,41 @@ using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.ServiceModel;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.Services.Dev;
 using Chiro.Gap.SyncInterfaces;
-using Chiro.Gap.TestAttributes;
 using Chiro.Gap.WorkerInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using System.Diagnostics;
+using Chiro.Gap.Test;
 
 namespace Chiro.Gap.Services.Test
 {
     /// <summary>
     /// Dit is een testclass voor Unit Tests van GelieerdePersonenServiceTest
     /// </summary>
-    [TestClass]
-    public class GelieerdePersonenServiceTest
+    [TestFixture]
+    public class GelieerdePersonenServiceTest: ChiroTest
     {
-        private TestContext testContextInstance;
-
-        /// <summary>
-        /// Gets or sets the test context which provides
-        /// information about and functionality for the current test run.
-        /// </summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        /// <summary>
-        /// Run code before running first test
-        /// </summary>
-        [ClassInitialize]
-        static public void MyClassInitialize(TestContext context)
-        {
-        }
-
         /// <summary>
         /// Run code before running each test
         /// </summary>
-        [TestInitialize]
-        public void MyTestInitialize()
+        [SetUp]
+        public void OneTimeSetup()
         {
-            // Restore IoC settings
-
-            // (Ik had hier ook alle nodige mocks kunnen maken, en dan
-            // een voor een registreren.  Maar ContainerInit herleest gewoon
-            // de configuratiefile.)
+            // Configure dependency injection.
             PermissionHelper.FixPermissions();
-            Factory.ContainerInit();
-
-#pragma warning disable 168
-            // Als ik onderstaande niet een keertje instantieer, dan werken mijn tests niet.
-            // Geen idee hoe dat komt.
-
-            DevChannelProvider bla;
-#pragma warning restore 168
         }
 
         /// <summary>
         /// Als je een nieuwe persoon inschrijft die de nieuwsbrief wil, dan moet dat ook zo worden bewaard.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NieuwsePersoonNieuwsBriefTest()
         {
             // ARRANGE
@@ -137,8 +97,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Probeer een communicatievorm toe te voegen die niet valideert.
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(FaultException<FoutNummerFault>))]
+        [Test]
         public void CommunicatieVormToevoegenTestOngeldig()
         {
             // ARRANGE
@@ -167,14 +126,14 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            target.CommunicatieVormToevoegen(gelieerdePersoon.ID, commInfo);
-            Assert.IsTrue(false);
+            Assert.Throws<FaultException<FoutNummerFault>>(
+                () => target.CommunicatieVormToevoegen(gelieerdePersoon.ID, commInfo));
         }
 
         ///<summary>
         ///Toevoegen van een geldig telefoonnr
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CommunicatieVormToevoegenTestGeldig()
         {
             // ARRANGE
@@ -223,7 +182,7 @@ namespace Chiro.Gap.Services.Test
         /// 'in sync', dan mag die communicatievorm enkel gesynct worden voor de personen die
         /// in sync zijn.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CommunicatieVormToevoegenHeelGezinTest()
         {
             // ARRANGE
@@ -297,7 +256,7 @@ namespace Chiro.Gap.Services.Test
         /// Kijkt na of CommunicatieVormToevoegen enkel de nieuwe communicatievorm
         /// naar Kipadmin synct, ipv alle communicatie in kipadmin te vervangen  
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CommunicatieVormToevoegenTest()
         {
             // ARRANGE
@@ -346,7 +305,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleren of 'communicatievormaanpassen' wel degelijk een communicatievorm aanpast.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CommunicatieVormAanpassenTest()
         {
             // ARRANGE
@@ -413,7 +372,7 @@ namespace Chiro.Gap.Services.Test
         /// Bij  het toevoegen van een communicatievorm die voorkeur moet zijn, moeten
         /// bestaande communicatievormen van hetzelfde type hun voorkeur verliezen. 
         /// </summary>
-        [TestMethod]
+        [Test]
         public void VoorkeursCommunicatieVormToevoegenTest()
         {
             // ARRANGE
@@ -474,7 +433,7 @@ namespace Chiro.Gap.Services.Test
         /// dat al wel bestond, maar geen voorkeursadres was, dan moet dat
         /// e-mailadres het voorkeursadres worden. Zie #3392.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NieuwsBriefNieuwVoorkeursAdresTest()
         {
             // ARRANGE
@@ -534,7 +493,7 @@ namespace Chiro.Gap.Services.Test
         /// Als er voor een nieuwsbriefabonnement een nieuw e-mailadres wordt meegegeven,
         /// dan moet dat e-mailadres gekoppeld worden aan de gelieerde persoon.  
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NieuwsBriefNieuwAdresTest()
         {
             // ARRANGE
@@ -574,7 +533,7 @@ namespace Chiro.Gap.Services.Test
         /// Als er een niet-in-sync persoon wordt ingeschreven voor de nieuwsbrief, dan moet die persoon
         /// achteraf in sync zijn.  
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NieuwsBriefPersoonInSyncTest()
         {
             // ARRANGE
@@ -645,18 +604,20 @@ namespace Chiro.Gap.Services.Test
 
 
         /// <summary>
-        /// Als een gelieerde persoon een account heeft zonder gebruikersrechten, moet deze informatie
-        /// ook opgeleverd worden door AlleDetailsOphalen.
+        /// De gebruikersnaam moet ook opgeleverd worden door AlleDetailsOphalen als de user geen rechten heeft.
+        /// 
+        /// We maken gebruik van de kennis dat de TestAuthenticatieManager voor iedere persoon een gebruikersnaam
+        /// oplevert. Die kennis mogen we eigenlijk niet gebruiken. In principe moeten we hier onze eigen
+        /// authenticatiemanager mocken, maar dat lukte me nog niet zo goed.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AlleDetailsOphalenAccountTest()
         {
             // arbitraire dingen
 
             const int someGid = 5;
             const int someGpid = 3;
-            const string someUsername = "UserName";
-            const int someAdNummer = 12345;
+            const int someAdNummer = 10345;
             DateTime someGeboorteDatum = new DateTime(1977, 03, 08);
             const int someWerkJaar = 2012;
 
@@ -684,17 +645,11 @@ namespace Chiro.Gap.Services.Test
             // IOC opzetten
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            var communicatieVormenManagerMock = new Mock<ICommunicatieVormenManager>();
-            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
 
             repositoryProviderMock.Setup(mck => mck.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
-            authenticatieManagerMock.Setup(mck => mck.GebruikersNaamGet(gelieerdePersoon.Persoon))
-                .Returns(someUsername);
 
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
-            Factory.InstantieRegistreren(communicatieVormenManagerMock.Object);
-            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
 
 
             var target = Factory.Maak<GelieerdePersonenService>();
@@ -706,14 +661,14 @@ namespace Chiro.Gap.Services.Test
 
             // assert
 
-            Assert.AreEqual(someUsername, actual.GebruikersInfo.Login);
+            Assert.IsNotNull(actual.GebruikersInfo.Login);
+            Assert.AreNotEqual(String.Empty, actual.GebruikersInfo.Login);
         }
 
         ///<summary>
         /// Controleert of de service verhindert dat een AD-nummer wordt toegekend bij het maken van een nieuwe persoon.
         ///</summary>
-        [TestMethod()]
-        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.AlgemeneFout)]
+        [Test]
         public void ToekennenAdNrTest()
         {
             // ARRANGE
@@ -730,27 +685,25 @@ namespace Chiro.Gap.Services.Test
                 .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>()));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
-            // ACT
-
             var target = Factory.Maak<GelieerdePersonenService>();
 
-            target.Nieuw
+            // ASSERT
+
+            var ex = Assert.Throws<FaultException<FoutNummerFault>>(() => target.Nieuw
             (
                 new NieuwePersoonDetails
                 {
-                    PersoonInfo = new PersoonInfo { AdNummer = 39198 }
+                    PersoonInfo = new PersoonInfo {AdNummer = 39198}
                 }, groep.ID, false
-            );
-
-            Assert.IsTrue(false);
+            ));
+            Assert.AreEqual(FoutNummer.AlgemeneFout, ex.Detail.FoutNummer);
         }
 
         ///<summary>
         /// Controleert of de service verhindert dat een GelieerdePersoonID wordt toegekend bij het maken van een 
         /// nieuwe persoon.
         ///</summary>
-        [TestMethod()]
-        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.AlgemeneFout)]
+        [Test]
         public void ToekennenGelieerdePersoonIdTest()
         {
             // ARRANGE
@@ -765,19 +718,19 @@ namespace Chiro.Gap.Services.Test
                                   .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
-            // ACT
-
             var target = Factory.Maak<GelieerdePersonenService>();
 
-            target.Nieuw
-            (
-                new NieuwePersoonDetails
-                {
-                    PersoonInfo = new PersoonInfo { GelieerdePersoonID = 39198 }
-                }, groep.ID, false
-            );
+            // ASSERT
 
-            Assert.IsTrue(false);
+            var ex = Assert.Throws<FaultException<FoutNummerFault>>(() =>
+                target.Nieuw
+                (
+                    new NieuwePersoonDetails
+                    {
+                        PersoonInfo = new PersoonInfo {GelieerdePersoonID = 39198}
+                    }, groep.ID, false
+                ));
+            Assert.AreEqual(FoutNummer.AlgemeneFout, ex.Detail.FoutNummer);
         }
 
 
@@ -785,7 +738,7 @@ namespace Chiro.Gap.Services.Test
         /// Controleert of een nieuw voorkeursadres van een gekende gelieerde persoon wordt gesynct
         /// met Kipadmin
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void GelieerdePersonenVerhuizenSyncTest()
         {
             // ARRANGE.
@@ -895,7 +848,7 @@ namespace Chiro.Gap.Services.Test
         /// Controleert of een nieuw niet-voorkeursadres van een gekende gelieerde persoon niet wordt gesynct
         /// met Kipadmin
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void GelieerdePersonenVerhuizenNietVoorkeurSyncTest()
         {
             // ARRANGE.
@@ -1008,7 +961,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleert of een nieuw voorkeursadres van een gekende gelieerde persoon wordt gesynct.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AdresToevoegenGelieerdePersonenTest()
         {
             // ARRANGE
@@ -1071,7 +1024,7 @@ namespace Chiro.Gap.Services.Test
         /// Als het voorkeursadres van een persoon verandert na het verwijderen van een adres,
         /// dan moet die wijziging gesynct worden. Een unit test.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AdresVerwijderenVanPersonenNieuweVoorkeurTest()
         {
             // ARRANGE
@@ -1129,7 +1082,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         //  Controleert of een nieuw ingesteld voorkeursadres wel wordt gesynct.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void VoorkeursAdresMakenTest()
         {
             // ARRANGE
@@ -1185,7 +1138,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test of CommunicatieVormVerwijderen synct met Kipadmin
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void CommunicatieVormVerwijderenSyncTest()
         {
             // ARRANGE
@@ -1235,7 +1188,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Kijkt na of HuisgenotenOphalenZelfdeGroep geen huisgenoten uit een andere groep ophaalt.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void HuisGenotenOphalenZelfdeGroepSecurityTest()
         {
             // ARRANGE
@@ -1294,7 +1247,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Kijkt na of HuisgenotenOphalenZelfdeGroep geen dubbele resultaten oplevert.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void HuisGenotenOphalenZelfdeGroepDistinctTest()
         {
             // ARRANGE
@@ -1355,7 +1308,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleert of een categorie niet twee keer aan dezelfde persoon kan gekoppeld worden.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void CategorieKoppelenDubbelTest()
         {
             // ARRANGE
@@ -1384,7 +1337,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Kijkt na of de gebruikersrechten meekomen met AlleDetailsOphalen
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void AlleDetailsOphalenTest()
         {
             // ARRANGE
@@ -1430,7 +1383,7 @@ namespace Chiro.Gap.Services.Test
         /// niet opgeroepen worden, want dat vraagt een PersoonsAdres. Als alle adressen zijn verwijderd, dan
         /// is er geen PersonsAdres meer.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void LaatsteAdresVerwijderenVanPersonenTest()
         {
             // ARRANGE
@@ -1486,7 +1439,7 @@ namespace Chiro.Gap.Services.Test
         /// Omdat GAP adressen als hetzelfde beschouwt als straat (bepaalt ook postnummer), nummer en bus 
         /// overeenkomen, is dat niet zo vanzelfsprekend als het lijkt.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void GelieerdePersonenVerhuizenWoonplaatsTest()
         {
             // ARRANGE.
@@ -1604,7 +1557,7 @@ namespace Chiro.Gap.Services.Test
         /// Controleert of bij het ophalen van een gezin waarbij een persoon aangesloten is bij
         /// meerdere groepen, de juiste gelieerde persoon wordt opgehaald.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void GezinOphalenTest()
         {
             // ARRANGE
@@ -1666,7 +1619,7 @@ namespace Chiro.Gap.Services.Test
         /// Als je van een adres enkel de deelgemeente moet veranderen, dan moet die wijziging bewaard worden.
         /// Test voor buitenlands adres.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void GelieerdePersonenVerhuizenWoonplaatsBuitenlandTest()
         {
             // ARRANGE.

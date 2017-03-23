@@ -15,208 +15,212 @@
  */
 
 using System;
-using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Mapping;
 using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace Chiro.CiviSync.Services.Test
 {
-    [TestClass]
-    public class AfdelingUpdatenTest
+    [TestFixture]
+    public class AfdelingUpdatenTest: SyncTest
     {
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
 
-        [ClassInitialize]
-        public static void InitialilzeTestClass(TestContext c)
-        {
-            // creer mappings voor de service
-            MappingHelper.MappingsDefinieren();
-            // creer mappings voor de tests
-            TestHelper.MappingsCreeren();
-        }
-
         /// <summary>
         /// Controleer of de nieuwe afdelingen wel mee naar de API gaan.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void AfdelingenInRequestTest()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            const int adNummer = 2;
-            const int werkJaar = 2014;
-
-            // Dummy gegevens voor test:
-
-            var kipPersoon = new Persoon
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
             {
-                AdNummer = adNummer
-            };
 
-            var ploeg = new Contact {ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization};
-            var persoon = new Contact
-            {
-                ExternalIdentifier = adNummer.ToString(),
-                FirstName = "Kees",
-                LastName = "Flodder",
-                GapId = 3,
-                Id = 4,
-            };
-            var bestaandLid = new Relationship
-            {
-                ContactIdA = persoon.Id,
-                ContactIdB = ploeg.Id,
-                RelationshipTypeId = (int) RelatieType.LidVan,
-                Id = 5,
-                Afdeling = Afdeling.Speelclub,
-                StartDate = new DateTime(werkJaar, 09, 01),
-                EndDate = null
-            };
-            // We gaan de afdeling van die speelclubber veranderen
-            // naar rakwi's.
-            const AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
-            const Afdeling civiAfdeling = Afdeling.Rakwis;
+                const int adNummer = 2;
+                const int werkJaar = 2014;
 
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(ploeg));
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(persoon));
-            // Relatie wordt normaal gezien gezocht op basis van de contact-ID's
-            civiApiMock.Setup(
-                src =>
-                    src.RelationshipGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<RelationshipRequest>(
-                            r =>
-                                r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id &&
-                                r.RelationshipTypeId == (int) RelatieType.LidVan)))
-                .Returns(new ApiResultValues<Relationship>(bestaandLid));
-            // We verwachten dat de relatie opnieuw bewaard wordt met de juiste afdeling
-            // (de return value van  deze mock is niet helemaal juist, maar zeis hier ook niet zo relevant.)
-            civiApiMock.Setup(
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.Is<RelationshipRequest>(
-                    r => r.Id == bestaandLid.Id && r.Afdeling == civiAfdeling)))
-                .Returns(new ApiResultValues<Relationship>(bestaandLid))
-                .Verifiable();
+                // Dummy gegevens voor test:
 
-            var service = factory.Maak<SyncService>();
+                var kipPersoon = new Persoon
+                {
+                    AdNummer = adNummer
+                };
 
-            // ACT
+                var ploeg = new Contact
+                {
+                    ExternalIdentifier = "TST/0001",
+                    Id = 1,
+                    ContactType = ContactType.Organization
+                };
+                var persoon = new Contact
+                {
+                    ExternalIdentifier = adNummer.ToString(),
+                    FirstName = "Kees",
+                    LastName = "Flodder",
+                    GapId = 3,
+                    Id = 4,
+                };
+                var bestaandLid = new Relationship
+                {
+                    ContactIdA = persoon.Id,
+                    ContactIdB = ploeg.Id,
+                    RelationshipTypeId = (int) RelatieType.LidVan,
+                    Id = 5,
+                    Afdeling = Afdeling.Speelclub,
+                    StartDate = new DateTime(werkJaar, 09, 01),
+                    EndDate = null
+                };
+                // We gaan de afdeling van die speelclubber veranderen
+                // naar rakwi's.
+                const AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
+                const Afdeling civiAfdeling = Afdeling.Rakwis;
 
-            service.AfdelingenUpdaten(kipPersoon, ploeg.ExternalIdentifier,
-                new[] {gapAfdeling});
+                civiApiMock.Setup(
+                        src =>
+                            src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                    .Returns(new ApiResultValues<Contact>(ploeg));
+                civiApiMock.Setup(
+                        src =>
+                            src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
+                    .Returns(new ApiResultValues<Contact>(persoon));
+                // Relatie wordt normaal gezien gezocht op basis van de contact-ID's
+                civiApiMock.Setup(
+                        src =>
+                            src.RelationshipGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<RelationshipRequest>(
+                                    r =>
+                                        r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id &&
+                                        r.RelationshipTypeId == (int) RelatieType.LidVan)))
+                    .Returns(new ApiResultValues<Relationship>(bestaandLid));
+                // We verwachten dat de relatie opnieuw bewaard wordt met de juiste afdeling
+                // (de return value van  deze mock is niet helemaal juist, maar zeis hier ook niet zo relevant.)
+                civiApiMock.Setup(
+                        src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.Is<RelationshipRequest>(
+                            r => r.Id == bestaandLid.Id && r.Afdeling == civiAfdeling)))
+                    .Returns(new ApiResultValues<Relationship>(bestaandLid))
+                    .Verifiable();
 
-            // ASSERT
+                var service = factory.Maak<SyncService>();
 
-            civiApiMock.Verify(
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.Is<RelationshipRequest>(
-                    r => r.Id == bestaandLid.Id && r.Afdeling == civiAfdeling)), Times.AtLeastOnce);
+                // ACT
+
+                service.AfdelingenUpdaten(kipPersoon, ploeg.ExternalIdentifier,
+                    new[] {gapAfdeling});
+
+                // ASSERT
+
+                civiApiMock.Verify(
+                    src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.Is<RelationshipRequest>(
+                        r => r.Id == bestaandLid.Id && r.Afdeling == civiAfdeling)), Times.AtLeastOnce);
+            }
         }
 
         /// <summary>
         /// Als het lid onbestaand is, mag het niet crashen (#3721).
         /// </summary>
-        [TestMethod]
+        [Test]
         public void AfdelingenBijwerkenOnbestaandLidTest()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
 
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-
-            const int adNummer = 2;
-
-            // Mock ook log
-            var logMock = new Mock<IMiniLog>();
-            logMock.Setup(
-                src =>
-                    src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>()))
-                .Verifiable();
-            factory.InstantieRegistreren(logMock.Object);
-
-            // Dummy gegevens voor test:
-
-            var kipPersoon = new Persoon
+            using (var factory = TestHelper.IocOpzetten(_vandaagZogezegd, out civiApiMock, out updateHelperMock))
             {
-                AdNummer = adNummer
-            };
 
-            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
-            var persoon = new Contact
-            {
-                ExternalIdentifier = adNummer.ToString(),
-                FirstName = "Kees",
-                LastName = "Flodder",
-                GapId = 3,
-                Id = 4,
-            };
-            const AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
 
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(ploeg));
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
-                .Returns(new ApiResultValues<Contact>(persoon));
-            // Api vindt geen relatie
-            civiApiMock.Setup(
-                src =>
-                    src.RelationshipGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<RelationshipRequest>(
-                            r =>
-                                r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id &&
-                                r.RelationshipTypeId == (int)RelatieType.LidVan)))
-                .Returns(new ApiResultValues<Relationship>());
-            // We verwachten dat de relatie niet opnieuw bewaard wordt. We zetten een mock op
-            // om dat te verifieren.
-            civiApiMock.Setup(
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
-                .Returns(new ApiResultValues<Relationship>())
-                .Verifiable();
+                const int adNummer = 2;
 
-            var service = factory.Maak<SyncService>();
+                // Mock ook log
+                var logMock = new Mock<IMiniLog>();
+                logMock.Setup(
+                        src =>
+                            src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(),
+                                It.IsAny<int?>()))
+                    .Verifiable();
+                factory.InstantieRegistreren(logMock.Object);
 
-            // ACT
+                // Dummy gegevens voor test:
 
-            service.AfdelingenUpdaten(kipPersoon, ploeg.ExternalIdentifier,
-                new[] { gapAfdeling });
+                var kipPersoon = new Persoon
+                {
+                    AdNummer = adNummer
+                };
 
-            // ASSERT
+                var ploeg = new Contact
+                {
+                    ExternalIdentifier = "TST/0001",
+                    Id = 1,
+                    ContactType = ContactType.Organization
+                };
+                var persoon = new Contact
+                {
+                    ExternalIdentifier = adNummer.ToString(),
+                    FirstName = "Kees",
+                    LastName = "Flodder",
+                    GapId = 3,
+                    Id = 4,
+                };
+                const AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
 
-            civiApiMock.Verify(
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()), Times.Never);
-            logMock.Verify(
-                src =>
-                    src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>()),
-                Times.AtLeastOnce);
+                civiApiMock.Setup(
+                        src =>
+                            src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                    .Returns(new ApiResultValues<Contact>(ploeg));
+                civiApiMock.Setup(
+                        src =>
+                            src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
+                    .Returns(new ApiResultValues<Contact>(persoon));
+                // Api vindt geen relatie
+                civiApiMock.Setup(
+                        src =>
+                            src.RelationshipGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.Is<RelationshipRequest>(
+                                    r =>
+                                        r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id &&
+                                        r.RelationshipTypeId == (int) RelatieType.LidVan)))
+                    .Returns(new ApiResultValues<Relationship>());
+                // We verwachten dat de relatie niet opnieuw bewaard wordt. We zetten een mock op
+                // om dat te verifieren.
+                civiApiMock.Setup(
+                        src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                            It.IsAny<RelationshipRequest>()))
+                    .Returns(new ApiResultValues<Relationship>())
+                    .Verifiable();
+
+                var service = factory.Maak<SyncService>();
+
+                // ACT
+
+                service.AfdelingenUpdaten(kipPersoon, ploeg.ExternalIdentifier,
+                    new[] {gapAfdeling});
+
+                // ASSERT
+
+                civiApiMock.Verify(
+                    src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.IsAny<RelationshipRequest>()), Times.Never);
+                logMock.Verify(
+                    src =>
+                        src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(),
+                            It.IsAny<int?>()),
+                    Times.AtLeastOnce);
+            }
         }
     }
 }

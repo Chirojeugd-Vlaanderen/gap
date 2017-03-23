@@ -16,10 +16,7 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -27,8 +24,6 @@ using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Adres = Chiro.Gap.Poco.Model.Adres;
-using AdresTypeEnum = Chiro.Kip.ServiceContracts.DataContracts.AdresTypeEnum;
 using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
@@ -69,7 +64,7 @@ namespace Chiro.Gap.Sync
         {
             Debug.Assert(gp.Persoon.InSync);
 
-            var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(gp);
+            var details = MappingHelper.Map<GelieerdePersoon, PersoonDetails>(gp);
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.PersoonUpdatenOfMaken(details));
         }
 
@@ -86,7 +81,7 @@ namespace Chiro.Gap.Sync
 
 			Debug.Assert(gp.Persoon.InSync);
 
-            var syncPersoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
+            var syncPersoon = MappingHelper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
 			ServiceHelper.CallService<ISyncPersoonService>(svc => svc.PersoonUpdaten(syncPersoon));
 		}
 
@@ -113,7 +108,7 @@ namespace Chiro.Gap.Sync
             {
                 var gelieerdePersoon = lid.GelieerdePersoon;
 
-                var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon);
+                var details = MappingHelper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon);
                 bool isVerzekerd = _groepsWerkJarenManager.IsVerzekerd(lid, Verzekering.LoonVerlies);
 
                 var gedoe = new MembershipGedoe

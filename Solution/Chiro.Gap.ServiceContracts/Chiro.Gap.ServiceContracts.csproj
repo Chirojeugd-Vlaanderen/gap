@@ -1,10 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -43,15 +41,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.ServiceModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataContracts\ActieveAfdelingInfo.cs" />
@@ -110,6 +102,7 @@
     <Compile Include="IGebruikersService.cs" />
     <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />
+    <Compile Include="IHelloService.cs" />
     <Compile Include="ILedenService.cs" />
     <Compile Include="IUitstappenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -121,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
-      <Project>{b55edf1f-de3f-4e00-a359-0d56be67e197}</Project>
+      <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
       <Name>Chiro.Cdf.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">

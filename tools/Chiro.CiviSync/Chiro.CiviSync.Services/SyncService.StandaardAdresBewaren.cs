@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -41,7 +40,7 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
         {
-            var nieuwAdres = Mapper.Map<Adres, AddressRequest>(adres);
+            var nieuwAdres = MappingHelper.Map<Adres, AddressRequest>(adres);
 
             foreach (var bewoner in bewoners)
             {

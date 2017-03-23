@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -50,11 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Cdf.Authentication.Ad\Chiro.Cdf.Authentication.Ad.csproj">
-      <Project>{b4fed89c-ab92-4d90-b566-3604a43a998a}</Project>
+      <Project>{B4FED89C-AB92-4D90-B566-3604A43A998A}</Project>
       <Name>Chiro.Cdf.Authentication.Ad</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
-      <Project>{fb9a2752-d976-4d92-9974-0e9339d1fdd2}</Project>
+      <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
       <Name>Chiro.Cdf.Authentication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
@@ -62,7 +62,7 @@
       <Name>Chiro.Cdf.Ioc.Factory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
   </ItemGroup>

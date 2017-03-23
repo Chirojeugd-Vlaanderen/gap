@@ -17,7 +17,6 @@
  */
 
 using System.Diagnostics;
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
@@ -51,7 +50,7 @@ namespace Chiro.Gap.Sync
         {
             // TODO (#1057): Verfijnen van sync bivakgegevens van GAP naar Kipadmin/CiviCRM
 
-            var teSyncen = Mapper.Map<Uitstap, Bivak>(uitstap);
+            var teSyncen = MappingHelper.Map<Uitstap, Bivak>(uitstap);
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakBewaren(teSyncen));
 
             var contactPersoon = uitstap.ContactDeelnemer != null ? uitstap.ContactDeelnemer.GelieerdePersoon : null;
@@ -63,7 +62,7 @@ namespace Chiro.Gap.Sync
                 ServiceHelper.CallService<ISyncPersoonService>(
                     svc =>
                     svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam,
-                                           Mapper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(uitstap.Plaats.Adres)));
+                                           MappingHelper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(uitstap.Plaats.Adres)));
             }
 
             if (contactPersoon != null)
@@ -81,7 +80,7 @@ namespace Chiro.Gap.Sync
                     ServiceHelper.CallService<ISyncPersoonService>(
                         svc =>
                         svc.BivakContactBewarenAdOnbekend(uitstap.ID,
-                                                          Mapper.Map<GelieerdePersoon, PersoonDetails>(contactPersoon)));
+                                                          MappingHelper.Map<GelieerdePersoon, PersoonDetails>(contactPersoon)));
                 }
             }
         }

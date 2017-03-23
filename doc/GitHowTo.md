@@ -3,15 +3,6 @@ Versiebeheer met git
 
 We gebruiken git voor het versiebeheer.
 
-Voor GAP
---------
-
-Wat specifieke informatie voor GAP. Heb je hulp nodig, stel je vraag dan
-in het
-[developersforum](http://websites.chiro.be/projects/gap/boards/2). Als
-je kunt aanmelden, tenminste. Voor aanmeldproblemen richt je je tot de
-[Chiro-helpdesk](https://chiro.be/eloket/feedback-gap).
-
 ### Commits
 
 Vermeld in elke commit message het issue waarop je commit betrekking
@@ -35,47 +26,34 @@ Dit voorbeeld illustreert nog een git best practice: In de eerste lijn
 geef je een korte samenvatting van wat je commit wijzigt. Daarna volgt
 een lege lijn, en daarna wat meer details.
 
-### Patches
+Je commit beter een keer te veel, dan een keer te weinig. Beschouw commits
+als een soort van 'save game' in van de 1st-person-shooters. Hoe meer je
+commit, hoe makkelijker je terug kunt. Kleine commits kun je achteraf
+veranderen van volgorde, en waar nodig samen voegen. Een grote commit
+opnieuw splitsen, is een pak lastiger.
 
-Als je een issue fixt, en je hebt geen push-rechten op de centrale
-repository, dan kun je een patch aan het issue attachen, en de issue
-status veranderen naar 'Needs Review'. Maak je patch bij voorkeur op de
-recentste versie van de dev branch.
+### Merge requests
 
-### Pushen
+Als je al developerrechten hebt op de GAP-repository, dan kun je in de
+officiële repository feature branches maken. Ik raad aan om dat vanuit de
+issue tracker zelf te doen. Bij een issue waar nog niemand aan gewerkt heeft,
+staat een knop 'create feature branch'. Als je daarop klikt, dan wordt er
+een branch gemaakt die direct aan het issue gekoppeld wordt. Wanneer je dan
+zelf `git fetch` uitvoert, dan komt die branch over, en kun je hem
+'checkouten'.
 
-Als je push-rechten hebt, push je wijzigingen dan in een **persoonlijke
-branch**. Alvorens je branch voor het eerst te pushen, rebase je hem op
-origin/dev. Eens je branch bestaat op de remote server, rebase je hem
-liever niet meer.
+Nieuwe commits push je naar je feature branch. Ben je tevreden over je fix, dan 
+kun je (weer vanuit gitlab) een merge request maken voor die feature branch. 
+In dat geval kan iemand van de Chirodevelopers je wijzigingen mergen in de 
+dev-branch.
 
-```
-git fetch origin
-git rebase origin/dev
-```
+Als je nog geen developerrechten hebt, dan kun je volgens mij een persoonlijke 
+fork maken van de gap-repository. Dan maak je daar zelf een branch, en ik
+vermoed dat je dan ook merge requests kunt maken, gelijkaardig aan hoe je
+pull requests maakt op github. Dat zal wat experimenteren zijn, contacteer
+[de helpdesk](https://chiro.be/eloket/feedback-gap) als je er niet uitgeraakt.
 
-Als je op die manier conflicten tegenkomt:
-
-git mergetool
-
-Loopt het mergen helemaal mis, dan kun je je rebase-operatie aborten.
-
-git rebase --abort
-
-[Vraag gerust om hulp](http://websites.chiro.be/projects/gap/boards/2)
-als je vast zit.
-
-Pushen doe je naar een persoonlijke branch. Bijvoorbeeld
-
-git push origin personal/vervljo/1786-verplichte\_velden
-
-**Push niet naar dev**, of naar staging, of master. Dat is niet de
-bedoeling. We kunnen die beperking op dit moment niet meer technisch
-opleggen. [Zo lang dit probleem niet opgelost
-is](https://github.com/jbox-web/redmine_git_hosting/issues/86),
-verwachten we dat je verantwoordelijk omspringt met je push-rechten.
-
-### Push-rechten aanvragen
+### Dev-rechten aanvragen
 
 Wil je graag rechtstreeks kunnen pushen naar de centrale repository?
 Contacteer [de Chiro-helpdesk](https://chiro.be/eloket/feedback-gap).
@@ -92,6 +70,7 @@ toen ik zelf nog een git-beginner was.
     extensions
 -   [branches](branches.md) - Hoe werk je met branches?
 -   [pull](pull.md) - Hoe haal je de recentste code op?
+-   [Hoe kuis je je branch op](BranchOpkuisen.md) als het een rommeltje is geworden?
 -   http://stackoverflow.com/questions/13541615/how-to-remove-files-that-are-listed-in-the-gitignore-but-still-on-the-repositor -
     foutjes rechtzetten als je te veel bestanden (lees: binaries) in git
     gestopt hebt

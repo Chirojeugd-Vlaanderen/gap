@@ -123,10 +123,10 @@
 			<div id="footer">
 				<hr />
 				<p>
-					&copy; <a href="https://websites.chiro.be/projects/gap/repository/revisions/master/entry/NOTICE">De GAP-ontwikkelaars</a> 2007-<%= DateTime.Now.Year.ToString(CultureInfo.InvariantCulture)
+					&copy; <a href="https://gitlab.chiro.be/gap/gap/blob/master/NOTICE">De GAP-ontwikkelaars</a> 2007-<%= DateTime.Now.Year.ToString(CultureInfo.InvariantCulture)
 					%>
 					|| Vragen, opmerkingen of suggesties? <a href="https://www.chiro.be/eloket/feedback-gap">Geef ze door!</a> 
-                    || Meewerken? Kijk eens rond in de <a href="https://websites.chiro.be/projects/gap">issue tracker</a>. 
+                    || Meewerken? Kijk eens rond in de <a href="https://gitlab.chiro.be/gap/gap/issues">issue tracker</a>. 
                     || <a href="https://www.facebook.com/chirogap">Volg ons op Facebook.</a>
 				</p>
 			</div>

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -82,11 +81,11 @@ namespace Chiro.CiviSync.Services
 
             if (lid.Afdeling == Afdeling.Leiding)
             {
-                request.LeidingVan = Mapper.Map<IEnumerable<AfdelingEnum>, Afdeling[]>(afdelingen);
+                request.LeidingVan = MappingHelper.Map<IEnumerable<AfdelingEnum>, Afdeling[]>(afdelingen);
             }
             else
             {
-                request.Afdeling = Mapper.Map<AfdelingEnum, Afdeling>(afdelingen.First());
+                request.Afdeling = MappingHelper.Map<AfdelingEnum, Afdeling>(afdelingen.First());
             }
 
             var result =

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -42,6 +42,9 @@
       <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -50,21 +53,13 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
+    <Otherwise />
   </Choose>
   <ItemGroup>
     <Compile Include="MembershipMaintenanceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
-      <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
-      <Name>Chiro.Cdf.Ioc.Factory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
@@ -96,6 +91,14 @@
     <ProjectReference Include="..\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj">
       <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
       <Name>Chiro.Gap.Dummies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Test\Chiro.Gap.Test.csproj">
+      <Project>{3A5B9618-ECC3-46FD-9E64-BA67BA503E75}</Project>
+      <Name>Chiro.Gap.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Test\Chiro.Gap.Test.csproj">
+      <Project>{CB755016-1D15-4619-96F7-0057F8EAC526}</Project>
+      <Name>Chiro.Gap.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

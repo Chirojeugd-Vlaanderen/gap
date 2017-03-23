@@ -18,33 +18,24 @@
 
 using System;
 using System.Collections.Generic;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Test;
 using Chiro.Gap.WorkerInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Chiro.Gap.Validatie.Test
 {
     /// <summary>
     /// Testclass LidVoorstelValidator
     /// </summary>
-    [TestClass]
-    public class LidVoorstelValidatorTest
+    [TestFixture]
+    public class LidVoorstelValidatorTest: ChiroTest
     {
-        /// <summary>
-        /// Run code before running each test
-        /// </summary>
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-            Factory.ContainerInit();
-        }
-
         /// <summary>
         /// Kleuters moeten gedetecteerd worden bij validatie lidvoorstel.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void ValidatieLidVoorstelKleutersTest()
         {
             // Arrange
@@ -105,7 +96,7 @@ namespace Chiro.Gap.Validatie.Test
         /// <summary>
         /// Personen zonder (voorkeurs)adres moeten gedetecteerd worden bij validatie lidvoorstel.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void ValidatieLidVoorstelZonderAdresTest()
         {
             // Arrange
@@ -167,7 +158,7 @@ namespace Chiro.Gap.Validatie.Test
         /// <summary>
         /// Personen zonder telefoonnummer moeten gedetecteerd worden bij validatie lidvoorstel.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void ValidatieLidVoorstelZonderTelefoonNummer()
         {
             // Arrange
@@ -230,7 +221,7 @@ namespace Chiro.Gap.Validatie.Test
         /// <summary>
         /// Leiding zonder e-mailadres moet gedetecteerd worden bij validatie lidvoorstel.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void ValidatieLidVoorstelLeidingZonderEmail()
         {
             // Arrange

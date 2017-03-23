@@ -15,37 +15,25 @@
  */
 
 using System.Collections.Generic;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Test;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync.Test
 {
-    [TestClass]
-    public class AbonnementenSyncTest
+    [TestFixture]
+    public class AbonnementenSyncTest: ChiroTest
     {
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            MappingHelper.MappingsDefinieren();
-        }
-
-        [TestInitialize()]
-        public void MyTestInitialize()
-        {
-            Factory.ContainerInit();
-        }
-
         /// <summary>
         /// Test op verwijderen van alle abonnementen als de gelieerde persoon
         /// geen e-mailadres heeft.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void AlleAbonnementenVerwijderenGeenEmailTest()
         {
             // ARRANGE
@@ -75,7 +63,7 @@ namespace Chiro.Gap.Sync.Test
         /// <summary>
         /// Test op doorgegeven abonnementtypes.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void AbonnementTypeTest()
         {
             // ARRANGE

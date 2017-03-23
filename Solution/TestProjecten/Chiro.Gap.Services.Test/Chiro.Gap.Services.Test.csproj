@@ -1,10 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -41,28 +39,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
-      <HintPath>..\..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -91,7 +76,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="UitstappenServiceTest.cs" />
-    <Compile Include="BaseServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
@@ -100,10 +84,6 @@
     <ProjectReference Include="..\..\..\tools\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
       <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
-      <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
-      <Name>Chiro.Cdf.Ioc.Factory</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
@@ -141,10 +121,6 @@
       <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
       <Name>Chiro.Gap.SyncInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Gap.TestAttributes\Chiro.Gap.TestAttributes.csproj">
-      <Project>{3588ACB4-0203-478E-A25D-A1C64458D023}</Project>
-      <Name>Chiro.Gap.TestAttributes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
       <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
       <Name>Chiro.Gap.WorkerInterfaces</Name>
@@ -156,6 +132,10 @@
     <ProjectReference Include="..\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj">
       <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
       <Name>Chiro.Gap.Dummies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Test\Chiro.Gap.Test.csproj">
+      <Project>{CB755016-1D15-4619-96F7-0057F8EAC526}</Project>
+      <Name>Chiro.Gap.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -169,7 +149,6 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets" Condition="Exists('..\..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

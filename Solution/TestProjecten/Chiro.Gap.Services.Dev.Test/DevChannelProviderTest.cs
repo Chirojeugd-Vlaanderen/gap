@@ -16,30 +16,21 @@
  * limitations under the License.
  */
 
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.ServiceHelper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Gap.Test;
+using NUnit.Framework;
 
 namespace Chiro.Gap.Services.Dev.Test
 {
-    [TestClass]
-    public class DevChannelProviderTest
+    [TestFixture]
+    public class DevChannelProviderTest: ChiroTest
     {
-        /// <summary>
-        /// Run code before running each test
-        /// </summary>
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-            Factory.ContainerInit();
-        }
-
-        [TestMethod]
+        [Test]
         public void CreateDevChannelProviderTest()
         {
             var instantie = Factory.Maak<IChannelProvider>();
 
-            Assert.IsInstanceOfType(instantie, typeof(DevChannelProvider));
+            Assert.IsInstanceOf<DevChannelProvider>(instantie);
         }
     }
 }

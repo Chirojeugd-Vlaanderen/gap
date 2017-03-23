@@ -20,12 +20,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AutoMapper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
@@ -108,13 +106,9 @@ namespace Chiro.Gap.Workers
                                                                              StringComparison.OrdinalIgnoreCase) == 0)
                                              select gp).ToList();
 
-                // Automapper gauw gebruiken om te klonen. (mogelijk niet zo mooi ;))
-                Mapper.CreateMap<CommunicatieVorm, CommunicatieVorm>();
-
                 foreach (var adresgenoot in relevanteAdresGenoten)
                 {
-                    var cvKloon = new CommunicatieVorm();
-                    Mapper.Map(nieuweCommunicatieVorm, cvKloon);
+                    var cvKloon = Kloon(nieuweCommunicatieVorm);
 
                     cvKloon.GelieerdePersoon = adresgenoot;
                     adresgenoot.Communicatie.Add(cvKloon);
@@ -142,6 +136,20 @@ namespace Chiro.Gap.Workers
             }
 
             return gekoppeld;
+        }
+
+        public CommunicatieVorm Kloon(CommunicatieVorm cv)
+        {
+            var kloon = new CommunicatieVorm
+            {
+                Nota = cv.Nota,
+                Nummer = cv.Nummer,
+                IsGezinsgebonden = cv.IsGezinsgebonden,
+                Voorkeur = cv.Voorkeur,
+                GelieerdePersoon = cv.GelieerdePersoon,
+                CommunicatieType = cv.CommunicatieType
+            };
+            return kloon;
         }
 
         /// <summary>

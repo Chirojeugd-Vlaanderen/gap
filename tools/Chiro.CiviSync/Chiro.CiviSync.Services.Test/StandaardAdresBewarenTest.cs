@@ -20,136 +20,136 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Mapping;
+using Chiro.CiviSync.Test.Mapping;
 using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace Chiro.CiviSync.Services.Test
 {
-    [TestClass]
-    public class StandaardAdresBewarenTest
+    [TestFixture]
+    public class StandaardAdresBewarenTest: SyncTest
     {
-        [ClassInitialize]
-        public static void InitialilzeTestClass(TestContext c)
-        {
-            // creer mappings voor de service
-            MappingHelper.MappingsDefinieren();
-            // creer mappings voor de tests
-            TestHelper.MappingsCreeren();
-        }
-
         /// <summary>
         /// Adres bewaren van onbekend persoon moet een error loggen. (#3691)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void StandaardAdresBewarenOnbekend()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+            using (var factory = TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out civiApiMock,
+                out updateHelperMock))
+            {
 
-            // De API levert niets op:
-            civiApiMock.Setup(
-                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(new Contact());
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.IsAny<ContactRequest>()))
-                .Returns(new ApiResultValues<Contact>());
+                // De API levert niets op:
+                civiApiMock.Setup(
+                        src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                    .Returns(new Contact());
+                civiApiMock.Setup(
+                        src =>
+                            src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.IsAny<ContactRequest>()))
+                    .Returns(new ApiResultValues<Contact>());
 
-            var logger = new Mock<IMiniLog>();
-            logger.Setup(
-                src =>
-                    src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>()))
-                .Verifiable();
-            factory.InstantieRegistreren(logger.Object);
+                var logger = new Mock<IMiniLog>();
+                logger.Setup(
+                        src =>
+                            src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(),
+                                It.IsAny<int?>()))
+                    .Verifiable();
+                factory.InstantieRegistreren(logger.Object);
 
-            var service = factory.Maak<SyncService>();
+                var service = factory.Maak<SyncService>();
 
-            // ACT
+                // ACT
 
-            service.StandaardAdresBewaren(
-                new Adres {Straat = "Kipdorp", HuisNr = 30, PostNr = "2000", WoonPlaats = "Antwerpen"}, new Bewoner[]
-                {
-                    new Bewoner
+                service.StandaardAdresBewaren(
+                    new Adres {Straat = "Kipdorp", HuisNr = 30, PostNr = "2000", WoonPlaats = "Antwerpen"},
+                    new Bewoner[]
                     {
-                        AdresType = AdresTypeEnum.Werk,
-                        Persoon = new Persoon
+                        new Bewoner
                         {
-                            AdNummer = null,
-                            ID = 1,
-                            GeboorteDatum = new DateTime(1977, 03, 08)
+                            AdresType = AdresTypeEnum.Werk,
+                            Persoon = new Persoon
+                            {
+                                AdNummer = null,
+                                ID = 1,
+                                GeboorteDatum = new DateTime(1977, 03, 08)
+                            }
                         }
-                    }
-                });
+                    });
 
-            // ASSERT
+                // ASSERT
 
-            logger.Verify(
-                src =>
-                    src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>()),
-                Times.AtLeastOnce());
+                logger.Verify(
+                    src =>
+                        src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(),
+                            It.IsAny<int?>()),
+                    Times.AtLeastOnce());
+            }
         }
 
         /// <summary>
         /// Adres bewaren van persoon met onbekend AD-nummer moet AD-nummer terugsturen naar GAP. (#3688)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void StandaardAdresBewarenFoutAd()
         {
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+            using (var factory = TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out civiApiMock,
+                out updateHelperMock))
+            {
 
-            // Zo gezegd ongeldig AD-nummer
-            const int adNummer = 1;
+                // Zo gezegd ongeldig AD-nummer
+                const int adNummer = 1;
 
-            // De API levert niets op:
-            civiApiMock.Setup(
-                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(new Contact());
-            civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.IsAny<ContactRequest>()))
-                .Returns(new ApiResultValues<Contact>());
+                // De API levert niets op:
+                civiApiMock.Setup(
+                        src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                    .Returns(new Contact());
+                civiApiMock.Setup(
+                        src =>
+                            src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                                It.IsAny<ContactRequest>()))
+                    .Returns(new ApiResultValues<Contact>());
 
-            // verwacht aanroep van GapUpdateClient
-            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+                // verwacht aanroep van GapUpdateClient
+                updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
 
 
-            var service = factory.Maak<SyncService>();
+                var service = factory.Maak<SyncService>();
 
-            // ACT
+                // ACT
 
-            service.StandaardAdresBewaren(
-                new Adres { Straat = "Kipdorp", HuisNr = 30, PostNr = "2000", WoonPlaats = "Antwerpen" }, new Bewoner[]
-                {
-                    new Bewoner
+                service.StandaardAdresBewaren(
+                    new Adres {Straat = "Kipdorp", HuisNr = 30, PostNr = "2000", WoonPlaats = "Antwerpen"},
+                    new Bewoner[]
                     {
-                        AdresType = AdresTypeEnum.Werk,
-                        Persoon = new Persoon
+                        new Bewoner
                         {
-                            AdNummer = adNummer,
-                            ID = 1,
-                            GeboorteDatum = new DateTime(1977, 03, 08)
+                            AdresType = AdresTypeEnum.Werk,
+                            Persoon = new Persoon
+                            {
+                                AdNummer = adNummer,
+                                ID = 1,
+                                GeboorteDatum = new DateTime(1977, 03, 08)
+                            }
                         }
-                    }
-                });
+                    });
 
-            // ASSERT
+                // ASSERT
 
-            updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
+                updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)),
+                    Times.AtLeastOnce);
+            }
         }
     }
 }

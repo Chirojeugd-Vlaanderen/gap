@@ -14,13 +14,8 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.Web;
-using AutoMapper;
-using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -77,7 +72,7 @@ namespace Chiro.CiviSync.Services
                     ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                         svc => svc.AddressDelete(_apiKey, _siteKey, new DeleteRequest(addres.Id)));
                 }
-                request.AddressSaveRequest = new[] {Mapper.Map<Adres, AddressRequest>(g.Adres)};
+                request.AddressSaveRequest = new[] {MappingHelper.Map<Adres, AddressRequest>(g.Adres)};
             }
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.ContactSave(_apiKey, _siteKey, request));

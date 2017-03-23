@@ -18,6 +18,7 @@
  * limitations under the License.
  */
 %>
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <%	if (Model.Mededelingen != null && Model.Mededelingen.Any())

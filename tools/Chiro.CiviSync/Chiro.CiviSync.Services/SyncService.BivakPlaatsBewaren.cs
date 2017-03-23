@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using System.ServiceModel;
-using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -74,7 +73,7 @@ namespace Chiro.CiviSync.Services
                 }
             }
 
-            var nieuwAdres = Mapper.Map<Adres, AddressRequest>(adres);
+            var nieuwAdres = MappingHelper.Map<Adres, AddressRequest>(adres);
             // Location type heeft eigenlijk weinig zin voor loc block. Maar omdat de API wil dat
             // er iets gegeven is, kies ik billing (5).
             nieuwAdres.LocationTypeId = 5;

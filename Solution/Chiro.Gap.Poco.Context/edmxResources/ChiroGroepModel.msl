@@ -1,0 +1,723 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ChiroGroepModelStoreContainer" CdmEntityContainer="ChiroGroepEntities">
+    <EntitySetMapping Name="Groep">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Groep)">
+        <MappingFragment StoreEntitySet="Groep">
+          <ScalarProperty Name="StopDatum" ColumnName="StopDatum" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="OprichtingsJaar" ColumnName="OprichtingsJaar" />
+          <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+          <ScalarProperty Name="Logo" ColumnName="Logo" />
+          <ScalarProperty Name="ID" ColumnName="GroepID" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.ChiroGroep)">
+        <MappingFragment StoreEntitySet="ChiroGroep">
+          <ScalarProperty Name="ID" ColumnName="ChiroGroepID" />
+          <ScalarProperty Name="Plaats" ColumnName="Plaats" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.KaderGroep)">
+        <MappingFragment StoreEntitySet="KaderGroep">
+          <ScalarProperty Name="ID" ColumnName="KaderGroepID" />
+          <ScalarProperty Name="NiveauInt" ColumnName="Niveau" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Persoon">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Persoon)">
+        <MappingFragment StoreEntitySet="Persoon">
+          <ScalarProperty Name="NieuwsBrief" ColumnName="NieuwsBrief" />
+          <ScalarProperty Name="SeVoornaam" ColumnName="SeVoornaam" />
+          <ScalarProperty Name="SeNaam" ColumnName="SeNaam" />
+          <ScalarProperty Name="InSync" ColumnName="AdInAanvraag" />
+          <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+          <ScalarProperty Name="VoorNaam" ColumnName="VoorNaam" />
+          <ScalarProperty Name="GeboorteDatum" ColumnName="GeboorteDatum" />
+          <ScalarProperty Name="GeslachtsInt" ColumnName="Geslacht" />
+          <ScalarProperty Name="SterfDatum" ColumnName="SterfDatum" />
+          <ScalarProperty Name="ID" ColumnName="PersoonID" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CommunicatieVorm">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieVorm)">
+        <MappingFragment StoreEntitySet="CommunicatieVorm">
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="Voorkeur" ColumnName="Voorkeur" />
+          <ScalarProperty Name="IsGezinsgebonden" ColumnName="IsGezinsgebonden" />
+          <ScalarProperty Name="ID" ColumnName="CommunicatieVormID" />
+          <ScalarProperty Name="Nummer" ColumnName="Nummer" />
+          <ScalarProperty Name="Nota" ColumnName="Nota" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GelieerdePersoon">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.GelieerdePersoon)">
+        <MappingFragment StoreEntitySet="GelieerdePersoon">
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+          <ScalarProperty Name="ChiroLeefTijd" ColumnName="ChiroLeefTijd" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_GelieerdePersoon_Groep" TypeName="ChiroGroepModel.FK_GelieerdePersoon_Groep" StoreEntitySet="GelieerdePersoon">
+      <EndProperty Name="GelieerdePersoon">
+        <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+      </EndProperty>
+      <EndProperty Name="Groep">
+        <ScalarProperty Name="ID" ColumnName="GroepID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_CommunicatieVorm_GelieerdePersoon" TypeName="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" StoreEntitySet="CommunicatieVorm">
+      <EndProperty Name="CommunicatieVorm">
+        <ScalarProperty Name="ID" ColumnName="CommunicatieVormID" />
+      </EndProperty>
+      <EndProperty Name="GelieerdePersoon">
+        <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+      </EndProperty>
+      <Condition ColumnName="GelieerdePersoonID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_GelieerdePersoon_Persoon" TypeName="ChiroGroepModel.FK_GelieerdePersoon_Persoon" StoreEntitySet="GelieerdePersoon">
+      <EndProperty Name="GelieerdePersoon">
+        <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+      </EndProperty>
+      <EndProperty Name="Persoon">
+        <ScalarProperty Name="ID" ColumnName="PersoonID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Adres">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Adres)">
+        <MappingFragment StoreEntitySet="Adres">
+          <ScalarProperty Name="ID" ColumnName="AdresID" />
+          <ScalarProperty Name="HuisNr" ColumnName="HuisNr" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="Bus" ColumnName="Bus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.BelgischAdres)">
+        <MappingFragment StoreEntitySet="BelgischAdres">
+          <ScalarProperty Name="ID" ColumnName="BelgischAdresID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.BuitenLandsAdres)">
+        <MappingFragment StoreEntitySet="BuitenLandsAdres">
+          <ScalarProperty Name="WoonPlaats" ColumnName="WoonPlaats" />
+          <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+          <ScalarProperty Name="ID" ColumnName="BuitenlandsAdresID" />
+          <ScalarProperty Name="Straat" ColumnName="Straat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PersoonsAdres">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PersoonsAdres)">
+        <MappingFragment StoreEntitySet="PersoonsAdres">
+          <ScalarProperty Name="ID" ColumnName="PersoonsAdresID" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="AdresTypeInt" ColumnName="AdresTypeID" />
+          <ScalarProperty Name="Opmerking" ColumnName="Opmerking" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_PersoonsAdres_Adres" TypeName="ChiroGroepModel.FK_PersoonsAdres_Adres" StoreEntitySet="PersoonsAdres">
+      <EndProperty Name="PersoonsAdres">
+        <ScalarProperty Name="ID" ColumnName="PersoonsAdresID" />
+      </EndProperty>
+      <EndProperty Name="Adres">
+        <ScalarProperty Name="ID" ColumnName="AdresID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_PersoonsAdres_Persoon" TypeName="ChiroGroepModel.FK_PersoonsAdres_Persoon" StoreEntitySet="PersoonsAdres">
+      <EndProperty Name="PersoonsAdres">
+        <ScalarProperty Name="ID" ColumnName="PersoonsAdresID" />
+      </EndProperty>
+      <EndProperty Name="Persoon">
+        <ScalarProperty Name="ID" ColumnName="PersoonID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="GroepsWerkJaar">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.GroepsWerkJaar)">
+        <MappingFragment StoreEntitySet="GroepsWerkJaar">
+          <ScalarProperty Name="Datum" ColumnName="Datum" />
+          <ScalarProperty Name="ID" ColumnName="GroepsWerkJaarID" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Lid">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Lid)">
+        <MappingFragment StoreEntitySet="Lid">
+          <ScalarProperty Name="IsAangesloten" ColumnName="IsAangesloten" />
+          <ScalarProperty Name="UitschrijfDatum" ColumnName="UitschrijfDatum" />
+          <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" />
+          <ScalarProperty Name="ID" ColumnName="LidID" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="VolgendWerkjaarInt" ColumnName="VolgendWerkjaar" />
+          <ScalarProperty Name="Verwijderd" ColumnName="Verwijderd" />
+          <ScalarProperty Name="NonActief" ColumnName="NonActief" />
+          <ScalarProperty Name="LidgeldBetaald" ColumnName="LidgeldBetaald" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Leiding)">
+        <MappingFragment StoreEntitySet="Leiding">
+          <ScalarProperty Name="ID" ColumnName="leidingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Kind)">
+        <MappingFragment StoreEntitySet="Kind">
+          <ScalarProperty Name="ID" ColumnName="kindID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_GroepsWerkjaar_Groep" TypeName="ChiroGroepModel.FK_GroepsWerkjaar_Groep" StoreEntitySet="GroepsWerkJaar">
+      <EndProperty Name="Groep">
+        <ScalarProperty Name="ID" ColumnName="GroepID" />
+      </EndProperty>
+      <EndProperty Name="GroepsWerkJaar">
+        <ScalarProperty Name="ID" ColumnName="GroepsWerkJaarID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Lid_GroepsWerkjaar" TypeName="ChiroGroepModel.FK_Lid_GroepsWerkjaar" StoreEntitySet="Lid">
+      <EndProperty Name="Lid">
+        <ScalarProperty Name="ID" ColumnName="LidID" />
+      </EndProperty>
+      <EndProperty Name="GroepsWerkJaar">
+        <ScalarProperty Name="ID" ColumnName="GroepsWerkjaarID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Lid_GelieerdePersoon" TypeName="ChiroGroepModel.FK_Lid_GelieerdePersoon" StoreEntitySet="Lid">
+      <EndProperty Name="Lid">
+        <ScalarProperty Name="ID" ColumnName="LidID" />
+      </EndProperty>
+      <EndProperty Name="GelieerdePersoon">
+        <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Afdeling">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Afdeling)">
+        <MappingFragment StoreEntitySet="Afdeling">
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="ID" ColumnName="AfdelingID" />
+          <ScalarProperty Name="Afkorting" ColumnName="Afkorting" />
+          <ScalarProperty Name="Naam" ColumnName="AfdelingsNaam" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AfdelingsJaar">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.AfdelingsJaar)">
+        <MappingFragment StoreEntitySet="AfdelingsJaar">
+          <ScalarProperty Name="GeslachtsInt" ColumnName="Geslacht" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="ID" ColumnName="AfdelingsJaarID" />
+          <ScalarProperty Name="GeboorteJaarVan" ColumnName="GeboorteJaarVan" />
+          <ScalarProperty Name="GeboorteJaarTot" ColumnName="GeboorteJaarTot" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OfficieleAfdeling">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.OfficieleAfdeling)">
+        <MappingFragment StoreEntitySet="OfficieleAfdeling">
+          <ScalarProperty Name="ID" ColumnName="OfficieleAfdelingID" />
+          <ScalarProperty Name="LeefTijdTot" ColumnName="LeefTijdTot" />
+          <ScalarProperty Name="LeefTijdVan" ColumnName="LeefTijdVan" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_AfdelingsJaar_GroepsWerkjaar" TypeName="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" StoreEntitySet="AfdelingsJaar">
+      <EndProperty Name="AfdelingsJaar">
+        <ScalarProperty Name="ID" ColumnName="AfdelingsJaarID" />
+      </EndProperty>
+      <EndProperty Name="GroepsWerkJaar">
+        <ScalarProperty Name="ID" ColumnName="GroepsWerkJaarID" />
+      </EndProperty>
+      <Condition ColumnName="GroepsWerkJaarID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_AfdelingsJaar_Afdeling" TypeName="ChiroGroepModel.FK_AfdelingsJaar_Afdeling" StoreEntitySet="AfdelingsJaar">
+      <EndProperty Name="AfdelingsJaar">
+        <ScalarProperty Name="ID" ColumnName="AfdelingsJaarID" />
+      </EndProperty>
+      <EndProperty Name="Afdeling">
+        <ScalarProperty Name="ID" ColumnName="AfdelingID" />
+      </EndProperty>
+      <Condition ColumnName="AfdelingID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_AfdelingsJaar_OfficieleAfdeling" TypeName="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" StoreEntitySet="AfdelingsJaar">
+      <EndProperty Name="AfdelingsJaar">
+        <ScalarProperty Name="ID" ColumnName="AfdelingsJaarID" />
+      </EndProperty>
+      <EndProperty Name="OfficieleAfdeling">
+        <ScalarProperty Name="ID" ColumnName="OfficieleAfdelingID" />
+      </EndProperty>
+      <Condition ColumnName="OfficieleAfdelingID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="LeidingInAfdelingsJaar" TypeName="ChiroGroepModel.LeidingInAfdelingsJaar" StoreEntitySet="LeidingInAfdelingsJaar">
+      <EndProperty Name="AfdelingsJaar">
+        <ScalarProperty Name="ID" ColumnName="AfdelingsJaarID" />
+      </EndProperty>
+      <EndProperty Name="Leiding">
+        <ScalarProperty Name="ID" ColumnName="LeidingID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Kind_AfdelingsJaar" TypeName="ChiroGroepModel.FK_Kind_AfdelingsJaar" StoreEntitySet="Kind">
+      <EndProperty Name="Kind">
+        <ScalarProperty Name="ID" ColumnName="kindID" />
+      </EndProperty>
+      <EndProperty Name="AfdelingsJaar">
+        <ScalarProperty Name="ID" ColumnName="afdelingsJaarID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Categorie">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Categorie)">
+        <MappingFragment StoreEntitySet="Categorie">
+          <ScalarProperty Name="ID" ColumnName="CategorieID" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_Categorie_Groep" TypeName="ChiroGroepModel.FK_Categorie_Groep" StoreEntitySet="Categorie">
+      <EndProperty Name="Categorie">
+        <ScalarProperty Name="ID" ColumnName="CategorieID" />
+      </EndProperty>
+      <EndProperty Name="Groep">
+        <ScalarProperty Name="ID" ColumnName="GroepID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="PersoonsCategorie" TypeName="ChiroGroepModel.PersoonsCategorie" StoreEntitySet="PersoonsCategorie">
+      <EndProperty Name="GelieerdePersoon">
+        <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+      </EndProperty>
+      <EndProperty Name="Categorie">
+        <ScalarProperty Name="ID" ColumnName="CategorieID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="CommunicatieType">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieType)">
+        <MappingFragment StoreEntitySet="CommunicatieType">
+          <ScalarProperty Name="Voorbeeld" ColumnName="Voorbeeld" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="ID" ColumnName="CommunicatieTypeID" />
+          <ScalarProperty Name="Validatie" ColumnName="Validatie" />
+          <ScalarProperty Name="Omschrijving" ColumnName="Omschrijving" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_CommunicatieVorm_CommunicatieType" TypeName="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" StoreEntitySet="CommunicatieVorm">
+      <EndProperty Name="CommunicatieVorm">
+        <ScalarProperty Name="ID" ColumnName="CommunicatieVormID" />
+      </EndProperty>
+      <EndProperty Name="CommunicatieType">
+        <ScalarProperty Name="ID" ColumnName="CommunicatieTypeID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Functie">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Functie)">
+        <MappingFragment StoreEntitySet="Functie">
+          <ScalarProperty Name="NiveauInt" ColumnName="Niveau" />
+          <ScalarProperty Name="LidTypeInt" ColumnName="LidType" />
+          <ScalarProperty Name="IsNationaal" ColumnName="IsNationaal" />
+          <ScalarProperty Name="WerkJaarTot" ColumnName="WerkJaarTot" />
+          <ScalarProperty Name="WerkJaarVan" ColumnName="WerkJaarVan" />
+          <ScalarProperty Name="MinAantal" ColumnName="MinAantal" />
+          <ScalarProperty Name="MaxAantal" ColumnName="MaxAantal" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="ID" ColumnName="FunctieID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_Functie_Groep" TypeName="ChiroGroepModel.FK_Functie_Groep" StoreEntitySet="Functie">
+      <EndProperty Name="Functie">
+        <ScalarProperty Name="ID" ColumnName="FunctieID" />
+      </EndProperty>
+      <EndProperty Name="Groep">
+        <ScalarProperty Name="ID" ColumnName="GroepID" />
+      </EndProperty>
+      <Condition ColumnName="GroepID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="LidFunctie" TypeName="ChiroGroepModel.LidFunctie" StoreEntitySet="LidFunctie">
+      <EndProperty Name="Lid">
+        <ScalarProperty Name="ID" ColumnName="LidID" />
+      </EndProperty>
+      <EndProperty Name="Functie">
+        <ScalarProperty Name="ID" ColumnName="FunctieID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="StraatNaam">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.StraatNaam)">
+        <MappingFragment StoreEntitySet="StraatNaam">
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="CrabSubstraatID" ColumnName="CrabSubstraatID" />
+          <ScalarProperty Name="TaalID" ColumnName="TaalID" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+          <ScalarProperty Name="PostNummer" ColumnName="PostNummer" />
+          <ScalarProperty Name="ID" ColumnName="StraatNaamID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WoonPlaats">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.WoonPlaats)">
+        <MappingFragment StoreEntitySet="WoonPlaats">
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="CrabPostKantonID" ColumnName="CrabPostKantonID" />
+          <ScalarProperty Name="TaalID" ColumnName="TaalID" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+          <ScalarProperty Name="PostNummer" ColumnName="PostNummer" />
+          <ScalarProperty Name="ID" ColumnName="WoonPlaatsID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_GelieerdePersoon_PersoonsAdres" TypeName="ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres" StoreEntitySet="GelieerdePersoon">
+      <EndProperty Name="GelieerdePersoon">
+        <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+      </EndProperty>
+      <EndProperty Name="PersoonsAdres">
+        <ScalarProperty Name="ID" ColumnName="VoorkeursAdresID" />
+      </EndProperty>
+      <Condition ColumnName="VoorkeursAdresID" IsNull="false" />
+    </AssociationSetMapping>
+    <EntitySetMapping Name="PersoonsVerzekering">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PersoonsVerzekering)">
+        <MappingFragment StoreEntitySet="PersoonsVerzekering">
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="ID" ColumnName="PersoonsVerzekeringID" />
+          <ScalarProperty Name="Tot" ColumnName="Tot" />
+          <ScalarProperty Name="Van" ColumnName="Van" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VerzekeringsType">
+      <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.VerzekeringsType)">
+        <MappingFragment StoreEntitySet="VerzekeringsType">
+          <ScalarProperty Name="TotEindeWerkJaar" ColumnName="TotEindeWerkJaar" />
+          <ScalarProperty Name="EnkelLeden" ColumnName="EnkelLeden" />
+          <ScalarProperty Name="Omschrijving" ColumnName="Omschrijving" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ID" ColumnName="VerzekeringsTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_PersoonsVerzekering_Persoon" TypeName="ChiroGroepModel.FK_PersoonsVerzekering_Persoon" StoreEntitySet="PersoonsVerzekering">
+      <EndProperty Name="PersoonsVerzekering">
+        <ScalarProperty Name="ID" ColumnName="PersoonsVerzekeringID" />
+      </EndProperty>
+      <EndProperty Name="Persoon">
+        <ScalarProperty Name="ID" ColumnName="PersoonID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_PersoonsVerzekering_VerzekeringsType" TypeName="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" StoreEntitySet="PersoonsVerzekering">
+      <EndProperty Name="PersoonsVerzekering">
+        <ScalarProperty Name="ID" ColumnName="PersoonsVerzekeringID" />
+      </EndProperty>
+      <EndProperty Name="VerzekeringsType">
+        <ScalarProperty Name="ID" ColumnName="VerzekeringsTypeID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_ChiroGroep_KaderGroep" TypeName="ChiroGroepModel.FK_ChiroGroep_KaderGroep" StoreEntitySet="ChiroGroep">
+      <EndProperty Name="ChiroGroep">
+        <ScalarProperty Name="ID" ColumnName="ChiroGroepID" />
+      </EndProperty>
+      <EndProperty Name="KaderGroep">
+        <ScalarProperty Name="ID" ColumnName="KaderGroepID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_KaderGroep_KaderGroep" TypeName="ChiroGroepModel.FK_KaderGroep_KaderGroep" StoreEntitySet="KaderGroep">
+      <EndProperty Name="KaderGroep1">
+        <ScalarProperty Name="ID" ColumnName="KaderGroepID" />
+      </EndProperty>
+      <EndProperty Name="KaderGroep">
+        <ScalarProperty Name="ID" ColumnName="ParentID" />
+      </EndProperty>
+      <Condition ColumnName="ParentID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Afdeling_ChiroGroep" TypeName="ChiroGroepModel.FK_Afdeling_ChiroGroep" StoreEntitySet="Afdeling">
+      <EndProperty Name="Afdeling">
+        <ScalarProperty Name="ID" ColumnName="AfdelingID" />
+      </EndProperty>
+      <EndProperty Name="ChiroGroep">
+        <ScalarProperty Name="ID" ColumnName="ChiroGroepID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Land">
+      <EntityTypeMapping TypeName="ChiroGroepModel.Land">
+        <MappingFragment StoreEntitySet="Land">
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+          <ScalarProperty Name="ID" ColumnName="LandID" />
+          <ScalarProperty Name="IsoCode" ColumnName="IsoCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_BelgischAdres_StraatNaam" TypeName="ChiroGroepModel.FK_BelgischAdres_StraatNaam" StoreEntitySet="BelgischAdres">
+      <EndProperty Name="BelgischAdres">
+        <ScalarProperty Name="ID" ColumnName="BelgischAdresID" />
+      </EndProperty>
+      <EndProperty Name="StraatNaam">
+        <ScalarProperty Name="ID" ColumnName="StraatNaamID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_BelgischAdres_WoonPlaats" TypeName="ChiroGroepModel.FK_BelgischAdres_WoonPlaats" StoreEntitySet="BelgischAdres">
+      <EndProperty Name="BelgischAdres">
+        <ScalarProperty Name="ID" ColumnName="BelgischAdresID" />
+      </EndProperty>
+      <EndProperty Name="WoonPlaats">
+        <ScalarProperty Name="ID" ColumnName="WoonPlaatsID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_BuitenlandsAdres_Land" TypeName="ChiroGroepModel.FK_BuitenlandsAdres_Land" StoreEntitySet="BuitenLandsAdres">
+      <EndProperty Name="BuitenLandsAdres">
+        <ScalarProperty Name="ID" ColumnName="BuitenlandsAdresID" />
+      </EndProperty>
+      <EndProperty Name="Land">
+        <ScalarProperty Name="ID" ColumnName="LandID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Plaats">
+      <EntityTypeMapping TypeName="ChiroGroepModel.Plaats">
+        <MappingFragment StoreEntitySet="Plaats">
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+          <ScalarProperty Name="ID" ColumnName="PlaatsID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Uitstap">
+      <EntityTypeMapping TypeName="ChiroGroepModel.Uitstap">
+        <MappingFragment StoreEntitySet="Uitstap">
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="Opmerkingen" ColumnName="Opmerkingen" />
+          <ScalarProperty Name="DatumTot" ColumnName="DatumTot" />
+          <ScalarProperty Name="DatumVan" ColumnName="DatumVan" />
+          <ScalarProperty Name="IsBivak" ColumnName="IsBivak" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+          <ScalarProperty Name="ID" ColumnName="UitstapID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_Plaats_Adres" TypeName="ChiroGroepModel.FK_Plaats_Adres" StoreEntitySet="Plaats">
+      <EndProperty Name="Plaats">
+        <ScalarProperty Name="ID" ColumnName="PlaatsID" />
+      </EndProperty>
+      <EndProperty Name="Adres">
+        <ScalarProperty Name="ID" ColumnName="AdresID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Plaats_GelieerdePersoon_Contact" TypeName="ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact" StoreEntitySet="Plaats">
+      <EndProperty Name="Plaats">
+        <ScalarProperty Name="ID" ColumnName="PlaatsID" />
+      </EndProperty>
+      <EndProperty Name="GelieerdePersoon">
+        <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+      </EndProperty>
+      <Condition ColumnName="GelieerdePersoonID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Uitstap_Plaats" TypeName="ChiroGroepModel.FK_Uitstap_Plaats" StoreEntitySet="Uitstap">
+      <EndProperty Name="Uitstap">
+        <ScalarProperty Name="ID" ColumnName="UitstapID" />
+      </EndProperty>
+      <EndProperty Name="Plaats">
+        <ScalarProperty Name="ID" ColumnName="PlaatsID" />
+      </EndProperty>
+      <Condition ColumnName="PlaatsID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Uitstap_GroepsWerkJaar" TypeName="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar" StoreEntitySet="Uitstap">
+      <EndProperty Name="Uitstap">
+        <ScalarProperty Name="ID" ColumnName="UitstapID" />
+      </EndProperty>
+      <EndProperty Name="GroepsWerkJaar">
+        <ScalarProperty Name="ID" ColumnName="GroepsWerkJaarID" />
+      </EndProperty>
+      <Condition ColumnName="GroepsWerkJaarID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Plaats_Groep" TypeName="ChiroGroepModel.FK_Plaats_Groep" StoreEntitySet="Plaats">
+      <EndProperty Name="Plaats">
+        <ScalarProperty Name="ID" ColumnName="PlaatsID" />
+      </EndProperty>
+      <EndProperty Name="Groep">
+        <ScalarProperty Name="ID" ColumnName="GroepID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Deelnemer">
+      <EntityTypeMapping TypeName="ChiroGroepModel.Deelnemer">
+        <MappingFragment StoreEntitySet="Deelnemer">
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="Opmerkingen" ColumnName="Opmerkingen" />
+          <ScalarProperty Name="MedischeFicheOk" ColumnName="MedischeFicheOk" />
+          <ScalarProperty Name="HeeftBetaald" ColumnName="HeeftBetaald" />
+          <ScalarProperty Name="IsLogistieker" ColumnName="IsLogistieker" />
+          <ScalarProperty Name="ID" ColumnName="DeelnemerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_Deelnemer_GelieerdePersoon" TypeName="ChiroGroepModel.FK_Deelnemer_GelieerdePersoon" StoreEntitySet="Deelnemer">
+      <EndProperty Name="Deelnemer">
+        <ScalarProperty Name="ID" ColumnName="DeelnemerID" />
+      </EndProperty>
+      <EndProperty Name="GelieerdePersoon">
+        <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Deelnemer_Uitstap" TypeName="ChiroGroepModel.FK_Deelnemer_Uitstap" StoreEntitySet="Deelnemer">
+      <EndProperty Name="Deelnemer">
+        <ScalarProperty Name="ID" ColumnName="DeelnemerID" />
+      </EndProperty>
+      <EndProperty Name="Uitstap">
+        <ScalarProperty Name="ID" ColumnName="UitstapID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Uitstap_Deelnemer_Contact" TypeName="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact" StoreEntitySet="Uitstap">
+      <EndProperty Name="Uitstap">
+        <ScalarProperty Name="ID" ColumnName="UitstapID" />
+      </EndProperty>
+      <EndProperty Name="Deelnemer">
+        <ScalarProperty Name="ID" ColumnName="ContactDeelnemerID" />
+      </EndProperty>
+      <Condition ColumnName="ContactDeelnemerID" IsNull="false" />
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Abonnement">
+      <EntityTypeMapping TypeName="ChiroGroepModel.Abonnement">
+        <MappingFragment StoreEntitySet="Abonnement">
+          <ScalarProperty Name="TypeInt" ColumnName="Type" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="AanvraagDatum" ColumnName="AanvraagDatum" />
+          <ScalarProperty Name="ID" ColumnName="AbonnementID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Publicatie">
+      <EntityTypeMapping TypeName="ChiroGroepModel.Publicatie">
+        <MappingFragment StoreEntitySet="Publicatie">
+          <ScalarProperty Name="Actief" ColumnName="Actief" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
+          <ScalarProperty Name="ID" ColumnName="PublicatieID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_Abonnement_GelieerdePersoon" TypeName="ChiroGroepModel.FK_Abonnement_GelieerdePersoon" StoreEntitySet="Abonnement">
+      <EndProperty Name="Abonnement">
+        <ScalarProperty Name="ID" ColumnName="AbonnementID" />
+      </EndProperty>
+      <EndProperty Name="GelieerdePersoon">
+        <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Abonnement_GroepsWerkJaar" TypeName="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" StoreEntitySet="Abonnement">
+      <EndProperty Name="Abonnement">
+        <ScalarProperty Name="ID" ColumnName="AbonnementID" />
+      </EndProperty>
+      <EndProperty Name="GroepsWerkJaar">
+        <ScalarProperty Name="ID" ColumnName="GroepsWerkJaarID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Abonnement_Publicatie" TypeName="ChiroGroepModel.FK_Abonnement_Publicatie" StoreEntitySet="Abonnement">
+      <EndProperty Name="Abonnement">
+        <ScalarProperty Name="ID" ColumnName="AbonnementID" />
+      </EndProperty>
+      <EndProperty Name="Publicatie">
+        <ScalarProperty Name="ID" ColumnName="PublicatieID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Groep_Adres" TypeName="ChiroGroepModel.FK_Groep_Adres" StoreEntitySet="Groep">
+      <EndProperty Name="Groep">
+        <ScalarProperty Name="ID" ColumnName="GroepID" />
+      </EndProperty>
+      <EndProperty Name="Adres">
+        <ScalarProperty Name="ID" ColumnName="AdresID" />
+      </EndProperty>
+      <Condition ColumnName="AdresID" IsNull="false" />
+    </AssociationSetMapping>
+    <EntitySetMapping Name="GebruikersRechtv2">
+      <EntityTypeMapping TypeName="ChiroGroepModel.GebruikersRechtV2">
+        <MappingFragment StoreEntitySet="GebruikersRechtv2">
+          <ScalarProperty Name="IedereenPermissiesInt" ColumnName="IedereenPermissies" />
+          <ScalarProperty Name="AfdelingsPermissiesInt" ColumnName="AfdelingsPermissies" />
+          <ScalarProperty Name="GroepsPermissiesInt" ColumnName="GroepsPermissies" />
+          <ScalarProperty Name="PersoonsPermissiesInt" ColumnName="PersoonsPermissies" />
+          <ScalarProperty Name="Versie" ColumnName="Versie" />
+          <ScalarProperty Name="VervalDatum" ColumnName="VervalDatum" />
+          <ScalarProperty Name="ID" ColumnName="GebruikersRechtV2ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_GebruikersRechtV2_Groep" TypeName="ChiroGroepModel.FK_GebruikersRechtV2_Groep" StoreEntitySet="GebruikersRechtv2">
+      <EndProperty Name="GebruikersRechtv2">
+        <ScalarProperty Name="ID" ColumnName="GebruikersRechtV2ID" />
+      </EndProperty>
+      <EndProperty Name="Groep">
+        <ScalarProperty Name="ID" ColumnName="GroepID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Bericht">
+      <EntityTypeMapping TypeName="ChiroGroepModel.Bericht">
+        <MappingFragment StoreEntitySet="Bericht">
+          <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+          <ScalarProperty Name="StamNummer" ColumnName="StamNummer" />
+          <ScalarProperty Name="Boodschap" ColumnName="Boodschap" />
+          <ScalarProperty Name="Niveau" ColumnName="Niveau" />
+          <ScalarProperty Name="Tijd" ColumnName="Tijd" />
+          <ScalarProperty Name="ID" ColumnName="BerichtID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_Bericht_Gebruiker" TypeName="ChiroGroepModel.FK_Bericht_Gebruiker" StoreEntitySet="Bericht">
+      <EndProperty Name="Bericht">
+        <ScalarProperty Name="ID" ColumnName="BerichtID" />
+      </EndProperty>
+      <EndProperty Name="Persoon">
+        <ScalarProperty Name="ID" ColumnName="GebruikerID" />
+      </EndProperty>
+      <Condition ColumnName="GebruikerID" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_GebruikersRechtV2_Persoon" TypeName="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" StoreEntitySet="GebruikersRechtv2">
+      <EndProperty Name="GebruikersRechtv2">
+        <ScalarProperty Name="ID" ColumnName="GebruikersRechtV2ID" />
+      </EndProperty>
+      <EndProperty Name="Persoon">
+        <ScalarProperty Name="ID" ColumnName="PersoonID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_Bericht_Persoon_Id" TypeName="ChiroGroepModel.FK_Bericht_Persoon_Id" StoreEntitySet="Bericht">
+      <EndProperty Name="Bericht">
+        <ScalarProperty Name="ID" ColumnName="BerichtID" />
+      </EndProperty>
+      <EndProperty Name="Persoon">
+        <ScalarProperty Name="ID" ColumnName="PersoonID" />
+      </EndProperty>
+      <Condition ColumnName="PersoonID" IsNull="false" />
+    </AssociationSetMapping>
+    <EntitySetMapping Name="vActiefLid">
+      <EntityTypeMapping TypeName="ChiroGroepModel.ActiefLid">
+        <MappingFragment StoreEntitySet="vActiefLid">
+          <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+          <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+          <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+          <ScalarProperty Name="LidID" ColumnName="LidID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vActiefAbonnement">
+      <EntityTypeMapping TypeName="ChiroGroepModel.ActiefAbonnement">
+        <MappingFragment StoreEntitySet="vActiefAbonnement">
+          <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
+          <ScalarProperty Name="ID" ColumnName="AbonnementID" />
+          <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

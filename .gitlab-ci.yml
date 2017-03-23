@@ -1,0 +1,91 @@
+image: gitlab.chiro.be:5443/overig/containers:gap
+
+stages:
+  - build
+  - test
+  - deploy
+
+# We bewaren de files die niet getrackt worden door git in de cache,
+# zodat ze beschikbaar zijn in alle jobs.
+cache:
+  key: ${CI_BUILD_REF_NAME}
+  untracked: true
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+build gap:
+  stage: build
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    - cd /builds/gap/gap/Solution
+    - nuget restore
+    - xbuild Cg2Solution.sln
+
+build al de rest:
+  stage: build
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    # De volgorde waarin projecten worden gebuild, is belangrijk. Dat is
+    # jammer, maar het is een gevolg van issue #5668. Vandaar dat ik veel
+    # builds verzamel in 1 script.
+    - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
+    - nuget restore
+    - xbuild Chiro.CiviCrm.Wcf.sln
+    - cd /builds/gap/gap/tools/Chiro.CiviSync
+    - nuget restore
+    - xbuild Chiro.CiviSync.sln
+    - cd /builds/gap/gap/tools/Chiro.LoginService
+    - nuget restore
+    - xbuild LoginService.sln
+    - cd /builds/gap/gap/tools/Chiro.Gap.FixAnomalies
+    - nuget restore
+    - xbuild Chiro.Gap.FixAnomalies.sln
+
+unit tests gap:
+  stage: test
+  dependencies:
+    - build gap
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    - cd /builds/gap/gap
+    # in principe zou nunit-console Solution/Cg2Solution.sln moeten gaan,
+    # maar dat werkt op dit moment nog niet, omdat in de solution files
+    # paden met backslashes geseparated zijn, en daar kan nunit-console
+    # onder Linux (docker) niet aan uit.
+    # (Ik zet ook alles op 1 lijn, want met newlines kreeg ik het niet goed.)
+    - nunit-console Solution/TestProjecten/Chiro.Gap.Algemeen.Test/bin/Debug/Chiro.Gap.Algemeen.Test.dll Solution/TestProjecten/Chiro.Gap.Maintenance.Test/bin/Debug/Chiro.Gap.Maintenance.Test.dll Solution/TestProjecten/Chiro.Gap.Services.Dev.Test/bin/Debug/Chiro.Gap.Services.Dev.Test.dll Solution/TestProjecten/Chiro.Gap.Services.Test/bin/Debug/Chiro.Gap.Services.Test.dll Solution/TestProjecten/Chiro.Gap.Sync.Test/bin/Debug/Chiro.Gap.Sync.Test.dll Solution/TestProjecten/Chiro.Gap.UpdateSvc.Test/bin/Debug/Chiro.Gap.UpdateSvc.Test.dll Solution/TestProjecten/Chiro.Gap.WebApp.Test/bin/Debug/Chiro.Gap.WebApp.Test.dll Solution/TestProjecten/Chiro.Gap.Workers.Test/bin/Debug/Chiro.Gap.Workers.Test.dll
+
+unit tests civisync:
+  stage: test
+  dependencies:
+    - build al de rest
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    - cd /builds/gap/gap
+    - nunit-console tools/Chiro.CiviSync/Chiro.CiviSync.Logic.Test/bin/Debug/Chiro.CiviSync.Logic.Test.dll tools/Chiro.CiviSync/Chiro.CiviSync.Mapping.Test/bin/Debug/Chiro.CiviSync.Mapping.Test.dll tools/Chiro.CiviSync/Chiro.CiviSync.Services.Test/bin/Debug/Chiro.CiviSync.Services.Test.dll tools/Chiro.CiviSync/Chiro.CiviSync.Workers.Test/bin/Debug/Chiro.CiviSync.Workers.Test.dll
+
+unit tests loginservice:
+  stage: test
+  dependencies:
+    - build al de rest
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    - cd /builds/gap/gap
+    - nunit-console tools/Chiro.LoginService/Chiro.Ad.Workers.Test/bin/Debug/Chiro.Ad.Workers.Test.dll
+

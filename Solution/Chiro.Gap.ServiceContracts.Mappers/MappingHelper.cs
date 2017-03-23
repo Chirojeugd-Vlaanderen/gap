@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014,2015,2016 the GAP developers. See the NOTICE file at the 
+ * Copyright 2014,2015,2016,2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -39,6 +39,16 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         private readonly IAuthenticatieManager _authenticatieMgr;
         private readonly IAutorisatieManager _autorisatieMgr;
 
+        protected static MapperConfiguration Configuration { get; private set; }
+
+        /// <summary>
+        /// Default constructor for a new MappingHelper
+        /// </summary>
+        /// <param name="ledenManager"></param>
+        /// <param name="groepsWerkjarenManager"></param>
+        /// <param name="abonnementenManager"></param>
+        /// <param name="authenticatieManager"></param>
+        /// <param name="autorisatieManager"></param>
         public MappingHelper(ILedenManager ledenManager, IGroepsWerkJarenManager groepsWerkjarenManager, IAbonnementenManager abonnementenManager, IAuthenticatieManager authenticatieManager, IAutorisatieManager autorisatieManager)
         {
             _ledenMgr = ledenManager;
@@ -46,21 +56,28 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             _abonnementenMgr = abonnementenManager;
             _authenticatieMgr = authenticatieManager;
             _autorisatieMgr = autorisatieManager;
+            if (Configuration == null)
+            {
+                // TODO: Kunnen we dit niet injecteren?
+                Configuration = new MapperConfiguration(MappingsDefinieren);
+                // Wel even nakijken of die automagie overal gewerkt heeft:
+                Configuration.AssertConfigurationIsValid();
+            }
         }
 
         /// <summary>
         /// Definieert meteen alle nodige mappings.
         /// </summary>
-        public void MappingsDefinieren()
+        public void MappingsDefinieren(IProfileExpression cfg)
         {
-            Mapper.CreateMap<Persoon, PersoonInfo>()
+            cfg.CreateMap<Persoon, PersoonInfo>()
                 // de members die in src en dst hetzelfde heten, laat ik voor het gemak weg.
                 // de members die genegeerd moeten worden, vermeld ik wel expliciet, anders
                 // crasht de assert helemaal onderaan.
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.Ignore())
                 .ForMember(dst => dst.ChiroLeefTijd, opt => opt.Ignore());
 
-            Mapper.CreateMap<GelieerdePersoon, PersoonInfo>()
+            cfg.CreateMap<GelieerdePersoon, PersoonInfo>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))
                 .ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
                 .ForMember(dst => dst.SterfDatum, opt => opt.MapFrom(src => src.Persoon.SterfDatum))
@@ -71,7 +88,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
                 .ForMember(dst => dst.NieuwsBrief, opt => opt.MapFrom(src => src.Persoon.NieuwsBrief));
 
-            Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
+            cfg.CreateMap<GelieerdePersoon, PersoonDetail>()
                   .ForMember(
                       dst => dst.GelieerdePersoonID,
                       opt => opt.MapFrom(src => src.ID))
@@ -128,7 +145,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                       dst => dst.VolledigeNaam,
                       opt => opt.Ignore());
 
-            Mapper.CreateMap<GelieerdePersoon, PersoonOverzicht>()
+            cfg.CreateMap<GelieerdePersoon, PersoonOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))
                 .ForMember(dst => dst.Bus, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.Bus))
                 .ForMember(dst => dst.Email, opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.Email)))
@@ -151,7 +168,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             // Deze mapping moet alle adresvelden negeren. Ze zal gebruikt worden als tussenstap wanneer
             // we een LidOverzicht nodig hebben, maar de adressen irrelevant zijn. Op die manier vermijden
             // we dat de adressen 'gelazyload' worden.
-            Mapper.CreateMap<Lid, LidOverzichtZonderAdres>()
+            cfg.CreateMap<Lid, LidOverzichtZonderAdres>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
                 .ForMember(dst => dst.Email,
                     opt =>
@@ -183,15 +200,15 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.WoonPlaats, opt => opt.Ignore())
                 .ForMember(dst => dst.Land, opt => opt.Ignore());
 
-            Mapper.CreateMap<Lid, LidAfdelingInfo>()
+            cfg.CreateMap<Lid, LidAfdelingInfo>()
                   .ForMember(dst => dst.VolledigeNaam,
                              opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VolledigeNaam))
                   .ForMember(dst => dst.Type, opt => opt.MapFrom(src => src.Type))
                   .ForMember(dst => dst.AfdelingsJaarIDs, opt => opt.MapFrom(src => src.AfdelingsJaarIDs));
 
-            Mapper.CreateMap<LidOverzichtZonderAdres, LidOverzicht>();
+            cfg.CreateMap<LidOverzichtZonderAdres, LidOverzicht>();
 
-            Mapper.CreateMap<Lid, LidOverzicht>()
+            cfg.CreateMap<Lid, LidOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
                 .ForMember(dst => dst.Bus,
                     opt =>
@@ -263,7 +280,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                                     ? null
                                     : src.GelieerdePersoon.PersoonsAdres.Adres.LandGet()));
 
-            Mapper.CreateMap<Groep, GroepDetail>()
+            cfg.CreateMap<Groep, GroepDetail>()
                 .ForMember(
                     dst => dst.Plaats, opt => opt.MapFrom(
                     src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
@@ -280,7 +297,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.Afdelingen,
                     opt => opt.Ignore());
 
-            Mapper.CreateMap<Afdeling, AfdelingInfo>()
+            cfg.CreateMap<Afdeling, AfdelingInfo>()
                 .ForMember(
                     dst => dst.Afkorting,
                     opt => opt.MapFrom(src => src.Afkorting))
@@ -291,15 +308,15 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.ID,
                     opt => opt.MapFrom(src => src.ID));
 
-            Mapper.CreateMap<AfdelingsJaar, AfdelingsJaarInfo>()
+            cfg.CreateMap<AfdelingsJaar, AfdelingsJaarInfo>()
                   .ForMember(dst => dst.Afkorting, opt => opt.MapFrom(src => src.Afdeling.Afkorting))
                   .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Afdeling.Naam))
                   .ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.Afdeling.ID));
 
-            Mapper.CreateMap<Functie, FunctieInfo>();
-            Mapper.CreateMap<Functie, FunctieDetail>();
+            cfg.CreateMap<Functie, FunctieInfo>();
+            cfg.CreateMap<Functie, FunctieDetail>();
 
-            Mapper.CreateMap<Lid, LidInfo>()
+            cfg.CreateMap<Lid, LidInfo>()
                 .ForMember(
                     dst => dst.LidID,
                     opt => opt.MapFrom(src => src.ID))
@@ -331,7 +348,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                         Verzekering.LoonVerlies)));
 
             // Dit was beperkt. Dit moet uitgebreider voor de Excelexport.
-            Mapper.CreateMap<Lid, PersoonLidInfo>()
+            cfg.CreateMap<Lid, PersoonLidInfo>()
                 .ForMember(
                     dst => dst.PersoonDetail,
                     opt => opt.MapFrom(src => src.GelieerdePersoon))
@@ -354,7 +371,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             // niet-Belgisch adres.  We werken daarrond via de extension methods StraatGet en
             // WoonPlaatsGet.
 
-            Mapper.CreateMap<Adres, AdresInfo>()
+            cfg.CreateMap<Adres, AdresInfo>()
                 .ForMember(
                     dst => dst.PostNr,
                     opt => opt.MapFrom(src => src.PostNummerGet()))
@@ -364,7 +381,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()))
                 .ForMember(dst => dst.IsBelgisch, opt => opt.MapFrom(src => src is BelgischAdres));
 
-            Mapper.CreateMap<Adres, GezinInfo>()
+            cfg.CreateMap<Adres, GezinInfo>()
                 .ForMember(
                     dst => dst.PostNr,
                     opt => opt.MapFrom(src => src.PostNummerGet()))
@@ -378,7 +395,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.IsBelgisch, opt => opt.MapFrom(src => src is BelgischAdres));
 
             // Domme mapping
-            Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
+            cfg.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
                 .ForMember(
                     dst => dst.Bus,
                     opt => opt.MapFrom(src => src.Adres.Bus))
@@ -404,11 +421,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.Adres.PostCodeGet()))
                 .ForMember(dst => dst.IsBelgisch, opt => opt.MapFrom(src => src.Adres is BelgischAdres));
 
-            Mapper.CreateMap<GelieerdePersoon, BewonersInfo>()
+            cfg.CreateMap<GelieerdePersoon, BewonersInfo>()
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.AdresType, opt => opt.MapFrom(src => AdresTypeEnum.Overig));
 
-            Mapper.CreateMap<PersoonsAdres, BewonersInfo>()
+            cfg.CreateMap<PersoonsAdres, BewonersInfo>()
                 .ForMember(
                     dst => dst.GelieerdePersoonID,
                     opt => opt.MapFrom(src => src.Persoon.GelieerdePersoon.FirstOrDefault() == null ? 0 : src.Persoon.GelieerdePersoon.First().ID));
@@ -416,7 +433,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             // TODO (#1050): Uitvissen deelnemer of begeleider op basis van kind/leiding werkt wel min of meer voor groepen,
             // maar kan op die manier niet gebruikt worden voor uitstappen van kaderploegen.
 
-            Mapper.CreateMap<Deelnemer, DeelnemerDetail>()
+            cfg.CreateMap<Deelnemer, DeelnemerDetail>()
                 .ForMember(dst => dst.Afdelingen,
                     opt =>
                         opt.MapFrom(
@@ -438,7 +455,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.IsContact,
                     opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
 
-            Mapper.CreateMap<DeelnemerInfo, Deelnemer>()
+            cfg.CreateMap<DeelnemerInfo, Deelnemer>()
                 .ForMember(dst => dst.ID, opt => opt.Ignore())
                 .ForMember(dst => dst.Versie, opt => opt.Ignore())
                 .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
@@ -449,26 +466,26 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             // Als de property's van de doelobjecten strategisch gekozen namen hebben, configureert
             // Automapper alles automatisch, zoals hieronder:
 
-            Mapper.CreateMap<StraatNaam, StraatInfo>();
-            Mapper.CreateMap<WoonPlaats, WoonPlaatsInfo>();
-            Mapper.CreateMap<Land, LandInfo>();
-            Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
-            Mapper.CreateMap<Categorie, CategorieInfo>();
-            Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
-            Mapper.CreateMap<CommunicatieVorm, CommunicatieInfo>();
-            Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
-            Mapper.CreateMap<Uitstap, UitstapInfo>();
+            cfg.CreateMap<StraatNaam, StraatInfo>();
+            cfg.CreateMap<WoonPlaats, WoonPlaatsInfo>();
+            cfg.CreateMap<Land, LandInfo>();
+            cfg.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
+            cfg.CreateMap<Categorie, CategorieInfo>();
+            cfg.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
+            cfg.CreateMap<CommunicatieVorm, CommunicatieInfo>();
+            cfg.CreateMap<CommunicatieVorm, CommunicatieDetail>();
+            cfg.CreateMap<Uitstap, UitstapInfo>();
 
-            Mapper.CreateMap<Uitstap, UitstapOverzicht>()
+            cfg.CreateMap<Uitstap, UitstapOverzicht>()
                 .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.Plaats == null ? null : src.Plaats.Adres));
 
-            Mapper.CreateMap<Groep, GroepInfo>()
+            cfg.CreateMap<Groep, GroepInfo>()
                 .ForMember(dst => dst.Plaats, opt => opt.MapFrom(
                     src => src is ChiroGroep ? (src as ChiroGroep).Plaats : Resources.NietVanToepassing))
                 .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
                     src => src.Code == null ? String.Empty : src.Code.ToUpper()));
 
-            Mapper.CreateMap<GroepsWerkJaar, GroepsWerkJaarDetail>()
+            cfg.CreateMap<GroepsWerkJaar, GroepsWerkJaarDetail>()
                 .ForMember(dst => dst.Status, opt => opt.MapFrom(src => WerkJaarStatus.Onbekend))
                 .ForMember(dst => dst.WerkJaarID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.GroepPlaats,
@@ -478,7 +495,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             // Een persoon mappen naar GebruikersInfo mapt geen gebruikersrechten, omdat er maar rechten van 1
             // groep gemapt kunnen worden. Idem voor GebruikersDetail.
 
-            Mapper.CreateMap<Persoon, GebruikersDetail>()
+            cfg.CreateMap<Persoon, GebruikersDetail>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.GebruikersRechtV2.Any(gr => gr.IsVerlengbaar)))
                 .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => (GebruikersRecht)null))
@@ -488,7 +505,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => (int?)null));
 
-            Mapper.CreateMap<Persoon, GebruikersInfo>()
+            cfg.CreateMap<Persoon, GebruikersInfo>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => false))
                 .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => (GebruikersRecht)null))
@@ -496,17 +513,17 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             // Dit zijn mappers van datacontracts naar entity's...
 
-            Mapper.CreateMap<CommunicatieInfo, CommunicatieVorm>()
+            cfg.CreateMap<CommunicatieInfo, CommunicatieVorm>()
                 .ForMember(dst => dst.Versie, opt => opt.Ignore())
                 .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
                 .ForMember(dst => dst.CommunicatieType, opt => opt.Ignore());
 
-            Mapper.CreateMap<CommunicatieDetail, CommunicatieVorm>()
+            cfg.CreateMap<CommunicatieDetail, CommunicatieVorm>()
                 .ForMember(dst => dst.Versie, opt => opt.Ignore())
                 .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
                 .ForMember(dst => dst.CommunicatieType, opt => opt.Ignore());
 
-            Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
+            cfg.CreateMap<AfdelingsJaar, AfdelingDetail>()
                 .ForMember(
                     dst => dst.AfdelingsJaarID,
                     opt => opt.MapFrom(src => src.ID))
@@ -520,23 +537,23 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.AfdelingAfkorting,
                     opt => opt.MapFrom(src => src.Afdeling.Afkorting));
 
-            Mapper.CreateMap<AfdelingsJaar, ActieveAfdelingInfo>()
+            cfg.CreateMap<AfdelingsJaar, ActieveAfdelingInfo>()
                 .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Afdeling.Naam))
                 .ForMember(dst => dst.Afkorting, opt => opt.MapFrom(src => src.Afdeling.Afkorting))
                 .ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.Afdeling.ID));
 
-            Mapper.CreateMap<GroepsWerkJaar, WerkJaarInfo>();
-            Mapper.CreateMap<AfdelingsJaar, AfdelingsJaarDetail>()
+            cfg.CreateMap<GroepsWerkJaar, WerkJaarInfo>();
+            cfg.CreateMap<AfdelingsJaar, AfdelingsJaarDetail>()
                 .ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => src.ID));
 
-            Mapper.CreateMap<OfficieleAfdeling, OfficieleAfdelingDetail>()
+            cfg.CreateMap<OfficieleAfdeling, OfficieleAfdelingDetail>()
                 .ForMember(dst => dst.LeefTijdTot, opt => opt.MapFrom(src => src.LeefTijdTot))
                 .ForMember(dst => dst.LeefTijdVan, opt => opt.MapFrom(src => src.LeefTijdVan))
                 .ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Naam));
 
-            Mapper.CreateMap<GelieerdePersoon, PersoonLidGebruikersInfo>()
+            cfg.CreateMap<GelieerdePersoon, PersoonLidGebruikersInfo>()
                 .ForMember(
                     dst => dst.PersoonDetail,
                     opt => opt.MapFrom(src => src))
@@ -558,7 +575,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => _autorisatieMgr.GebruikersRechtOpEigenGroep(src)));
 
 
-            Mapper.CreateMap<Lid, InschrijvingsVoorstel>()
+            cfg.CreateMap<Lid, InschrijvingsVoorstel>()
                 .ForMember(
                     dst => dst.GelieerdePersoonID,
                     opt => opt.MapFrom(src => src.GelieerdePersoon.ID))
@@ -576,9 +593,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VolledigeNaam))
                 .ForMember(
                     dst => dst.FoutNummer,
-                    opt => opt.UseValue(null));
+                    opt => opt.UseValue<FoutNummer?>(null));
 
-            Mapper.CreateMap<GebruikersRechtV2, GebruikersDetail>()
+            cfg.CreateMap<GebruikersRechtV2, GebruikersDetail>()
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
                 .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Persoon.ID))
@@ -588,18 +605,18 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => src))
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer));
 
-            Mapper.CreateMap<GebruikersRechtV2, GebruikersInfo>()
+            cfg.CreateMap<GebruikersRechtV2, GebruikersInfo>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))
                 .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => src));
 
-            Mapper.CreateMap<GebruikersRechtV2, GebruikersRecht>();
+            cfg.CreateMap<GebruikersRechtV2, GebruikersRecht>();
 
             #region mapping van datacontracts naar entity's
 
             // Alwat hieronder ignore krijgt, wordt niet meegenomen van een teruggestuurde
             // PersoonInfo.
 
-            Mapper.CreateMap<PersoonInfo, Persoon>()
+            cfg.CreateMap<PersoonInfo, Persoon>()
                   .ForMember(dst => dst.ID, opt => opt.Ignore())
                   .ForMember(dst => dst.VolledigeNaam, opt => opt.Ignore())
                   .ForMember(dst => dst.SterfDatum, opt => opt.Ignore())
@@ -615,7 +632,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                   .ForMember(dst => dst.NieuwsBrief, opt => opt.Ignore())
                   .ForMember(dst => dst.GebruikersRechtV2, opt => opt.Ignore());
 
-            Mapper.CreateMap<UitstapInfo, Uitstap>()
+            cfg.CreateMap<UitstapInfo, Uitstap>()
                 .ForMember(dst => dst.GroepsWerkJaar, opt => opt.Ignore())
                 .ForMember(dst => dst.Versie, opt => opt.Ignore())
                 .ForMember(dst => dst.Plaats, opt => opt.Ignore())
@@ -627,30 +644,27 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             #region Mapping van Exceptions naar Faults
             // TODO (#1052): Kan het mappen van die generics niet efficienter?
 
-            Mapper.CreateMap<BestaatAlException<Categorie>,
+            cfg.CreateMap<BestaatAlException<Categorie>,
                         BestaatAlFault<CategorieInfo>>();
-            Mapper.CreateMap<BestaatAlException<Functie>,
+            cfg.CreateMap<BestaatAlException<Functie>,
                         BestaatAlFault<FunctieDetail>>();
-            Mapper.CreateMap<OngeldigObjectException, OngeldigObjectFault>();
-            Mapper.CreateMap<BlokkerendeObjectenException<GelieerdePersoon>,
+            cfg.CreateMap<OngeldigObjectException, OngeldigObjectFault>();
+            cfg.CreateMap<BlokkerendeObjectenException<GelieerdePersoon>,
                     BlokkerendeObjectenFault<PersoonDetail>>()
                 .ForMember(
                     dst => dst.Objecten,
                     opt => opt.MapFrom(src => src.Objecten.Take(Settings.Default.KleinAantal)));
-            Mapper.CreateMap<BlokkerendeObjectenException<PersoonsAdres>,
+            cfg.CreateMap<BlokkerendeObjectenException<PersoonsAdres>,
                     BlokkerendeObjectenFault<PersoonsAdresInfo2>>();
-            Mapper.CreateMap<BlokkerendeObjectenException<Lid>,
+            cfg.CreateMap<BlokkerendeObjectenException<Lid>,
                 BlokkerendeObjectenFault<PersoonLidInfo>>()
                 .ForMember(
                     dst => dst.Objecten,
                     opt => opt.MapFrom(src => src.Objecten.Take(Settings.Default.KleinAantal)));
-            Mapper.CreateMap<BestaatAlException<Afdeling>,
+            cfg.CreateMap<BestaatAlException<Afdeling>,
                     BestaatAlFault<AfdelingInfo>>();
             #endregion
 
-            // Wel even nakijken of die automagie overal gewerkt heeft:
-
-            Mapper.AssertConfigurationIsValid();
         }
 
         #region Helperfuncties waarvan ik niet zeker ben of ze hier goed staan.
@@ -708,13 +722,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             if (l is Kind)
             {
-                return new[] { Mapper.Map<AfdelingsJaar, AfdelingsJaarInfo>((l as Kind).AfdelingsJaar) };
+                return new[] { Map<AfdelingsJaar, AfdelingsJaarInfo>((l as Kind).AfdelingsJaar) };
             }
 
             if (l is Leiding)
             {
                 return
-                    Mapper.Map<IEnumerable<AfdelingsJaar>, IEnumerable<AfdelingsJaarInfo>>((l as Leiding).AfdelingsJaar);
+                    Map<IEnumerable<AfdelingsJaar>, IEnumerable<AfdelingsJaarInfo>>((l as Leiding).AfdelingsJaar);
             }
             // Enkel kinderen en leiding
             throw new NotSupportedException();
@@ -735,11 +749,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             if (l is Kind)
             {
-                return new[] { Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };
+                return new[] { Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };
             }
             else if (l is Leiding)
             {
-                return Mapper.Map<IEnumerable<Afdeling>, IEnumerable<AfdelingInfo>>((l as Leiding).AfdelingsJaar.Select(e => e.Afdeling));
+                return Map<IEnumerable<Afdeling>, IEnumerable<AfdelingInfo>>((l as Leiding).AfdelingsJaar.Select(e => e.Afdeling));
             }
             // Enkel kinderen en leiding
             throw new NotSupportedException();
@@ -761,6 +775,33 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
         #endregion
 
+        /// <summary>
+        /// Map een object van type <typeparamref name="T1"/> naar een object
+        /// van type <typeparamref name="T2"/>.
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        public void Map<T1,T2>(T1 src, T2 dst)
+        {
+            var mapper = Configuration.CreateMapper();
+            mapper.Map(src, dst);
+        }
+
+        /// <summary>
+        /// Map een object van type <typeparamref name="T1"/> naar een object
+        /// van type <typeparamref name="T2"/>.
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="src"></param>
+        /// <returns></returns>
+        public T2 Map<T1, T2>(T1 src)
+        {
+            var mapper = Configuration.CreateMapper();
+            return mapper.Map<T1, T2>(src);
+        }
     }
 
     #region Private extension methods om gemakkelijker adressen te mappen.

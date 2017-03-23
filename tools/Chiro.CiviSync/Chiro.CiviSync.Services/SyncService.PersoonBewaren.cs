@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -87,13 +86,13 @@ namespace Chiro.CiviSync.Services
                 return adNummer.Value;
             }
 
-            var contactRequest = Mapper.Map<Persoon, ContactRequest>(details.Persoon);
+            var contactRequest = MappingHelper.Map<Persoon, ContactRequest>(details.Persoon);
 
             CommunicatieLogic.RequestsChainen(contactRequest, details.Communicatie);
 
             if (details.Adres != null)
             {
-                var address = Mapper.Map<Adres, AddressRequest>(details.Adres);
+                var address = MappingHelper.Map<Adres, AddressRequest>(details.Adres);
                 address.LocationTypeId = AdresLogic.CiviLocationTypeId(details.AdresType);
                 contactRequest.AddressSaveRequest = new List<AddressRequest> {address};
             }
