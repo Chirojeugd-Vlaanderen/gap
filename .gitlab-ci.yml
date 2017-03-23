@@ -44,9 +44,8 @@ build civisync:
     - master
   script:
     # Ik kreeg build errors voor civisync, omdat bij het builden van 
-    # Chiro.CiviCrm.Api Newtonsoft.Json niet gevonden werd. Eens kijken
-    # of builden van zowel Chiro.CiviCrm.Wcf als Chiro.CiviSync in 1 run
-    # iets oplost.
+    # Chiro.CiviCrm.Api Newtonsoft.Json niet gevonden werd. 
+    # Dit heeft waarschijnlijk te maken met issue #5668
     - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
     - nuget restore
     - xbuild Chiro.CiviCrm.Wcf.sln
@@ -61,7 +60,7 @@ build gaphacks:
     - staging
     - master
   script:
-    - cd /builds/gap/tools/Chiro.Gap.FixAnomalies
+    - cd /builds/gap/gap/tools/Chiro.Gap.FixAnomalies
     - nuget restore
     - xbuild Chiro.Gap.FixAnomalies.sln
 
