@@ -39,6 +39,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Validatie", "..\.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication", "..\..\Solution\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj", "{FB9A2752-D976-4D92-9974-0E9339D1FDD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.ServiceContracts", "..\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj", "{D1E7BBDD-D833-4DC1-AF39-287448612425}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync.Mappers", "..\..\Solution\Chiro.Gap.Sync.Mappers\Chiro.Gap.Sync.Mappers.csproj", "{98547985-C786-4637-8407-8EFD4A19F31B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +121,14 @@ Global
 		{FB9A2752-D976-4D92-9974-0E9339D1FDD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB9A2752-D976-4D92-9974-0E9339D1FDD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB9A2752-D976-4D92-9974-0E9339D1FDD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98547985-C786-4637-8407-8EFD4A19F31B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98547985-C786-4637-8407-8EFD4A19F31B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98547985-C786-4637-8407-8EFD4A19F31B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98547985-C786-4637-8407-8EFD4A19F31B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
