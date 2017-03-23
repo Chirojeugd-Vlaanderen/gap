@@ -68,7 +68,7 @@ unit tests gap:
 unit tests civisync:
   stage: test
   dependencies:
-    - build civisync
+    - build al de rest
   only:
     - dev
     - staging
@@ -80,7 +80,7 @@ unit tests civisync:
 unit tests loginservice:
   stage: test
   dependencies:
-    - build loginservice
+    - build al de rest
   only:
     - dev
     - staging
