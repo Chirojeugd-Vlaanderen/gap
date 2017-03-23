@@ -53,6 +53,7 @@ En zo maak je de database:
 ```
 /opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/create-db.sql
 /opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-testdata.sql
+# je krijgt hier de melding dat de user op Ctrl-C duwde, maar die mag je negeren.
 /opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-procedures.sql
 ```
 
