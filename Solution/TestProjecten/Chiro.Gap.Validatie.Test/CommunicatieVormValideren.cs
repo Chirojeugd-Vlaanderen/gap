@@ -16,29 +16,20 @@
  * limitations under the License.
  */
 
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Gap.Test;
+using NUnit.Framework;
 
 namespace Chiro.Gap.Validatie.Test
 {
     /// <summary>
     /// Testclass CommunicatieVormValideren
     /// </summary>
-    [TestClass]
-    public class CommunicatieVormValideren
+    [TestFixture]
+    public class CommunicatieVormValideren: ChiroTest
     {
-        /// <summary>
-        /// Run code before running each test
-        /// </summary>
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-            Factory.ContainerInit();
-        }
-
-        [TestMethod]
+        [Test]
         public void TestOngeldigTelefoonnummerValideren()
         {
             // Arrange

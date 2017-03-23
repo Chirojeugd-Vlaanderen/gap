@@ -19,59 +19,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Gap.Test;
+using NUnit.Framework;
 
 namespace Chiro.Gap.Workers.Test
 {
-    /// <summary>
-    ///This is a test class for JaarOvergangManagerTest and is intended
-    ///to contain all JaarOvergangManagerTest Unit Tests
-    ///</summary>
-	[TestClass()]
-	public class JaarOvergangManagerTest
+	public class JaarOvergangManagerTest: ChiroTest
 	{
-
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            Factory.ContainerInit();
-        }
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
-		#endregion
-
-
 		/// <summary>
 		/// Voert een jaarovergang uit, en kijkt na of het nieuwe werkjaar het jusite aantal afdelingsjaren bevat.
 		/// </summary>
-		[TestMethod()]                    
+		[Test]
 		public void JaarOvergangUitvoerenTest()
 		{
             // ARRANGE

@@ -37,7 +37,6 @@ namespace Chiro.CiviSync.SyncServiceHost
 		protected override void OnStart(string[] args)
 		{
 		    Factory.ContainerInit();
-            MappingHelper.MappingsDefinieren();
 			Trace.WriteLine("CiviSync wordt gestart");
 
             _host = new ServiceHost<SyncService>();

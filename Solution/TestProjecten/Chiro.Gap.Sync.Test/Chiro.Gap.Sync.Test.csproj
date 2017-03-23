@@ -39,11 +39,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -64,10 +64,6 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
-      <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
-      <Name>Chiro.Cdf.Ioc.Factory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
@@ -100,13 +96,13 @@
       <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
       <Name>Chiro.Gap.Sync</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Gap.TestAttributes\Chiro.Gap.TestAttributes.csproj">
-      <Project>{3588ACB4-0203-478E-A25D-A1C64458D023}</Project>
-      <Name>Chiro.Gap.TestAttributes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
       <Project>{35e2aed7-7c0a-4b30-b7c8-24f9078ac32e}</Project>
       <Name>Chiro.Gap.Workers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Test\Chiro.Gap.Test.csproj">
+      <Project>{CB755016-1D15-4619-96F7-0057F8EAC526}</Project>
+      <Name>Chiro.Gap.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

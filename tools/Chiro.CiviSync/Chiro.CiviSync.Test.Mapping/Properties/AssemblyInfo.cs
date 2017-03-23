@@ -1,30 +1,29 @@
-﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2012
-// Mail naar informatica@chiro.be voor alle info over deze broncode
-// </copyright>
-
-using System.Reflection;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Chiro.Gap.TestDbInfo")]
+
+[assembly: AssemblyTitle("Chiro.CiviSync.Test.Mapping")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Chirojeugd-Vlaanderen vzw")]
-[assembly: AssemblyProduct("Chiro.Gap.TestDbInfo")]
-[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2007-2012")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Chiro.CiviSync.Test.Mapping")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
+
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b5fb2e06-b36c-4889-b615-66547552166b")]
+
+[assembly: Guid("AAAC96BB-CB77-48CC-AE7C-D104AD560054")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -36,5 +35,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
+
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

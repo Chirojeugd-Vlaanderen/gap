@@ -1,7 +1,7 @@
 ﻿using Chiro.Gap.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using NUnit.Framework.Web;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.SyncInterfaces;
@@ -16,7 +16,7 @@ namespace Chiro.Gap.Algemeen.Test
     ///This is a test class for LedenServiceTest and is intended
     ///to contain all LedenServiceTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture]
     public class LedenServiceTest
     {
 
@@ -44,19 +44,19 @@ namespace Chiro.Gap.Algemeen.Test
         //You can use the following additional attributes as you write your tests:
         //
         //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
+        //[TestFixtureSetUp]
         //public static void MyClassInitialize(TestContext testContext)
         //{
         //}
         //
         //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
+        //[TestFixtureTearDown()]
         //public static void MyClassCleanup()
         //{
         //}
         //
         //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
+        //[SetUp]
         //public void MyTestInitialize()
         //{
         //}
@@ -76,7 +76,7 @@ namespace Chiro.Gap.Algemeen.Test
         // TODO: Ensure that the UrlToTest attribute specifies a URL to an ASP.NET page (for example,
         // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
         // whether you are testing a page, web service, or a WCF service.
-        [TestMethod()]
+        [Test]
         [HostType("ASP.NET")]
         [AspNetDevelopmentServerHost("C:\\Users\\johanv\\dev\\gap\\Solution\\Chiro.Gap.Services", "/")]
         [UrlToTest("http://localhost:2734/")]

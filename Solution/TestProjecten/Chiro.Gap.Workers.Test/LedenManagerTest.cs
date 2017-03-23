@@ -18,13 +18,12 @@
 
 using System;
 using System.Collections.Generic;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.TestAttributes;
+using Chiro.Gap.Test;
 using Chiro.Gap.WorkerInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -32,50 +31,13 @@ namespace Chiro.Gap.Workers.Test
     /// Dit is een testclass voor LedenManagerTest,
     ///to contain all LedenManagerTest Unit Tests
     /// </summary>
-    [TestClass]
-    public class LedenManagerTest
+    [TestFixture]
+    public class LedenManagerTest: ChiroTest
     {
-
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-
-        /// <summary>
-        /// Run code before running each test
-        /// </summary>
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-            Factory.ContainerInit();
-        }
-
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
-
         ///<summary>
         ///Kijkt na of we een leid(st)er kunnen inschrijven zonder afdelingen
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void InschrijvenLeidingZonderAfdelingTest()
         {
             // ARRANGE
@@ -130,7 +92,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Test of 'LedenManager.InschrijvingVoorstellen' rekening houdt met het geslacht van een persoon.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void InschrijvingVoorstellenTest()
         {
             // Arrange
@@ -183,7 +145,7 @@ namespace Chiro.Gap.Workers.Test
         /// Test of er een 'redelijke' afdeling wordt voorgesteld als er voor een persoon
         /// geen afdeling wordt gevonden waarin die 'natuurlijk' past.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void InschrijvingVoorstellenTest1()
         {
             // Arrange
@@ -241,8 +203,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// LidMaken moet weigeren kleuters in te schrijven.
         ///</summary>
-        [TestMethod()]
-        [ExpectedException(typeof(FoutNummerException))]
+        [Test]
         public void LidMakenTest()
         {
             // Arrange
@@ -263,31 +224,24 @@ namespace Chiro.Gap.Workers.Test
                 Groep = groep
             };
 
-            var ledenMgr = Factory.Maak<LedenManager>();
-            var accessor = new PrivateObject(ledenMgr);
-
             var target = new LedenManager();
 
-            // Act
-            target.NieuwInschrijven(
+            // Assert
+            Assert.Throws<FoutNummerException>(() => target.NieuwInschrijven(
                 new LidVoorstel
                 {
                     GelieerdePersoon = gp,
                     GroepsWerkJaar = gwj,
                     AfdelingsJarenIrrelevant = true,
                     LeidingMaken = false
-                }, false);
-
-            //Assert
-            Assert.Fail();  // Als we hier komen zonder exception, dan is het mislukt.
+                }, false));
         }
 
         /// <summary>
         /// Als je groep als gestopt staat geregistreerd, dan mag je leden niet meer naar
         /// een andere afdeling verhuizen.
         ///</summary>
-        [TestMethod()]
-        [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.GroepInactief)]
+        [Test]
         public void AfdelingsJarenVervangenGestoptTest()
         {
             var target = new LedenManager();
@@ -315,14 +269,14 @@ namespace Chiro.Gap.Workers.Test
                                                               }
                                                       };
 
-            target.AfdelingsJarenVervangen(lid, afdelingsJaren);
+            var ex = Assert.Throws<FoutNummerException>(() => target.AfdelingsJarenVervangen(lid, afdelingsJaren));
+            Assert.That(ex.FoutNummer == FoutNummer.GroepInactief);
         }
 
         /// <summary>
         /// Lid/Leiding omwisselen mag niet in een inactieve groep
         /// </summary>
-        [TestMethod()]
-        [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.GroepInactief)]
+        [Test]
         public void TypeToggleGestoptTest()
         {
             var target = new LedenManager();
@@ -340,14 +294,15 @@ namespace Chiro.Gap.Workers.Test
                                                            }
                                                }
                                    };
-            
-            target.TypeToggle(origineelLid);
+
+            var ex = Assert.Throws<FoutNummerException>(() => target.TypeToggle(origineelLid));
+            Assert.That(ex.FoutNummer == FoutNummer.GroepInactief);
         }
 
         /// <summary>
         /// NieuwInschrijven mag niet inschrijven als leiding als de persoon daar te jong voor is.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void NieuwInschrijvenLeidingLeeftijd()
         {
             // ARRANGE
@@ -394,8 +349,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// NieuwInschrijven mag geen leden inschrijven zonder adres.
         ///</summary>
-        [TestMethod()]
-        [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.AdresOntbreekt)]
+        [Test]
         public void NieuwInschrijvenLidAdres()
         {
             // ARRANGE
@@ -416,17 +370,16 @@ namespace Chiro.Gap.Workers.Test
 
             var target = Factory.Maak<LedenManager>();
 
-            // ACT
+            // Assert
 
-            target.NieuwInschrijven(new LidVoorstel
+            var ex = Assert.Throws<FoutNummerException>(() => target.NieuwInschrijven(new LidVoorstel
             {
                 GelieerdePersoon = gelieerdePersoon,
                 GroepsWerkJaar = groepsWerkJaar,
                 AfdelingsJarenIrrelevant = false,
                 LeidingMaken = true
-            }, false);
-
-            // We don't assert anything. We just expect an exception.
+            }, false));
+            Assert.AreEqual(FoutNummer.AdresOntbreekt, ex.FoutNummer);
         }
     }
 }

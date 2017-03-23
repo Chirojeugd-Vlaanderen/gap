@@ -18,50 +18,24 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Gap.Test;
+using NUnit.Framework;
 
 namespace Chiro.Gap.Workers.Test
 {
     /// <summary>
     /// Dit is een testclass voor Unit Tests van GroepsWerkJaarManagerTest
     /// </summary>
-	[TestClass]
-	public class GroepsWerkJarenManagerTest
+	[TestFixture]
+	public class GroepsWerkJarenManagerTest: ChiroTest
 	{
-
-
-		private TestContext _testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return _testContextInstance;
-			}
-			set
-			{
-				_testContextInstance = value;
-			}
-		}
-
-		[ClassInitialize]
-		public static void MyClassInitialize(TestContext testContext)
-		{
-			Factory.ContainerInit();
-		}
-
         /// <summary>
         /// Snelle test die nakijkt of GroepsWerkJaarManager.AfdelingsJarenVoorstellen daadwerkelijk de geboortedata
         /// voor de nieuwe afdelingsjaren bijwerkt.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AfdelingsJarenVoorstellenTest()
         {
             // ARRANGE: dom modelleke opbouwen
@@ -96,7 +70,7 @@ namespace Chiro.Gap.Workers.Test
         /// officiele afdeling koppelt aan een afdelingsjaar voor een afdeling die vorig jaar
         /// niet actief was.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AfdelingsJarenVoorstellenOfficieleAfdelingTest()
         {
             // -- Arrange --
@@ -135,7 +109,7 @@ namespace Chiro.Gap.Workers.Test
         /// Als een afdelingsjaar vroeger gemengd m/v was, dan moet er nu gemengd m/v/x
         /// voorgesteld worden.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void AfdelingsJarenVoorstellenMvxGemengdTest()
         {
             // -- Arrange --

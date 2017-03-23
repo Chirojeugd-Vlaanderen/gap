@@ -17,8 +17,8 @@
 using System;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api.DataContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace Chiro.CiviSync.Logic.Test
 {
@@ -29,7 +29,7 @@ namespace Chiro.CiviSync.Logic.Test
     /// Die dependency injection heb ik hier precies op een erg louche manier
     /// gedaan. Enfin, ik heb het gewoon gekopieerd van de MembershipLogicTest.
     /// </remarks>
-    [TestClass]
+    [TestFixture]
     public class RelationshipLogicTest
     {
         private static readonly DateTime VandaagZogezegd = new DateTime(2015, 04, 20);
@@ -47,7 +47,7 @@ namespace Chiro.CiviSync.Logic.Test
         /// <summary>
         /// Test of RequestMaken een null-datum vervangt door <c>DateTime.MinValue</c>
         /// </summary>
-        [TestMethod]
+        [Test]
         public void EindDatumResetten()
         {
             var factory = new UnityDiContainer();
@@ -62,7 +62,7 @@ namespace Chiro.CiviSync.Logic.Test
         /// <summary>
         /// Uitschrijfdatum = Einddatum + 1 (zie #5367)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void EindDatumVsUitschrijfDatum()
         {
             var factory = new UnityDiContainer();

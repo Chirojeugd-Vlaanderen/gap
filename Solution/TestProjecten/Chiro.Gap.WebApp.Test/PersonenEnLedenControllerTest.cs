@@ -18,13 +18,13 @@
 
 using System;
 using System.Collections.Generic;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Test;
 using Chiro.Gap.WebApp.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 
 namespace Chiro.Gap.WebApp.Test
@@ -127,40 +127,9 @@ namespace Chiro.Gap.WebApp.Test
     ///This is a test class for PersonenEnLedenControllerTest and is intended
     ///to contain all PersonenEnLedenControllerTest Unit Tests
     ///</summary>
-    [TestClass()]
-    public class PersonenEnLedenControllerTest
+    [TestFixture]
+    public class PersonenEnLedenControllerTest: ChiroTest
     {
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            Factory.ContainerInit();
-        }
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
         internal virtual PersonenEnLedenController CreatePersonenEnLedenController()
         {
             // TODO Instantiate an appropriate concrete class
@@ -172,7 +141,7 @@ namespace Chiro.Gap.WebApp.Test
         ///<summary>
         /// Test of leden uitschrijven de functieproblemencache cleart
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void FunctieProblemenClearenNaUitschrijven()
         {
             const int GROEPID = 426;            // arbitrair

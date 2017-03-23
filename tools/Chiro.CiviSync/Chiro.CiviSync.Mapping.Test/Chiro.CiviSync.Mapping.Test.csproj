@@ -36,8 +36,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
-      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -62,6 +65,14 @@
       <Project>{C27C0FB3-740A-4705-98DF-3B237984C44F}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Services.Test\Chiro.CiviSync.Services.Test.csproj">
+      <Project>{20CFA748-66F5-4DF3-AB3B-8F949D58A004}</Project>
+      <Name>Chiro.CiviSync.Services.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Test.Mapping\Chiro.CiviSync.Test.Mapping.csproj">
+      <Project>{AAAC96BB-CB77-48CC-AE7C-D104AD560054}</Project>
+      <Name>Chiro.CiviSync.Test.Mapping</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
@@ -70,6 +81,9 @@
       <Project>{601725A8-680D-4E67-8C02-C987AF4EFF0B}</Project>
       <Name>Chiro.CiviSync.Mapping</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

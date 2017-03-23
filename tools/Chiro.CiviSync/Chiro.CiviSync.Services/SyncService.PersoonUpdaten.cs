@@ -16,7 +16,6 @@
 
 using System;
 using System.ServiceModel;
-using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
@@ -39,7 +38,7 @@ namespace Chiro.CiviSync.Services
             if (contactId == null) return;
 
             // Ik map de persoon naar een ContactRequest.
-            var request = Mapper.Map<Persoon, ContactRequest>(persoon);
+            var request = MappingHelper.Map<Persoon, ContactRequest>(persoon);
             request.ApiOptions = new ApiOptions { Match = "external_identifier" };
 
             var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.ContactSave(

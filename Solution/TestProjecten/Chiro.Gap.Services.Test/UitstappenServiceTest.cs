@@ -17,15 +17,14 @@
  */
 
 using System.Collections.Generic;
-using System.Diagnostics;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.SyncInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Gap.Test;
+using NUnit.Framework;
 using Moq;
 
 namespace Chiro.Gap.Services.Test
@@ -36,61 +35,21 @@ namespace Chiro.Gap.Services.Test
     ///This is a test class for UitstappenServiceTest and is intended
     ///to contain all UitstappenServiceTest Unit Tests
     ///</summary>
-    [TestClass()]
-    public class UitstappenServiceTest
+    [TestFixture]
+    public class UitstappenServiceTest: ChiroTest
     {
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get { return testContextInstance; }
-            set { testContextInstance = value; }
-        }
-
-        #region Additional test attributes
-
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        [TestInitialize()]
+        [SetUp]
         public void MyTestInitialize()
         {
             PermissionHelper.FixPermissions();
-            Factory.ContainerInit();
         }
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-
-        #endregion
 
         /// <summary>
         /// Controleert of een bewaard bivak naar Kipadmin wordt gesynct.
         /// (*en* of het eerst bewaard werd, want anders heeft het geen
         /// GAP-ID)
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void BewarenTest()
         {
             // ARRANGE 
@@ -127,7 +86,7 @@ namespace Chiro.Gap.Services.Test
         /// Als een voormalig bivak bewaard wordt, maar de IsBivak-vlag is nu gecleard, dan
         /// moet het bivak opnieuw verwijderd worden uit Kipadmin.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void BivakVerwijderenAlsGeenBivakMeerTest()
         {
             // ARRANGE 
@@ -165,7 +124,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Controleert of een gesavede bivakplaats ook gesynct wordt naar Kipadmin
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void PlaatsBewarenTest()
         {
             // ARRANGE 
@@ -207,7 +166,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test: gekende bivakplaats toevoegen als eerste bivakplaats aan een uitstap
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void GekendePlaatsBewarenTest()
         {
             // ARRANGE
@@ -263,7 +222,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test: onbekende bivakplaats met bekend adres toevoegen als eerste bivakplaats aan een uitstap
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void PlaatsOpGekendAdresBewarenTest()
         {
             // ARRANGE
@@ -317,7 +276,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test: onbekende bivakplaats op onbekend adres toevoegen als eerste bivakplaats aan een uitstap
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void PlaatsOpOnbekendAdresBewarenTest()
         {
             // ARRANGE
@@ -359,13 +318,13 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.IsInstanceOfType(bivak.Plaats.Adres, typeof(BuitenLandsAdres));
+            Assert.IsInstanceOf<BuitenLandsAdres>(bivak.Plaats.Adres);
         }
 
         /// <summary>
         /// De bivakplaats van een bivak vervangen
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void PlaatsVervangenTest()
         {
             // ARRANGE
@@ -425,7 +384,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test om te kijken of verwijderen van bivak wel synct
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void UitstapVerwijderenTest()
         {
             // ARRANGE 
@@ -461,7 +420,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test of nieuw contact gepersisteerd wordt.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void ContactInstellenSaveTest()
         {
             // ARRANGE 
@@ -505,7 +464,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test de 'kipsyncrhonisatie' voor ContactInstellen
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void ContactInstellenSyncTest()
         {
             // ARRANGE 
@@ -554,7 +513,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test het verwijderen van deelnemers.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void UitschrijvenTest()
         {
             // ARRANGE 
@@ -595,7 +554,7 @@ namespace Chiro.Gap.Services.Test
         /// <summary>
         /// Test voor het bewaren van een deelnemer.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void DeelnemerBewarenTest()
         {
             // ARRANGE

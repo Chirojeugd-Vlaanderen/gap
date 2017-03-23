@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2013,2015,2016 Chirojeugd-Vlaanderen vzw
+   Copyright 2013,2015,2016,2017 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -27,12 +27,20 @@ namespace Chiro.CiviSync.Mapping
     /// <summary>
     /// Deze klasse definieert enkel nog mappings.
     /// </summary>
-    public static class MappingHelper
+    public class MappingHelper
     {
-        public static void MappingsDefinieren()
+        private static readonly MapperConfiguration _configuration;
+
+        static MappingHelper()
+        {
+            _configuration = new MapperConfiguration(MappingsDefinieren);
+            _configuration.AssertConfigurationIsValid();
+        }
+
+        public static void MappingsDefinieren(IProfileExpression cfg)
         {
             // Mappings van oude Kipadminobjecten naar ChiroCivi
-            Mapper.CreateMap<Persoon, ContactRequest>()
+            cfg.CreateMap<Persoon, ContactRequest>()
                 .ForMember(dst => dst.GapId, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.BirthDate, opt => opt.MapFrom(src => src.GeboorteDatum))
                 .ForMember(dst => dst.ContactType, opt => opt.UseValue(ContactType.Individual))
@@ -49,7 +57,7 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
                 .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam))
                 .ForMember(dst => dst.IsOptOut, opt => opt.MapFrom(src => !src.NieuwsBrief))
-                .ForMember(dst => dst.KaderNiveau, opt => opt.UseValue(null))
+                .ForMember(dst => dst.KaderNiveau, opt => opt.UseValue((KaderNiveau?)null))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
                 .ForMember(dst => dst.IdValueExpression, opt => opt.Ignore())
                 .ForMember(dst => dst.PreferredMailFormat, opt => opt.Ignore())
@@ -70,7 +78,7 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 
-            Mapper.CreateMap<Adres, AddressRequest>()
+            cfg.CreateMap<Adres, AddressRequest>()
                 .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
                 .ForMember(dst => dst.ContactId, opt => opt.Ignore())
                 .ForMember(dst => dst.Country, opt => opt.MapFrom(src => src.LandIsoCode))
@@ -91,7 +99,7 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
                 .ForMember(dst => dst.PostalCodeSuffix, opt => opt.Ignore());
 
-            Mapper.CreateMap<Bivak, EventRequest>()
+            cfg.CreateMap<Bivak, EventRequest>()
                 .ForMember(dst => dst.StartDate, opt => opt.MapFrom(src => new Filter<DateTime?>(src.DatumVan)))
                 .ForMember(dst => dst.EndDate, opt => opt.MapFrom(src => new Filter<DateTime?>(src.DatumTot)))
                 .ForMember(dst => dst.Title, opt => opt.MapFrom(src => src.Naam))
@@ -145,8 +153,34 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.IdValueExpression, opt => opt.Ignore())
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
+        }
 
-            Mapper.AssertConfigurationIsValid();
+        /// <summary>
+        /// Map object of type <typeparamref name="T1"/> to object of type
+        /// <typeparamref name="T2"/>.
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="src"></param>
+        /// <returns></returns>
+        public T2 Map<T1, T2>(T1 src)
+        {
+            var mapper = _configuration.CreateMapper();
+            return mapper.Map<T1, T2>(src);
+        }
+
+        /// <summary>
+        /// Map een object van type <typeparamref name="T1"/> naar een object
+        /// van type <typeparamref name="T2"/>.
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        public void Map<T1,T2>(T1 src, T2 dst)
+        {
+            var mapper = _configuration.CreateMapper();
+            mapper.Map(src, dst);
         }
     }
 }

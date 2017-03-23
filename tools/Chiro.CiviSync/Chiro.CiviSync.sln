@@ -47,6 +47,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.ConsoleServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc.Factory", "..\..\Solution\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj", "{66147F76-9D76-46A6-8FCE-1BBE317A6093}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjecten", "{72BA93C6-9519-450B-912B-5405F7E8361C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.Test.Mapping", "Chiro.CiviSync.Test.Mapping\Chiro.CiviSync.Test.Mapping.csproj", "{AAAC96BB-CB77-48CC-AE7C-D104AD560054}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,8 +141,19 @@ Global
 		{66147F76-9D76-46A6-8FCE-1BBE317A6093}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66147F76-9D76-46A6-8FCE-1BBE317A6093}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66147F76-9D76-46A6-8FCE-1BBE317A6093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAAC96BB-CB77-48CC-AE7C-D104AD560054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAAC96BB-CB77-48CC-AE7C-D104AD560054}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAAC96BB-CB77-48CC-AE7C-D104AD560054}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAAC96BB-CB77-48CC-AE7C-D104AD560054}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EE70AAF1-CF25-42F6-9048-057526D555DD} = {72BA93C6-9519-450B-912B-5405F7E8361C}
+		{516BBF7F-2508-47A3-84A1-1CDEFC17F2BD} = {72BA93C6-9519-450B-912B-5405F7E8361C}
+		{20CFA748-66F5-4DF3-AB3B-8F949D58A004} = {72BA93C6-9519-450B-912B-5405F7E8361C}
+		{3ACA11BE-C315-432B-8B4E-CD5631C88771} = {72BA93C6-9519-450B-912B-5405F7E8361C}
+		{AAAC96BB-CB77-48CC-AE7C-D104AD560054} = {72BA93C6-9519-450B-912B-5405F7E8361C}
 	EndGlobalSection
 EndGlobal

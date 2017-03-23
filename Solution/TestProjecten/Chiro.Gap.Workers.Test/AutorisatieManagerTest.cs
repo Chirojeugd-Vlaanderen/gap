@@ -18,80 +18,26 @@
  */
 
 using System;
-using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Test;
 using Chiro.Gap.WorkerInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 
 namespace Chiro.Gap.Workers.Test
 {
-    
-    
     /// <summary>
     ///This is a test class for AutorisatieManagerTest and is intended
     ///to contain all AutorisatieManagerTest Unit Tests
     ///</summary>
-    [TestClass()]
-    public class AutorisatieManagerTest
+    [TestFixture]
+    public class AutorisatieManagerTest: ChiroTest
     {
-
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            Factory.ContainerInit();
-        }
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
-
         /// <summary>
         ///Controleert of de GAV-check van een groep rekening houdt met de vervaldatum van gebruikersrechten.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void IsGavGroepVervallenTest()
         {
             // ARRANGE
@@ -131,7 +77,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Als je rechten hebt op iedereen van je groep, moet je ook rechten hebben op iedereen van je afdeling.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void GroepsRechtImpliceertAfdelingsRechtTest()
         {
             // ARRANGE
@@ -172,7 +118,7 @@ namespace Chiro.Gap.Workers.Test
         /// Als je gebruikersrechten hebt, maar geen GAV-permissies, dan mag IsGav ook niet zeggen
         /// dat je GAV bent.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void RechtenMaarGeenGavGroepTest()
         {
             // ARRANGE
@@ -204,7 +150,7 @@ namespace Chiro.Gap.Workers.Test
         /// Als je gebruikersrechten hebt, maar geen GAV-permissies, dan mag IsGav ook niet zeggen
         /// dat je GAV bent.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void RechtenMaarGeenGavGroepenTest()
         {
             // ARRANGE
@@ -247,7 +193,7 @@ namespace Chiro.Gap.Workers.Test
         /// Als je gebruikersrechten hebt, maar geen GAV-permissies, dan mag IsGav ook niet zeggen
         /// dat je GAV bent.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void RechtenMaarGeenPermissiesPersonenTest()
         {
             // ARRANGE
@@ -288,7 +234,7 @@ namespace Chiro.Gap.Workers.Test
         /// Als je gebruikersrechten hebt, maar geen GAV-permissies, dan mag IsGav ook niet zeggen
         /// dat je GAV bent.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void RechtenMaarGeenPermissiesLedenTest()
         {
             // ARRANGE
@@ -342,7 +288,7 @@ namespace Chiro.Gap.Workers.Test
         /// Als je gebruikersrechten hebt, maar geen GAV-permissies, dan mag IsGav ook niet zeggen
         /// dat je GAV bent.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void RechtenMaarGeenPermissiesGelieerdePersoonTest()
         {
             // ARRANGE
@@ -380,7 +326,7 @@ namespace Chiro.Gap.Workers.Test
         /// Als je gebruikersrechten hebt, maar geen GAV-permissies, dan mag IsGav ook niet zeggen
         /// dat je GAV bent.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void RechtenMaarGeenPermissiesPersoonsAdresTest()
         {
             // ARRANGE
@@ -429,7 +375,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         ///Controleert of de GAV-check van een gelieerde persoon rekening houdt met de vervaldatum van gebruikersrechten.
         ///</summary>
-        [TestMethod()]
+        [Test]
         public void IsGavGelieerdePersoonTest()
         {
             // ARRANGE
@@ -478,7 +424,7 @@ namespace Chiro.Gap.Workers.Test
         /// Ook als je niet gelieerd bent aan dezelfde groep als een andere gelieerde persoon, kun je permissies hebben
         /// op die gelieerde persoon.
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void RechtenOpGelieerdePersoonAndereGroepTest()
         {
             // ARRANGE
@@ -524,7 +470,7 @@ namespace Chiro.Gap.Workers.Test
         /// Ook als je niet gelieerd bent aan dezelfde groep als een lid, kun je permissies hebben
         /// op dat lid
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void RechtenOpLidAndereGroepTest()
         {
             // ARRANGE
@@ -575,7 +521,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Zelfs om te testen zijn we geen super-GAV
         /// </summary>
-        [TestMethod()]
+        [Test]
         public void IsSuperGavTest()
         {
             var target = Factory.Maak<AutorisatieManager>();
