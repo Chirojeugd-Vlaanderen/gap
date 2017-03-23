@@ -54,7 +54,16 @@ build civisync:
     - nuget restore
     - xbuild Chiro.CiviSync.sln
 
-# TODO: build fixanomalies
+build gaphacks:
+  stage: build
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    - cd /builds/gap/tools/Chiro.Gap.FixAnomalies
+    - nuget restore
+    - xbuild Chiro.Gap.FixAnomalies.sln
 
 unit tests gap:
   stage: test
