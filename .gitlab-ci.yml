@@ -1,6 +1,7 @@
 image: gitlab.chiro.be:5443/overig/containers:gap
 
 stages:
+  - nuget
   - build
   - test
   - deploy
@@ -14,6 +15,20 @@ cache:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
+nuget restore:
+  stage: nuget
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    # als workaround voor #5668 proberen we eerst alle nuget-restores,
+    # uiteindelijk werkte dat ook met Jenkins.
+    - nuget restore /builds/gap/gap/tools/Chiro.LoginService
+    - nuget restore /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
+    - nuget restore /builds/gap/gap/tools/Chiro.CiviSync
+    - nuget restore /builds/gap/gap/Solution
+
 build loginservice:
   stage: build
   only:
@@ -24,6 +39,17 @@ build loginservice:
     - cd /builds/gap/gap/tools/Chiro.LoginService
     - nuget restore
     - xbuild LoginService.sln
+
+build civicrm.net:
+  stage: build
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
+    - nuget restore
+    - xbuild Chiro.CiviCrm.Wcf.sln
 
 build gap:
   stage: build
@@ -43,22 +69,20 @@ build civisync:
     - staging
     - master
   script:
-    # Ik kreeg build errors voor civisync, omdat bij het builden van 
-    # Chiro.CiviCrm.Api Newtonsoft.Json niet gevonden werd. 
-    # Dit heeft waarschijnlijk te maken met issue #5668
-    - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
-    - nuget restore
-    - xbuild Chiro.CiviCrm.Wcf.sln
-    # Een gelijkaardig verhaal voor FixAnomalies. Ik vermoed dat
-    # als de build jobs parallel lopen, de 'nuget restore' taken
-    # elkaars wijzigingen ongedaan maken (want de niet-getrackte files
-    # worden gedeeld tussen de jobs door). (Zie #5668)
-    - cd /builds/gap/gap/tools/Chiro.Gap.FixAnomalies
-    - nuget restore
-    - xbuild Chiro.Gap.FixAnomalies.sln
     - cd /builds/gap/gap/tools/Chiro.CiviSync
     - nuget restore
     - xbuild Chiro.CiviSync.sln
+
+build gaphacks:
+  stage: build
+  only:
+    - dev
+    - staging
+    - master
+  script:
+    - cd /builds/gap/tools/Chiro.Gap.FixAnomalies
+    - nuget restore
+    - xbuild Chiro.Gap.FixAnomalies.sln
 
 unit tests gap:
   stage: test
