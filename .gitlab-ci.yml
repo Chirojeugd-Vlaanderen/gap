@@ -1,10 +1,7 @@
 image: gitlab.chiro.be:5443/overig/containers:gap
 
 stages:
-# We bouwen eerst alles uit 'tools', en dan Cg2Solution. Want dat
-# kan niet parallel, zie #5668.
-  - build tools
-  - build gap
+  - build
   - test
   - deploy
 
@@ -19,8 +16,8 @@ cache:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
-build loginservice:
-  stage: build tools
+build all:
+  stage: build
   only:
     - dev
     - staging
@@ -29,39 +26,20 @@ build loginservice:
     - cd /builds/gap/gap/tools/Chiro.LoginService
     - nuget restore
     - xbuild LoginService.sln
-
-build civisync:
-  stage: build tools
-  only:
-    - dev
-    - staging
-    - master
-  script:
-    # restore ook packages in Chiro.CiviCrm.Wcf.
-    - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
+    - cd ../Chiro.CiviCrm.Wcf
     - nuget restore
-    - cd /builds/gap/gap/tools/Chiro.CiviSync
+    - xbuild Chiro.CiviCrm.Wcf.sln
+    - cd ../../Solution
+    - nuget restore
+    - xbuild Cg2Solution.sln
+    - cd ../../Chiro.CiviSync
     - nuget restore
     - xbuild Chiro.CiviSync.sln
 
-build gap:
-  stage: build gap
-  dependencies:
-    - build loginservice
-    - build civisync
-  only:
-    - dev
-    - staging
-    - master
-  script:
-    - cd /builds/gap/gap/Solution
-    - nuget restore
-    - xbuild Cg2Solution.sln
-    
 unit tests loginservice:
   stage: test
   dependencies:
-    - build loginservice
+    - build all
   only:
     - dev
     - staging
@@ -77,7 +55,7 @@ unit tests loginservice:
 unit tests civisync:
   stage: test
   dependencies:
-    - build civisync
+    - build all
   only:
     - dev
     - staging
@@ -90,7 +68,7 @@ unit tests civisync:
 unit tests gap:
   stage: test
   dependencies:
-    - build gap
+    - build all
   only:
     - dev
     - staging
