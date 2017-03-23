@@ -29,7 +29,7 @@ Voor installatiehulp, zie [GitExtensions](GitExtensions.md).
 -   Klik 'Git bash here'.
 -   Tik het volgende:
     ```
-    git clone https://gitlab.chiro.be/gap/gap.git
+    git clone --recursive https://gitlab.chiro.be/gap/gap.git
     ```
 -   Het is de eerste keer dat je op die server connecteert, je zult
     moeten bevestigen dat je de server vertrouwt.
