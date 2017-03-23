@@ -14,17 +14,6 @@ cache:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
-build loginservice:
-  stage: build
-  only:
-    - dev
-    - staging
-    - master
-  script:
-    - cd /builds/gap/gap/tools/Chiro.LoginService
-    - nuget restore
-    - xbuild LoginService.sln
-
 build gap:
   stage: build
   only:
@@ -36,32 +25,26 @@ build gap:
     - nuget restore
     - xbuild Cg2Solution.sln
 
-build civisync:
+build al de rest:
   stage: build
   only:
     - dev
     - staging
     - master
   script:
-    # Ik kreeg build errors voor civisync, omdat bij het builden van 
-    # Chiro.CiviCrm.Api Newtonsoft.Json niet gevonden werd. Eens kijken
-    # of builden van zowel Chiro.CiviCrm.Wcf als Chiro.CiviSync in 1 run
-    # iets oplost.
+    # De volgorde waarin projecten worden gebuild, is belangrijk. Dat is
+    # jammer, maar het is een gevolg van issue #5668. Vandaar dat ik veel
+    # builds verzamel in 1 script.
     - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
     - nuget restore
     - xbuild Chiro.CiviCrm.Wcf.sln
     - cd /builds/gap/gap/tools/Chiro.CiviSync
     - nuget restore
     - xbuild Chiro.CiviSync.sln
-
-build gaphacks:
-  stage: build
-  only:
-    - dev
-    - staging
-    - master
-  script:
-    - cd /builds/gap/tools/Chiro.Gap.FixAnomalies
+    - cd /builds/gap/gap/tools/Chiro.LoginService
+    - nuget restore
+    - xbuild LoginService.sln
+    - cd /builds/gap/gap/tools/Chiro.Gap.FixAnomalies
     - nuget restore
     - xbuild Chiro.Gap.FixAnomalies.sln
 
@@ -85,7 +68,7 @@ unit tests gap:
 unit tests civisync:
   stage: test
   dependencies:
-    - build civisync
+    - build al de rest
   only:
     - dev
     - staging
@@ -97,7 +80,7 @@ unit tests civisync:
 unit tests loginservice:
   stage: test
   dependencies:
-    - build loginservice
+    - build al de rest
   only:
     - dev
     - staging
