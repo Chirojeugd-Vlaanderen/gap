@@ -56,7 +56,7 @@ build civisync:
   script:
     - cd /builds/gap/gap/tools/Chiro.CiviSync
     - nuget restore
-    - xbuild Chiro.CiviCrm.CiviSync.sln
+    - xbuild Chiro.CiviSync.sln
 
 # TODO: build fixanomalies
 
