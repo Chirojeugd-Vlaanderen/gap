@@ -86,7 +86,7 @@ En verder...
     Startup Projects'). Kies voor 'multiple startup project' en
     selecteer bij Services en WebApp de actie 'Start'.
 
-Let op: lees het stukje over [branches](branches.md) voor je begint te hacken!
+Let op: lees het stukje over [branches](Branches.md) voor je begint te hacken!
 
 Als je de solution opent voor de eerste keer opent, kan het zijn dat er
 projecten niet geladen worden en dat je de volgende foutmelding krijgt.
