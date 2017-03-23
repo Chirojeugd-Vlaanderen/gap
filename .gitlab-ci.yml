@@ -38,15 +38,15 @@ build al de rest:
     - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
     - nuget restore
     - xbuild Chiro.CiviCrm.Wcf.sln
-    - cd /builds/gap/gap/tools/Chiro.Gap.FixAnomalies
-    - nuget restore
-    - xbuild Chiro.Gap.FixAnomalies.sln
     - cd /builds/gap/gap/tools/Chiro.CiviSync
     - nuget restore
     - xbuild Chiro.CiviSync.sln
     - cd /builds/gap/gap/tools/Chiro.LoginService
     - nuget restore
     - xbuild LoginService.sln
+    - cd /builds/gap/gap/tools/Chiro.Gap.FixAnomalies
+    - nuget restore
+    - xbuild Chiro.Gap.FixAnomalies.sln
 
 unit tests gap:
   stage: test
