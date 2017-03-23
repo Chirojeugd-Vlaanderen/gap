@@ -58,10 +58,6 @@
       <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
       <Name>Chiro.Cdf.Authentication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.Authentication.DevDummy\Chiro.Cdf.Authentication.Dev.csproj">
-      <Project>{80B76267-F691-4549-9811-E94E057104CD}</Project>
-      <Name>Chiro.Cdf.Authentication.Dev</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>

@@ -399,7 +399,7 @@
       <Name>Chiro.Cdf.AdnrWcfExtension</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication.Ad\Chiro.Cdf.Authentication.Ad.csproj">
-      <Project>{b4fed89c-ab92-4d90-b566-3604a43a998a}</Project>
+      <Project>{B4FED89C-AB92-4D90-B566-3604A43A998A}</Project>
       <Name>Chiro.Cdf.Authentication.Ad</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Authentication.Cas\Chiro.Cdf.Authentication.Cas.csproj">
