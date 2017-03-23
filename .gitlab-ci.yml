@@ -25,17 +25,6 @@ build loginservice:
     - nuget restore
     - xbuild LoginService.sln
 
-build civicrm.net:
-  stage: build
-  only:
-    - dev
-    - staging
-    - master
-  script:
-    - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
-    - nuget restore
-    - xbuild Chiro.CiviCrm.Wcf.sln
-
 build gap:
   stage: build
   only:
@@ -54,6 +43,13 @@ build civisync:
     - staging
     - master
   script:
+    # Ik kreeg build errors voor civisync, omdat bij het builden van 
+    # Chiro.CiviCrm.Api Newtonsoft.Json niet gevonden werd. Eens kijken
+    # of builden van zowel Chiro.CiviCrm.Wcf als Chiro.CiviSync in 1 run
+    # iets oplost.
+    - cd /builds/gap/gap/tools/Chiro.CiviCrm.Wcf
+    - nuget restore
+    - xbuild Chiro.CiviCrm.Wcf.sln
     - cd /builds/gap/gap/tools/Chiro.CiviSync
     - nuget restore
     - xbuild Chiro.CiviSync.sln
