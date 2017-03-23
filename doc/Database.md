@@ -64,4 +64,4 @@ de connection string in de backend aanpassen. Die staat ergens in
 source:Solution/Chiro.Gap.Services/Web.config.
 
 Voor de Linux-setup met docker is er een 
-[patch][setup/connectionstring-docker.patch] die de connection string aanpast.
+[patch](setup/connectionstring-docker.patch) die de connection string aanpast.
