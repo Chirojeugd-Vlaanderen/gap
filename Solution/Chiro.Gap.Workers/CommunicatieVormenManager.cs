@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using AutoMapper;
+using Chiro.Cdf.Intranet;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -39,10 +40,12 @@ namespace Chiro.Gap.Workers
     public class CommunicatieVormenManager : ICommunicatieVormenManager
     {
         private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly IMailadrescontrole _mailadresCtrl;
 
-        public CommunicatieVormenManager(IAutorisatieManager autorisatieMgr)
+        public CommunicatieVormenManager(IAutorisatieManager autorisatieMgr, IMailadrescontrole mailadresCtrl)
         {
             _autorisatieMgr = autorisatieMgr;
+            _mailadresCtrl = mailadresCtrl;
         }
 
         /// <summary>
@@ -228,15 +231,15 @@ namespace Chiro.Gap.Workers
 
         /// <summary>
         /// Controleert een aantal parameters en bepaalt op basis van de score of het adres verdacht is.
-        /// Verdacht betekent: de kans is groot dat het niet om een eigen adres gaat, en vanaf de keti's maakt dat iets uit.
+        /// Verdacht betekent: de kans is groot dat het niet om een eigen adres gaat of dat het fout geschreven is.
         /// </summary>
         /// <param name="communicatieVorm">Het mailadres dat we gaan controleren</param>
-        /// <returns><c>True</c> als het waarschijnlijk niet om een eigen mailadres gaat, 
+        /// <returns><c>True</c> als het waarschijnlijk niet om een eigen mailadres gaat of fout geschreven is, 
         /// <c>false</c> als de kans groot is dat het wel in orde is.</returns>
         public bool IsVerdacht(CommunicatieVorm communicatieVorm)
         {
             // Controleren of het adres (nog) verdacht is
-            if (communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.HasValue && (DateTime.Now.Year - communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year) > 15 && communicatieVorm.IsGezinsgebonden)
+            if (communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.HasValue && (DateTime.Now.Year - communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year) > Settings.Default.Ketileeftijd && communicatieVorm.IsGezinsgebonden)
             {
                 // Vanaf de keti's moet je een eigen mailadres als voorkeursadres hebben, en de groep heeft hun eigen gsm-nr nodig
                 return true;
@@ -245,18 +248,14 @@ namespace Chiro.Gap.Workers
             {
                 if (communicatieVorm.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email)
                 {
-                    // Die service berekent een score om in te schatten hoe waarschijnlijk het is dat het adres van de persoon in kwestie zelf is. 
-                    // Hoger dan 2 is redelijk betrouwbaar.
-                    var ctrlservice = new MailcontroleService.Mailcontrole();
-                    ctrlservice.Credentials = CredentialCache.DefaultCredentials;
-
+                    
                     if (communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.HasValue)
                     {
-                        return !(ctrlservice.BetrouwbaarheidsscoreOphalenOpNaamEnGeboortejaar(communicatieVorm.GelieerdePersoon.Persoon.VoorNaam, communicatieVorm.GelieerdePersoon.Persoon.Naam, communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year, communicatieVorm.Nummer) >= 2);
+                        return _mailadresCtrl.MailadresIsVerdacht(communicatieVorm.GelieerdePersoon.Persoon.VoorNaam, communicatieVorm.GelieerdePersoon.Persoon.Naam, communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year, communicatieVorm.Nummer);
                     }
                     else
                     {
-                        return !(ctrlservice.BetrouwbaarheidsscoreOphalenOpNaam(communicatieVorm.GelieerdePersoon.Persoon.VoorNaam, communicatieVorm.GelieerdePersoon.Persoon.Naam, communicatieVorm.Nummer) >= 2);
+                        return _mailadresCtrl.MailadresIsVerdacht(communicatieVorm.GelieerdePersoon.Persoon.VoorNaam, communicatieVorm.GelieerdePersoon.Persoon.Naam, communicatieVorm.Nummer);
                     }
                 }
                 else

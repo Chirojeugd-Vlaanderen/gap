@@ -131,5 +131,14 @@ namespace Chiro.Gap.Workers.Properties {
                 return ((string)(this["Chiro_Gap_Workers_MailcontroleService_Mailcontrole"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int Ketileeftijd {
+            get {
+                return ((int)(this["Ketileeftijd"]));
+            }
+        }
     }
 }

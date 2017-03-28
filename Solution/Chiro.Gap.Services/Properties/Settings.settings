@@ -20,8 +20,5 @@
     <Setting Name="AantalStraatSuggesties" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="Chiro_Gap_Services_MailcontroleService_Mailcontrole" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">https://extranet.chiro.be/datacontrole/mailcontrole.asmx</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

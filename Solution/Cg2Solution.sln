@@ -118,6 +118,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Authentication.Oa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ApiAccountCreator", "Chiro.Gap.ApiAccountCreator\Chiro.Gap.ApiAccountCreator.csproj", "{C1453DFF-1020-4BDD-AD3E-58F5B8218177}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Intranet", "Chiro.Cdf.Intranet\Chiro.Cdf.Intranet.csproj", "{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -806,6 +808,22 @@ Global
 		{C1453DFF-1020-4BDD-AD3E-58F5B8218177}.Release|Win32.Build.0 = Release|Any CPU
 		{C1453DFF-1020-4BDD-AD3E-58F5B8218177}.Release|x86.ActiveCfg = Release|Any CPU
 		{C1453DFF-1020-4BDD-AD3E-58F5B8218177}.Release|x86.Build.0 = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|Win32.Build.0 = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|x86.Build.0 = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|Win32.ActiveCfg = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|Win32.Build.0 = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|x86.ActiveCfg = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -826,8 +844,8 @@ Global
 		{5CAA5C51-8250-4E6E-851F-FACE0951BEA9} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 		VisualSVNWorkingCopyRoot = .
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution8.vsmdi

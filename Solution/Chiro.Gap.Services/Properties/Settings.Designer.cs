@@ -76,15 +76,5 @@ namespace Chiro.Gap.Services.Properties {
                 return ((int)(this["AantalStraatSuggesties"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://extranet.chiro.be/datacontrole/mailcontrole.asmx")]
-        public string Chiro_Gap_Services_MailcontroleService_Mailcontrole {
-            get {
-                return ((string)(this["Chiro_Gap_Services_MailcontroleService_Mailcontrole"]));
-            }
-        }
     }
 }

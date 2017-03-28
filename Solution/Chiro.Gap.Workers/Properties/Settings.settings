@@ -38,5 +38,8 @@
     <Setting Name="Chiro_Gap_Workers_MailcontroleService_Mailcontrole" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">https://extranet.chiro.be/datacontrole/mailcontrole.asmx</Value>
     </Setting>
+    <Setting Name="Ketileeftijd" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

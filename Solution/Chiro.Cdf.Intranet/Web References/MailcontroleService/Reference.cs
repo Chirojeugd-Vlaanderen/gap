@@ -13,7 +13,7 @@
 // 
 #pragma warning disable 1591
 
-namespace Chiro.Gap.Services.MailcontroleService {
+namespace Chiro.Cdf.Intranet.MailcontroleService {
     using System;
     using System.Web.Services;
     using System.Diagnostics;
@@ -37,7 +37,7 @@ namespace Chiro.Gap.Services.MailcontroleService {
         
         /// <remarks/>
         public Mailcontrole() {
-            this.Url = global::Chiro.Gap.Services.Properties.Settings.Default.Chiro_Gap_Services_MailcontroleService_Mailcontrole;
+            this.Url = global::Chiro.Cdf.Intranet.Properties.Settings.Default.Chiro_Cdf_Intranet_MailcontroleService_Mailcontrole;
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;

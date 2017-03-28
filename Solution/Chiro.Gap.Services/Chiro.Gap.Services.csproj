@@ -94,13 +94,8 @@
     <Content Include="GroepenService.svc" />
     <Content Include="LedenService.svc" />
     <Content Include="UitstappenService.svc" />
-    <None Include="Web References\MailcontroleService\mailcontrole.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web References\MailcontroleService\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -138,11 +133,6 @@
     </Compile>
     <Compile Include="UitstappenService.svc.cs">
       <DependentUpon>UitstappenService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="Web References\MailcontroleService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -241,7 +231,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Web References\MailcontroleService\mailcontrole.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -258,19 +247,6 @@
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="https://extranet.chiro.be/datacontrole/mailcontrole.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\MailcontroleService\</RelPath>
-      <UpdateFromURL>https://extranet.chiro.be/datacontrole/mailcontrole.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>Chiro_Gap_Services_MailcontroleService_Mailcontrole</CachedSettingsPropName>
-    </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
