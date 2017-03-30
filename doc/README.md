@@ -52,38 +52,10 @@ Vemeld in je commit messages telkens het nummer van het issue waaraan je werkt.
 Als je tevreden bent over je werk, maak dan een merge request (gitlab) of
 pull request (github).
 
-#### Compilatie-errors
-
-Als je dit soort foutmeldingen krijgt:
-
-&gt; Error 1 The type 'System.IDisposable' is defined in an assembly
-that is not referenced. You must add a reference to assembly
-'System.Runtime, Version=4.0.0.0, Culture=neutral,
-PublicKeyToken=b03f5f7f11d50a3a'.
-
-Dan kun je ofwel:
-
--   Windows updaten
--   Deze KB installeren: https://support.microsoft.com/en-us/kb/2971005.
-    (Zie
-    ook https://stackoverflow.com/questions/12349189/the-type-system-idisposable-is-defined-in-an-assembly-that-is-not-referenced)
-
 ### Database
 
 GAP werkt met een database. In [Database](Database.md) staat uitgelegd hoe je
 die opzet.
-
-### Access denied?
-
-Als je bij het starten van de toepassing een access denied krijgt, en
-iets i.v.m. anonymous users en `IUSR\_MACHINENAME`, dan kun je 2 dingen
-proberen:
-
--   voeg je user toe aan de lokale groep `IIS\_IUSRS`, en log uit en
-    weer aan.
--   probeer het een keertje met Internet Explorer. (I know...) Die doet
-    soms meer hocus-pocus met authenticatie, en daarna is alles plots
-    blijkbaar geregeld.
 
 ### Algemene documentatie GAP-development:
 

@@ -40,5 +40,32 @@ namespace Chiro.Cdf.Mailer.Properties {
                 return ((string)(this["StandaardAfzender"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mailuser")]
+        public string SmtpUsername {
+            get {
+                return ((string)(this["SmtpUsername"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Pw_For_Smtp_User")]
+        public string SmtpPassword {
+            get {
+                return ((string)(this["SmtpPassword"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("somedomain")]
+        public string SmtpDomain {
+            get {
+                return ((string)(this["SmtpDomain"]));
+            }
+        }
     }
 }

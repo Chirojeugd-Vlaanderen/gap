@@ -29,7 +29,7 @@ Voor installatiehulp, zie [GitExtensions](GitExtensions.md).
 -   Klik 'Git bash here'.
 -   Tik het volgende:
     ```
-    git clone https://gitlab.chiro.be/gap/gap.git
+    git clone --recursive https://gitlab.chiro.be/gap/gap.git
     ```
 -   Het is de eerste keer dat je op die server connecteert, je zult
     moeten bevestigen dat je de server vertrouwt.
@@ -86,7 +86,7 @@ En verder...
     Startup Projects'). Kies voor 'multiple startup project' en
     selecteer bij Services en WebApp de actie 'Start'.
 
-Let op: lees het stukje over [branches](branches.md) voor je begint te hacken!
+Let op: lees het stukje over [branches](Branches.md) voor je begint te hacken!
 
 Als je de solution opent voor de eerste keer opent, kan het zijn dat er
 projecten niet geladen worden en dat je de volgende foutmelding krijgt.

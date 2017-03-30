@@ -8,5 +8,14 @@
     <Setting Name="StandaardAfzender" Type="System.String" Scope="Application">
       <Value Profile="(Default)">helpdesk@chiro.be</Value>
     </Setting>
+    <Setting Name="SmtpUsername" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mailuser</Value>
+    </Setting>
+    <Setting Name="SmtpPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Pw_For_Smtp_User</Value>
+    </Setting>
+    <Setting Name="SmtpDomain" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">somedomain</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
