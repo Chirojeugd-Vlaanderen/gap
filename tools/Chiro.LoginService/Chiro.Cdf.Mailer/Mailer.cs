@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 using System;
+using System.Net;
 using System.Net.Mail;
 using System.Web;
 
@@ -53,6 +54,8 @@ namespace Chiro.Cdf.Mailer
 
             using (var client = new SmtpClient(Properties.Settings.Default.SmtpServer))
             {
+                client.Credentials = new NetworkCredential(Properties.Settings.Default.SmtpUsername,
+                    Properties.Settings.Default.SmtpPassword, Properties.Settings.Default.SmtpDomain);
                 client.Send(message);
             }
         }
