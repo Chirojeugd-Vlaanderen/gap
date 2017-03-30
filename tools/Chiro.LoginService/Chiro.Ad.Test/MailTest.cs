@@ -35,7 +35,7 @@ namespace Chiro.Ad.Test
         {
             IMailer mailer = Factory.Maak<IMailer>();
 
-            mailer.Verzenden("johan.vervloet@chiro.be", "unit test " + DateTime.Now, "unit test");
+            mailer.Verzenden("johan.vervloet@gmail.com", "unit test " + DateTime.Now, "unit test");
 
             Assert.IsTrue(true);
         }
@@ -45,7 +45,7 @@ namespace Chiro.Ad.Test
         {
             IMailer mailer = Factory.Maak<IMailer>();
 
-            mailer.Verzenden("johan.vervloet@gmail.com", "unit test " + DateTime.Now, "unit test");
+            mailer.Verzenden("johan.vervloet@chiro.be", "unit test " + DateTime.Now, "unit test");
 
             Assert.IsTrue(true);
         }
