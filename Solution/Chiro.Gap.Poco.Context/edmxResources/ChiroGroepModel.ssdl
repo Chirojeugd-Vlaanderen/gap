@@ -317,6 +317,8 @@
     <Property Name="Voorkeur" Type="bit" Nullable="false" />
     <Property Name="GelieerdePersoonID" Type="int" />
     <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="IsVerdacht" Type="bit" Nullable="false" />
+    <Property Name="LaatsteControle" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="GelieerdePersoon">
     <Key>

@@ -262,6 +262,8 @@
     <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
     <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="CommunicatieVorm" ToRole="GelieerdePersoon" />
     <NavigationProperty Name="CommunicatieType" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieVorm" ToRole="CommunicatieType" />
+    <Property Name="IsVerdacht" Type="Boolean" Nullable="false" />
+    <Property Name="LaatsteControle" Type="DateTime" Nullable="false" Precision="3" />
   </EntityType>
   <EntityType Name="GelieerdePersoon">
     <Key>
