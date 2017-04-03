@@ -1,5 +1,6 @@
 ﻿/*
  * Copyright 2013, Arno Soontjens
+ * Aanvulling 2017, Bart Boone
  * Copyright 2013-2015, the GAP developers. See the NOTICE file at the
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
@@ -17,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 //--------------------------------------------------------------------------------
 //Document ready functie
 //--------------------------------------------------------------------------------
@@ -109,7 +110,7 @@ $(function () {
         // gerefactord zal moeten worden (zie #1529)
         geboortedatum = $('#gdInfo').val();
         chiroleeftijd = parseInt($('#chiroleeftijdInfo').text().trim());
-        
+
         var geboortejaar = geboortedatum.substr(-4);
         geboortejaar = parseInt(geboortejaar);
         var leeftijd = werkjaar - geboortejaar + chiroleeftijd;
@@ -205,7 +206,7 @@ $(function () {
     $('#gdInfo').attr('disabled', true);
     $.datepicker.setDefaults($.datepicker.regional['be']);
 
-    var updateGeboorteDatumChanges = function() {
+    var updateGeboorteDatumChanges = function () {
         if (geboortedatum != $('#gdInfo').val()) { // only save when something changed
             geboortedatum = $('#gdInfo').val();
             bewaarGegevens('geboortedatum', geboortedatum, GID, GPid);
@@ -274,6 +275,10 @@ $(function () {
             wijzigCommunicatieNr(cvID, params.newValue);
         });
 
+    $('.uitlegIsVerdacht').click(function (e) {
+        toonInfo('#MAILVERDACHT', "Mailadres is verdacht", "#extraInfoDialog");
+    });
+
     $('.contactBewerken').click(function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -312,7 +317,6 @@ $(function () {
             $('#NieuweCommVorm_Nummer').attr('placeholder', attri);
             $('#NieuweCommVorm_Nummer').attr('required', true);
             $('#NieuweCommVorm_Nummer').attr('type', 'tel');
-
 
             $('#NieuweCommVorm_CommunicatieTypeID').on('change', function () {
                 $('#verbRij').hide();
@@ -354,40 +358,40 @@ $(function () {
                 $('#NieuweCommVorm_Nummer').attr('placeholder', attri);
             });
             success:
-            {
-                waarde = $('#NieuweCommVorm_CommunicatieTypeID').val();
-                $('#extraInfoDialog').dialog({
-                    title: "Tel./mail/enz. toevoegen",
-                    modal: true,
-                    width: 550,
-                    height: 530,
-                    buttons: {
-                        'Bewaren': function () {
-                            if (waarde == 1 || waarde == 2) {
-                                antwoord = controleerTel($('#NieuweCommVorm_Nummer').val());
+                {
+                    waarde = $('#NieuweCommVorm_CommunicatieTypeID').val();
+                    $('#extraInfoDialog').dialog({
+                        title: "Tel./mail/enz. toevoegen",
+                        modal: true,
+                        width: 550,
+                        height: 530,
+                        buttons: {
+                            'Bewaren': function () {
+                                if (waarde == 1 || waarde == 2) {
+                                    antwoord = controleerTel($('#NieuweCommVorm_Nummer').val());
 
-                                if (antwoord == "") {
-                                    $('#bewaarComm').click();
+                                    if (antwoord == "") {
+                                        $('#bewaarComm').click();
+                                    } else {
+                                        $('#fouten').css('background-color', 'red').html(antwoord);
+                                        $('#verbRij').show();
+                                    }
                                 } else {
-                                    $('#fouten').css('background-color', 'red').html(antwoord);
-                                    $('#verbRij').show();
+                                    $('#bewaarComm').click();
                                 }
-                            } else {
-                                $('#bewaarComm').click();
+                            },
+                            'Annuleren': function () {
+                                $(this).dialog('close');
+                                return false;
                             }
-                        },
-                        'Annuleren': function () {
-                            $(this).dialog('close');
-                            return false;
                         }
-                    }
-                });
-            }
+                    });
+                }
         });
         clearDialog();
     });
 
-    //Eigen form + post voor email en tel
+    //Eigen form + post voor e-mail en tel
     $('.comToev').not($('#laadNieuweCom .comToev')).click(function () {
         var cId = $(this).parent().parent().attr('id');
         var nummer;
@@ -509,7 +513,6 @@ $(function () {
         e.stopPropagation();
         e.preventDefault();
         $('#chiroleeftijdInfo').editable('toggle');
-
     });
 
     $('#chiroleeftijdInfo').editable({
@@ -549,14 +552,14 @@ $(function () {
                 id = data.succes;
                 klaarMetSucces("Type lid is aangepast.");
             } else if (data.hasOwnProperty('fout')) {
-                klaarMetFout("Fout: "+data.fout);
+                klaarMetFout("Fout: " + data.fout);
             } else {
                 throw new Error("Service wordt verwacht success of fout terug te geven");
             }
         }).fail(function () {
             klaarMetFout("Fout: Er ging iets mis bij het veranderen van de status van deze persoon");
         });
-        
+
     });
 
     //------------------------------------------------------------------------------------------
@@ -573,7 +576,7 @@ $(function () {
 
         url = link("Leden", "AfdelingBewerken");
         $.getJSON(url, { groepsWerkJaarID: groepswerkJaar, lidID: id }, function (data) {
-            
+
             $.each(data.BeschikbareAfdelingen, function (index, value) {
                 naam = data.BeschikbareAfdelingen[teller].Naam;
                 waarde = data.BeschikbareAfdelingen[teller].AfdelingsJaarID;
@@ -600,40 +603,40 @@ $(function () {
             });
 
             success:
-            {
-                $('#afdelingenDialog').dialog({
-                    title: "Afdeling(en) toekennen",
-                    modal: true,
-                    buttons: {
-                        'Bewaren': function () {
-                            $.each($('#afdelingenDialog fieldset input:checked'), function (index, value) {
-                                waarde = $(this).val();
-                                tekst += $(this).attr('id') + " ";
-                                groep.push(waarde);
-                            });
+                {
+                    $('#afdelingenDialog').dialog({
+                        title: "Afdeling(en) toekennen",
+                        modal: true,
+                        buttons: {
+                            'Bewaren': function () {
+                                $.each($('#afdelingenDialog fieldset input:checked'), function (index, value) {
+                                    waarde = $(this).val();
+                                    tekst += $(this).attr('id') + " ";
+                                    groep.push(waarde);
+                                });
 
-                            url = link("Leden", "AfdelingBewerken");
-                            $.ajax({
-                                url: url,
-                                type: 'POST',
-                                traditional: true,
-                                data: {
-                                    "groepsWerkJaarID": groepswerkJaar,
-                                    lidID: id,
-                                    "Info.AfdelingsJaarIDs": groep
-                                }
-                            });
-                            $('#afdelingInfo').text(tekst);
-                            $(this).dialog('close');
-                            $('#afdelingenDialog fieldset').html('');
-                        },
-                        'Annuleren': function () {
-                            $(this).dialog('close');
-                            $('#afdelingenDialog fieldset').html('');
+                                url = link("Leden", "AfdelingBewerken");
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    traditional: true,
+                                    data: {
+                                        "groepsWerkJaarID": groepswerkJaar,
+                                        lidID: id,
+                                        "Info.AfdelingsJaarIDs": groep
+                                    }
+                                });
+                                $('#afdelingInfo').text(tekst);
+                                $(this).dialog('close');
+                                $('#afdelingenDialog fieldset').html('');
+                            },
+                            'Annuleren': function () {
+                                $(this).dialog('close');
+                                $('#afdelingenDialog fieldset').html('');
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
         });
     });
 
@@ -651,8 +654,8 @@ $(function () {
         }
 
         $.post(url, { id: id, groepID: GID });
-
     });
+
     //------------------------------------------------------------------------------------------
     //functies bewerken
     $('#bewerkFuncties').click(function (e) {
@@ -665,27 +668,26 @@ $(function () {
             gedeeltelijkTonen('#extraInfoDialog');
             $(this).find('a').hide();
             success:
-            {
-                $('#extraInfoDialog').dialog({
-                    modal: true,
-                    width: 500,
-                    height: 450,
-                    title: "Functies bewerken",
-                    buttons: {
-                        "Bevestigen": function () {
-                            $('#bewaarFuncties').click();
-                            // verwijder de knoppen, zodat de user eventjes
-                            // hulpeloos is, totdat de pagina refresht :-)
-                            // (zie #1665)
-                            $(this).dialog("option", "buttons", []);
-                        },
-                        "Annuleren": function () {
-                            $(this).dialog('close');
+                {
+                    $('#extraInfoDialog').dialog({
+                        modal: true,
+                        width: 500,
+                        height: 450,
+                        title: "Functies bewerken",
+                        buttons: {
+                            "Bevestigen": function () {
+                                $('#bewaarFuncties').click();
+                                // verwijder de knoppen, zodat de user eventjes
+                                // hulpeloos is, totdat de pagina refresht :-)
+                                // (zie #1665)
+                                $(this).dialog("option", "buttons", []);
+                            },
+                            "Annuleren": function () {
+                                $(this).dialog('close');
+                            }
                         }
-                    }
-                });
-
-            }
+                    });
+                }
         });
         clearDialog();
     });
@@ -708,9 +710,9 @@ $(function () {
         url = link("Personen", "VerwijderenCategorie");
         $.post(url, { categorieID: catID, gelieerdePersoonID: GPid, groepID: GID }, function () {
             success:
-            {
-                location.reload();
-            }
+                {
+                    location.reload();
+                }
         });
 
     });
@@ -722,21 +724,21 @@ $(function () {
         $('#extraInfoDialog').load(url, function () {
             gedeeltelijkTonen('#extraInfoDialog');
             success:
-            {
-                $('#extraInfoDialog').dialog({
-                    modal: true,
-                    title: "Toevoegen aan categorie",
-                    width: 480,
-                    buttons: {
-                        'Bewaren': function () {
-                            $('#bewaarCat').click();
-                        },
-                        'Annuleren': function () {
-                            $(this).dialog('close');
+                {
+                    $('#extraInfoDialog').dialog({
+                        modal: true,
+                        title: "Toevoegen aan categorie",
+                        width: 480,
+                        buttons: {
+                            'Bewaren': function () {
+                                $('#bewaarCat').click();
+                            },
+                            'Annuleren': function () {
+                                $(this).dialog('close');
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
         });
         clearDialog();
     });
@@ -774,7 +776,7 @@ $(function () {
     //------------------------------------------------------------------------------------------
     // Extra info weergeven
     $('#vkAdres').click(function () {
-        toonInfo('#VK-ADRINFO', "Voorkeurs adres", "#extraInfoDialog");
+        toonInfo('#VK-ADRINFO', "Voorkeursadres", "#extraInfoDialog");
     });
 
     $('#verhuizen').click(function () {
@@ -859,13 +861,15 @@ $(function () {
     function wijzigCommunicatieNr(cvid, nieuweWaarde) {
         url = link("Personen", "NummerWijzigen");
 
+        $('#controlestatus').hide();
+
         $.post(url,
                     {
                         "Waarde": nieuweWaarde,
                         "ID": cvid
                     });
     }
-});  
+});
 //------------------------------------------------------------------------------------------
 // EINDE EIGEN FUNCTIES
 //----------------------------------------------------------------------------------------------

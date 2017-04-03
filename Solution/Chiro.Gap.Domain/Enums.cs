@@ -285,7 +285,9 @@ namespace Chiro.Gap.Domain
         [EnumMember]
         TelefoonNummerOntbreekt,
         [EnumMember]
-        EmailOntbreekt
+        EmailOntbreekt,
+        [EnumMember]
+        EmailIsVerdacht
     }
 
     /// <summary>

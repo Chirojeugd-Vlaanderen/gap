@@ -241,7 +241,7 @@
     <value>De &lt;a href='{2}'&gt;overgang&lt;/a&gt; naar werkjaar {0}-{1} moet nog gebeuren.</value>
   </data>
   <data name="BivakAangifteNogInTeVullen" xml:space="preserve">
-    <value>Je moet je bivakaangifte nog &lt;a href='{0}'&gt; invullen &lt;/a&gt;.</value>
+    <value>Je moet je bivakaangifte nog &lt;a href='{0}'&gt;invullen&lt;/a&gt;.</value>
   </data>
   <data name="BeideNogInvullenOpBivakAangifte" xml:space="preserve">
     <value>Je moet de contactpersoon en het adres nog invullen van je bivak &lt;a href='{1}'&gt; {0} &lt;/a&gt;.</value>
@@ -416,5 +416,11 @@ Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar
   </data>
   <data name="VerzekeringBestaatAl" xml:space="preserve">
     <value>Dit lid is al verzekerd voor dit werkjaar.</value>
+  </data>
+  <data name="LedenMetVerdachteEmail" xml:space="preserve">
+    <value>Het ingevuld mailadres van &lt;a href='{1}'&gt;{0} leden&lt;/a&gt; is verdacht. (Je herkent hen op het tabblad Ingeschreven en op persoonlijke fiches aan het icoontje voor hun adres.)</value>
+  </data>
+  <data name="LijstLedenMetVerdachteEmail" xml:space="preserve">
+    <value>Leden met verdacht mailadres</value>
   </data>
 </root>

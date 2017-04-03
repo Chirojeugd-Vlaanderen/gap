@@ -338,6 +338,8 @@
           <Property Name="Voorkeur" Type="bit" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="IsVerdacht" Type="bit" Nullable="false" />
+          <Property Name="LaatsteControle" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="GelieerdePersoon">
           <Key>
@@ -409,7 +411,7 @@
           <Property Name="TotEindeWerkJaar" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'gap_local.diag.vActiefAbonnement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'gap.diag.vActiefAbonnement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vActiefAbonnement">
           <Key>
             <PropertyRef Name="AbonnementID" />
@@ -423,7 +425,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefAbonnement' does not have a 
           <Property Name="WerkJaar" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'gap.diag.vActiefLid' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vActiefLid">
           <Key>
             <PropertyRef Name="LidID" />
@@ -1070,7 +1072,6 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <EntitySet Name="Land" EntityType="Self.Land" Schema="adr" store:Type="Tables" />
           <EntitySet Name="StraatNaam" EntityType="Self.StraatNaam" Schema="adr" store:Type="Tables" />
           <EntitySet Name="WoonPlaats" EntityType="Self.WoonPlaats" Schema="adr" store:Type="Tables" />
-          
           <EntitySet Name="GebruikersRechtv2" EntityType="Self.GebruikersRechtv2" Schema="auth" store:Type="Tables" />
           <EntitySet Name="Deelnemer" EntityType="Self.Deelnemer" Schema="biv" store:Type="Tables" />
           <EntitySet Name="Plaats" EntityType="Self.Plaats" Schema="biv" store:Type="Tables" />
@@ -1089,6 +1090,7 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <EntitySet Name="Lid" EntityType="Self.Lid" Schema="lid" store:Type="Tables" />
           <EntitySet Name="LidFunctie" EntityType="Self.LidFunctie" Schema="lid" store:Type="Tables" />
           <EntitySet Name="OfficieleAfdeling" EntityType="Self.OfficieleAfdeling" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="Bericht" EntityType="Self.Bericht" Schema="logging" store:Type="Tables" />
           <EntitySet Name="CommunicatieType" EntityType="Self.CommunicatieType" Schema="pers" store:Type="Tables" />
           <EntitySet Name="CommunicatieVorm" EntityType="Self.CommunicatieVorm" Schema="pers" store:Type="Tables" />
           <EntitySet Name="GelieerdePersoon" EntityType="Self.GelieerdePersoon" Schema="pers" store:Type="Tables" />
@@ -1097,9 +1099,6 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <EntitySet Name="PersoonsCategorie" EntityType="Self.PersoonsCategorie" Schema="pers" store:Type="Tables" />
           <EntitySet Name="PersoonsVerzekering" EntityType="Self.PersoonsVerzekering" Schema="verz" store:Type="Tables" />
           <EntitySet Name="VerzekeringsType" EntityType="Self.VerzekeringsType" Schema="verz" store:Type="Tables" />
-          
-          <EntitySet Name="Bericht" EntityType="Self.Bericht" Schema="logging" store:Type="Tables" />
-          
           <EntitySet Name="vActiefAbonnement" EntityType="Self.vActiefAbonnement" store:Type="Views" store:Schema="diag">
             <DefiningQuery>SELECT 
     [vActiefAbonnement].[AbonnementID] AS [AbonnementID], 
@@ -1594,6 +1593,8 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="CommunicatieVorm" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="CommunicatieType" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieVorm" ToRole="CommunicatieType" />
+          <Property Name="IsVerdacht" Type="Boolean" Nullable="false" />
+          <Property Name="LaatsteControle" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="GelieerdePersoon">
           <Key>
@@ -2170,6 +2171,8 @@ warning 6002: The table/view 'gap_local.diag.vActiefLid' does not have a primary
           <EntitySetMapping Name="CommunicatieVorm">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieVorm)">
               <MappingFragment StoreEntitySet="CommunicatieVorm">
+                <ScalarProperty Name="LaatsteControle" ColumnName="LaatsteControle" />
+                <ScalarProperty Name="IsVerdacht" ColumnName="IsVerdacht" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="Voorkeur" ColumnName="Voorkeur" />
                 <ScalarProperty Name="IsGezinsgebonden" ColumnName="IsGezinsgebonden" />

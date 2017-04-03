@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="https://extranet.chiro.be/datacontrole/mailcontrole.asmx?wsdl" docRef="https://extranet.chiro.be/datacontrole/mailcontrole.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="https://extranet.chiro.be/datacontrole/mailcontrole.asmx" xmlns:q1="http://intranet/celdocumentatie" binding="q1:MailcontroleSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="https://extranet.chiro.be/datacontrole/mailcontrole.asmx" xmlns:q2="http://intranet/celdocumentatie" binding="q2:MailcontroleSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

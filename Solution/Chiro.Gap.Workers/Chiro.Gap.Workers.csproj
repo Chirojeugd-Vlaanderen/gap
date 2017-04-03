@@ -42,8 +42,12 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbonnementenManager.cs" />
@@ -77,6 +81,11 @@
     <Compile Include="UitstappenManager.cs" />
     <Compile Include="VeelGebruikt.cs" />
     <Compile Include="VerzekeringenManager.cs" />
+    <Compile Include="Web References\MailcontroleService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\tools\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
@@ -86,6 +95,10 @@
     <ProjectReference Include="..\Chiro.Cdf.Authentication\Chiro.Cdf.Authentication.csproj">
       <Project>{FB9A2752-D976-4D92-9974-0E9339D1FDD2}</Project>
       <Name>Chiro.Cdf.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Intranet\Chiro.Cdf.Intranet.csproj">
+      <Project>{ea148fcd-80af-4c2f-82e6-5e12ae27b93d}</Project>
+      <Name>Chiro.Cdf.Intranet</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
@@ -125,7 +138,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MailcontroleService\mailcontrole.wsdl" />
+    <None Include="Web References\MailcontroleService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <None Include="WorkersClassDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -143,6 +163,28 @@
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="https://extranet.chiro.be/datacontrole/mailcontrole.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\MailcontroleService\</RelPath>
+      <UpdateFromURL>https://extranet.chiro.be/datacontrole/mailcontrole.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Chiro_Gap_Workers_MailcontroleService_Mailcontrole</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\MailcontroleService\mailcontrole.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
