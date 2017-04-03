@@ -246,6 +246,8 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
             groepen = from g in _groepenRepo.Select()
+            // Als je toepassing hier crasht alvorens ze iets doet, dan is je database niet beschikbaar.
+            // Controleer je connection string in de Web.Config van Chiro.Gap.Services.
                       where
                           g.GebruikersRechtV2.Any(
                               gr => gr.Persoon.AdNummer == mijnAdNr
@@ -253,12 +255,6 @@ namespace Chiro.Gap.Services
                       select g;
 
             return _mappingHelper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
-
-            // ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
-            // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
-            // Werk je op de algemene dev-db, check dan de connectie met devsrv1.
-            // Werk je op een eigen database, dan moeten je connectionstrings aangepast zijn.
-            // en uiteraard moet je database service gestart zijn :-P
         }
 
         /// <summary>
