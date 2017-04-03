@@ -82,11 +82,19 @@ namespace Chiro.Gap.Domain
 		[DataMember]
 		public bool? HeeftEmailAdres { get; set; }
 
+        /// <summary>
+        /// Indien <c>true</c>, lever enkel leden op met een verdacht e-mailadres,
+		/// indien <c>false</c>, lever enkel leden op zonder verdacht e-mailadres,
+		/// indien <c>null</c>, negeer.
+        /// </summary>
+        [DataMember]
+        public bool? HeeftVerdachtEmailAdres { get; set; }
+
 		/// <summary>
 		/// Als <c>LidType.Kind</c> of <c>LidType.Leiding</c>, dan worden enkel leden van het gevraagde type
 		/// opgeleverd.
 		/// </summary>
 		[DataMember]
 		public LidType LidType { get; set; }
-	}
+    }
 }

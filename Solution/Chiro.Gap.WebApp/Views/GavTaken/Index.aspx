@@ -47,4 +47,5 @@
 	<%
 		}
 	%>
+    <%= Html.ActionLink("Opnieuw tellen", "LedenproblemenHertellen")%>
 </asp:Content>

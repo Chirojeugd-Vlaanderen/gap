@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.ServiceContracts",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync.Mappers", "..\..\Solution\Chiro.Gap.Sync.Mappers\Chiro.Gap.Sync.Mappers.csproj", "{98547985-C786-4637-8407-8EFD4A19F31B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Intranet", "..\..\Solution\Chiro.Cdf.Intranet\Chiro.Cdf.Intranet.csproj", "{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{98547985-C786-4637-8407-8EFD4A19F31B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98547985-C786-4637-8407-8EFD4A19F31B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98547985-C786-4637-8407-8EFD4A19F31B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA148FCD-80AF-4C2F-82E6-5E12AE27B93D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

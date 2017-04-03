@@ -48,6 +48,8 @@
     <EntitySetMapping Name="CommunicatieVorm">
       <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieVorm)">
         <MappingFragment StoreEntitySet="CommunicatieVorm">
+          <ScalarProperty Name="LaatsteControle" ColumnName="LaatsteControle" />
+          <ScalarProperty Name="IsVerdacht" ColumnName="IsVerdacht" />
           <ScalarProperty Name="Versie" ColumnName="Versie" />
           <ScalarProperty Name="Voorkeur" ColumnName="Voorkeur" />
           <ScalarProperty Name="IsGezinsgebonden" ColumnName="IsGezinsgebonden" />

@@ -83,7 +83,5 @@ namespace Chiro.Gap.Poco.Model
         {
             get { return String.Format("{0} {1}", VoorNaam, Naam); }
         }
-
     }
-    
 }

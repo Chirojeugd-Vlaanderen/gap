@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://intranet/celdocumentatie" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://intranet/celdocumentatie" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://intranet/celdocumentatie">
+      <s:element name="BetrouwbaarheidsscoreOphalenOpNaam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VoornaamParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="NaamParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MailadresParam" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BetrouwbaarheidsscoreOphalenOpNaamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="BetrouwbaarheidsscoreOphalenOpNaamResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VoornaamParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="NaamParam" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="GeboortejaarParam" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="MailadresParam" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaarResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="BetrouwbaarheidsscoreOphalenOpNaamSoapIn">
+    <wsdl:part name="parameters" element="tns:BetrouwbaarheidsscoreOphalenOpNaam" />
+  </wsdl:message>
+  <wsdl:message name="BetrouwbaarheidsscoreOphalenOpNaamSoapOut">
+    <wsdl:part name="parameters" element="tns:BetrouwbaarheidsscoreOphalenOpNaamResponse" />
+  </wsdl:message>
+  <wsdl:message name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaarSoapIn">
+    <wsdl:part name="parameters" element="tns:Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaar" />
+  </wsdl:message>
+  <wsdl:message name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaarSoapOut">
+    <wsdl:part name="parameters" element="tns:Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaarResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MailcontroleSoap">
+    <wsdl:operation name="BetrouwbaarheidsscoreOphalenOpNaam">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gaat na hoe groot de kans is dat het mailadres juist geschreven is, en van de persoon met de opgegeven naam is (en dus niet van een van de ouders). Een score hoger dan 2 is redelijk betrouwbaar.</wsdl:documentation>
+      <wsdl:input message="tns:BetrouwbaarheidsscoreOphalenOpNaamSoapIn" />
+      <wsdl:output message="tns:BetrouwbaarheidsscoreOphalenOpNaamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BetrouwbaarheidsscoreOphalenOpNaamEnGeboortejaar">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gaat na hoe groot de kans is dat het mailadres juist geschreven is, en van de persoon met de opgegeven naam is (en dus niet van een van de ouders). Een score hoger dan 2 is redelijk betrouwbaar.</wsdl:documentation>
+      <wsdl:input name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaar" message="tns:Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaarSoapIn" />
+      <wsdl:output name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaar" message="tns:Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaarSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MailcontroleSoap" type="tns:MailcontroleSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BetrouwbaarheidsscoreOphalenOpNaam">
+      <soap:operation soapAction="http://intranet/celdocumentatie/BetrouwbaarheidsscoreOphalenOpNaam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BetrouwbaarheidsscoreOphalenOpNaamEnGeboortejaar">
+      <soap:operation soapAction="http://intranet/celdocumentatie/Betrouwbaarheidsscore ophalen op naam en geboortejaar" style="document" />
+      <wsdl:input name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaar">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaar">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MailcontroleSoap12" type="tns:MailcontroleSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BetrouwbaarheidsscoreOphalenOpNaam">
+      <soap12:operation soapAction="http://intranet/celdocumentatie/BetrouwbaarheidsscoreOphalenOpNaam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BetrouwbaarheidsscoreOphalenOpNaamEnGeboortejaar">
+      <soap12:operation soapAction="http://intranet/celdocumentatie/Betrouwbaarheidsscore ophalen op naam en geboortejaar" style="document" />
+      <wsdl:input name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaar">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="Betrouwbaarheidsscore_x0020_ophalen_x0020_op_x0020_naam_x0020_en_x0020_geboortejaar">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Mailcontrole">
+    <wsdl:port name="MailcontroleSoap" binding="tns:MailcontroleSoap">
+      <soap:address location="https://extranet.chiro.be/datacontrole/mailcontrole.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MailcontroleSoap12" binding="tns:MailcontroleSoap12">
+      <soap12:address location="https://extranet.chiro.be/datacontrole/mailcontrole.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -117,7 +117,6 @@ namespace Chiro.Gap.Poco.Model
             }
         }
 
-
         /// <summary>
         /// Bepaalt het niveau van het lid.  Hiervoor moet wel de groep beschikbaar zijn.
         /// </summary>
@@ -140,6 +139,5 @@ namespace Chiro.Gap.Poco.Model
                 return resultaat;
             }
         }
-    }
-    
+    }   
 }

@@ -14,8 +14,7 @@ heeft een aantal subnamespaces:
     aanroep van de services
 -   Chiro.Cdf - 'Chiro Development Framework'. Wat in deze namespace
     zit, moet herbruikbaar zijn voor toekomstige andere projecten van
-    de Chiro. Ik denk maar aan de link Chirogroep-Kipadmin, en op
-    termijn ook een vernieuwde Kipadmin zef.
+    de Chiro.
 -   Chiro.Gap - Code specifiek voor het GAP-project
 
 Projecten
@@ -30,6 +29,7 @@ Projecten
     Tommy geschreven om de Dependency Injection (IOC) in de webservice
     aan de gang te krijgen.
 -   Chiro.Cdf.Ioc -- Definieert onze IOC-container 'Factory'.
+-   Chiro.Cdf.Intranet -- Hiermee roepen we webservices aan die op het intranet draaien, bv. mailadrescontrole.
 -   Chiro.Cdf.Mailer -- Kan gebruikt worden om mails te sturen
 -   Chiro.Cdf.Poco -- Bouwstenen om generieke 'repositories' te bouwen.
     Relevante concepten:

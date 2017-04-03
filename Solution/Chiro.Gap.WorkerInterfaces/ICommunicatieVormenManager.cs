@@ -69,5 +69,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns><c>true</c> als <paramref name="p"/> een geldige communicatievorm zou zijn
         /// voor het gegeven <paramref name="communicatieType"/></returns>
         bool IsGeldig(string p, CommunicatieType communicatieType);
+
+        /// <summary>
+        /// Controleert of de kans groot is dat <paramref name="communicatieVorm"/> niet van de persoon zelf is,
+        /// maar bijvoorbeeld van een van de ouders of een voogd.
+        /// </summary>
+        /// <param name="communicatieVorm">De communicatievorm die we willen nakijken.</param>
+        /// <returns><c>True</c> als de kans groot is dat de communicatievorm van iemand anders is,
+        /// <c>false</c> als het op een eigen communicatievorm lijkt.</returns>
+        bool IsVerdacht(CommunicatieVorm communicatieVorm);
     }
 }
