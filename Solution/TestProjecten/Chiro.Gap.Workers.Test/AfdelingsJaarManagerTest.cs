@@ -33,7 +33,7 @@ namespace Chiro.Gap.Workers.Test
 	public class AfdelingsJaarManagerTest: ChiroTest
 	{
 		///<summary>
-		///Probeer een afdeling te maken in een groepswerkjaar van een andere groep
+		///Probeer een afdeling te maken in een groepswerkjaar van een andere grot ep
 		/// </summary>
 		[Test]
 		public void AfdelingGroepsWerkJaarMismatch()

@@ -26,6 +26,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Mappers;
 using Chiro.Gap.WebApp.Models;
+using Chiro.Gap.WebApp.Properties;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -120,9 +121,9 @@ namespace Chiro.Gap.WebApp.Controllers
             if (!groepID.HasValue)
             {
                 // De Gekozen groep is nog niet gekend, zet defaults
-                model.GroepsNaam = Properties.Resources.GroepsnaamDefault;
-                model.Plaats = Properties.Resources.GroepPlaatsDefault;
-                model.StamNummer = Properties.Resources.StamNrDefault;
+                model.GroepsNaam = Resources.GroepsnaamDefault;
+                model.Plaats = Resources.GroepPlaatsDefault;
+                model.StamNummer = Resources.StamNrDefault;
                 model.MeerdereGroepen = false;
                 // model.GroepsCategorieen = new List<SelectListItem>();
             }
@@ -161,7 +162,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     {
                         Type = MededelingsType.Probleem,
                         Info = String.Format(
-                            Properties.Resources.WerkJaarInOvergang,
+                            Resources.WerkJaarInOvergang,
                             gwjDetail.WerkJaar + 1,
                             gwjDetail.WerkJaar + 2,
                             url)
@@ -198,7 +199,7 @@ namespace Chiro.Gap.WebApp.Controllers
                             model.Mededelingen.Add(new Mededeling
                             {
                                 Type = MededelingsType.Probleem,
-                                Info = string.Format(Properties.Resources.FunctieOntbreekt, p.Naam, p.Code, bekijkMetFunctieUrl, statusToekennenUrl)
+                                Info = string.Format(Resources.FunctieOntbreekt, p.Naam, p.Code, bekijkMetFunctieUrl, statusToekennenUrl)
                             });
                         }
                         else if (p.MaxAantal == 1 && p.EffectiefAantal > 1)
@@ -206,7 +207,7 @@ namespace Chiro.Gap.WebApp.Controllers
                             model.Mededelingen.Add(new Mededeling
                             {
                                 Type = MededelingsType.Probleem,
-                                Info = string.Format(Properties.Resources.FunctieMeerdereKeren, p.Naam, p.Code, p.EffectiefAantal,bekijkMetFunctieUrl)
+                                Info = string.Format(Resources.FunctieMeerdereKeren, p.Naam, p.Code, p.EffectiefAantal,bekijkMetFunctieUrl)
                             });
                         }
                         // Dan de algemene foutmeldingen
@@ -215,7 +216,7 @@ namespace Chiro.Gap.WebApp.Controllers
                             model.Mededelingen.Add(new Mededeling
                             {
                                 Type = MededelingsType.Probleem,
-                                Info = string.Format(Properties.Resources.FunctieTeWeinig, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal, bekijkMetFunctieUrl)
+                                Info = string.Format(Resources.FunctieTeWeinig, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal, bekijkMetFunctieUrl)
                             });
                         }
                         else if (p.EffectiefAantal > p.MaxAantal)
@@ -223,7 +224,7 @@ namespace Chiro.Gap.WebApp.Controllers
                             model.Mededelingen.Add(new Mededeling
                             {
                                 Type = MededelingsType.Probleem,
-                                Info = string.Format(Properties.Resources.FunctieTeVeel, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal, bekijkMetFunctieUrl)
+                                Info = string.Format(Resources.FunctieTeVeel, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal, bekijkMetFunctieUrl)
                             });
                         }
                     }
@@ -239,15 +240,19 @@ namespace Chiro.Gap.WebApp.Controllers
                         switch (p.Probleem)
                         {
                             case LidProbleem.AdresOntbreekt:
-                                boodschap = Properties.Resources.LedenZonderAdres;
+                                boodschap = Resources.LedenZonderAdres;
                                 url = Url.Action("ZonderAdres", "Leden");
                                 break;
                             case LidProbleem.EmailOntbreekt:
-                                boodschap = Properties.Resources.LeidingZonderEmail;
+                                boodschap = Resources.LeidingZonderEmail;
                                 url = Url.Action("LeidingZonderMail", "Leden");
                                 break;
+                            case LidProbleem.EmailIsVerdacht:
+                                boodschap = Resources.LedenMetVerdachteEmail;
+                                url = Url.Action("LedenMetVerdachteEmail", "Leden");
+                                break;
                             case LidProbleem.TelefoonNummerOntbreekt:
-                                boodschap = Properties.Resources.LedenZonderTelefoonNummer;
+                                boodschap = Resources.LedenZonderTelefoonNummer;
                                 url = Url.Action("ZonderTelefoon", "Leden");
                                 break;
                             default:
@@ -297,7 +302,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 mededelingen.Add(new Mededeling
                 {
                     Type = MededelingsType.Probleem,
-                    Info = String.Format(Properties.Resources.BivakAangifteNogInTeVullen, url)
+                    Info = String.Format(Resources.BivakAangifteNogInTeVullen, url)
                 });
             }
             else
@@ -310,7 +315,7 @@ namespace Chiro.Gap.WebApp.Controllers
                         mededelingen.Add(new Mededeling
                         {
                             Type = MededelingsType.Probleem,
-                            Info = String.Format(Properties.Resources.BeideNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
+                            Info = String.Format(Resources.BeideNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
                         });
                     }
                     if (bivakstatus.Status == BivakAangifteStatus.PlaatsOntbreekt)
@@ -319,7 +324,7 @@ namespace Chiro.Gap.WebApp.Controllers
                         mededelingen.Add(new Mededeling
                         {
                             Type = MededelingsType.Probleem,
-                            Info = String.Format(Properties.Resources.AdresNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
+                            Info = String.Format(Resources.AdresNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
                         });
                     }
                     else if (bivakstatus.Status == BivakAangifteStatus.ContactOntbreekt)
@@ -328,7 +333,7 @@ namespace Chiro.Gap.WebApp.Controllers
                         mededelingen.Add(new Mededeling
                         {
                             Type = MededelingsType.Probleem,
-                            Info = String.Format(Properties.Resources.PersoonNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
+                            Info = String.Format(Resources.PersoonNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
                         });
                     }
                 }

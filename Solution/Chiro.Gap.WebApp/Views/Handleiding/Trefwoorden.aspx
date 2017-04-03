@@ -231,6 +231,16 @@
             voor andere uitstappen mag je zelf kiezen of je ze registreert.
             <%=Html.ActionLink("Hoe doe je dat?", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%>
         </dd>
+        <dt><strong><a class="anchor" id="VerdachtMailadres">Verdacht mailadres</a></strong>:</dt>
+        <dd id="MAILVERDACHT">
+            Als je een mailadres invult op een website kan die website nooit met zekerheid zeggen of dat adres geldig is,
+            tenzij er een mail verstuurd wordt waarmee je nog iets moet doen. We willen natuurlijk niet voor al onze leden
+            een mail sturen, zeker niet als er meerdere kinderen per gezin zijn. Daarom controleren we in eerste instantie
+            of het adres er als een geldig mailadres uitziet. In tweede instantie doen we een aantal extra controles, waarmee
+            we bepalen hoe waarschijnlijk het is dat het een juist adres is. Zijn we niet 100 % zeker, dan markeren we het adres
+            als verdacht zodat je het nog eens kunt nakijken. 
+            <%=Html.ActionLink("Waarop controleren we dan?", "ViewTonen", new { controller = "Handleiding", helpBestand = "Mailcontrole" })%>
+        </dd>
         <dt><strong><a class="anchor" id="Voorkeursadres">Voorkeursadres</a></strong>:</dt>
         <dd id="VK-ADRINFO">Elke persoon kan verschillende adressen hebben, van verschillende
             types (thuis,

@@ -15,12 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using System;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public class CommunicatieVorm: BasisEntiteit, ICommunicatie
+    public class CommunicatieVorm : BasisEntiteit, ICommunicatie
     {
         public string Nota { get; set; }
         public string Nummer { get; set; }
@@ -45,7 +46,10 @@ namespace Chiro.Gap.Poco.Model
         public bool IsGezinsgebonden { get; set; }
         public bool Voorkeur { get; set; }
         public override byte[] Versie { get; set; }
-    
+
+        public bool IsVerdacht { get; set; }
+        public DateTime LaatsteControle { get; set; }
+
         public virtual GelieerdePersoon GelieerdePersoon { get; set; }
         public virtual CommunicatieType CommunicatieType { get; set; }
     }

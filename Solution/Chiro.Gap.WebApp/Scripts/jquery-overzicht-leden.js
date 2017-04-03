@@ -31,6 +31,9 @@ $(function () {
         $('#kiesActie').click();
     });
 
+    $('.uitlegIsVerdacht').click(function (e) {
+        toonInfo('#MAILVERDACHT', "Mailadres is verdacht", "#extraInfoDialog");
+    });
 
     //check of uncheck alle checkboxen in de lijst
     $("#checkall").change(function () {

@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Cdf.Intranet.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Chiro_Cdf_Intranet_MailcontroleService_Mailcontrole" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://extranet.chiro.be/datacontrole/mailcontrole.asmx</Value>
+    </Setting>
+    <Setting Name="Minimumscore" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

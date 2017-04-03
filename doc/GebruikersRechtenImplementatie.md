@@ -27,7 +27,7 @@ Velden:
 -   IedereenPermissies - permissies op alle mensen van je groep
 -   Versie
 
-In de backend is de corresponderende entity is GebruikersRechtV2.
+In de backend is de corresponderende entity GebruikersRechtV2.
 
 De frontend kent het datacontract GebruikersRecht, met
 PersoonsPermissies, Groepspermissies, AfdelingsPermissies en
