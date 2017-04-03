@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using Chiro.Cdf.Intranet;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
