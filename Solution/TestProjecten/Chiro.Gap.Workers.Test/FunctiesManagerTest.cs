@@ -33,6 +33,9 @@ namespace Chiro.Gap.Workers.Test
 	[TestFixture]
 	public class FunctiesManagerTest: ChiroTest
 	{
+#pragma warning disable CS0168 // Variable is declared but never used
+            Services.Dev.AdServiceMock blablabla;
+#pragma warning restore CS0168 // Variable is declared but never used
         /// <summary>
         /// Opsporen functie met te veel aantal members
         /// </summary>

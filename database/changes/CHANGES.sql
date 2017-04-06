@@ -18,3 +18,10 @@
 
 -- Omdat dit script al 1 keer liep, en tegen het einde een fout gaf,
 -- is het quasi uitgevoerd. Vandaar dat ik het nu leegmaak.
+
+ALTER TABLE pers.CommunicatieVorm
+ADD IsVerdacht bit not null default(0)
+GO
+ALTER TABLE pers.CommunicatieVorm
+ADD LaatsteControle datetime not null default(getdate())
+GO

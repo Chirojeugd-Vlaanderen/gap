@@ -21,9 +21,9 @@ using System.Runtime.Serialization;
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
-	/// Datacontract met informatie over (gelieerde) personen dat in eerste instantie enkel gebruikt
-	/// zal worden door de Excelexport.  Gegevens van voorkeursadres, voorkeurstelefoonnummer en
-	/// voorkeursmailadres worden mee opgenomen
+	/// Datacontract met informatie over (gelieerde) personen.  
+    /// Gegevens van voorkeursadres, voorkeurstelefoonnummer en
+	/// voorkeursmailadres worden mee opgenomen.
 	/// </summary>
 	[DataContract]
 	[KnownType(typeof(LidOverzicht))]
@@ -53,5 +53,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		
 		[DataMember]
 		public string Email;
+
+        [DataMember]
+        public bool VoorkeurmailadresIsVerdacht;
 	}
 }

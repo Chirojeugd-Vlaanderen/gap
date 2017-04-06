@@ -61,14 +61,14 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// </summary>
         [DisplayName(@"Voornaam")]
         [Verplicht]
-        [StringLength(60, MinimumLength=2)]
+        [StringLength(60, MinimumLength = 2)]
         [DataMember]
         public string VoorNaam { get; set; }
 
         /// <summary>
         /// De familienaam van de persoon
         /// </summary>
-        [StringLength(160, MinimumLength=1)]
+        [StringLength(160, MinimumLength = 1)]
         [Verplicht]
         [DisplayName(@"Familienaam")]
         [DataMember]
@@ -98,11 +98,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// </summary>
         [Verplicht]
         [DataMember]
-        public GeslachtsType Geslacht
-        {
-            get;
-            set;
-        }
+        public GeslachtsType Geslacht { get; set; }
 
         /// <summary>
         /// Nieuwsbrief (eigenlijk: bulk mail)

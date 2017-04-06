@@ -25,7 +25,7 @@ namespace Chiro.Gap.WebApp.Models
 	{
 		public enum SpecialeLedenLijst
 		{
-			Geen, Alles, Probeerleden, VerjaardagsLijst, OntbrekendAdres, OntbrekendTelefoonNummer, LeidingZonderEmail
+			Geen, Alles, Probeerleden, VerjaardagsLijst, OntbrekendAdres, OntbrekendTelefoonNummer, LeidingZonderEmail, LedenMetVerdachteEmail
 		}
 
 		public LidInfoModel()

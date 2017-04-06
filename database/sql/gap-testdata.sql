@@ -373,7 +373,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_PADDING ON
 GO
-CREATE TABLE [pers].[CommunicatieVorm]([Nota] [varchar](320) NULL, [Nummer] [varchar](160) NOT NULL, [CommunicatieVormID] [int] IDENTITY(1,1) NOT NULL, [CommunicatieTypeID] [int] NOT NULL, [IsGezinsgebonden] [bit] NOT NULL, [Voorkeur] [bit] NOT NULL, [GelieerdePersoonID] [int] NULL, [Versie] [timestamp] NULL)
+CREATE TABLE [pers].[CommunicatieVorm]([Nota] [varchar](320) NULL, [Nummer] [varchar](160) NOT NULL, [CommunicatieVormID] [int] IDENTITY(1,1) NOT NULL, [CommunicatieTypeID] [int] NOT NULL, [IsGezinsgebonden] [bit] NOT NULL, [Voorkeur] [bit] NOT NULL, [GelieerdePersoonID] [int] NULL, [Versie] [timestamp] NULL, [IsVerdacht] [bit] NOT NULL DEFAULT(0), [LaatsteControle] [datetime] NOT NULL DEFAULT(getdate()))
 GO
 SET ANSI_PADDING OFF
 GO

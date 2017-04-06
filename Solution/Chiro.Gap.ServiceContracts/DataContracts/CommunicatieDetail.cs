@@ -47,5 +47,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// <remarks>Overgenomen van geassocieerde CommunicatieType</remarks>
 		[DataMember]
 		public string CommunicatieTypeVoorbeeld { get; set; }
-	}
+    }
 }

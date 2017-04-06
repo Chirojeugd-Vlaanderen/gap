@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2017 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Chiro.Cdf.Intranet;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -36,10 +37,12 @@ namespace Chiro.Gap.Workers
     public class CommunicatieVormenManager : ICommunicatieVormenManager
     {
         private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly IMailadrescontrole _mailadresCtrl;
 
-        public CommunicatieVormenManager(IAutorisatieManager autorisatieMgr)
+        public CommunicatieVormenManager(IAutorisatieManager autorisatieMgr, IMailadrescontrole mailadresCtrl)
         {
             _autorisatieMgr = autorisatieMgr;
+            _mailadresCtrl = mailadresCtrl;
         }
 
         /// <summary>
@@ -69,8 +72,8 @@ namespace Chiro.Gap.Workers
 
             if (!cvValid.Valideer(nieuweCommunicatieVorm))
             {
-                throw new FoutNummerException(FoutNummer.ValidatieFout, string.Format(Resources.CommunicatieVormValidatieFeedback, 
-                                                           nieuweCommunicatieVorm.Nummer, 
+                throw new FoutNummerException(FoutNummer.ValidatieFout, string.Format(Resources.CommunicatieVormValidatieFeedback,
+                                                           nieuweCommunicatieVorm.Nummer,
                                                            nieuweCommunicatieVorm.CommunicatieType.Omschrijving));
             }
 
@@ -203,7 +206,10 @@ namespace Chiro.Gap.Workers
             communicatieVorm.Nota = communicatieInfo.Nota;
             communicatieVorm.Nummer = communicatieInfo.Nummer;
             communicatieVorm.VersieString = communicatieInfo.VersieString;
-            
+
+            communicatieVorm.IsVerdacht = IsVerdacht(communicatieVorm);
+            communicatieVorm.LaatsteControle = DateTime.Now;
+
             if (communicatieInfo.Voorkeur)
             {
                 VoorkeurZetten(communicatieVorm);
@@ -214,9 +220,9 @@ namespace Chiro.Gap.Workers
         /// Controleert of <paramref name="p"/> een geldige communicatievorm zou zijn
         /// voor het gegeven <paramref name="communicatieType"/>
         /// </summary>
-        /// <param name="p">telefoonnummer, e-mailadres,...</param>
-        /// <param name="communicatieType">een communicatietype</param>
-        /// <returns><c>true</c> als <paramref name="p"/> een geldige communicatievorm zou zijn
+        /// <param name="p">Telefoonnummer, e-mailadres,...</param>
+        /// <param name="communicatieType">Een communicatietype</param>
+        /// <returns><c>True</c> als <paramref name="p"/> een geldige communicatievorm zou zijn
         /// voor het gegeven <paramref name="communicatieType"/></returns>
         public bool IsGeldig(string p, CommunicatieType communicatieType)
         {
@@ -224,13 +230,50 @@ namespace Chiro.Gap.Workers
 
             return
                 validator.Valideer(new CommunicatieValidatieInfo
-                                       {
-                                           CommunicatieTypeValidatie = communicatieType.Validatie,
-                                           Nummer = p
-                                       });
+                {
+                    CommunicatieTypeValidatie = communicatieType.Validatie,
+                    Nummer = p
+                });
         }
 
-        private class CommunicatieValidatieInfo: ICommunicatie
+        /// <summary>
+        /// Controleert een aantal parameters en bepaalt op basis van de score of het adres verdacht is.
+        /// Verdacht betekent: de kans is groot dat het niet om een eigen adres gaat of dat het fout geschreven is.
+        /// </summary>
+        /// <param name="communicatieVorm">Het mailadres dat we gaan controleren</param>
+        /// <returns><c>True</c> als het waarschijnlijk niet om een eigen mailadres gaat of fout geschreven is, 
+        /// <c>false</c> als de kans groot is dat het wel in orde is.</returns>
+        public bool IsVerdacht(CommunicatieVorm communicatieVorm)
+        {
+            // Controleren of het adres (nog) verdacht is
+            if (communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.HasValue && (DateTime.Now.Year - communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year) > Settings.Default.Ketileeftijd && communicatieVorm.IsGezinsgebonden)
+            {
+                // Vanaf de keti's moet je een eigen mailadres als voorkeursadres hebben, en de groep heeft hun eigen gsm-nr nodig
+                return true;
+            }
+            else
+            {
+                if (communicatieVorm.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email)
+                {
+                    
+                    if (communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.HasValue)
+                    {
+                        return _mailadresCtrl.MailadresIsVerdacht(communicatieVorm.GelieerdePersoon.Persoon.VoorNaam, communicatieVorm.GelieerdePersoon.Persoon.Naam, communicatieVorm.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year, communicatieVorm.Nummer);
+                    }
+                    else
+                    {
+                        return _mailadresCtrl.MailadresIsVerdacht(communicatieVorm.GelieerdePersoon.Persoon.VoorNaam, communicatieVorm.GelieerdePersoon.Persoon.Naam, communicatieVorm.Nummer);
+                    }
+                }
+                else
+                {
+                    // Geen e-mail, dus moeilijk te controleren. Dan geven we het voordeel van de twijfel.
+                    return false;
+                }
+            }
+        }
+
+        private class CommunicatieValidatieInfo : ICommunicatie
         {
             public string Nummer { get; set; }
             public string CommunicatieTypeValidatie { get; set; }

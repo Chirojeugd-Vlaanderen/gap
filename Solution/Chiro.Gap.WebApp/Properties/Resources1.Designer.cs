@@ -187,7 +187,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Je moet je bivakaangifte nog &lt;a href=&apos;{0}&apos;&gt; invullen &lt;/a&gt;..
+        ///   Looks up a localized string similar to Je moet je bivakaangifte nog &lt;a href=&apos;{0}&apos;&gt;invullen&lt;/a&gt;..
         /// </summary>
         public static string BivakAangifteNogInTeVullen {
             get {
@@ -511,6 +511,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Het ingevuld mailadres van &lt;a href=&apos;{1}&apos;&gt;{0} leden&lt;/a&gt; is verdacht. (Je herkent hen op het tabblad Ingeschreven en op persoonlijke fiches aan het icoontje voor hun adres.).
+        /// </summary>
+        public static string LedenMetVerdachteEmail {
+            get {
+                return ResourceManager.GetString("LedenMetVerdachteEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ingeschreven personen {0}-{1}.
         /// </summary>
         public static string LedenOverzicht {
@@ -606,6 +615,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string LijstAlles {
             get {
                 return ResourceManager.GetString("LijstAlles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leden met verdacht mailadres.
+        /// </summary>
+        public static string LijstLedenMetVerdachteEmail {
+            get {
+                return ResourceManager.GetString("LijstLedenMetVerdachteEmail", resourceCulture);
             }
         }
         

@@ -48,7 +48,7 @@ namespace Chiro.Gap.Poco.Model
         public virtual ICollection<Abonnement> Abonnement { get; set; }
 
         /// <summary>
-        /// Leeftijd van de persoon, rekening houdende met geboortedatum en chiroleeftijd
+        /// Leeftijd van de persoon, rekening houdende met geboortedatum en Chiroleeftijd
         /// </summary>
         public DateTime? GebDatumMetChiroLeefTijd
         {
@@ -57,6 +57,5 @@ namespace Chiro.Gap.Poco.Model
                 return Persoon.GeboorteDatum.HasValue ? Persoon.GeboorteDatum.Value.AddYears(-ChiroLeefTijd) : Persoon.GeboorteDatum;
             }
         }
-    }
-    
+    }   
 }
