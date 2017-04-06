@@ -5,7 +5,7 @@ Microsoft Message Queueing is een systeem dat toelaat om berichten te
 sturen naar een queue op een windowsmachine. Clienttoepassingen kunnen
 die berichten dan uitlezen en verwerken. Er zit daar een systeem achter
 dat een retry queue implementeert. Berichten die niet correct
-afgehandeld worden komen in een dead message queue tercht.
+afgehandeld worden komen in een dead message queue terecht.
 
 Hoe zet je dat aan voor Windows 7: [MessageQueueEnablen](MessageQueueEnablen.md)
 
