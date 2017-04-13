@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommunicatieVormModel.cs" />
     <Compile Include="FoutAdModel.cs" />
     <Compile Include="GroepModel.cs" />
     <Compile Include="AansluitingModel.cs" />
