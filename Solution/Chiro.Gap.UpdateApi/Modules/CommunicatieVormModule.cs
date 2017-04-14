@@ -34,7 +34,7 @@ namespace Chiro.Gap.UpdateApi.Modules
         {
             _gapUpdater = gapUpdater;
 
-            // curl -X DELETE -d AdNummer=xx -d CommunicatieTypeId=3 -d Nummer=blabla@example.com localhost:50673/groep
+            // curl -X DELETE -d AdNummer=xx -d CommunicatieTypeId=3 -d Nummer=blabla@example.com http://localhost:50673/communicatievorm
             Delete["/communicatievorm"] = _ =>
             {
                 CommunicatieVormModel model = this.Bind();
