@@ -16,4 +16,12 @@
 
 -- Voeg hier de wijzigingen toe die moeten gebeuren aan de database.
 
+-- replace old tables with new tables.
 
+
+ALTER TABLE pers.CommunicatieVorm
+ADD IsVerdacht bit not null default(0)
+GO
+ALTER TABLE pers.CommunicatieVorm
+ADD LaatsteControle datetime not null default(getdate())
+GO
