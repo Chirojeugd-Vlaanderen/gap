@@ -595,6 +595,28 @@ namespace Chiro.Gap.UpdateApi.Workers
         }
 
         /// <summary>
+        /// Verwijdert een gegeven communicatievorm.
+        /// </summary>
+        /// <param name="model">Gegevens die moeten toelaten de communicatievorm te verwijderen.</param>
+        public void CommunicatieVormVerwijderen(CommunicatieVormModel model)
+        {
+            var gevonden = (from cv in _communicatieVormenRepo.Select()
+                where cv.GelieerdePersoon.Persoon.AdNummer == model.AdNummer
+                      && cv.CommunicatieType.ID == model.CommunicatieTypeId
+                      && cv.Nummer == model.Nummer
+                select cv);
+
+            if (!gevonden.Any())
+            {
+                throw new FoutNummerException(FoutNummer.CommunicatieVormNietGevonden, String.Empty);
+            }
+            _communicatieVormenRepo.Delete(gevonden.ToList());
+            _communicatieVormenRepo.SaveChanges();
+            Console.WriteLine("Communicatie {0} (type {1}, AD-nr {2}) verwijderd", model.Nummer,
+                model.CommunicatieTypeId, model.AdNummer);
+        }
+
+        /// <summary>
         /// Levert een lijst op van alle stamnummer-adnummer-combinaties van het huidige
         /// werkjaar. Zal gebruikt worden voor monitoring. (#4326, #4268)
         /// </summary>

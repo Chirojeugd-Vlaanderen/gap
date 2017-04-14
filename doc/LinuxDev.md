@@ -57,6 +57,8 @@ En zo maak je de database:
 /opt/mssql-tools/bin/sqlcmd -U sa -P Db_Root_Pw -d gap_local < database/sql/gap-procedures.sql
 ```
 
+Als `sqlcmd` niet wil connecteren, probeer dan eens `-S 127.0.0.1` toe te voegen aan de commando's.
+
 Je moet dan nog de connection string aanpassen, opdat je zou kunnen debuggen
 op je eigen database:
 

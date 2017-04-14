@@ -29,7 +29,7 @@ git-repository https://gitlab.chiro.be/gap/gap.git. Clone ze meteen met
 submodules, want anders gaat de CAS-authenticatie niet werken:
 
     git clone --recursive https://gitlab.chiro.be/gap/gap.git
-    
+
 Moest je toch geclonet hebben zonder `--recursive`, dan kun je de code
 van de submodules als volgt nog goed krijgen:
 
@@ -91,9 +91,8 @@ en werk de documentatie bij als je merkt dat zaken onduidelijk zijn.
     hopelijk een oplossing
 -   [UseCases](UseCases.md) - een lijst met use cases voor het programma
 
-### Synchronisatie GAP-&gt;Kipadmin
+### Communicatie tussen GAP en Chirocivi
 
-Gegevens worden van GAP overgezet naar Kipadmin via berichten in een
+[Gegevens worden van GAP overgezet naar Chirocivi](SyncGapCivi.md) via berichten in een
 message queue. Deze berichten worden uitgelezen en verwerkt door een
-vrij lelijk synchronisatietooltje: KipSync. Meer info over die
-synchronisatie: [SyncGapKip](SyncGapKip.md)
+synchronisatietooltje: [CiviSync](tools/Chiro.CiviSync).
