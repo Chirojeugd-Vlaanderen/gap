@@ -101,6 +101,7 @@ namespace Chiro.Gap.Domain
         CategorieNietGekoppeld,
         OvergangTeVroeg,
         KoppelingLoginPersoonOntbreekt,
+        CommunicatieVormNietGevonden
         #endregion
     }
 }
