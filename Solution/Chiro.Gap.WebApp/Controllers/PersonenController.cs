@@ -178,21 +178,22 @@ namespace Chiro.Gap.WebApp.Controllers
             if (id == 0)
             {
                 data =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonLidInfo>>
-                    (g => g.AllenOphalenUitGroep(groepID)).AsQueryable().Sorteren(PersoonSorteringsEnum.Naam).ToList();
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonLidGebruikersInfo>>
+                    (g => g.AllenOphalenUitGroep(groepID)).AsQueryable<PersoonLidInfo>().Sorteren(PersoonSorteringsEnum.Naam).ToList();
             }
             else
             {
                 data =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonLidInfo>>
-                    (g => g.AllenOphalenUitCategorie(id)).AsQueryable().Sorteren(PersoonSorteringsEnum.Naam).ToList();
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonLidGebruikersInfo>>
+                    (g => g.AllenOphalenUitCategorie(id)).AsQueryable<PersoonLidInfo>().Sorteren(PersoonSorteringsEnum.Naam).ToList();
             }
 
             var alleAfdelingen =
                 ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(
                     svc => svc.AlleAfdelingenOphalen(groepID));
 
-            const string bestandsNaam = "leden.xlsx";
+            // TODO: create a setting for this file name:
+            const string bestandsNaam = "personen.xlsx";
 
             var pkg = GapExcelManip.LidExcelDocument(data, alleAfdelingen);
 
