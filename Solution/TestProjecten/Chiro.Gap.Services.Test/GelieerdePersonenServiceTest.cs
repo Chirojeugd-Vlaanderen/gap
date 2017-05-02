@@ -1379,6 +1379,41 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Test: download informatie over alle gelieerde personen.
+        ///
+        /// Test voor issue #5677.
+        /// </summary>
+        [Test]
+        public void AllenOphalenUitGroepTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Groep =
+                    new ChiroGroep {ID = 1},
+                Persoon = new Persoon()
+            };
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+            gelieerdePersoon.Groep.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                .Returns(new DummyRepo<Groep>(new List<Groep> {gelieerdePersoon.Groep}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            var actual = target.AllenOphalenUitGroep(gelieerdePersoon.Groep.ID);
+
+            // ASSERT
+
+            Assert.AreEqual(1, actual.Count);
+        }
+
+        /// <summary>
         /// Als het laatste adres van een persoon wordt verwijderd, dan kan AdressenSync.StandaardAdresBewaren
         /// niet opgeroepen worden, want dat vraagt een PersoonsAdres. Als alle adressen zijn verwijderd, dan
         /// is er geen PersonsAdres meer.
