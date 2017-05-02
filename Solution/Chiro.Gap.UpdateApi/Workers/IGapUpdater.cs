@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2014-2015, 2017 the GAP developers. See the NOTICE file at the
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -102,5 +102,11 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// </summary>
         /// <param name="model">Gegevens over bij te werken werkjaar.</param>
         void Bijwerken(AansluitingModel model);
+
+        /// <summary>
+        /// Verwijdert een gegeven communicatievorm.
+        /// </summary>
+        /// <param name="model">Gegevens die moeten toelaten de communicatievorm te verwijderen.</param>
+        void CommunicatieVormVerwijderen(CommunicatieVormModel model);
     }
 }

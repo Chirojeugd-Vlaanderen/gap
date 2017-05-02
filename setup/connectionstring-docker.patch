@@ -1,8 +1,8 @@
 diff --git a/Solution/Chiro.Gap.Services/Web.config b/Solution/Chiro.Gap.Services/Web.config
-index 95f37cc..20e4171 100644
+index 44699ce..82fa5b2 100644
 --- a/Solution/Chiro.Gap.Services/Web.config
 +++ b/Solution/Chiro.Gap.Services/Web.config
-@@ -131,7 +131,8 @@
+@@ -135,7 +135,8 @@
      </container>
    </unity>
    <connectionStrings>
@@ -12,3 +12,22 @@ index 95f37cc..20e4171 100644
    </connectionStrings>
    <!--
      For a description of web.config changes see http://go.microsoft.com/fwlink/?LinkId=235367.
+diff --git a/Solution/Chiro.Gap.UpdateApi/Web.config b/Solution/Chiro.Gap.UpdateApi/Web.config
+index f2a28be..5e66c61 100644
+--- a/Solution/Chiro.Gap.UpdateApi/Web.config
++++ b/Solution/Chiro.Gap.UpdateApi/Web.config
+@@ -24,7 +24,7 @@
+       <add verb="*" type="Nancy.Hosting.Aspnet.NancyHttpRequestHandler" path="*" />
+     </httpHandlers></system.web>
+   <connectionStrings>
+-    <add name="ChiroGroepEntities" connectionString="metadata=res://*/ChiroGroepModel.csdl|res://*/ChiroGroepModel.ssdl|res://*/ChiroGroepModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=gap_local;Integrated Security=SSPI;MultipleActiveResultSets=True;Application Name=gap_local&quot;" providerName="System.Data.EntityClient" />
++      <add name="ChiroGroepEntities" connectionString="metadata=res://*/Chiro.Gap.Poco.Context.edmxResources.ChiroGroepModel.csdl|res://*/Chiro.Gap.Poco.Context.edmxResources.ChiroGroepModel.ssdl|res://*/Chiro.Gap.Poco.Context.edmxResources.ChiroGroepModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;Data Source=127.0.0.1;Initial Catalog=gap_local;User ID=sa;Password=Db_Root_Pw;MultipleActiveResultSets=True;Application Name=gap&quot;" providerName="System.Data.EntityClient" /> -
+   </connectionStrings>
+   <unity xmlns="http://schemas.microsoft.com/practices/2010/unity">
+     <container>
+diff --git a/tools/Chiro.CiviCrm.Wcf b/tools/Chiro.CiviCrm.Wcf
+--- a/tools/Chiro.CiviCrm.Wcf
++++ b/tools/Chiro.CiviCrm.Wcf
+@@ -1 +1 @@
+-Subproject commit a56cc401213605ba4d83d136a96005b1e7ef17c7
++Subproject commit a56cc401213605ba4d83d136a96005b1e7ef17c7-dirty
