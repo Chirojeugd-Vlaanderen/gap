@@ -387,7 +387,8 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst 'PersoonLidInfo'-objecten van alle gelieerde personen uit de categorie</returns>
         // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
         [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
-        public IList<PersoonLidInfo> AllenOphalenUitCategorie(int categorieID)
+        public IList<PersoonLidGebruikersInfo> AllenOphalenUitCategorie(int categorieID)
+
         {
             var categorie = _categorieenRepo.ByID(categorieID);
 
@@ -399,7 +400,7 @@ namespace Chiro.Gap.Services
             var gelieerdePersonen = from gp in categorie.GelieerdePersoon
                                     select gp;
 
-            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidInfo>>(gelieerdePersonen);
+            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidGebruikersInfo>>(gelieerdePersonen);
 
             return result;
         }
@@ -411,7 +412,7 @@ namespace Chiro.Gap.Services
         /// <returns>'PersoonLidInfo'-objecten van alle gelieerde personen uit de groep.</returns>
         // applying PrincipalPermission at class level doesn't seem to work for a WCF service.
         [PrincipalPermission(SecurityAction.Demand, Role = @"GapServiceConsumers")]
-        public IList<PersoonLidInfo> AllenOphalenUitGroep(int groepID)
+        public IList<PersoonLidGebruikersInfo> AllenOphalenUitGroep(int groepID)
         {
             var groep = _groepenRepo.ByID(groepID);
 
@@ -423,7 +424,7 @@ namespace Chiro.Gap.Services
             var gelieerdePersonen = from gp in groep.GelieerdePersoon
                                     select gp;
 
-            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidInfo>>(gelieerdePersonen);
+            var result = _mappingHelper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidGebruikersInfo>>(gelieerdePersonen);
 
             return result;
         }

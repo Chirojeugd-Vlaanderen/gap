@@ -147,7 +147,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonLidInfo> AllenOphalenUitCategorie(int categorieID);
+		IList<PersoonLidGebruikersInfo> AllenOphalenUitCategorie(int categorieID);
 
 		/// <summary>
 		/// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
@@ -157,7 +157,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonLidInfo> AllenOphalenUitGroep(int groepID);
+		IList<PersoonLidGebruikersInfo> AllenOphalenUitGroep(int groepID);
 
 		/// <summary>
 		/// Haalt gegevens op van alle gelieerdepersonen met IDs in <paramref name="gelieerdePersoonIDs"/>.
