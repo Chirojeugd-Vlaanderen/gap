@@ -219,7 +219,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="werkjaar">Werkjaar waarvoor leden te zoeken.</param>
         /// <param name="vandaag">De datum van vandaag.</param>
         /// <returns>Een array met leden.</returns>
-        IList<Lid> AanTeSluitenLedenOphalen(IQueryable<Lid> lidQueryable, int werkjaar, DateTime vandaag);
+        Lid[] AanTeSluitenLedenOphalen(IQueryable<Lid> lidQueryable, int werkjaar, DateTime vandaag);
 
         /// <summary>
         /// Levert <c>true</c> als het gegeven <paramref name="lid"/> een lid is van het huidige werkjaar

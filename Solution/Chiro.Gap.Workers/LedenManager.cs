@@ -930,10 +930,8 @@ namespace Chiro.Gap.Workers
         /// <param name="werkjaar">Werkjaar waarvoor leden te zoeken.</param>
         /// <param name="vandaag">De datum van vandaag.</param>
         /// <returns>Een array met leden.</returns>
-        public IList<Lid> AanTeSluitenLedenOphalen(IQueryable<Lid> lidQueryable, int werkjaar, DateTime vandaag)
+        public Lid[] AanTeSluitenLedenOphalen(IQueryable<Lid> lidQueryable, int werkjaar, DateTime vandaag)
         {
-            var result = new List<Lid>();
-
             var nietAangeslotenLeden = (from l in lidQueryable
                 where
                     // maak memberships voor niet-aangesloten leden
@@ -947,35 +945,22 @@ namespace Chiro.Gap.Workers
                 select l).ToArray();
 
             // Overloop de gevonden leden, en kijk na in hoeverre ze naar de Civi moeten.
-            // Ik weet niet meer waarom ik deze logica niet bij in bovenstaande LINQ-expressie zette.
+            // Ik weet niet meer waarom ik twee aparte linq query's gebruikt.
 
             // TODO: In de 'continue'-gevallen van onderstaande loop, kunnen we de leden markeren
             // met IsAangesloten = true. Dan worden ze in de toekomst niet iedere keer opnieuw bekeken.
             // TODO: Fix issue #4966
-            foreach (var lid in nietAangeslotenLeden)
-            {
-                if (IsBetalendAangesloten(lid))
-                {
-                    // Als er al betaald is voor het membership, dan gaat het membership
-                    // niet opnieuw naar Civi, zodat in het membership de aanvrager dezelfde
-                    // blijft als de betaler.
-                    continue;
-                }
-                if (GratisAansluiting(lid) && IsAangesloten(lid))
-                {
-                    // Als deze aansluiting gratis is, en het lid is al ergens anders aangesloten,
-                    // dan moeten we niets meer doen.
-                    continue;
-                }
-                if (!IsVanHuidigWerkjaar(lid))
-                {
-                    // Als de groep al een werkjaar heeft dat recenter is dan dat van het lid,
-                    // dan sluiten we het lid niet meer aan in het oude werkjaar.
-                    continue;
-                }
-                result.Add(lid);
-            }
-            return result;
+            return (from lid in nietAangeslotenLeden
+            // Als er al betaald is voor het membership, dan gaat het membership niet opnieuw naar CiviCRM, zodat in
+            // het membership de aanvrager dezelfde blijft als de betaler.
+                where !IsBetalendAangesloten(lid)
+            // Als deze aansluiting gratis is, en het lid is al ergens anders aangesloten, dan moet er niets meer
+            // gebeuren aan het membership in CiviCRM.
+                where !GratisAansluiting(lid) || !IsAangesloten(lid)
+            // Als de groep al een werkjaar heeft dat recenter is dan dat van het lid, dan sluiten we het lid niet
+            // meer aan in het oude werkjaar.
+                where IsVanHuidigWerkjaar(lid)
+                select lid).ToArray();
         }
     }
 }
