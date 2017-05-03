@@ -343,6 +343,113 @@ namespace Chiro.Gap.Workers.Test
         }
 
         /// <summary>
+        /// Als de property <c>LaatsteMembership</c> van een persoon <c>null</c> is, dan mag dat niet verhinderen dat
+        /// een persoon aangesloten wordt.
+        /// </summary>
+        [Test]
+        public void NooitAangeslotenLedenAansluitenTest()
+        {
+            // ARRANGE
+            const int huidigWerkjaar = 2014;
+            DateTime vandaagZoGezegd = new DateTime(2015, 02, 23);
+
+            // We hebben 1 leidster, die niet meer in haar probeerperiode zit.
+            var leidster = new Leiding
+            {
+                ID = 1,
+                EindeInstapPeriode = vandaagZoGezegd.AddDays(-7),
+                GelieerdePersoon = new GelieerdePersoon
+                {
+                    ID = 2,
+                    Persoon = new Persoon
+                    {
+                        ID = 3,
+                        VoorNaam = "Kelly",
+                        Naam = "Pfaff"
+                    }
+                },
+                GroepsWerkJaar = new GroepsWerkJaar
+                {
+                    ID = 4,
+                    WerkJaar = huidigWerkjaar,
+                    Groep = new ChiroGroep { ID = 5 }
+                }
+            };
+            leidster.GroepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar>{leidster.GroepsWerkJaar};
+
+            // ACT
+            var target = new LedenManager();
+            var result = target.AanTeSluitenLedenOphalen((new List<Lid> {leidster}).AsQueryable(), huidigWerkjaar,
+                vandaagZoGezegd);
+
+            // ASSERT
+            Assert.IsNotEmpty(result);
+        }
+
+        /// <summary>
+        /// Als iemand al een gratis membership heeft via een kaderploeg, maar nu ook lid is van
+        /// een plaatselijke groep, moet het bestaande membership betalend worden. (#4519)
+        /// </summary>
+        [Test]
+        public void VanGratisNaarBetalendMembershipTest()
+        {
+            // ARRANGE
+            const int huidigWerkjaar = 2015;
+            DateTime vandaagZoGezegd = new DateTime(2016, 1, 7);
+
+            var gewest = new KaderGroep { ID = 6 };
+
+            // We hebben 1 leidster, die ook in het gewest actief is.
+            var leidster = new Leiding
+            {
+                ID = 1,
+                EindeInstapPeriode = vandaagZoGezegd.AddDays(-7),
+                GelieerdePersoon = new GelieerdePersoon
+                {
+                    ID = 2,
+                    Persoon = new Persoon
+                    {
+                        ID = 3,
+                        VoorNaam = "Kelly",
+                        Naam = "Pfaff"
+                    }
+                },
+                GroepsWerkJaar = new GroepsWerkJaar
+                {
+                    ID = 4,
+                    WerkJaar = huidigWerkjaar,
+                    Groep = new ChiroGroep { ID = 5 }
+                }
+            };
+            leidster.GroepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar>{leidster.GroepsWerkJaar};
+
+            leidster.GelieerdePersoon.Persoon.GelieerdePersoon.Add(new GelieerdePersoon
+            {
+                ID = 5,
+                Groep = gewest,
+                Lid = new [] {new Leiding
+                {
+                    ID = 7,
+                    IsAangesloten = true,
+                    GroepsWerkJaar = new GroepsWerkJaar
+                    {
+                        ID = 8,
+                        WerkJaar = huidigWerkjaar,
+                        Groep = gewest
+                    }
+                } }
+            });
+
+            // ACT
+            var target = new LedenManager();
+            var result = target.AanTeSluitenLedenOphalen((new List<Lid> {leidster}).AsQueryable(), huidigWerkjaar,
+                vandaagZoGezegd);
+
+            // ASSERT
+            Assert.IsNotEmpty(result);
+        }
+
+        /// <summary>
         /// NieuwInschrijven mag niet inschrijven als leiding als de persoon daar te jong voor is.
         ///</summary>
         [Test]
