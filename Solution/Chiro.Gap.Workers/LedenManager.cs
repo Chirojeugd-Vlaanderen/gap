@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013, 2015, 2016 the GAP developers. 
+ * Copyright 2008-2013, 2015, 2016, 2017 the GAP developers.
  * See the NOTICE file at the top-level directory of this distribution, 
  * and at https://gapwiki.chiro.be/copyright
  * 
@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel.Channels;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -663,6 +664,24 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Levert <c>true</c> als het gegeven <paramref name="lid"/> een lid is van het huidige werkjaar
+        /// van zijn groep.
+        /// </summary>
+        /// <param name="lid"></param>
+        /// <returns>
+        /// Levert <c>true</c> als het gegeven <paramref name="lid"/> een lid is van het huidige werkjaar
+        /// van zijn groep.
+        /// </returns>
+        public bool IsVanHuidigWerkjaar(Lid lid)
+        {
+            var huidigGwj = lid.GroepsWerkJaar.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
+                .FirstOrDefault();
+            Debug.Assert(huidigGwj != null);
+            int huidigWj = huidigGwj.WerkJaar;
+            return (lid.GroepsWerkJaar.WerkJaar == huidigWj);
+        }
+
+        /// <summary>
         /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
         /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </summary>
@@ -901,6 +920,47 @@ namespace Chiro.Gap.Workers
                 select gp);
 
             return aangeslotenGelieerdePersonen.FirstOrDefault() != null;
+        }
+
+        /// <summary>
+        /// Haal alle leden op die nog aangesloten moeten worden voor werkjaar <paramref name="werkjaar"/>
+        /// op de dag gegeven in <paramref name="vandaag"/>.
+        /// </summary>
+        /// <param name="lidQueryable">Queryable om leden in te zoeken.</param>
+        /// <param name="werkjaar">Werkjaar waarvoor leden te zoeken.</param>
+        /// <param name="vandaag">De datum van vandaag.</param>
+        /// <returns>Een array met leden.</returns>
+        public Lid[] AanTeSluitenLedenOphalen(IQueryable<Lid> lidQueryable, int werkjaar, DateTime vandaag)
+        {
+            var nietAangeslotenLeden = (from l in lidQueryable
+                where
+                    // maak memberships voor niet-aangesloten leden
+                    !l.IsAangesloten &&
+                    // maak enkel memberships voor huidig werkjaar
+                    l.GroepsWerkJaar.WerkJaar == werkjaar &&
+                    // actieve leden waarvan de instapperiode voorbij is
+                    l.EindeInstapPeriode < vandaag && !l.NonActief &&
+                    // enkel als de groep nog actief was wanneer instapperiode verviel (#4528)
+                    (l.GroepsWerkJaar.Groep.StopDatum == null || l.GroepsWerkJaar.Groep.StopDatum > l.EindeInstapPeriode)
+                select l).ToArray();
+
+            // Overloop de gevonden leden, en kijk na in hoeverre ze naar de Civi moeten.
+            // Ik weet niet meer waarom ik twee aparte linq query's gebruikt.
+
+            // TODO: In de 'continue'-gevallen van onderstaande loop, kunnen we de leden markeren
+            // met IsAangesloten = true. Dan worden ze in de toekomst niet iedere keer opnieuw bekeken.
+            // TODO: Fix issue #4966
+            return (from lid in nietAangeslotenLeden
+            // Als er al betaald is voor het membership, dan gaat het membership niet opnieuw naar CiviCRM, zodat in
+            // het membership de aanvrager dezelfde blijft als de betaler.
+                where !IsBetalendAangesloten(lid)
+            // Als deze aansluiting gratis is, en het lid is al ergens anders aangesloten, dan moet er niets meer
+            // gebeuren aan het membership in CiviCRM.
+                where !GratisAansluiting(lid) || !IsAangesloten(lid)
+            // Als de groep al een werkjaar heeft dat recenter is dan dat van het lid, dan sluiten we het lid niet
+            // meer aan in het oude werkjaar.
+                where IsVanHuidigWerkjaar(lid)
+                select lid).ToArray();
         }
     }
 }

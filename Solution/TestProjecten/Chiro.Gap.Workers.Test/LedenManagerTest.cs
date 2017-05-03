@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014, 2017 the GAP developers. See the NOTICE file at the
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -297,6 +298,48 @@ namespace Chiro.Gap.Workers.Test
 
             var ex = Assert.Throws<FoutNummerException>(() => target.TypeToggle(origineelLid));
             Assert.That(ex.FoutNummer == FoutNummer.GroepInactief);
+        }
+
+        /// <summary>
+        /// Maak geen aansluitingen meer aan voor het oude werkjaar, als de ploeg in het nieuwe werkjaar werkt.
+        /// </summary>
+        [Test]
+        public void GeenAansluitingenOudWerkjaarTest()
+        {
+            // Stel: het is juli 2016.
+            var datum = new DateTime(2016, 7, 15);
+
+            var groep = new ChiroGroep
+            {
+                GroepsWerkJaar = new List<GroepsWerkJaar>()
+            };
+            var gwj1 = new GroepsWerkJaar {Groep = groep, WerkJaar = 2016};
+            // De groep heeft zijn jaarovergang al gedaan, en er bestaat dus een werkjaar 2017-2018.
+            var gwj2 = new GroepsWerkJaar {Groep = groep, WerkJaar = 2017};
+            groep.GroepsWerkJaar.Add(gwj1);
+            groep.GroepsWerkJaar.Add(gwj2);
+
+            var lid = new Leiding
+            {
+                GroepsWerkJaar = gwj1,
+                EindeInstapPeriode = datum.AddDays(-5),
+                GelieerdePersoon = new GelieerdePersoon
+                {
+                    Groep = groep,
+                    Persoon = new Persoon()
+                }
+            };
+            lid.GelieerdePersoon.Persoon.GelieerdePersoon.Add(lid.GelieerdePersoon);
+
+            gwj1.Lid = new List<Lid> {lid};
+
+            var target = new LedenManager();
+
+            // Nu proberen we uit te zoeken welke leden er nog aangesloten moeten worden in 2016-2017.
+            var result = target.AanTeSluitenLedenOphalen(groep.GroepsWerkJaar.SelectMany(gwj => gwj.Lid).AsQueryable(),
+                2016, datum);
+
+            Assert.IsEmpty(result);
         }
 
         /// <summary>
