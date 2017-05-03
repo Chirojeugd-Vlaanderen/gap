@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015, 2016, 2017 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -60,62 +60,31 @@ namespace Chiro.Gap.Maintenance
         /// voorbij is, maar die nog geen membership hadden dit jaar
         /// </summary>
         /// <remarks>
-        /// We doen dit enkel voor leden uit het huidige werkjaar.
+        /// We doen dit enkel voor leden uit het huidige 'echte' werkjaar, om te vermijden
+        /// dat er bijv. in september nog memberships worden gemaakt van het vorige werkjaar
+        /// omdat een groep vergat zijn jaarovergang te doen.
         /// </remarks>
         public void MembershipsMaken()
         {
             int huidigWerkJaar = _groepsWerkJarenManager.HuidigWerkJaarNationaal();
             DateTime vandaag = _groepsWerkJarenManager.Vandaag();
             int overgezetTeller = 0;
-            int totaalTeller = 0;
-
-            // TODO: Het bepalen van de aan te vragen memberships, is eigenlijk business logic,
-            // en moet in de workers. Maar soit.
 
             // Zoek eerst de leden waarvan IsAangesloten nog niet gezet is.
-            var nietAangeslotenLeden = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon.PersoonsVerzekering", "GroepsWerkJaar")
-                where
-                    // maak memberships voor niet-aangesloten leden
-                    !l.IsAangesloten && 
-                    // maak enkel memberships voor huidig werkjaar
-                    l.GroepsWerkJaar.WerkJaar == huidigWerkJaar &&
-                    // actieve leden waarvan de instapperiode voorbij is
-                    l.EindeInstapPeriode < vandaag && !l.NonActief &&
-                    // enkel als de groep nog actief was wanneer instapperiode verviel (#4528)
-                    (l.GroepsWerkJaar.Groep.StopDatum == null || l.GroepsWerkJaar.Groep.StopDatum > l.EindeInstapPeriode)
-                select l).Take(Properties.Settings.Default.LimitMembershipQuery).ToArray();
+            // Persoonsverzekering moet eager geload worden, zodat een eventuele verzekering straks
+            // ook mee naar CiviCRM gaat.
+            var aanTeSluiten =
+                _ledenManager.AanTeSluitenLedenOphalen(
+                    _ledenRepo.Select("GelieerdePersoon.Persoon.PersoonsVerzekering", "GroepsWerkJaar"), huidigWerkJaar,
+                    vandaag, Properties.Settings.Default.LimitMembershipQuery);
 
-            // Overloop de gevonden leden, en kijk na in hoeverre ze naar de Civi moeten.
-            // TODO: Die loop is misschien overkill. We zouden ook de leden die niet iedere keer opnieuw
-            // bekeken moeten worden kunnen markeren met IsAangesloten = true.
-            // TODO: Fix issue #4966
-            foreach (var lid in nietAangeslotenLeden)
+            foreach (var lid in aanTeSluiten)
             {
-                // TODO: We kunnen deze loop ook verwijderen door in UpdateAPI voor alle relevante leden
-                // 'is_aangesloten = 1' te zetten. Dat wil zeggen: als er iemand betalend aangesloten wordt,
-                // dan zijn alle leden van de persoon voor dat werkjaar aangesloten. Wordt iemand
-                // niet-betalend aangesloten, dan worden alle andere niet-betalende leden van die persoon
-                // mee aangesloten. Dan blijft uiteraard #4966 nog te fixen.
-
-                ++totaalTeller;
-                if (_ledenManager.IsBetalendAangesloten(lid))
-                {
-                    // Als er al betaald is voor het membership, dan gaat het membership
-                    // niet opnieuw naar Civi, zodat in het membership de aanvrager dezelfde
-                    // blijft als de betaler.
-                    continue;
-                }
-                if (_ledenManager.GratisAansluiting(lid) && _ledenManager.IsAangesloten(lid))
-                {
-                    // Als deze aansluiting gratis is, en het lid is al ergens anders aangesloten,
-                    // dan moeten we niets meer doen.
-                    continue;
-                }
                 _personenSync.MembershipRegistreren(lid);
                 Console.Write("{0} ", ++overgezetTeller);
             }
 
-            Console.WriteLine("{1} leden nagekeken, {0} memberships gesynct.", overgezetTeller, totaalTeller);
+            Console.WriteLine("Leden nagekeken. {0} memberships gesynct.", overgezetTeller);
         }
 
 

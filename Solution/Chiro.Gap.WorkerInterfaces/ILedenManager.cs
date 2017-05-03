@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013, 2015, 2016 the GAP developers. 
+ * Copyright 2008-2013, 2015, 2016, 2017 the GAP developers.
  * See the NOTICE file at the top-level directory of this distribution, 
  * and at https://gapwiki.chiro.be/copyright
  * 
@@ -16,7 +16,9 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
@@ -208,5 +210,27 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="lid">Lid waarvan we het stamnummer willen weten.</param>
         /// <returns>Het stamnummer van dat lid.</returns>
         string StamNummer(Lid lid);
+
+        /// <summary>
+        /// Haal alle leden op die nog aangesloten moeten worden voor werkjaar <paramref name="werkjaar"/>
+        /// op de dag gegeven in <paramref name="vandaag"/>.
+        /// </summary>
+        /// <param name="lidQueryable">Queryable om leden in te zoeken.</param>
+        /// <param name="werkjaar">Werkjaar waarvoor leden te zoeken.</param>
+        /// <param name="vandaag">De datum van vandaag.</param>
+        /// <param name="limit"></param>
+        /// <returns>Een array met leden.</returns>
+        Lid[] AanTeSluitenLedenOphalen(IQueryable<Lid> lidQueryable, int werkjaar, DateTime vandaag, int? limit);
+
+        /// <summary>
+        /// Levert <c>true</c> als het gegeven <paramref name="lid"/> een lid is van het huidige werkjaar
+        /// van zijn groep.
+        /// </summary>
+        /// <param name="lid"></param>
+        /// <returns>
+        /// Levert <c>true</c> als het gegeven <paramref name="lid"/> een lid is van het huidige werkjaar
+        /// van zijn groep.
+        /// </returns>
+        bool IsVanHuidigWerkjaar(Lid lid);
     }
 }

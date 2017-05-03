@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014, 2017 the GAP developers. See the NOTICE file at the
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -297,6 +298,155 @@ namespace Chiro.Gap.Workers.Test
 
             var ex = Assert.Throws<FoutNummerException>(() => target.TypeToggle(origineelLid));
             Assert.That(ex.FoutNummer == FoutNummer.GroepInactief);
+        }
+
+        /// <summary>
+        /// Maak geen aansluitingen meer aan voor het oude werkjaar, als de ploeg in het nieuwe werkjaar werkt.
+        /// </summary>
+        [Test]
+        public void GeenAansluitingenOudWerkjaarTest()
+        {
+            // Stel: het is juli 2016.
+            var datum = new DateTime(2016, 7, 15);
+
+            var groep = new ChiroGroep
+            {
+                GroepsWerkJaar = new List<GroepsWerkJaar>()
+            };
+            var gwj1 = new GroepsWerkJaar {Groep = groep, WerkJaar = 2016};
+            // De groep heeft zijn jaarovergang al gedaan, en er bestaat dus een werkjaar 2017-2018.
+            var gwj2 = new GroepsWerkJaar {Groep = groep, WerkJaar = 2017};
+            groep.GroepsWerkJaar.Add(gwj1);
+            groep.GroepsWerkJaar.Add(gwj2);
+
+            var lid = new Leiding
+            {
+                GroepsWerkJaar = gwj1,
+                EindeInstapPeriode = datum.AddDays(-5),
+                GelieerdePersoon = new GelieerdePersoon
+                {
+                    Groep = groep,
+                    Persoon = new Persoon()
+                }
+            };
+            lid.GelieerdePersoon.Persoon.GelieerdePersoon.Add(lid.GelieerdePersoon);
+
+            gwj1.Lid = new List<Lid> {lid};
+
+            var target = new LedenManager();
+
+            // Nu proberen we uit te zoeken welke leden er nog aangesloten moeten worden in 2016-2017.
+            var result = target.AanTeSluitenLedenOphalen(groep.GroepsWerkJaar.SelectMany(gwj => gwj.Lid).AsQueryable(),
+                2016, datum, null);
+
+            Assert.IsEmpty(result);
+        }
+
+        /// <summary>
+        /// Als de property <c>LaatsteMembership</c> van een persoon <c>null</c> is, dan mag dat niet verhinderen dat
+        /// een persoon aangesloten wordt.
+        /// </summary>
+        [Test]
+        public void NooitAangeslotenLedenAansluitenTest()
+        {
+            // ARRANGE
+            const int huidigWerkjaar = 2014;
+            DateTime vandaagZoGezegd = new DateTime(2015, 02, 23);
+
+            // We hebben 1 leidster, die niet meer in haar probeerperiode zit.
+            var leidster = new Leiding
+            {
+                ID = 1,
+                EindeInstapPeriode = vandaagZoGezegd.AddDays(-7),
+                GelieerdePersoon = new GelieerdePersoon
+                {
+                    ID = 2,
+                    Persoon = new Persoon
+                    {
+                        ID = 3,
+                        VoorNaam = "Kelly",
+                        Naam = "Pfaff"
+                    }
+                },
+                GroepsWerkJaar = new GroepsWerkJaar
+                {
+                    ID = 4,
+                    WerkJaar = huidigWerkjaar,
+                    Groep = new ChiroGroep { ID = 5 }
+                }
+            };
+            leidster.GroepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar>{leidster.GroepsWerkJaar};
+
+            // ACT
+            var target = new LedenManager();
+            var result = target.AanTeSluitenLedenOphalen((new List<Lid> {leidster}).AsQueryable(), huidigWerkjaar,
+                vandaagZoGezegd, null);
+
+            // ASSERT
+            Assert.IsNotEmpty(result);
+        }
+
+        /// <summary>
+        /// Als iemand al een gratis membership heeft via een kaderploeg, maar nu ook lid is van
+        /// een plaatselijke groep, moet het bestaande membership betalend worden. (#4519)
+        /// </summary>
+        [Test]
+        public void VanGratisNaarBetalendMembershipTest()
+        {
+            // ARRANGE
+            const int huidigWerkjaar = 2015;
+            DateTime vandaagZoGezegd = new DateTime(2016, 1, 7);
+
+            var gewest = new KaderGroep { ID = 6 };
+
+            // We hebben 1 leidster, die ook in het gewest actief is.
+            var leidster = new Leiding
+            {
+                ID = 1,
+                EindeInstapPeriode = vandaagZoGezegd.AddDays(-7),
+                GelieerdePersoon = new GelieerdePersoon
+                {
+                    ID = 2,
+                    Persoon = new Persoon
+                    {
+                        ID = 3,
+                        VoorNaam = "Kelly",
+                        Naam = "Pfaff"
+                    }
+                },
+                GroepsWerkJaar = new GroepsWerkJaar
+                {
+                    ID = 4,
+                    WerkJaar = huidigWerkjaar,
+                    Groep = new ChiroGroep { ID = 5 }
+                }
+            };
+            leidster.GroepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar>{leidster.GroepsWerkJaar};
+
+            leidster.GelieerdePersoon.Persoon.GelieerdePersoon.Add(new GelieerdePersoon
+            {
+                ID = 5,
+                Groep = gewest,
+                Lid = new [] {new Leiding
+                {
+                    ID = 7,
+                    IsAangesloten = true,
+                    GroepsWerkJaar = new GroepsWerkJaar
+                    {
+                        ID = 8,
+                        WerkJaar = huidigWerkjaar,
+                        Groep = gewest
+                    }
+                } }
+            });
+
+            // ACT
+            var target = new LedenManager();
+            var result = target.AanTeSluitenLedenOphalen((new List<Lid> {leidster}).AsQueryable(), huidigWerkjaar,
+                vandaagZoGezegd, null);
+
+            // ASSERT
+            Assert.IsNotEmpty(result);
         }
 
         /// <summary>
