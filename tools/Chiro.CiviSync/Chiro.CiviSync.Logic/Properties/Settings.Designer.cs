@@ -83,5 +83,29 @@ namespace Chiro.CiviSync.Logic.Properties {
                 this["RecupereerPeriode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2001-10-31")]
+        public global::System.DateTime DubbelpuntAbonnementStopDatum {
+            get {
+                return ((global::System.DateTime)(this["DubbelpuntAbonnementStopDatum"]));
+            }
+            set {
+                this["DubbelpuntAbonnementStopDatum"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2000-09-01")]
+        public global::System.DateTime DubbelpuntAbonnementStartDatum {
+            get {
+                return ((global::System.DateTime)(this["DubbelpuntAbonnementStartDatum"]));
+            }
+            set {
+                this["DubbelpuntAbonnementStartDatum"] = value;
+            }
+        }
     }
 }

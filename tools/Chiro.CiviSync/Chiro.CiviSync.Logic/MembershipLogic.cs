@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016, 2017 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -74,11 +74,14 @@ namespace Chiro.CiviSync.Logic
         public MembershipRequest VanWerkjaar(MembershipType type, int contactId, int? civiPloegId, int werkJaar)
         {
             // We bekijken de datums zonder uren, dus discrete dagen. De EndDate valt volledig binnen de
-            // relationship.
+            // membership.
 
-            DateTime overgangDatum = Settings.Default.WerkjaarStart;
-            DateTime beginWerkjaar = new DateTime(werkJaar, overgangDatum.Month, overgangDatum.Day);
-            DateTime eindeWerkJaar = new DateTime(werkJaar + 1, overgangDatum.Month, overgangDatum.Day).AddDays(-1);
+            DateTime dpStartSetting = Settings.Default.DubbelpuntAbonnementStartDatum;
+            DateTime dpStopSetting = Settings.Default.DubbelpuntAbonnementStopDatum;
+            DateTime beginAbonnement = new DateTime(werkJaar, dpStartSetting.Month, dpStartSetting.Day);
+            // FIXME: we veronderstellen hier dat een abonnement eindigt in het kalenderjaar na de start.
+            // Dat hoeft niet per se zo te zijn.
+            DateTime eindeAbonnement = new DateTime(werkJaar + 1, dpStopSetting.Month, dpStopSetting.Day);
             DateTime vandaag = _datumProvider.Vandaag();
 
             var result = new MembershipRequest
@@ -86,18 +89,18 @@ namespace Chiro.CiviSync.Logic
                 ContactId = contactId,
                 AangemaaktDoorPloegId = civiPloegId,
                 JoinDate = vandaag,
-                EndDate = eindeWerkJaar,
+                EndDate = eindeAbonnement,
                 MembershipTypeId = (int) type,
             };
 
             // Don't touch the membership status; CiviCRM will handle it for us (#4960).
             if (vandaag < result.StartDate)
             {
-                result.StartDate = beginWerkjaar;
+                result.StartDate = beginAbonnement;
             }
             else if (vandaag > result.EndDate)
             {
-                result.StartDate = eindeWerkJaar;
+                result.StartDate = eindeAbonnement;
             }
             else
             {

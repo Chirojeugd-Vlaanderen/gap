@@ -1,5 +1,5 @@
-Communicatie tussen GAP en Chirocivi
-====================================
+CiviSync: Gegevens van GAP naar Chirocivi
+=========================================
 
 Algemeen
 --------
@@ -8,6 +8,9 @@ Als GAP een wijziging naar CiviCRM wil sturen, dan gebeurt dat door
 een object in Chiro.Gap.Sync. Deze objecten plaatsen berichten in een
 [message queue](MessageQueueing.md), die dan door
 CiviSync (een Windows-service) worden opgepikt.
+
+CiviSync maakt dan gebruik van de API van CiviCRM om de relevante wijzigingen
+door te voeren.
 
 Persoonsgegevens
 ----------------
@@ -27,6 +30,11 @@ al bestaat:
     * Iemand met zelfde postnr -&gt; OK
     * Iemand met zelfde geboortedatum -&gt; OK
 4.  Niemand gevonden? -&gt; Nieuwe persoon
+
+Als CiviSync merkt dat een AD-nummer dat van GAP komt, niet bestaat in
+CiviCRM, dan zal CiviSync dat via
+[UpdateApi](Solution/Chiro.Gap.UpdateApi) doorgeven aan GAP. Normaal gezien
+zou dit niet mogen voorkomen, maar de praktijk is soms anders.
 
 ### Persoon bewaren
 
@@ -345,4 +353,4 @@ Bivakaangifte
 Dubbelpuntabonnement
 --------------------
 
-Niet meer via het GAP, wel via de website.
+**TODO!** - Zie issue #5679.
