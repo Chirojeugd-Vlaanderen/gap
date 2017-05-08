@@ -345,4 +345,4 @@ Bivakaangifte
 Dubbelpuntabonnement
 --------------------
 
-Niet meer via het GAP, wel via de website.
+**TODO!** - Zie issue #5679.
