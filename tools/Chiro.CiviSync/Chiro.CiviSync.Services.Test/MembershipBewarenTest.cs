@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016, 2017 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,13 +15,10 @@
  */
 
 using System;
-using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Mapping;
-using Chiro.CiviSync.Test.Mapping;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Moq;
@@ -34,6 +31,14 @@ namespace Chiro.CiviSync.Services.Test
     {
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
+
+        private DateTime VerwachtEindeAbonnement(int werkjaar)
+        {
+            // FIXME: De verwachte einddatum van een abonnement, wordt eigenlijk bepaald in de settings
+            // van Chiro.CiviSync.Logic. Als we die setting wegtrekken uit die assembly, kunnen we
+            // gerichter testen, zie #5685.
+            return new DateTime(werkjaar + 1, 10, 31);
+        }
 
         /// <summary>
         /// Deze test controleert voornamelijk de datums.
@@ -63,8 +68,7 @@ namespace Chiro.CiviSync.Services.Test
                     Id = 4
                 };
                 var groep = new Contact {ExternalIdentifier = "BLA/0000", Id = 5};
-                new DateTime(HuidigWerkJaar, 9, 1);
-                DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
+                DateTime verwachtEindeAbonnement = VerwachtEindeAbonnement(HuidigWerkJaar);
 
                 civiApiMock.Setup(
                         src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
@@ -97,7 +101,7 @@ namespace Chiro.CiviSync.Services.Test
                             src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                                 It.Is<MembershipRequest>(
                                     r =>
-                                        r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
+                                        r.StartDate == _vandaagZogezegd && r.EndDate == verwachtEindeAbonnement &&
                                         r.MembershipTypeId == (int) MembershipType.Aansluiting)))
                     .Returns(
                         (string key1, string key2, MembershipRequest r) =>
@@ -123,7 +127,7 @@ namespace Chiro.CiviSync.Services.Test
                         src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                             It.Is<MembershipRequest>(
                                 r =>
-                                    r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
+                                    r.StartDate == _vandaagZogezegd && r.EndDate == verwachtEindeAbonnement &&
                                     r.MembershipTypeId == (int) MembershipType.Aansluiting)), Times.AtLeastOnce);
             }
         }
@@ -144,16 +148,16 @@ namespace Chiro.CiviSync.Services.Test
 
                 const int adNummer = 2;
                 const int contactId = 4;
-                DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
-                DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
+                DateTime verwachtBeginAbonnement = new DateTime(HuidigWerkJaar, 9, 1);
+                DateTime verwachtEindeAbonnement = VerwachtEindeAbonnement(HuidigWerkJaar);
 
                 var oudMembership = new Membership
                 {
                     ContactId = contactId,
                     MembershipTypeId = (int) MembershipType.Aansluiting,
-                    StartDate = beginDitWerkJaar.AddYears(-1),
-                    EndDate = eindeDitWerkJaar.AddYears(-1),
-                    JoinDate = beginDitWerkJaar.AddMonths(-10)
+                    StartDate = verwachtBeginAbonnement.AddYears(-1),
+                    EndDate = verwachtEindeAbonnement.AddYears(-1),
+                    JoinDate = verwachtBeginAbonnement.AddMonths(-10)
                 };
 
                 var persoon = new Contact
@@ -182,7 +186,7 @@ namespace Chiro.CiviSync.Services.Test
                             src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                                 It.Is<MembershipRequest>(
                                     r =>
-                                        r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
+                                        r.StartDate == _vandaagZogezegd && r.EndDate == verwachtEindeAbonnement &&
                                         r.JoinDate == oudMembership.JoinDate &&
                                         r.MembershipTypeId == (int) MembershipType.Aansluiting)))
                     .Returns(
@@ -209,7 +213,7 @@ namespace Chiro.CiviSync.Services.Test
                         src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                             It.Is<MembershipRequest>(
                                 r =>
-                                    r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
+                                    r.StartDate == _vandaagZogezegd && r.EndDate == verwachtEindeAbonnement &&
                                     r.JoinDate == oudMembership.JoinDate &&
                                     r.MembershipTypeId == (int) MembershipType.Aansluiting)), Times.AtLeastOnce);
             }
@@ -319,8 +323,7 @@ namespace Chiro.CiviSync.Services.Test
                     Id = 4
                 };
                 var groep = new Contact {ExternalIdentifier = "BLA/0000", Id = 5, KaderNiveau = KaderNiveau.Gewest};
-                DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
-                DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
+                DateTime verwachtEindeAbonnement = VerwachtEindeAbonnement(HuidigWerkJaar);
 
                 civiApiMock.Setup(
                         src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
@@ -353,7 +356,7 @@ namespace Chiro.CiviSync.Services.Test
                             src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                                 It.Is<MembershipRequest>(
                                     r =>
-                                        r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
+                                        r.StartDate == _vandaagZogezegd && r.EndDate == verwachtEindeAbonnement &&
                                         r.MembershipTypeId == (int) MembershipType.Aansluiting &&
                                         r.FactuurStatus == FactuurStatus.FactuurOk)))
                     .Returns(
@@ -375,7 +378,7 @@ namespace Chiro.CiviSync.Services.Test
                         src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                             It.Is<MembershipRequest>(
                                 r =>
-                                    r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
+                                    r.StartDate == _vandaagZogezegd && r.EndDate == verwachtEindeAbonnement &&
                                     r.MembershipTypeId == (int) MembershipType.Aansluiting &&
                                     r.FactuurStatus == FactuurStatus.FactuurOk)), Times.AtLeastOnce);
             }

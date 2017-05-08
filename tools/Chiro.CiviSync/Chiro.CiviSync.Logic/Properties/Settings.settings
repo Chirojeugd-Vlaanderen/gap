@@ -17,5 +17,11 @@
     <Setting Name="RecupereerPeriode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">30</Value>
     </Setting>
+    <Setting Name="DubbelpuntAbonnementStopDatum" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2001-10-31</Value>
+    </Setting>
+    <Setting Name="DubbelpuntAbonnementStartDatum" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2000-09-01</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
