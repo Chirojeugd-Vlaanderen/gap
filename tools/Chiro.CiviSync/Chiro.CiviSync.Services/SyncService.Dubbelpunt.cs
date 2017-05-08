@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015, 2016, 2017 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -57,6 +57,7 @@ namespace Chiro.CiviSync.Services
             if (contact.MembershipResult.Count == 1)
             {
                 var bestaandMembership = contact.MembershipResult.Values.First();
+                // Ik vermoed dat we join date hier oneigenlijk gebruiken...
                 request.JoinDate = bestaandMembership.JoinDate < request.JoinDate
                     ? bestaandMembership.JoinDate
                     : request.JoinDate;

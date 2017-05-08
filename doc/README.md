@@ -95,4 +95,4 @@ en werk de documentatie bij als je merkt dat zaken onduidelijk zijn.
 
 [Gegevens worden van GAP overgezet naar Chirocivi](SyncGapCivi.md) via berichten in een
 message queue. Deze berichten worden uitgelezen en verwerkt door een
-synchronisatietooltje: [CiviSync](tools/Chiro.CiviSync).
+synchronisatietooltje: [CiviSync](doc/SyncGapCivi.md).
