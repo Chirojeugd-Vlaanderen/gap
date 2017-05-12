@@ -60,8 +60,8 @@ namespace Chiro.CiviSync.Services
             {
                 Id = civiContactId,
                 OrganizationName = g.Naam,
-                // Chirocivi werkt blijkbaar meer met legal_name dan met organization_name.
-                // We nemen hem dus voor de veiligheid mee.
+                // Vroeger gebruikten we in Chirocivi vooral legal_name, maar dat was fout. Intussen gebruiken
+                // we overal organization_name, maar voor de veiligheid laat ik onderstaande lijn nog staan.
                 LegalName = g.Naam
             };
             if (g.Adres != null)
